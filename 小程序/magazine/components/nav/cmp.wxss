@@ -1,0 +1,18 @@
+.container{
+    box-sizing: border-box; /* 盒模型 */
+    width: 750rpx;
+    padding: 30rpx;
+    background-color: #fff;
+    white-space: nowrap;
+}
+
+.type{
+    font-size: 40rpx;
+    color: #888;
+    padding: 0 30rpx;
+}
+
+.active{
+    color: #000;
+}
+

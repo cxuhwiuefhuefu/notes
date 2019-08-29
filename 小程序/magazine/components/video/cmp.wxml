@@ -1,0 +1,91 @@
+<view class="container">
+    
+    <view >
+        <video id="{{videoId}}"
+               hidden="{{showPoster}}"
+               class="video"
+               src="{{src}}"
+               bindended="onVideoEnd" />
+       
+        <view hidden="{{!showPoster}}" class="poster-container">
+            <image class="poster"
+                   src="{{poster}}" />
+
+            <view class="controler" catch:tap="onPlay">
+                <image class="play-btn" src="image/play.png" />
+                <text class="duration">{{duration}}</text>
+            </view>
+        </view>
+    </view>
+
+    <view class="main-title">
+        <text >{{mainTitle}}</text>
+    </view>
+
+    <view catch:tap="onMaskTap"
+          class="mask" hidden="{{showPoster}}"></view>
+</view>
+
+
+<!-- 
+    分析结构 动图 控制视频播放的区域 还有这样的title区域 
+        在打开这样的视频之后有朦层出现了 所以它有三小块
+        一个是视频和图片和控制区域所在的一个地方 
+        还有一个title所在的地方 还有一个就是这样的朦层所在的地方
+        看上去是全屏的 
+
+    
+    视频的播放地址是哪里的 是从外部传入的 是由用户来控制的 是由调用组件的时候才会知道这样的视频播放的链接是什么
+        它这个组件的功能就是播放视频 显示一个图片 再显示一个标题 再显示一个朦层
+        至于播放什么样的视频他是不知道的 其次这样Image动图的封面它也是不知道的
+        时长也是不知道的 它现在只知道image这样的src 每个视频都有这样的小三角图片
+        所以说它是固定的
+    src
+    imgSrc
+    shichang
+    biaoti    
+
+    把图片放到video这样文件夹里面 因为这样好找 而且它是跟这个组件是一体的 
+
+    因为图片是不可能存在视频的上方 我们来切换它们的显示和隐藏 
+        如果说video显示的时候就让这样的poster区域隐藏 
+        如果poster区域是显示的话就让video隐藏 
+        用某个值来控制它们的显示与隐藏就可以了
+
+    
+    首先把需要从外界获取的属性写在我们js里面
+
+    
+    用一个值控制poster的显示与隐藏 在这个值为true的时候让这个video隐藏的 
+        用hidden来控制 因为它涉及到经常切换 不涉及到经常切换我们就用wx:if
+ 
+ 
+    点击这样的控制区域让视频播放的同时showPoster进行一次变化
+
+    为什么用catch呢 因为我们这个如果用bind的话是不阻止冒泡的 可能后面会发生一些问题 
+        所以说我们现在一般在写的时候都要写上catch 在原生组件video如果你想要给它加上一个事件的话
+        你一定要用bind 它不支持catch的 然后不支持catch的同时你也你也不能写上bind:tap
+        只能写上bindTap
+
+    什么时候让这个视频停止呢 当你点击这样的一个朦层的时候 视频就停止了 不仅视频停止了
+        这个showPoster的值又切换了一下    
+
+    有个问题 就是我每点击一次再进去停止再进去 它是一个接着播放的状态 这个是什么回事 
+        按照我们正常思维是停止的 但是在真机上它也确实是停止了
+        等你下次播放的时候从头播放了 但是这也是开发者工具不一样的地方 
+        但是在开发者工具中它不重头播放 它给你接着播放 如果你不想要这样的话
+        如果你在开发者工具中不想让它显示接着播放的话 就给它video
+
+    在视频播放完成之后 它自然播放完成之后 视频是不是停止了 但是停止的话这个视频停留的是最好一帧
+        我们不想这样 如果我们视频播放完成了 那我们直接让这个视频封面出来
+        比如我们要监听视频的自然播放完成的事件
+    
+    现在没有办法拉这个条的 因为我这个master在这个微信开发者工具上它是层级是大于这样的video的 
+        但是真机它一定不是的 它咋微信开发者工具和真机上可以说不是一个video
+
+    在页面当中是不是说一个生命周期函数 你去发送数据的时候是不是在onLoad这样的函数里去发送
+        那在我们小程序里面它也有自己组件的一个生命周期     
+
+    这个生命周期函数你可以直接放到这个大对象里面 还可以放到lifetimes    
+
+ -->

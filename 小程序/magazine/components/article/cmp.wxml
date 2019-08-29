@@ -1,0 +1,85 @@
+<!-- 先进行一次布局 -->
+
+<view class="container">
+    <view class="mark-container">
+        <image class="avatar" src="{{articleDetail.mark.avatar}}" />
+        <text class="text" >{{articleDetail.mark.people}}等{{articleDetail.mark.count}}人马克了</text>
+    </view>
+    <view >
+        <d-bigImg wx:if="{{articleDetail.type === 0}}"
+                  img-src="{{articleDetail.imgArray[0]}}"
+                  main-title="{{articleDetail.mainTitle}}" />
+
+        <d-nineImg wx:elif="{{articleDetail.type === 1}}"
+                   img-arr="{{articleDetail.imgArray}}"
+                   main-title="{{articleDetail.mainTitle}}" />
+ 
+        <d-imgText wx:elif="{{articleDetail.type === 2}}" 
+                   main-title="{{articleDetail.mainTitle}}"
+                   sub-head="{{articleDetail.subHead}}"
+                   img-src="{{articleDetail.imgArray[0]}}"  /> 
+ 
+        <d-video wx:elif="{{articleDetail.type === 3}}"
+                    main-title="{{articleDetail.mainTitle}}"
+                    src="{{articleDetail.video.src}}"
+                    duration="{{articleDetail.video.duration}}"
+                    poster="{{articleDetail.video.poster}}"
+                    video-id="{{articleDetail.videoId}}" />
+ 
+       <d-pureText wx:else
+                   main-title="{{articleDetail.mainTitle}}"
+                   sub-head="{{articleDetail.subHead}}" />
+        
+    </view>
+
+    <view class="control-container">
+        <view >
+            <d-tag tag="{{articleDetail.tag}}" tag-id="{{articleDetail.tagId}}" />
+        </view>
+        <view class="control-box">
+            <d-more class="box" tag="{{articleDetail.tag}}" />
+            <d-imgBtn open-type="share" class="box img-btn">
+                <image src="/images/mark/relay.png" slot="img" />
+            </d-imgBtn>
+            <d-like class="box" like="{{likeStatus}}" catch:like="onLike" />
+        </view>
+    </view>
+</view>
+
+
+<!-- 
+    在组件当中也是可以引用另外一个组件
+
+    
+    我们把它引入进来 但是我想使用它们当中的某一个 不应该是所有的组件都显示在上面
+        是不是要通过某个值来控制它们 是不是要通过wx:if wx:else
+    
+ -->
+
+
+<!-- 2 图文 -->
+<!-- 1 九宫图 -->
+<!-- 3 video -->
+<!-- 4 纯文字 -->
+<!-- 0 大图 -->
+<!-- 
+    可以通过这些来控制它们的显示与隐藏
+ -->
+
+<!-- 
+    是不是意味着需要从服务器上把这些值拿过来 服务器会返回服务器对象的合集
+        通过对象我们能拿到我们想要的信息
+
+    首先是横着的对齐方式 flex布局
+ -->
+
+ <!-- 
+     数据填充
+
+     刷新你会发现有loading图标
+     
+      wx.showLoading 
+    页面一进来加载的时候就让它显示提示框 等我的数据全部加载回来再让它关闭
+
+    列表证明很多个 要进行wx:for循环
+  -->

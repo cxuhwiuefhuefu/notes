@@ -1,0 +1,100 @@
+.container{
+    /* padding-bottom: 1000rpx; */
+}
+.typeImage{
+    width: 100%;
+    height: 600rpx;
+}
+.typeImage .image{
+    width: 100%;
+    height: 100%;
+}
+
+.label{
+    position: absolute;
+    left: 50%;
+    margin-top: -100rpx;
+    margin-left: -300rpx;
+    width: 600rpx;
+    height: 200rpx;
+    border-radius: 10rpx;
+    background: #E0E0E0;
+}
+.detailType{
+    padding: 10rpx;
+}
+.detailType text{
+    font-size: 80rpx;
+}
+.label .controler{
+    display: flex;
+    justify-content: flex-end;
+}
+.label .share,
+.label .more{
+    padding: 10rpx;
+    width: 50rpx;
+    height: 50rpx;
+}
+
+
+
+
+
+
+.articleList{
+    padding: 150rpx 20rpx 10rpx;
+    background-color: #ccc;
+}
+ .article{
+margin-top: 30rpx;
+background: #fff;
+}
+ .userInfo{
+padding: 10rpx;
+}
+ .icon{
+margin-right: 20rpx;
+width: 80rpx;
+height: 80rpx;
+border-radius: 50%;
+vertical-align: middle;
+}
+ .articleImage{
+width: 100%;
+}
+ .articleImage .image{
+width: 100%;
+}
+ .articleTitle{
+padding: 20rpx;
+font-size: 48rpx;
+}
+ .article-bottom{
+padding: 20rpx;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+}
+ .articleType{
+padding: 5px 10rpx;
+font-size: 40rpx;
+font-weight: bold;
+border: 1px solid #000;    
+}
+ .controler{
+display: flex;
+flex-direction: row;
+}
+ .controler image{
+width: 60rpx;
+height: 60rpx;
+}
+ .share-btn{
+background: transparent;
+}
+ .share-btn::after{
+border: 0;
+}
+
+

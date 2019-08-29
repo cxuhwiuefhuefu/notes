@@ -1,0 +1,16 @@
+
+    var filter = function(text) {
+        // var reg = /\\n/g;
+        // var reg  = getRegExp('\\n', 'g');
+
+        // console.log(text); 出现undefined 然后才打印出来这样一系列的值 
+        //     是不是要做容错处理 因为在数据还没返回过来的时候是不是有个时间段 
+        //     这个时间段它就获取到这个值了 它这里是没有值的 因为刚开始的时候它只是一个空对象
+        //     所以要做认错处理 怎么实现这样的空格呢
+        if(!text) {
+            return;
+        }
+        var reg = getRegExp('\\n', 'g');
+        return text.replace(reg, '\n&emsp;&emsp;');
+    }
+    module.exports = filter;

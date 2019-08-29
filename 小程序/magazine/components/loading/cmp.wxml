@@ -1,0 +1,11 @@
+<view class="container" hidden="{{hidden}}">
+    <view class="circle"></view>
+    <view class="circle circle1"></view>
+</view>
+
+
+<!-- 
+    loading图标是一大一小的来回交换 写两个view组件
+
+
+ -->

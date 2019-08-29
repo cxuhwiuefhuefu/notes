@@ -1,0 +1,11 @@
+<button plain="true" class="container" open-type="{{openType}}" bindgetuserinfo="onGetUserInfo">
+    <!-- <image src="/images/mark/relay.png" /> -->
+    <slot name="img"></slot>
+</button>
+
+
+<!-- 
+    img不是固定的 我们需要在页面中给它插入一张图片
+
+    可以在组件当中监听一个事件 然后触发一个事件然后在页面当中再来监听一下
+ -->

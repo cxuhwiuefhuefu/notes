@@ -1,0 +1,190 @@
+/* 文章详情页 */
+.container{
+    margin-top: 20rpx;
+    padding: 10rpx;
+}
+.title-container text{
+    font-size: 48rpx;
+}
+.authorAndDate text{
+    font-size: 28rpx;
+    color: #666;
+    margin-right: 20rpx;
+}
+.authorAndDate{
+    margin-top: 20rpx;
+}
+.authorAndDate text:first-of-type{
+    color: #576b95;
+}
+
+.media-container{
+    /* width: 100%; */
+}
+
+.content-container{
+    margin-top: 30rpx;
+    text-indent: 2em;
+}
+/* 
+    text-indent属性规定文本块中首行文本的缩进
+    注意: 负值是允许的 如果值是负值 将第一行左缩进
+    属性值 
+        length: 定义规定的缩进  默认值: 0
+        % 定义基于父元素宽度的百分比的缩进
+    
+    
+
+
+    px em rem 区别介绍
+    PX
+        px像素 相对长度单位 像素px是相对于显示器屏幕分辨率而言的
+        px特点
+            1. IE无法调整那些使用px作为单位的字体大小
+            2. 国外的大部分网站能够及时调整的原因在于其使用了em或rem作为字体单位
+            3. Firefox能够调整px和em rem 但是96%以上的中国网民使用IE浏览器(或内核)
+    EM
+        em是相对长度单位 相当于当前对象内文本的字体尺寸 如当前对行内文本的字体尺寸未被人为设置 
+            则相对于浏览器的默认字体尺寸
+        em特点
+            1. em的值并不是固定的
+            2. em会继承父级元素的字体大小
+        注意: 任何浏览器的默认字体高度都是16px 
+    REM 
+        rem是CSS3新增的一个相对单位 这个单位引起了广泛关注 这个单位与em有什么区别呢 
+            区别在于使用rem为元素设定字体大小时 仍然是相对大小 但相对的只是HTML根元素
+            这个单位可谓集相对大小和绝对大小的优点于一身
+            通过它既可以做到只修改根元素就成比例地调整所有字体大小 又可以避免字体大小逐层复合的连锁反应 
+            目前 除了IE8及更早版本外 所有浏览器已支持rem 对于不支持它的浏览器 应对方法也很简单
+            就是多写一个绝对单位的声明 这些浏览器会忽略用rem设定的字体大小
+    注意: 选择使用什么字体单位主要由你的项目来决定 如果你的用户群都使用最新版的浏览器 那推荐使用rem
+          如果要考虑兼容性 那就使用px 或者两者同时使用
+    px与rem的选择
+    对于只需要适配少部分手机设备 且分辨率对页面影响不大的 使用px即可 
+    对于需要适配各种移动设备 使用rem 例如只需要适配iPhone和iPad等分辨率差别比较大的设备     
+*/
+.content-container text{
+    font-size: 16px;
+    line-height: 32px; /* 行高 */
+}
+.read-container{
+    margin-top: 30rpx;
+    margin-bottom: 30rpx;
+}
+.read-container text{
+    font-size: 14px;
+    margin-right: 20rpx;
+}
+
+
+
+
+
+/* medial-container */
+.banner{
+    width: 750rpx;
+    height: 500rpx;
+}
+.banner image{
+    width: 100%;
+    height: 100%;
+}
+/* swiper默认设置为100% */
+
+
+
+
+/* media-container */
+/* 正常视频是贴边的情况 但是我想给它居中 */
+.media-container{
+    display: flex;
+    justify-content: center;
+}
+.video{
+    width: 700rpx;
+    height: 500rpx;   
+}
+
+.controls{
+    width: 700rpx;
+    height: 500rpx;
+    background-color: red;
+}
+.controls-box{
+    position: absolute; /* 我们想要controls-box小一点  如果给它设置absolute 会自动设置图片大小 */
+    top: 50%;
+    left: 50%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    margin-top: -50rpx;
+    margin-left: -50rpx;
+    width: 100rpx;
+    height: 100rpx;
+    background-color: rgba(0, 0, 0, .6);
+    border-radius: 50%;
+}
+.controls-box cover-image{
+    width: 30rpx;
+    height: 30rpx;
+    margin-top: 20rpx;
+}
+.controls-box cover-view{
+    font-size: 24rpx;
+    color: #fff;
+}
+
+
+
+    
+/* 音乐播放器  */
+.audio-container{
+    display: flex;
+    align-items: center;
+    padding: 30rpx;
+    margin-left: 20rpx;
+    margin-right: 20rpx;
+    margin-top: 50rpx;
+    background-color: #fdfdfd;
+    border: 1px solid #f2f2f2;
+    border-radius: 4rpx;
+}
+.audio-controler{
+    margin-right: 40rpx;
+}
+.audio-controler image{
+    width: 80rpx;
+    height: 80rpx;
+}
+.audio-info text{
+    font-size: 36rpx;
+}
+.audio-from text{
+    font-size: 28rpx;
+    color: #666;
+}
+.audio-progress{
+    position: relative;
+    margin-top: 20rpx;
+    margin-bottom: 20rpx;
+    /* width: 520rpx; */
+}
+.progress-circle{
+    position: absolute;
+    top: 50%;
+    margin-top: -10rpx;
+    width: 20rpx;
+    height: 20rpx;
+    border-radius: 50%;
+    background-color: #00b26a;
+}
+.audio-time{
+    display: flex;
+    justify-content: space-between;
+}
+.audio-time text{
+    color: #666;
+    font-size: 24rpx;
+}

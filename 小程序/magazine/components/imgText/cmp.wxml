@@ -1,0 +1,23 @@
+<!-- 图文组件 -->
+<view class="container">
+    <view class="text-container">
+        <view class="main-title">{{mainTitle}}</view>
+        <view class="sub-head">{{subHead}}</view>
+    </view>
+    <view class="img-container">
+        <image class="image" src="{{imgSrc}}" />
+    </view>
+</view>
+
+
+
+<!-- 
+    图文需要从外部获取的数据是不是有三个 一个主标题 一个副标题 一个图片
+
+    flex布局 横布局
+
+    也没有一个文件让它们共同复用一个所需要的东西
+    behaviors 可以构造一个行为  
+
+    组件里面重复的数据就写在behavior里面 然后把它引入进来就可以了
+ -->

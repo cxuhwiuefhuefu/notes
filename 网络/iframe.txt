@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #demo{
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            width: 100px;
+            height: 100px;
+            background: orange;
+        }
+    
+    
+    </style>
+</head>
+<body>
+
+    <div id="demo"></div>
+   <script>
+
+       var oDemo = document.getElementById('demo');
+       
+       var manageCookie = {
+            setCookie: function(name, value, time) {
+                document.cookie = name + '=' + value + ';max-age=' + time;
+                return this;
+            },
+            removeCookie: function(name) {
+                return this.setCookie(name, '', -1);
+            },
+            getCookie: function(name, callback) {
+                var allCookieArr = document.cookie.split('; ');
+                console.log(allCookieArr);
+                for(var i = 0; i < allCookieArr.length; i++) {
+                    var itemCookieArr = allCookieArr[i].split('=');
+                    console.log(itemCookieArr);
+                    if(itemCookieArr[0] == name) {
+                        callback(itemCookieArr[1]);
+                        return this;
+                    }
+                }    // for 找到就不用循环了 foreach一定要循环完
+               callback(undefined);
+                return this;
+            }
+        }
+
+       var drag = {
+
+           init: function(dom) { // 引入一些功能函数   
+                this.dom = dom;
+                var _this = this;
+                this.bindEvent();
+                manageCookie
+                     .getCookie('newLeft', function(data) { //  加个判断 取到值再给它设置上 
+                           // this指向window
+                         _this.dom.style.left = data + 'px';
+                     })
+                     .getCookie('newTop', function(data) {
+                         _this.dom.style.top = data + 'px';
+                     })
+           },
+           bindEvent: function() {
+               this.dom.onmousedown = this.mouseDown.bind(this);  // bind可以改变this但不会立即触发
+           },
+           mouseDown: function(e) {    // call/apply 立即执行   
+                document.onmousemove = this.mouseMove.bind(this);
+                document.onmouseup = this.mouseUp.bind(this);   //   万一只点击
+                this.disY = e.clientY - this.dom.offsetTop;
+                this.disX = e.clientX - this.dom.offsetLeft;
+    
+           },
+           mouseMove: function(e) {
+               this.newLeft = e.clientX - this.disX;
+               this.newTop = e.clientY - this.disY;
+               this.dom.style.left = this.newLeft + 'px';
+               this.dom.style.top = this.newTop + 'px';
+           },
+           mouseUp: function(e) {
+               document.onmousemove = null;
+               document.onmouseup = null;
+               manageCookie.setCookie('newLeft', this.newLeft, 10000).setCookie('newTop', this.newTop, 10000);
+           }
+       }
+       drag.init(oDemo);
+    
+   
+    
+    </script>
+</body>
+</html>
+//*********************************************************************************//
+//*************************************************************************************//
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <iframe src="./ds.html" frameborder="1" name="ds"></iframe>
+
+    <script>
+
+         // iframe: 内联框架
+     // 通过src 把整个文档加载到这个窗口当中
+     //  iframe不打乱结构  广告植入  里面的window和外面的window互不影响
+     //
+     //
+     // 1) tab页的切换 --》 保证头标签和尾标签一直不变的 中间的内容进行更换
+     // 2) 在线编辑器  w3c亲自试试  
+     // 3) qq邮箱登录的弹窗  
+     // 4) 广告
+     //
+     // 缺点: 一两个还好   多个页面阻塞    
+     // 解决方法: 动态的创建iframe标签添加src
+     //
+     //
+     //  父窗口要拿到子窗口的值: 子窗口和父窗口属于同源
+
+
+        //
+        // iframe 异步加载资源
+        //
+        //
+        var oIframe = document.getElementsByTagName('iframe')[0];
+        
+        // var oldAge = 55;
+        // oIframe.onload = function() {
+        //     console.log(window.frames['ds'].age);//  当前建议使用这个  IE专用
+        //     console.log(oIframe.contentWindow.age)//  部分浏览器不支持的
+        // }
+
+
+        // onload  IE不管用  监听用onreadystatechange
+        //
+        //  不同源不能跨域   iframe
+        //
+        // 添加哈希值不会对这个页面进行刷新的
+        //
+        // 
+        // 都可以通过 location.hash获取的到
+        
+        
+        // var oldAge = 55;
+        // oIframe.src += '#' + oldAge; 
+        // 还没加载完就把值给拼接上了
+
+
+        // 动态的添加
+        // var oSrc = oIframe.src;
+        // var oldAge = 55;
+        // document.onclick = function() {
+        //     oIframe.src = oSrc + '#' + oldAge;
+        //     oldAge ++; 
+        // }
+        //
+        //  为什么加载打印不出来  因为打印了才加载完
+        //
+        //
+        //
+        //  没过几秒就上页面回去哈希值的变化  
+
+        
+       //
+       //   不同源的情况下你拿不到这个window 你更拿不到window下面的变量
+       //    解决方法 中转方法
+       //    记得打开 localhost
+       //
+       //   为什么一直在闪缩 在请求
+       //    src换资源 onload  换资源  onload
+       //
+       //    window.name只要这个窗口不关闭  window.name的值就刻制在这个窗口上了
+       //
+       var flag = true;
+       oIframe.onload = function() {
+           if(flag) {
+               oIframe.src = './dxb.html';
+               flag = false;
+           }else {
+                console.log(oIframe.contentWindow.name);    
+           }  
+       }
+
+
+       // 跨域
+       //    1)  哈希值  缺点: 不安全 把值直接裸露在URL后面了  长度还受一定的限制  
+       //    2)  window.name 缺点 传值也受限制 必须借助iframe这样的框架
+       //    现在不怎么使用这样的来跨域  但是会用它来做一些页面的嵌入 来操控里面的dom
+       //        但是你要操控里面的dom甚至里面的dom元素的话  具体的获取里面的contentWindow
+       //        必须满足同源
+       //  为什么讲iframe来跨域呢
+       //      1)维护以前的页面
+       //      2)面试官问几种跨域的方式  问你iframe怎么实现跨域的
+       //  iframe本身不能跨域 但是跨域借助一些完美的技巧完美的避开
+       //      有些人说iframe没用啊 但思维/思路非常受用  同样是一个不能跨域的东西 怎么借助一些已有的东西来实现跨域呢  
+       //          它就借助了这些方法 完美的避开了同源策略实现跨域  jsonp
+       //           jsonp跨域设计的原理是什么  我把我写好的回调函数的名称传给后台 后台拼接成一个函数执行的形式返回给我 这不也是利用一些其他的方式实现这样的跨域   
+       //
+       //
+
+    
+    </script>
+
+
+
+</body>
+</html>
+//********************************************************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <i>demo</i>
+    <!-- <iframe src="./dxb.html" frameborder="0"></iframe> -->
+
+
+    <script>
+
+        var age = 20;
+
+        // console.log(window.parent.oldAge);  
+        // console.log(window.top.oldAge);  
+
+
+        // 没隔10毫秒就取一次 服务器容易崩溃
+        // 比较耗时 比较耗性能  频繁的去看自己的哈希值有没有变化
+        var lastHash = window.location.hash;
+        setInterval(function() {   
+            if(lastHash != window.location.hash) {
+                 console.log(location.hash.slice(1)); // 为什么用slice
+                 lastHash = window.location.hash;
+            } 
+        }, 10)
+
+
+        //
+        // 子页面向父页面传值
+        //  淘宝的window 百度的window
+        //
+        //  window.name 相对于直接把name属性刻在窗口上
+        //
+
+
+        // window.name = age;
+
+    
+    </script>
+</body>
+</html>
+//******************************************************************************************8888
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    小宝
+    <script>
+    console.log(window.top.oldAge)
+    
+    
+    </script>
+</body>
+</html>

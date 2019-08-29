@@ -1,0 +1,20 @@
+<view class="container">
+    <image class="image" mode="widthFix" src="{{imgSrc}}" />
+    <text class="text">{{mainTitle}}</text>
+</view>
+
+<!-- 
+    图片的高是自己定义的 宽是自适应的
+
+    这个组件要放上什么样的数据我们也不清楚 我们该怎么去接收这样的数据呢 比如image这个组件的功能即使展示图片 我们自定义组件的功能是由我们写好的
+        它的功能是展示这样的图片和这样的文字 但是它要展示图片的链接和这样title是由用户决定的 我们在使用这样的组件的时候也可以像这个图片一样写一个src=""
+        还可以写一个title="" 是不是可以意味着可以这样来写的
+
+    我们把由外部传入给我们自定义组件属性的放到这个properties里面    
+    properties的用法 为什么写在properties里面的数据也可以像写在data里面去进行数据的绑定
+    properties和data里面的数据都会存放到合集里面 这个合集里面的东西都会当作数据的绑定
+        所以最后它们都会放到一个大的对象里面 这里面有data所需要的数据还有properties里面去写的数据
+        可以理解成它们都指向了一个合集 然后数据绑定会从合集去找这样的值
+    properties的优先级要比data的优先级大 如果有重名的情况会使用properties的数据    
+
+ -->

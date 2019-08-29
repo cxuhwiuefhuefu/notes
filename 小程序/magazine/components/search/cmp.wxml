@@ -1,0 +1,15 @@
+<view class="container">
+
+    <input class="search" type="text" placeholder="轻芒什么都有" 
+           bindconfirm="onSearch" />
+    <text class="text" bind:tap="onSearch">搜索</text>
+
+</view>
+
+
+<!-- 
+    小程序的type和之前在html中的type值不一样
+
+
+    搜索出现了 但是input还没表现出来 因为小程序input组件默认边框啥都没有的  
+ -->

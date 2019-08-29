@@ -1,0 +1,221 @@
+<!-- 文章详情页面 -->
+<wxs src="../../utils/filter.wxs" module="filter"></wxs>
+<wxs src="../../utils/format.wxs" module="format"></wxs>
+
+
+
+
+<view class="container">
+
+    <view class="title-container">
+        <text>{{articleDetail.title}}</text>
+    </view>
+
+    <view class="authorAndDate">
+        <text >{{articleDetail.author}}</text>
+        <text >{{articleDetail.publishTime}}</text>
+    </view>
+   
+   
+   <view class="media-container">
+
+        <swiper wx:if="{{articleDetail.banner[0]}}" indicator-dots="{{true}}" autoplay="{{true}}" interval="3000" class="banner" skip-hidden-item-layout="true">
+            <swiper-item wx:for="{{articleDetail.banner}}">
+                <image src="{{item}}" />
+            </swiper-item>
+        </swiper>
+
+        
+        <video wx:if="{{articleDetail.video.src}}" id="myVideo"
+               class="video"
+               initial-time="10"
+               duration="30" 
+               danmu-list="{{danmuList}}"
+               enable-danmu="true"
+               danmu-btn="true"
+
+               poster="https://www.baidu.com/img/bd_logo1.png?where=super"
+               
+               controls="true"
+               src="{{articleDetail.video.src}}">
+              <!-- <image src="https://www.baidu.com/img/bd_logo1.png?where=super" /> -->
+             
+             <cover-view class="controls" wx:if="{{videoCoverHidden}}">
+                  <cover-image src="{{articleDetail.video.poster}}"></cover-image>
+                  
+                  <cover-view class="controls-box" bind:tap="onVideoTap">
+                      <cover-image  src="/image/icon/Icon_play_white.png"></cover-image>
+                      <cover-view >{{articleDetail.video.duration}}</cover-view>
+                  </cover-view>
+              
+              </cover-view>
+        </video>
+
+
+        <view wx:if="{{articleDetail.audio.src}}" class="audio-container">
+            <view class="audio-controler">
+                <image bind:tap="onAudioPlayTap" wx:if="{{playing}}" src="/image/icon/Icon_pause.png" />
+                <image bind:tap="onAudioPlayTap" wx:else src="/image/icon/Icon_play.png" />
+            </view>
+           
+            <view class="audio-info">
+                <view class="audio-title">
+                    <text >{{articleDetail.audio.title}}</text>
+                </view>
+                <view class="audio-from">
+                    <text >{{articleDetail.audio.from}}</text>
+                </view>
+                <view class="audio-progress">
+                    <progress percent="{{progressPercent}}" 
+                              stroke-width="2"
+                              style="width:{{progressWidth + 'rpx'}}" />
+                    <view bind:touchstart="onAudioCircleStart"
+                          bind:touchmove="onAudioCircleMove" 
+                          class="progress-circle" 
+                          style="left:{{progressCircleLeft + 'rpx'}}"></view>
+                </view>
+                <view class="audio-time">
+                    <text >{{format(audioCurTime)}}</text>
+                    <text >{{format(articleDetail.audio.duration)}}</text>
+                </view>
+            </view>
+        </view>
+            
+    </view>
+   
+   
+   <view class="content-container">
+        <text decode="{{true}}">{{filter(articleDetail.content)}}</text>
+    </view>
+    
+    <view class="read-container">
+        <text >阅读</text>
+        <text >{{articleDetail.readNum}}</text>
+    </view>
+
+</view>
+
+
+<!-- 
+    只有第一行有一个空格 但是正常来讲每个段落前都有一个空格
+    小程序有自己的脚本语言 js不是小程序的脚本语言 它的脚本语言是wxs 
+        它就像js文件可以嵌套在一个html文件当中 可以在里面写函数 变量 
+        像js一样使用 它不是js 它是小程序自己开发出来的脚本语言 
+        它只是长得像js而已 像js一些ES6语法它都没有 它只能用ES5的 
+        它有规定的一些自己的语法 然后正常写在这里面的js语法不能用在wxml文件里面
+        但是我们写的wxs标签里面的一些wxs语法可以用在wxml文件当中的
+        比如我们可以在这里面直接调用一个函数 得到一些结果
+ -->
+<!-- <wxs module="ceshi">
+    var a = '111';
+
+    module.exports = a;
+</wxs> -->
+
+<!-- <wxs module="ceshi">
+    var a = function(n) {
+        return n + 1;
+    }
+
+    module.exports = a;
+</wxs> -->
+
+
+<!-- <wxs module="filter">
+    // var filter = function(text) {
+        // var reg = /\\n/g;
+        // var reg  = getRegExp('\\n', 'g');
+
+        // console.log(text); 出现undefined 然后才打印出来这样一系列的值 是不是要做容错处理 
+        //                        因为在数据还没返回过来的时候是不是有个时间段 
+        //                        这个时间段它就获取到这个值了 它这里是没有值的 
+        //                        因为刚开始的时候它只是一个空对象 所以要做认错处理 
+        //                        怎么实现这样的空格呢
+    //    if(!text) {
+    //        return;
+    //    }
+    //    var reg = getRegExp('\\n', 'g');
+    //    return text.replace(reg, '\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;');
+    // }
+    // module.exports = filter;
+</wxs> -->
+
+
+<!-- <wxs module="format">
+    // sec -> 00:00
+
+    // var format = function(sec) {
+    //     var minute = Math.floor(sec / 60);
+    //     var second = sec % 60;
+     
+    //     // 还得在这里面把它重置一下
+    //     // minute = minute < 10 ? '0' + minute : minute;
+    //     // second = second < 10 ? '0' + second : second; 
+    //     return minute + ':' + second;
+    // }
+    // module.exports = format; 
+</wxs> -->
+
+
+<!-- 
+    这个content可以用wxs来垫一些 因为我在接收content返回值的时候是这样的 它有一些\n
+        这个\n放到wxs里面能实现换行的      
+-->
+
+<!-- 
+    是不是每次写这样的文章都那么费劲 那么返回的东西不是我想要的呢 
+        正常来讲没有人会来这样写一个文章 只要你的小程序或者你公众号是认证的 
+        你就可以使用小程序给你提供的这样的组件 web-view 它可以把它放到一个网页
+        可以把一个网页放到一个web-view标签 组件就直接指向这样的页面了
+        所以说很多小程序是这样处理 就把公众号这样的页面的链接放到web-view里面
+        然后点击它就可以进入一个公众号的文章了
+    
+    作业: 一定好好看看wxs语法
+
+    轮播图组件
+ -->
+
+ <!--
+      如果我在很多页面上都用同样的一个方法 那我是不是每个页面当中是不是都有写一遍 
+          我们这个wxml文件可以像html引入 script标签那样wxs那样
+          它可以同样接收一个src 这个src就是我引入文件的路径
+
+      这个文章有的是banner图 有的是视频
+
+      视频组件封面有bug 把一个图片给它覆盖上 把video组件变成双标签
+          它一定在video组件下面的 即使是设置z-index也不会在组件上面 
+          原生组件的层级最高的 
+      原生组件的使用限制
+
+      cover-view组件 覆盖在原生组件什么的view组件
+  -->
+
+<!-- 
+    progress组件 实现音乐播放器
+
+    背景音频
+ -->
+
+ <!--
+      音乐的控制
+
+      图标要变 
+      在监听音乐播放的同时还要让进度条出来 小圆圈跟着走 这个time也跟着变
+      我们想要的值是几分几秒
+
+      完成歌曲进度的功能
+ -->
+
+ <!-- 
+     拖拽播放
+
+     1. 让小球运动
+     2. 让小球运动的同时这个进度条的百分比改变
+     3. 时间改变
+     4. 在拖拽的时候歌曲播放
+
+     事件分类
+
+
+     判断一下 banner audio video什么时候出现
+  -->

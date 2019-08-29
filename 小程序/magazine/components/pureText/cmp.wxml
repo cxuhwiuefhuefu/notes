@@ -1,0 +1,15 @@
+<view class="container">
+    <view class="main-title">{{mainTitle}}</view>
+    <view class="sub-head">{{subHead}}</view>
+</view>
+
+<!-- 
+    所需要用到的数据是由我们这样的数据填充过来的 
+        在index.wxml文件当中传过来这样的数据 
+        一段文字 展现在我们的页面当中
+
+    背景颜色不用它管
+
+
+    图文组件    
+ -->

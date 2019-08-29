@@ -1,0 +1,23 @@
+.image{
+    width: 700rpx;
+}
+.text{
+    padding: 0 30rpx;
+    font-size: 40rpx;
+    font-weight: 400;
+    letter-spacing: 1rpx;
+}
+
+/* 
+    为什么不用标签选择呢 最好不用这样来写
+
+    看看框架中自定义组件文档
+*/
+
+
+/* 
+    letter-spacing属性添加或减少字符间的空白(字符间距)
+    属性值
+        normal 默认 规定字符间没有额外的空间
+        length 定义字符间的固定空间(允许使用负值)
+*/

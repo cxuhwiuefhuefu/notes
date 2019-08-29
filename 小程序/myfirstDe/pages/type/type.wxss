@@ -1,0 +1,53 @@
+/* pages/type/type.wxss */
+
+.title-container{
+    position: relative; /* 给父容器一个相对定位就是让它白色的容器根据它的父级找到一个位置 距离左边45rpx
+    距离底部-2rpx */
+}
+.title-cover{
+    width: 750rpx;
+    height: 500rpx;
+}
+.title-box{ 
+    box-sizing: border-box;
+    position: absolute;
+    left: 45rpx;
+    bottom: -80rpx;
+    width: 660rpx;
+    padding: 20rpx; 
+    background-color: #fff;
+}
+/* 
+    box-sizing
+        content-box border和padding不计算入width之内
+        padding-box padding计算入width
+        border-box border和padding计算入width之内 这就是怪异模式 
+*/
+.title{
+    font-size: 54rpx;
+}
+.title-handle{
+    text-align: right;
+    margin-top: 10rpx;
+}
+/* 
+    text-align属性指定元素文本的水平对齐方式
+        left: 把文本排列到左边   默认值: 由浏览器决定
+        right: 把文本排列到右边
+        center: 把文本排列到中间
+        jusity: 实现两端对齐文本效果
+        inherit: 规定应该从父元素继承text-align属性的值
+*/
+.title-handle image{
+    width: 50rpx;
+    height: 50rpx;
+    margin-left: 20rpx;
+}
+.article-type{
+    border: none;
+    padding: 0;
+}
+
+
+/* 路径要写相对路径 */
+@import "../common-list.wxss";

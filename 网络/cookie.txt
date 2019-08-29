@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		//
+		// 1.访问相同的网站的直接把值放上去了,减少用户操作的过程,给用户更好的体验
+		// 2.访问淘宝,会返回曾经一些你浏览过的东西,这么标记的 存浏览器当中了
+		// 3.
+		//
+		// 跟踪记录用户的方式( )
+		//  1.标记用户身份http请求首部  可以用承载用户身份信息的http首部(请求头)  document是文档  
+		//    1) 请求头当中有form:现在某些原因不常用了 
+		//        form当中其实存的是你的e-mail,每次请求的时候都把e-mail发送给服务器,服务器根据用户这个唯一e-mail来识别出来你哪一个用户
+		//        为什么现在不用了form？？ 因为把e-mail放在请求头当中发送给服务器,难免会有一些不道德的服务器专门来搜索这些e-mail,
+        //        用于垃圾邮件的一些发放,用户容易被骚扰
+		//    2) user-agent: 记录的是浏览器的一些信息,不能具体的识别某些用户,只能识别出浏览器来
+		//    3) referer: 进行统计的,记录你从哪个链接跳转过来的,记录你上一次浏览过的网站,能知道用户跟那些东西相关联,你喜欢什么东西,
+        //                对什么东西感兴趣大概能知道, 可以给你返回一些跟上一次链接相关联的东西
+		//  2.根据客户端的IP地址进行跟踪的  客户端的IP地址是唯一的   IP地址后台存的一些信息   缺点:http头部没有直接拿到IP地址的
+        //          IP获取的方式:TCP链接的另一端的IP地址可以轻松的获取到 
+		//         1)IP地址标记的是机器的,不能标记用户,多个用户使用同一个机器,用户是不一样的  
+		//         2)很多itenet网服务商在用户登录的时候都会为他们分配动态的IP地址,IP地址不是唯一的,不稳定
+		//         3)浏览器会考虑到一些安全的信息,我们浏览的一些网络地址会转化成共享的防火墙的IP地址,会隐藏真实的地址,给你返回的是防火墙的IP地址,
+        //               IP地址可能被伪造,IP地址不稳定和不一定真实
+		//  3.用户登录输入密码    比较安全 比较有针对性了  
+		//         用户主动的为我们提供标识,用户主动登记了之后会有了唯一的标识了,下一次请求的时候会拿这个标识去请求服务器,
+        //             服务器每次都能拿到你这个标识上数据库当中找匹配的文件了,找匹配的资源
+		//         缺点:每个网站都需要注册,都需要登录  稍微麻烦 
+		//  4.胖URL(UTL重置): 在原来已有的UTL后面对它进行拓展,当我们浏览网站的时候会动态的为我们分配一些值(唯一标识的)
+		//           <a href="/gp/goldbox/ref=nav_cs_gb/ 140-4569045-6230064 " class="nav-a" tabindex="49">Today's Deals</a>
+	    //         缺点:1)字段过长,不符合审美  
+        //              2)会对服务器产生额外的负载(后面传的东西多了) 
+        //              3)无法共享,随机生成   
+        //              4)生命周期(窗口关闭,下一次请求不认识了,标记的时间在窗口的活动范围内)
+		//  5.cookie: 其实是本地的文件 可以删可以添 
+        //            不需要用户登录,服务器生成发送给浏览器,由浏览器自动的存储起来,下一次请求的时候浏览器自动的把它放在响应首部当中自动的发送出去 
+        //                存储时间可以自己设置 用处非常广泛
+		//            分两种：临时的(会话的)   永久的(有保质期的)
+		//            一种文本文件(不能太大)  存哪里了？？？   chrome/ User Data/ Default
+		//            每个浏览器都有自己的一个cookie文件  每个cookie文件写的形式都不太一样   
+		//            什么时候用？？  每次请求的时候用
+		//            cookie值过大请求就费劲了 cookie不会存大量的的数据 只会用cookie存储标识(通过标识我认识你是谁就行了) 值存在数据库当中 
+		//
+		//
+		//  cookie 过程
+		//  GET /index.html http/1.1  
+		//  host:www.bb.com       ------------------->
+		//                                                             http/1.1 200 OK             
+		//                        <-------------------                 set-cookie:id='12345'
+		//  GET /index.html http/1.1  
+		//  host: www.bb.com
+		//  cookie:id='12345'     -------------------->
+		//
+        //  cookie写的形式
+		//  1.chrome
+		//  #domain       path    expires   name    value
+		//  .baidu.com    /web    32637821  age     18
+		//  .baidu.com    /web    32637821  age     18
+		//
+		//  2.IE(一段一段的存)
+		//  cWEWEFEWEncbewj
+		//   diwEDIWFWEQ
+		//   DEWIDO  
+        //
+        // Name(存储的名字)  
+        // Value(储存的值)
+        // Domain(域 当前你cookie值允许在哪个域下获取的到 ) 
+        // Path(路径 当前你的cookie允许在哪个路径下用)
+        // Expires/Max-age(存储的时间)  Size(存储的大小)
+		//
+		//
+		//  怎么删除cookie   让它的时间过期
+		//
+		//  Domain  域  跨域  
+		//
+        // 只有子域名才能拿到主域名的cookie值
+		//  www.baidu.com是baidu.com的子域  www.baidu.com可以拿到baidu.com下的cookie值  baidu.com不能拿到www.baidu.com的cookie值
+		//  tj.58.com 和 bj.58.com之间的cookie值不能相互访问的
+		//  它俩可以把值放在baidu.com下  这样 www.baidu.com wenku.baidu.com可以相互访问的到
+		//  www.baidu.com/web/index.html(path /web)   www.baidu.com/web1/index.html(path /web1)  之间也不能相互访问cookie值      
+        //       Path设置为/  就能相互访问了
+		//  / --》根文件夹
+		//  取： document.cookie的值(字符串)
+		//
+		// cookie在请求之间传输的 本地文件不是访问所以打印不出 为什么设置不上 -->  cookie 主要标记用户,请求之间来回传输的,这个文件没什么请求,谈何cookie
+		// document.cookie = 'age=18';
+		// console.log(document.cookie);
+		//
+		// 
+		//
+		//
+		// Session代表临时(存在的生命周期就在窗口的活动范围内)
+		// Max-age: 你要把cookie存多少秒
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+		//
+	</script>
+</body>
+</html>	
+
+
+
+/**********************************************/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <input type="text" name="username" id="userName">
+        <input type="text" name="age" id="age">
+        <input type="submit" id="sub">
+    </form>
+    <button id="btn">btn</button>
+    <ul id="ul"></ul>
+    <script>
+
+
+        
+
+        // // Expires是设置年月日时分秒
+ 
+        // var oDate = new Date();
+        // oDate.setDate(oDate.getDate() + 3);
+        // console.log(oDate);
+        // document.cookie = 'name=animee;expires=' + oDate; 
+        // document.cookie = 'name=aim;ee;expires=' + oDate; 
+
+        // // cookie要单独设置的
+
+        // document.cookie = 'age=18;max-age=1000';
+        // document.cookie = 'age=19;max-age=1000';
+        // // 同路径下
+        // document.cookie = 'school=duyi;expires' + oDate + ';path=/';
+        // document.cookie = 'school=duyi;expires' + oDate + ';path=/ajax/cookie'; // 不能往里设置了,只能往外设置了
+
+        // // 删除： 时间少于  设置负的
+
+        // cookie API
+        var manageCookie = {
+            setCookie: function(name, value, time) {
+                document.cookie = name + '=' + value + ';max-age=' + time;
+                return this;
+            },
+            removeCookie: function(name) {
+                return this.setCookie(name, '', -1);
+            },
+            getCookie: function(name, callback) {
+                var allCookieArr = document.cookie.split('; ');
+                console.log(allCookieArr);
+                for(var i = 0; i < allCookieArr.length; i++) {
+                    var itemCookieArr = allCookieArr[i].split('=');
+                    console.log(itemCookieArr);
+                    if(itemCookieArr[0] == name) {
+                        callback(itemCookieArr[1]);
+                        return this;
+                    }
+                }    // for 找到就不用循环了 foreach一定要循环完
+               callback(undefined);
+                return this;
+            }
+        }
+        manageCookie
+             .setCookie('color', 'red', 1000)
+             .setCookie('teater', 'animee', 2000)
+             .removeCookie('teater')
+             .removeCookie('color')
+             .getCookie('school', function(data) {
+                 console.log(data);
+             });
+
+ // document.cookie = 'age=18;max-age=1000';
+    // document.cookie = 'name=aimee';
+    //
+    // 不能直接打开  要注释再打开 Session没有了
+    //
+    // 每次只能设置一个cookie值      cookie: 分号后面是对前面的设置  分号后面是都当成属性了
+    var oDate = new Date();
+    oDate.setDate(oDate.getDate() + 3);
+    console.log(oDate);
+    document.cookie = 'age=18;max-age=1000';
+    document.cookie = 'name=aimee;expires=' + oDate;
+    document.cookie = 'age=19;max-age=1000';  // 同一路径下age只能一条        不同路径下 或者不同域下可以再来一条
+    document.cookie = 'school=duyi;expires=' + oDate +';path=/';  // 设置路径   
+    document.cookie = 'school=duyi;expires=' + oDate +';path=/ajax/cookie/aa';   //  在cookie 文件夹下不能往里设置了 只能往外设置
+    document.cookie = 'school=duyyincui;expires=' + oDate +';path=/ajax';  // 为什么不会重复呢？？ 同样的属性 在不同的路径下不冲突
+
+    // 删除cookie值  时间小于当前时间就行了  添个负值
+    // cookie API
+    var manageCookie = {
+        setCookie: function(name, value, time) {
+            document.cookie = name + '=' + value + ';max-age=' + time;
+            return this;
+        },
+        removeCookie: function(name) {
+            return this.setCookie(name, '', -1) // ????
+        },
+        getCookie: function(name, callback) {
+            var allCookieArr = document.cookie.split('; ');   //    正则不太好--> 1)万一属性名和属性值一样呢 2)空格
+            console.log(allCookieArr)
+            for(var i = 0; i < allCookieArr.length; i++) {  // for 找到就不循环了  foreach: 必须循环完
+                var itemCookieArr = allCookieArr[i].split('=');
+                console.log(itemCookieArr);
+                if(itemCookieArr[0] == name) {
+                    callback(itemCookieArr[1]);
+                    return this;            // break: 中止循环    return : 结束本次循环
+                   
+                }
+            }   
+            callback(undefined);
+            return this;
+        }
+    }
+    manageCookie
+        .setCookie('color', 'orange', 10000)
+        .setCookie('teater1', 'aimee', 20000) // 存储的时间不同 属性名不同
+        .removeCookie('teater1')
+        .removeCookie('color')    
+        .getCookie('aage', function (data) {
+            console.log(data)
+        });         // 找一个
+
+
+        // 1)两个一样的属性名都能找到 当然找离他最近的一个   无法通过document.cookie来区分哪个是path下的 哪个是web下的 因为它给你返回不出来,你没有
+        // 2) 要么标记一下
+        //一般不会给你设置一模一样的属性名在不同的域当中
+
+
+    
+    </script>
+</body>
+</html>

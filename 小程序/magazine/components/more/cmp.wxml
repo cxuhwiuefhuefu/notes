@@ -1,0 +1,12 @@
+<!-- 更多组件 -->
+
+<view class="container" catch:tap="onTap">
+    <image class="image" src="image/more.png" />
+</view>
+
+<!--  
+
+    这个组件的功能 显示三个这样的信息 展示菜单栏
+
+    点击 提示已提交 在没有服务器的情况下把它这个功能实现好了就行
+ -->

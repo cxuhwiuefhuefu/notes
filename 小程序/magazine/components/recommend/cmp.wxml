@@ -1,0 +1,17 @@
+<view class="container"> 
+    <text class="big-title">{{magazineId === 0 ? date : magazineTypeArr[magazineId]}}</text>
+    <text class="title">{{recommend.title}}</text>
+
+    <image class="image" src="{{recommend.imgSrc}}" wx:if="{{!recommend.imgSrc}}"/>
+
+
+    <view class="skeleton" hidden="{{recommend.imgSrc}}">
+        <view class="loader"></view>
+    </view>
+</view>
+
+
+<!-- 
+    用hidden隐藏它是会正确的去加载图片的资源 
+       wx:if是不会去加载 也就是说在它没有渲染出来的时候它里面有什么东西是不会在乎的
+ -->

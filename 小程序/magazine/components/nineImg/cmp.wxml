@@ -1,0 +1,40 @@
+<view class="container">
+    <view class="img-container">
+      
+        <!-- <image catch:tap="onTap" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1359793217,2805555887&fm=27&gp=0.jpg" />
+        <image src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1359793217,2805555887&fm=27&gp=0.jpg" />
+        <image src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1359793217,2805555887&fm=27&gp=0.jpg" />
+        <image src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1359793217,2805555887&fm=27&gp=0.jpg" />
+        <image src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1359793217,2805555887&fm=27&gp=0.jpg" />
+        <image src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1359793217,2805555887&fm=27&gp=0.jpg" />
+        <image src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1359793217,2805555887&fm=27&gp=0.jpg" />
+        <image src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1359793217,2805555887&fm=27&gp=0.jpg" />
+        <image src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1359793217,2805555887&fm=27&gp=0.jpg" /> -->
+        <image class="image"
+               wx:for="{{imgArr}}"
+               src="{{item}}"
+               wx:key="this"
+               catch:tap="onTap"
+               data-index="{{index}}"
+               wx:if="{{index < 9}}" />
+
+        <text class="img-num" wx:if="{{imgArr.length > 9}}">{{imgArr.length}}</text>
+    </view>
+    <view class="text-container">
+        <text class="{{mainTitle}}">等你的hi哦呜逗我玩的我额外</text>
+    </view>
+</view>
+
+
+<!-- 
+    首先看布局 它是在这样的大容器里面 有九张小图片 还包括这样的标题
+
+    点击图片可以一次这样的预览 点击最后一张也可以往下滑动 还有23这样的数字也要显示
+
+    点击实现预览
+    API图片文档
+    建议使用catch:tap 不用使用bind:tap 因为使用bind不能阻止事件冒泡 
+        点击图片不事件冒泡的话它父级 那就会进行两次点击事件
+
+    除了前九张图片就不让它显示了 如果index的值小于9的情况下我们才让它显示
+ -->

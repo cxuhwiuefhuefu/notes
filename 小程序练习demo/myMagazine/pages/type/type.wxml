@@ -1,0 +1,60 @@
+<view class="container">
+    <view class="typeImage">
+        <image class="image" mode="aspectFill" src="{{articleTypeTitle.imgSrc}}" />
+    </view>
+
+    <view class="label">
+        <view class="detailType">
+            <text >{{articleTypeTitle.title}}</text>
+        </view>
+        <view class="controler">
+            <image class="share" src="/image/share.png" />
+            <image class="more" src="/image/more.png" />
+        </view>
+    </view>
+
+
+
+
+     <view class="articleList">
+
+
+        <view class="article"  wx:for="{{articleTypeList}}" wx:key="{{item.id}}">
+
+        <view class="userInfo">
+            <image class="icon" src="{{item.markPeopleAvatar}}" />
+            <text >{{item.markPeople}}等{{item.markCount}}人马克了</text>
+        </view>
+        
+        <view class="articleImage" bind:tap="goArticleDetails" data-id="{{item.id}}">
+            <image mode="widthFix" class="image" src="{{item.articleImgSrc}}"/>
+        </view>
+        
+        <view class="articleTitle">
+            <text >{{item.articleTitle}}</text>
+        </view>
+        
+        <view class="article-bottom">
+            <text class="articleType">{{item.publishTime}}</text>
+            <view class="controler">
+            <view >
+                <image src="/image/more.png" bind:tap="tapMore" data-type="{{item.articleType}}"/>
+            </view>
+            <button class="share-btn" open-type="share" >
+                <image src="/image/share.png" />
+            </button>
+            <view >
+                <image src="/image/like.png"  wx:if="{{likeList[index]}}" bind:tap="tapLike" data-index="{{index}}" />
+                <image src="/image/no_like.png" wx:else bind:tap="tapLike" data-index="{{index}}" />
+            </view>
+            </view>
+        </view>
+        </view>
+
+  </view>
+
+
+
+
+
+</view>

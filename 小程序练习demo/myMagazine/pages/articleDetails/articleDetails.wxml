@@ -1,0 +1,97 @@
+<wxs module="filter">
+    function filter(content) {
+        var reg = getRegExp('\\n', 'g');
+        var str = content.replace(reg, '\n&emsp;&emsp;');
+
+        return str;
+    }
+    module.exports.filter = filter;
+</wxs> 
+
+<view class="container">
+
+    <view class="title">{{articleDetails.title}}</view>
+
+    <view class="authorAndDate">
+        <text class="author">{{articleDetails.author}}</text>
+        <text class="date">{{articleDetails.publishTime}}</text>
+    </view>
+
+
+    
+    <!-- 轮播图 -->
+    <!-- <view class="slideShow">
+        <swiper class="swiper" indicator-dots="true" autoplay="true">
+            <block wx:for="{{articleDetails.banner}}">
+                <swiper-item >
+                    <image class="image" current="2" mode="widthFix" src="{{item}}" />
+                </swiper-item>
+            </block>
+        </swiper>
+    </view> -->
+
+
+    <!-- 视频 -->
+    <!-- <view class="videoWrap">
+        <video id="video" src="{{articleDetails.video.src}}"
+                duration="30"
+               />
+
+        <cover-view class="wrapper-box" wx:if="{{pause}}">
+            <cover-image  src="{{articleDetails.video.poster}}"></cover-image>
+            <cover-view class="content-box" bind:tap="tapPlayVideo">
+                <cover-view >{{articleDetails.video.duration}}</cover-view>
+                <cover-image class="image" src="/image/pause.png"></cover-image>
+            </cover-view>
+        </cover-view>      
+  </view> -->
+
+
+  <!-- 背景音乐播放 -->
+  <view class="backgroundMusic">
+      <view class="controler" bind:tap="tapPlayAudio">
+          <image src="/image/pause.png" wx:if="{{pause}}" data-state="false" />
+          <image src="/image/play.png" wx:if="{{!pause}}" data-state="true" />
+      </view>
+      <view class="audioInfo">
+          <view class="audioTitle">{{articleDetails.audio.title}}</view>
+          <view class="from">{{articleDetails.audio.from}}</view>
+          <view class="progress">
+              <progress percent="{{progress}}"  border-radius="10rpx" stroke-width="9" activeColor="red" />
+              <view class="circle" style="{{'left:' + left}}"></view>
+          </view>
+          <view class="duration">
+              <text >{{startTime}}</text>
+              <text >{{endTime}}</text>
+          </view>
+      </view>
+  </view>
+
+
+
+
+    <view class="content">
+        <text decode="{{true}}" space="emsp">&emsp;&emsp;{{filter.filter(articleDetails.content)}}</text>
+    </view>
+
+    <view class="readNum">
+        <text class="read">阅读</text>
+        <text class="num">{{articleDetails.readNum}}</text>
+    </view>
+
+   
+
+</view>
+
+<!-- 
+
+    难点
+
+    文章内容要有空格
+    小程序怎么实现换行+空格
+
+    视频封面
+    在开发者工具中不显示 而在真机调试中显示
+
+
+ -->

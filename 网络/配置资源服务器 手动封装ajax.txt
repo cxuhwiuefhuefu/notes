@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <form action="www.baidu.com" method="GET">    <!-- 除了告诉对方要提交的地址之外还要告诉它的我提交的方式请求方式(get/post)  get请求把这个输入的东西后面拼接属性拼好,拼接到当前链接的后面去,然后按照这个地址向后台服务器去发送数据 -->
+          <input type="text" name="username" id="username">     <!--  form表单的特点: 用form进行数据提交的时候整个页面会被刷新一下或者跳转到一个新的页面 整个页面都会刷新一下  -->
+          <input type="text" name="age" id="age">         <!-- 用form表单做地图后果是怎么样的  一拉获取数据页面有刷新一下了 这个给用户的体验是非常糟糕的-->
+          <input type="submit">
+    </form>
+    <script>
+
+
+        // 从输入url到这个页面展示出来中间发生了什么过程?
+        // 网址(www.baidu.com): 代表了一个网络的地址,网络的地址指向的是百度的服务器,服务器是一个很大的机箱,里面存了官网的信息等,机箱坏了,官网就瘫痪,在线教务就瘫痪了
+        // 百度的服务器的地址是www.baidu.com 
+        // 输入www.baidu.com的时候,会向这个服务器地址去发送网络请求,告诉它我想要请求首页的页面,
+        //     请求到服务器这边,服务器一看,你现在有需求要拿我的页面,js css 图片等文件,根据这个
+        //     需求把资源打个包给你,给你的时候把这个数据包返回到浏览器当中,浏览器拿到这个数据包根
+        //     据HTML CSS JS 图片等等信息根据渲染规则,一步一步的来把页面渲染出来
+        // (其实我在这输入了地址,其实是去后台请求某些数据,然后服务器把这些数据返回到浏览器上,浏览器把这个数据展示出来了)        
+        
+        // 注册百度帐号
+        // 输入手机号发生了什么过程？	
+        //     失去焦点的时候把输入的手机号再发送给服务器,由服务器向它数据库表单查找这个手机号,如果有就返回了某些信息弹出弹窗,如果没有就返回某些信息,   -->  这就是数据交互的过程
+        //     输入手机号同样要向某个地址发送请求,这个地址是前端发送请求的时候会告诉它的,根据配置这个地址向服务器发送请求,同样解析这个地址,发送http请求,三次握手,后台拿到这个手机号
+		//        取出来向数据库列表中进行查找,有就返回true,前端就调出一个弹窗(该手机号已经被注册了),没有就返回false就返回另外一个弹窗
+
+
+        // www.baidu.com这个网址是个英文的,是拼音来写的,英文单词的网址其实是不能指向服务器拼的地址,
+        //     服务器的地址都是物理网址,全部都是由数字组成[14,215,177,39],由数字组成的IP地址。
+        //     为什么一一对应呢？
+        //         发送请求的时候第一步DNS解析www.baidu.com出来IP地址,解析完成根据这IP地址向服务器发送请求
+        //     为什么要用英文呢,直接输入一串数字不可以吗？
+        //         直接输入IP地址是不固定的,是根据当前一个你一个路由来决定的,其次你输入数字也记不住啊(我们这个对拼音比较敏感的,例如wangda.com),以拼音形式作为的域名的方便用户记忆
+
+        // 发送HTTP请求的时候不能立刻建立链接,三次握手确保安全,建立安全可靠的链接,经过三次握手才建立链接了,然后服务器根据你的请求响应给你资源
+        //     走的时候经过四次挥手的过程把这次链接断开了。
+
+        // TCP协议下面就有三次握手/四次挥手
+
+        // 为什么要四次挥手？？
+        //     资源请求完,这个链接就没有用了,一直保持是不安全的,有可能会受到别的请求的攻击,所以请求完资源最好断开
+
+        // **************************************************
+        // 1. 买服务器
+        // 2. 租服务器
+
+        // apache/PHP
+        // 安装的时候整个路径不要出现中文
+
+        // 后台一般是别人配置的
+        
+        //**************************************************************************
+        // 谷歌地图： 换地址的时候 --》 没有刷新只是换个新的数据而已
+
+        // 一种网络请求 获取数据的方式： 1.form表单(可以进行数据交互的)                不能要哪块你给我哪块,只能有ajax来弥补
+        //                             2.ajax 局部的获取数据,不用整个页面都刷新了    局部并且异步的过程s
+
+        // 请求:
+        // get:    主要是获得数据  获取评论列表                                                (获取数据)
+        // delete: 删除某条评论(相当在服务器当中把那条评论删除) --》 操作服务器那边的数据了
+        // post:   向往后台中推某个数据,想把数据给它,让它把这个数据插入数据库中去                 (传数据)
+
+        // xml是数据格式      JSON是一种格式,不是数据类型,其实是Object对象
+        // var obj = {
+        //     "name": "dg",
+        //     "age": "18"
+        // }
+        // ajax处理的数据格式基本是这种JSON格式 好获取
+
+        // www里面的东西才相当于在服务器下  file本地   www之前都可以换成服务器的网址/域名 	wampserver提供域名是localhost
+        // localhost/demo.html  
+		// 百度的域名是www
+
+        // 在get请求中有部分数据缓存的
+
+        //*******************************************************************************************
+
+        // 订外卖
+        // 1. 手机/电脑
+        // 2. 美团外卖 饿了吗 百度外卖  (APP)
+        // 3. 打开APP 商家 商品 张亮麻辣烫
+        // 4. 下单 (不要麻辣不要烫)
+        // 5. 监听外卖信息
+        // 6. 开门 验货 处理
+
+        // ajax
+        // 1. 浏览器
+        // 2. ajax对象
+        // 3. ajax.open(method, url, true); //  请求方式 请求地址 同步/异步方式            true异步  几乎异步           作用--》 初始化 请求方式 地址 信息
+        // 4. ajax.send();
+        // 5. onreadystatechange  0  1  2  3  4(响应成功了)     来监听数据的状态
+        // 6. state == 200(数据可能会有些小瑕疵)    404(请求的资源没有)    403(请求的信息服务器禁止给你)    503(服务器出现问题了)     判断数据 (每个请求对应一个响应 无论怎么样都会把这个响应拿回来)
+
+        //**********************************************************************************
+
+		// post 获取值   1.拼接到send()里面   2.规定一个请求头   推数据的
+		// get  传值     1.拼接网址后面
+		//
+		// 响应: 就是叫了一声它答应了
+
+	// btn.onclick = function() {
+		// 	ajaxFunc(showList);
+		// }
+		// function ajaxFunc(callback) {
+		// 	var xhr = null;
+		// 	if(window.XMLHttpRequest) {
+		// 		xhr = new XMLHttpRequest();
+		// 	}else {
+		// 		xhr = new ActiveXObject('Microsoft.XMLHttp');
+		// 	}
+		// 	xhr.open('GET', './getNews.php', true);  // 传递数据  ./getNews.php?username=
+		// 	xhr.send();
+		// 	xhr.onreadystatechange = function() {
+		// 		if(xhr.readyState == 4) {
+		// 			if(xhr.status == 200) {
+		// 				callback(xhr.responseText);
+		// 			}
+		// 		}
+		// 	}
+		// }
+		// function showList(data) {
+		// 	var value = JSON.parse(data),
+		// 	    str = '';
+		// 		console.log(value);
+		// 	value.forEach(function(ele, index) {
+		// 		str += '<li>'+ ele.title + '-' + ele.date +'</li>';
+		// 	});
+		// 	ul.innerHTML = str;
+		// }  
+
+
+		 
+            // btn.onclick = function () {
+			// 	ajaxFunc(showPerson);
+			// }
+			// function ajaxFunc(callback) {
+			// 	var xhr = null;
+			// 	if (window.XMLHttpRequest) {
+			// 		xhr = new XMLHttpRequest();
+			// 	} else {
+			// 		xhr = new ActiveXObject('Microsoft.XMLHttp');
+			// 	}
+			// 	xhr.open('POST', './post.php', true);
+			// 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');  // 编码格式(编码内容)  传值的时候要告诉它要用什么编码格式进行编码
+			// 	xhr.send('username=animate&age=18');     // 拼接   传死了值
+			// 	xhr.onreadystatechange = function () {   // 知道什么时候回来  异步请求的
+			// 		//console.log(666);                               //  1-2   2-3    3-4
+			// 		if (xhr.readyState == 4) {
+			// 			if (xhr.status == 200) {
+			// 				callback(xhr.responseText);  // 传值又返回了字符串  拼接成字符串(后台处理了) 
+			// 			}
+			// 		}
+			// 	}
+			// }        
+			// function showPerson(data) {
+			// 	alert(data);
+			// }      
+// ***************************************************************************************
+              // 封装 ajax
+			//
+
+
+	// ajaxFunc('GET', './getPics.php', 'cpage=1', aa, true) // 第几页的数据 cpage=1
+	// btn.onclick = function () {
+	// 	ajaxFunc('GET', './getNews.php', '', showList, true);
+	// }
+	// sub.onclick = function (e) {
+	// 	e.preventDefault();// 取消默认提交form表单的事件
+	// 	var data = 'username=' + username.value + '&age=' + age.value;
+	// 	ajaxFunc('POST', './post.php', data, showPerson, true);
+	// }
+	// function ajaxFunc(method, url, data, callback, flag) {
+	// 	var xhr = null;
+	// 	if (window.XMLHttpRequest) {
+	// 		xhr = new XMLHttpRequest();
+	// 	} else {
+	// 		xhr = new ActiveXObject('Microsoft-XMLHttp');
+	// 	}
+	// 	method.toUpperCase();
+	// 	if (method == 'GET') {
+	// 		xhr.open(method, url + '?' + data, flag);
+	// 		xhr.send();
+	// 	} else if (method == 'POST') {
+	// 		xhr.open(method, url, flag);
+	// 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	// 		xhr.send(data);
+	// 	}
+	// 	xhr.onreadystatechange = function () { // 知道什么时候回来  异步请求的  // 1-2 2-3 3-4
+	// 		if (xhr.readyState == 4) {
+	// 			if (xhr.status = 200) {
+	// 				callback(xhr.responseText);
+	// 			}
+	// 		}
+	// 	}
+	// }
+	// function showList(data) {
+	// 	var value = JSON.parse(data),
+	// 	var str = '';
+	// 	value.forEach(function (ele, index) {
+	// 		str += '<li>' + ele.title + '-' + ele.date + '</li>';
+	// 	});
+	// 	ul.innerHTML = str;
+	// }
+	// function showPerson(data) {
+	// 	alert(data);
+	// 	console.log(1);
+	// }
+	// function aa(data) {
+	// 	console.log(data);
+	// 	console.log(JSON.parse(data));
+	// }
+
+    
+
+			// 要求
+			// 理解
+			// 会写
+			// 瀑布流
+		               
+					   // 深度拷贝
+
+
+		
+    
+    
+    
+    </script>
+</body>
+</html>

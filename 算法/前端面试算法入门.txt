@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+    
+        // 前端面试算法入门
+
+        // 算法是什么 
+        //     实际上我们所写的所有的代码都称之为算法 包括if-else或者for循环
+        //     计算机的基础公式是 程序 = 算法 + 数据结构
+        //
+        // 算法里面是没有对错的 你写的代码只要能实现你想要的效果 只要能实现你要的功能 那这个算法就是对的 在算法里面没有对错 但是有算法的好坏 
+        //     这个好坏也是相对的  
+        //
+        // 冒泡排序 插入排序 这两个算法不能说谁好谁坏 因为适用场景不同的话 它们两个的好坏也是不一样的 
+        //
+        // 算法 ==》 在很少的时间内去运行一个代码需要花费很大的存储的空间 如果时间少 空间需要的很大 算法是为了让我们更加高效的去解决一些问题
+        
+
+
+
+        // 查重算法
+            
+
+            // 1. 
+            // var arr = [1, 2, 3, 4 , 4, 2, 3, 6];
+            // var count = 0;
+            // for(var i = 0; i < arr.length; i++) {
+            //     for(var j = 0; j < arr.length; j++) {
+            //         count ++;
+            //         if(arr[i] == arr[j] && i != j) {
+            //             console.log(arr[i]);
+            //         }
+            //     }
+            // }
+            // console.log('count:', count);
+
+
+            // 2.   
+            // 次数变少了    
+            // var arr = [1, 2, 3, 4 , 4, 2, 3, 6];
+            // var count = 0;
+            // for(var i = 0; i < arr.length; i++) {
+            //     for(var j = i + 1; j < arr.length; j++) {
+            //         count ++;
+            //         if(arr[i] == arr[j]) {
+            //             console.log(arr[i]);
+            //         }
+            //     }
+            // }
+            // console.log('count:', count);
+            
+
+            // 3.  
+            // 对象属性是唯一的 
+            // var obj = {
+            //     "name": "xxx",
+            //     age: 18,
+            //     eye: 'big'
+            // };
+            // obj = {
+            //     "1": true,
+            //     "2": true,
+            //     "3": true
+            // }
+            // var arr = [1, 2, 3, 4 , 4, 2, 3, 6];
+            // var obj = {};
+            // var count = 0;
+            // for(var i = 0; i < arr.length; i++) { 
+            //     count ++;
+            //     if(!obj[arr[i]]) {
+            //         obj[arr[i]] = true;
+            //     }else {
+            //         console.log(arr[i]);
+            //     }
+            // }
+            // console.log("count:", count);
+        
+
+
+
+        // 前端入门的算法 排序算法 
+
+            // 冒泡排序  -- 存在什么场景才用冒泡排序 如果排序已经有一定的顺序 这个时候最常用的是冒泡排序     
+            // 两个两个人对比
+                
+
+                // 1.
+                // var arr = [1, 5, 3, 4, 2];
+                // for(var j = 0; j < arr.length; j++) {
+                //     for(var i = 0; i < arr.length; i++) { // 一次找到最大的
+                //         if(arr[i] > arr[i + 1]) {
+                //             var temp = arr[i];
+                //             arr[i] = arr[i + 1];
+                //             arr[i + 1] = temp;
+                //         }
+                //     }
+                // }
+                // console.log(arr);
+        
+                    
+                // 2.    
+                // var arr = [1, 5, 3, 4, 2];
+                // for(var j = 0; j < arr.length; j++) {
+                //     for(var i = 0; i < arr.length - j; i++) { // 一次找到最大的
+                //         if(arr[i] > arr[i + 1]) {
+                //             var temp = arr[i];
+                //             arr[i] = arr[i + 1];
+                //             arr[i + 1] = temp;
+                //         }
+                //     }
+                // }
+                // console.log(arr);
+
+
+                // 排序的本质是比较+交换
+                // function compare(a, b) {
+                //     if(a > b) {
+                //         return true;
+                //     }else {
+                //         return false;
+                //     }
+                // }
+                // function exchange(arr, m, n) {
+                //     var temp = arr[m];
+                //     arr[m] = arr[n];
+                //     arr[n] = temp;
+                // }
+                // var arr = [1, 5, 3, 4, 2];
+                // for(var j = 0; j < arr.length; j++) {
+                //     for(var i = 0; i < arr.length - j; i++) { // 一次循环找到最大的
+                //         if(compare(arr[i], arr[i + 1])) {
+                //             exchange(arr, i, i + 1);
+                //         }
+                //     }
+                // }
+                // console.log(arr);
+
+
+
+
+            // 选择排序    
+            // 每次都找最大 把最大的放到最后
+                
+                // function compare(a, b) {
+                //     if(a > b) {
+                //         return true;
+                //     }else {
+                //         return false;
+                //     }
+                // }
+                // function exchange(arr, m, n) {
+                //     var temp = arr[m];
+                //     arr[m] = arr[n];
+                //     arr[n] = temp;
+                // }
+                // var arr = [1, 5, 3, 4, 2];
+                // for(var i = 0; i < arr.length; i++) {
+                //     var max = 0; // 0号位置 索引
+                //     for(var j = 0; j < arr.length - i; j++) { // 一次循环找到最大的
+                //         if(compare(arr[j], arr[max])) {
+                //             max = j;
+                //         }
+                //     }
+                //     exchange(arr, max, arr.length - i - 1);
+                // }
+                // console.log(arr);
+
+
+            // 冒泡排序是相邻的两个两个比较 选择排序是拿出一个跟所有的人比较
+
+
+
+
+            // arr.sort();  这个排序有一个限制 0-10之间的可以排序 默认字符串顺序排序的 sort方法底层就是用冒泡排序排的
+            // var arr = [2, 1, 11, 10];
+            // arr.sort(function(a, b) {
+            //     return a - b;
+            // }) 
+
+            // 选择排序的适用场景: 就是数据量较少的排序
+
+
+            // 查重 冒泡 选择
+            // 去重
+
+
+    </script>
+
+</body>
+</html>

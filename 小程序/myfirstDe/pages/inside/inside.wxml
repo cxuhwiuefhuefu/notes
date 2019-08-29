@@ -1,0 +1,51 @@
+<view class="container">
+  
+   <view class="picture-box">
+      <image class="picture" mode="widthFix" src="/image/picture.png"/>
+      <text class="title">我需要三件东西：爱情友谊和图书。然而这三者之间何其相通！炽热的爱情可以充实图书的内容，图书又是人们最忠实的朋友。</text>
+   </view>
+  
+   <view class="name-box">
+      <!-- <text bindtap="ceshi">-蒙田</text> -->
+      <text bind:tap="ceshi">---蒙田</text>
+   </view>
+
+</view>
+
+
+<!-- <view bind:tap="parentTap" class="ceshi">
+   <view bind:tap="childTap" class="ceshi-child"></view>
+</view> -->
+<view catch:tap="parentTap" class="ceshi">
+   <view catch:tap="childTap" class="ceshi-child"></view>
+</view>
+
+
+<!-- 
+   我们把所有的页面都放在page这个文件夹当中 
+
+   我们想一下子就看到这个页面 所以把它拿到数组的第一项
+
+
+
+  学习如何从一个页面跳转到另一个页面
+
+
+  1. 点击它才实现跳转的  
+  2. 学习事件
+  3. 小程序可以在行间直接监听到一个事件
+
+
+  bindtap=函数名字
+
+  在小程序中有两种绑定事件的方法
+  1. bind:tap=函数名
+  2. catch
+  两者的区别是：其中一种可以阻止事件冒泡 另一个阻止不了 catch可以阻止事件冒泡 bind阻止不了 其他都一样
+
+  事件冒泡: 如果我的子集有tab事件 我在子集上触发这样的tab事件 父级也会触发
+
+  使用bind还是使用catch取决于你代码的逻辑 假如说你页面中有一个子元素和一个父元素 同时拥有一个Tab事件 你不想让父元素也冒泡的话 那你就用catch
+     可以冒泡的话那你就用bind
+
+-->

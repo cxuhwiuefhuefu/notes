@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #demo{
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            background: orange;
+        }
+        #box{
+            width: 300px;
+            height: 200px;
+            background: #ccc;
+            color: #fff;
+            text-align: center;
+            line-height: 200px;
+            font-size: 30px;
+        }
+    
+    
+    </style>
+</head>
+<body>
+
+    <button id="btn">btn</button>
+    <input type="text" id="search">
+
+    <div id="box">0</div>
+
+    <script>
+
+        // 节流                                       
+        // 拖拽的时候不卡顿 性能还高
+        //
+        // 瀑布流  鼠标滚轮  每次都触发一次  节流  频繁触发的事件没必要的时候我们可以用节流来处理
+        //
+        
+        box.onmousemove = throttle(function() {
+            this.innHTML = box.innerHTML ++;
+        }, 100); 
+        
+        // 时间戳怎么做
+        // function throttle(func, wait) {
+        //     var lastTime = 0;
+        //     return function() {
+        //         var now = +new Date();   //new Date().getTime();
+        //         if(now - lastTime > wait) {
+        //             func(this, arguments);
+        //             lastTime = now;
+        //         }
+        //     }
+        // }
+        function throttle(func, wait) {
+            var timer = null;
+            return function() {
+                var _this = this;
+                var argu = arguments;
+                // 当计时器在进行的时候一定不能清空   万一再100之间怎么办？？？？
+                if (!timer) {
+                    timer = setTimeout(function () {
+                        func.apply(_this, argu);
+                        timer = null;
+                    }, wait)
+                } 
+            }
+        }
+        //
+        // 百度联想词 用防抖改
+        //
+        //
+        // 作业 把瀑布流用节流改一下  滚轮的scroll
+
+
+
+
+
+
+
+        //****               防抖
+        function cb(e) {
+                console.log(888);
+                console.log(this.value);
+                console.log(e.target)
+            }
+
+        var setUseAction = debounce(cb, 3000, false);
+        btn.onclick = setUseAction.cancel;
+        search.oninput = setUseAction;
+
+        // 防抖函数
+        function debounce(func, time, flag) {
+            var timer = null;
+            var debounced = function () {
+                var _this = this;
+                var argu = arguments;
+                clearTimeout(timer);
+                if(flag) {
+                    if(!timer) func.apply(_this, argu);  // 只执行一句可以不要花括号
+                        timer = setTimeout(function() {
+                            timer = null;
+                        }, time)
+                }else {
+                    timer = setTimeout(function () {
+                        func.apply(_this, argu);
+                    }, time)
+                }   
+            }
+            debounced.cancel = function () {
+                clearTimeout(timer);
+                timer = null;
+            }
+            return debounced;
+        }
+        //
+        //
+        //  
+        //
+                        //
+        //  bind 可以改变this指向 但不帮你执行
+        //  闭包就是里面的变量return 到外部了
+        //  先执行再等
+        //
+        //
+        //
+        //
+        //
+
+
+
+       
+       // Access-Control-Allow-Origin : 允许哪个源来这跨域
+       //  *： 允许任何一个域名到这里跨域
+       //
+       //
+       // options(非简单请求)  就是put请求在正式发送请求之前  他会发送一个optioins(一个检验的请求)  它先看一下那边允许用put方法 如果允许的话 它才会往那发送put请求
+       //            非简单请求都会有个检查的机制 最开始它先发送个options请求 options请求会向后台中检验一下你是否支持put请求 如果支持的话后台会配置的 ('Access-Control-Allow-Origin', 'PUT')            
+       //            这时候PUT请求才正式发送出去
+       //
+       //  鼠标移动  改变视口的大小(会发生dom位置的变化)    百度联想词
+       //
+       //
+       //
+       //
+       //
+       //
+       //
+       //
+       //
+       //
+       //
+       //
+
+
+
+
+
+
+
+
+    
+    
+    
+    </script>
+</body>
+</html>

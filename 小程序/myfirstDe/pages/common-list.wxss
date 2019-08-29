@@ -1,0 +1,100 @@
+/* 文章列表的样式 */
+.recommend-list-container{
+  background-color: #ededed;
+  padding: 35rpx 35rpx 0;
+}
+.recommend-list-container{
+  padding-top: 150rpx;  
+} 
+.per-article{
+  background-color: #fff;
+  padding-bottom: 30rpx;
+  margin-bottom: 30rpx;
+}
+.per-article:last-of-type {
+  margin-bottom: 0;
+}
+/* 因为它是横方向的 */
+.article-head{
+  padding: 20rpx;
+}
+.article-head image{
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 20rpx;
+}
+/*
+  vertical-align属性设置一个元素的垂直对齐方式
+  该属性定义行内元素的基线相对于该元素所在行的基线的垂直对齐
+      允许指定负长度值和百分比值 这会使元素降低而不是升高 在表单元格中
+      这个属性会设置单元框中的单元格内容的对齐方式
+      baseline 默认 元素放置在父元素的基线上
+      sub 垂直对齐文本的下标
+      super 垂直对齐文本的上标
+      top 把元素的顶端与行中最高元素的顶端对齐
+      text-top 把元素的顶端与父元素字体的顶端对齐
+      middle 把此元素放置与父元素字体的中部
+      buttom 把元素的底端与行中最低的元素的顶端对齐
+      text-bottom 把元素的底端与父元素字体的底端对齐
+      length
+      % 使用"line-height"属性的百分比值来排列此元素 允许使用负值
+      inherit 规定应该从父元素继承vertical-align属性的值
+*/
+/*
+  vertical-ailgn用于指定元素的垂直方向对齐方式
+  line-height用于指定文字的行高
+*/
+.article-head text{
+  font-size: 28rpx;
+  color: #666;
+}
+
+.article-cover image{
+  width: 100%;
+}
+/* 每个图片的长度不一样 所以设置mode */
+
+.article-title{
+  margin: 30rpx;
+}
+.article-title text{
+  font-size: 40rpx;
+}
+
+.article-handle-box{
+  display: flex;
+  /* 调节主轴上的方向 */
+  justify-content: space-between;
+  padding: 0 30rpx;
+}
+.article-type{
+  border: 1px solid #000;
+  padding: 10rpx 20rpx;
+}
+.article-handle{
+  display: flex;
+}
+.article-handle image{
+  width: 50rpx;
+  height: 50rpx;
+  margin-left: 20rpx;
+}
+
+.article-handle button{
+  position: relative;/* 根据自己的位置来移动像素*/
+  bottom: 8rpx;
+  width: 50rpx;
+  height: 50rpx;
+  padding: 0; /* button有个padding */
+  background: transparent;
+  margin-left: 20rpx;
+}
+.article-handle button::after{
+  border: none;
+}
+/* 为什么看不见图片 */
+.article-handle button image{
+  margin-left: 0;
+}

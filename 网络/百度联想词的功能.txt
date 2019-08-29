@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //  JSON: 是对象的严格要求 属性名,属性值要双引号 
+        //  JSON 是一种格式的书写
+        //  jsonp是一门技术,可以实现网络请求中跨域去拿数据
+        //
+        //  flash跨域
+        // 
+        //  服务器代理中转(借助自己的服务器向别的服务器去拿数据)  后台不受同源策略的影响  --》Ajax瀑布流
+        //
+        //  从tj.58.com向bj.58.com获取数据会受同源策略的限制吗？ 域名不同  跨域了 同源策略
+        //  document.domain(基础域名相同)  在不同页面的脚本下写着document.domain = 58.com 
+        //
+        //  cors   
+        // 
+        //  ajax跨域之前和现在的不同的是服务器那边需要配置
+        //
+        //  src不受同源策略的限制   iframe/img/script
+        //
+        //  jQuery不用下载引入CND
+        //
+        //  script是引入数据 不在乎文件的格式是什么
+        //
+        //  一般请求数据的时候都是等用户操作发送请求才拿资源  -->  动态的创建的script标签, 添加某个src属性, 插入Body里面, 异步加载资源的(资源什么时候加载过来？？？)
+        //
+        // aa({"name": "dg"})  
+        // 好处: 1.不需要把变量名告诉后台人员的,直接传个例如'cb=回调函数名 ' 2.异步加载拿不到资源的,定义一个回调函数等着执行, 等着发送请求, 异步加载完资源执行函数把数据传过去  
+        //
+        //  jsonp其实是get请求
+        //
+        // ajax会受同源策略的影响
+        //
+        // 同源策略为了服务器的安全
+        //
+        //  var oScript = document.createElement('script');
+        //  oScript.src = './test5.txt?cb=aa';
+        //  document.body.appendChild(oScript);
+        //
+        //  var oScript = document.createElement('script');
+        //  oScript.src = './test5.txt?cb=bb';
+        //  document.body.appendChild(oScript);
+        //
+        //  function aa(data) {
+        //          console.log(data)
+        //  }
+        //  function bb(data) {
+        //          console.log(data);
+        //  }
+
+    
+
+    
+    
+    </script>
+</body>
+</html>
+
+
+/*****************************************************************/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            text-decoration: none;
+        }
+        .wrapper{
+            margin: 100px;
+        }
+        input{
+            width: 395px;
+            height: 22px;
+        }
+        ul{
+            display: none;
+            width: 400px;
+            border: 1px solid #ccc;
+            /* height: 200px; */
+        }
+        li:hover{
+            background: #ddd;
+        }
+        a{
+            font-size: 14px;
+            color: #999;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <input type="text" name="" id="">
+        <ul></ul>
+    </div>
+
+    <script>
+    var oInput = document.getElementsByTagName('input')[0];
+    var oUl = document.getElementsByTagName('ul')[0];
+    oInput.oninput = function() {
+        var value = this.value;
+        var oScript = document.createElement('script');
+        oScript.src = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd='+ value +'&cb=doJson';
+        document.body.appendChild(oScript);
+        document.body.removeChild(oScript);
+    }
+
+    function doJson(data) {
+        console.log(data);
+        var s = data.s,
+            str = '';
+        if (s.length > 0) {
+            s.forEach(function (ele, index) {
+                str += '<li><a href=https://www.baidu.com/s?wd=' + ele + '>' + ele + '</a></li>';
+            });
+            oUl.innerHTML = str;
+            oUl.style.display = 'block';
+        }else {
+            oUl.style.display = 'none';
+        }
+    }
+
+   // https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=abb&cb=jQuery110207277579496726609_1525878525527
+    
+    </script>
+</body>
+</html>

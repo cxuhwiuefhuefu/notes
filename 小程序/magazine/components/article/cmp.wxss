@@ -1,0 +1,46 @@
+
+.container{
+    background-color: #fff;
+}
+.mark-container{
+    padding: 20rpx;
+}
+.avatar{
+    width: 60rpx;
+    height: 60rpx;
+    border-radius: 50%;
+    margin-right: 20rpx;
+    vertical-align: middle;
+}
+.text{
+    font-size: 28rpx;
+    color: #666;
+}
+
+.control-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20rpx;
+    margin-top: 10rpx;       
+}
+
+.control-box{
+    display: flex;
+}
+
+.box{
+    display: block; /* 为什么给它diaplay为block 如果说我们自定义的一个组件如果不给这样的一个它设置成block的话那它的一些CSS的值是设置不上的 */
+    margin-left: 25rpx;
+}
+
+.img-btn{
+    width: 50rpx;
+    height: 50rpx;
+}
+
+.img-btn image{
+    width: 50rpx;
+    height: 50rpx;
+    margin-bottom: 10rpx;
+}

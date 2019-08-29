@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+
+    <div class="wrapper">
+        <ul>
+            <li class="box">
+                <div class="item">
+                    <div class="cont">
+                        <img src="./image/0.png" alt="">
+                    </div>
+                    <p>测哇部分按</p>
+                </div>
+    
+            </li>
+            <li class="box">
+                <div class="item">
+                    <div class="cont">
+                        <img src="./image/1.png" alt="">
+                    </div>
+                    <p>测哇部分按</p>
+                </div>
+    
+            </li>
+            <li class="box">
+                <div class="item">
+                    <div class="cont">
+                        <img src="./image/2.png" alt="">
+                    </div>
+                    <p>测哇部分按</p>
+                </div>
+            </li>
+            <li class="box">
+                <div class="item">
+                    <div class="cont">
+                        <img src="./image/3.png" alt="">
+                    </div>
+                    <p>测哇部分按</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <script src="./ajax.js"></script>
+    <script src="./index.js"></script>
+    <script>
+        
+        // 哪个短插入哪个
+        //
+        // 图片很长
+        //
+        // 瀑布流实现的方式 1. 定位的
+        //                 2. 
+        //  get求有缓存  同一个人有url 不缓存拼接一些无关的数据
+        //
+        //  服务器代理
+        // 
+        //  1) 服务器的都有安全限制的, 它会允许你在某个时间内请求多少次 请求的次数太多了 它就给你限制住了 不让你请求数据了
+        //         数据先拿出来  
+        //  2) 项目分工 模拟假数据  接口文档                           
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+    
+
+
+        
+    </script>
+</body>
+</html>
+//******************************************************************************************
+
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.wrapper{
+    width: 80%;
+    min-width: 1000px;
+    margin: 0 auto;
+    border: 1px solid #000;
+    text-align: center;
+}
+.wrapper ul{  /* ul在wrapper的中间  设置margin:0 auto;  ul必须设置宽  不设置就100%撑开      */
+    display: inline-block;
+}
+.wrapper ul .box{ /* item由li撑开 */
+    float: left;  /* display: inline-block; 以地下的基准线对齐 */
+
+}
+.wrapper ul .box .item{
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin: 0px 10px 10px;   /* 上下设置5px  margin塌陷 */
+}
+.wrapper ul .box .cont{
+    width: 200px;
+    overflow: hidden;
+}
+.wrapper ul .box .item img{
+    width: 200px;
+    overflow: hidden;
+}
+.wrapper ul .box .item p{
+    text-align: left;
+}
+//*************************************************************************************
+
+// ajax('GET', './data.txt', addDom, 'cpage=1', true);
+
+// function addDom(data) {
+//     //console.log(data);
+//     console.log(JSON.parse(data));
+// }
+
+// ajax('GET', './data.txt', addDom, 'cpage=1', true);
+
+// function addDom(data) {
+//     //console.log(data);
+//     console.log(JSON.parse(data));
+// }
+//   
+//   小功能 立即执行函数  封闭作用域
+//
+
+(function() {
+    var oLi = document.getElementsByClassName('box'),   // 只执行一次  优化性能写这里
+        flag = false; // 没有进行滚动
+        num = 1,
+        initWidth = 200;
+    
+    function getData() {
+        if(!flag) {
+            flag = true;
+            ajax('GET', 'http://localhost/ajax/cookie/waterfall/getPics.php', addDom, 'cpage=' + num, true);
+            num ++;
+        }   
+    }
+    getData();
+
+    function addDom(data) {
+        var dataList = JSON.parse(data);
+
+        if(data.length > 0) {
+            dataList.forEach(function (ele, index) {
+                var minIndex = getMinList(oLi);
+                
+                var oItem = document.createElement('div'),    /* 1)字符串的拼接 innerHTML 替换所有的文本 2)创建标签 */
+                    oImg = new Image(),  /* 不兼容IE以前版本的浏览器都没问题 */
+                    oP = document.createElement('p'),
+                    oCont = document.createElement('div');
+                    oCont.className = 'cont';
+                    oItem.className = 'item';
+
+                    oImg.src = ele.preview;
+                    oP.innerText = ele.title;
+                    
+                    oImg.onerror = function() {
+                        this.style.width = '202px';
+                        oImg.height = ele.height * initWidth / ele.width + 2;
+                        this.style.margin = '-1px';
+                    }
+    
+                    oImg.height = ele.height * initWidth / ele.width;
+                    oCont.style.height = ele.height * initWidth / ele.width;
+    
+                    oCont.appendChild(oImg);
+                    oItem.appendChild(oCont);
+                    oItem.appendChild(oP);
+    
+                    oLi[minIndex].appendChild(oItem);
+            });
+        }
+        flag = false;
+    }
+
+    function getMinList(dom) {
+        var minHeight = dom[0].offsetHeight,
+            i = 1,
+            index = 0;
+        for(; i < dom.length; i++) {  // 减少一次循环 性能优化
+            var minH = dom[i].offsetHeight;
+            if(minH < minHeight) { //获取原始的宽度/高度 offsetleft/offsetRight 页面会重排给你返回最新的值 每次计算都要耗性能的
+                minHeight = minH;    
+                index = i;
+            } 
+        }
+        return index;
+    }
+
+    window.onscroll = function() {
+        var scrollHeight = document.documentElement.scrollTop || document.body.scrollTop;
+        var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        var pageHeight = oLi[getMinList(oLi)].offsetHeight;
+
+        if(scrollHeight + clientHeight > pageHeight) {// 什么时候加载 ？？  1.判断到底才加载 2.看到最短LI的立马加载好,防止用户看到空白的时间过长
+            getData();                                 
+        }
+    }
+
+})()
+//
+//
+// 小功能 封闭作用域
+//
+// 请求失败了 有个小框框  border设置0也不好使
+// 默认添加个小框框
+// chrome 有这个问题  其他浏览器一般不会有这个问题
+//
+// 图片等比缩放的
+//
+//
+//  细节  先把功能实现 再修bug
+//
+//
+//   假数据 不需要耗费太多的时间就把数据请求回来
+//        有的时候在实际获取数据的时候  等一小短时间数据才能回来  在数据没回来的情况下你滚了一下发送ajax请求  数据半天没回来 你再滚动好几下  ajax发送好多遍
+//            ajax一回来回来了好几百条数据  数据太多出现问题  所有要进行判断 加锁
+//
+//  本地的文件滚一遍数据就缓存起来了
+//
+//   当数据回来慢慢把图片撑开了  可能有最短的遍最长的
+//           img有属性 宽高
+//   图片请求失败了 默认给图片添加个小框框 border设置0也不好使  所有写死宽度200px 
+//       img100%失败撑不开
+//
+//  
+//   优化了 用户看到最短的区域就获取URL
+//
+// ***********************************************************************************************
+// 思考：  代码的优化  简洁
+//        写这段代码的意义何在  不要为完成功能而写代码  i am creater, not  a coder farmer !!!!!! 
+//        重复的代码就不要写了  
+//
+//
+//     在瀑布流中怎么解决由于图片的动态的延迟加载出现高度不确定的问题
+//           1. 可以把图片存起来,显示的时候按宽高比缩放
+//           2. 预加载图片,动态加载得到图片URL,js拿到URL后把图片加载到本地,等所有的图片加载完,再插入页面中   
+// 
+//
+//   插图片 找哪个最短  dom元素的高不相同                 淘宝按顺序排的 需要才加载 懒加载  dom元素高相同按顺序排序  
+//
+//   瀑布流的实现方式    1) 定位的方式 position  top left
+//                      2) appendchild  判断那一列最短appendchild  微博相册广场
+//
+//   刚开始是第一页数据   滚动到最后没数据再加载是第二页数据   'cpage=1'   'cpage=2'
+//
+//    由于是GET请求要把data的值拼接到url后面   
+//     GET请求会有浏览器的缓存  为了保证GET请求不用浏览器的缓存,在后面添加时间戳,添加时间戳的原理:让当前的URL跟每次的URL都不相同
+//    为什么会有缓存  第一次请求 服务器会把资源放在浏览器上帮你缓存起来  第二次再访问同一个URL会拿缓存的资源  不同URL没有缓存  可以传一些无关的参数(时间戳 返回的毫秒数  不会相同, 随机数小概率相同)
+//
+//    404:    绝对路径
+//
+//
+//  服务器代理: 用别人的服务器请求资源返回数据到自己的服务器    浏览器--同源策略
+//
+//  为什么把数据拿出来
+//         1)服务器都有安全限制  它会允许你在某个时间内请求多少次   在某个时间内请求的次数太多就给你限制住了 不让你请求数据
+//                    开发的时候把数据拿出来 模拟一个假数据
+//         2) 数据还没遭出来,模拟假数据,  接口文档(请求方式 请求地址 请求参数)   
+//
+//   模拟淘宝的布局 左右自适应 缩到一定程度不再缩短了
+//
+//  
+//
+//  数据
+//  img有属性 height width
+//
+//
+//
+//
+//

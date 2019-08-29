@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "d-articleList": "/components/articleList/cmp",
+    "d-recommend": "/components/recommend/cmp",
+    "d-nav": "/components/nav/cmp",
+    "d-tagList": "/components/tagList/cmp",
+    "d-add": "/components/add/cmp",
+    "d-loading": "/components/loading/cmp"
+  }
+}
+
+  

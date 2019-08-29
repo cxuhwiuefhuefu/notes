@@ -1,0 +1,147 @@
+.container{
+    padding: 10rpx;
+}
+
+.title{
+    font-size: 50rpx;
+    font-weight: bold;
+    color: #A0522D;
+}
+
+
+/* 轮播图样式 */
+.slideShow{
+    margin-top: 20rpx;
+    border-radius: 20rpx;
+    overflow: hidden;
+}
+.swiper .image{
+    width: 100%;
+}
+
+
+/* 视频样式 */
+.videoWrap{
+    position: relative;
+    width: 100%;
+}
+#video{
+    width: 100%;
+}
+.wrapper-box{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 400rpx;
+}
+.content-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -100rpx;
+    margin-left: -100rpx;
+    width: 200rpx;
+    height: 200rpx;
+    border-radius: 50%;
+    background-color: #242424;  
+}
+.content-box .image{
+    width: 100rpx;
+    height: 100rpx;
+}
+
+
+/* 音乐背景播放样式 */
+.backgroundMusic{
+    display: flex;
+    align-items: center;
+    height: 300rpx;
+    border: 1px solid #ccc;
+    background: #8B8386;
+}
+.controler{
+    margin-left: 40rpx;
+    margin-right: 40rpx;
+}
+.controler image{
+    width: 100rpx;
+    height: 100rpx;
+}
+.audioInfo{
+    width: 500rpx;
+    /* background: red; */
+}
+.audioTitle{
+    font-size: 50rpx;
+    font-weight: bold;
+}
+.from{
+    font-size: 40rpx;
+    color: #B7B7B7;
+    margin-bottom: 20rpx;
+}
+.progress{
+    margin-bottom: 10rpx;
+    position: relative;
+}
+.progress progress{
+    width: 500rpx;
+}
+.circle{
+    position: absolute;
+    top: 50%;
+    margin-top: -10rpx;
+    width: 20rpx;
+    height: 20rpx;
+    border-radius: 50%;
+    background: green;
+}
+
+.duration{
+    display: flex;
+    justify-content: space-between;
+    font-size: 30rpx;
+    color: #B7B7B7;
+}
+
+
+
+
+
+.authorAndDate{
+    margin-top: 50rpx;
+    display: flex;
+    justify-content: space-between;
+}
+.author{
+    font-size: 30rpx;
+    /* color: #87CEFF; */
+
+}
+.date{
+    font-size: 30rpx;
+    color: #CD0000;
+}
+.content{
+    margin-top: 20rpx;
+    background-color: #ccc;
+    line-height: 60rpx;
+    letter-spacing: 2rpx;
+}
+.readNum{
+    margin-top: 50rpx;
+}
+.read{
+    font-size: 30rpx;
+    /* color: #87CEFF; */
+    margin-right: 10rpx;
+}
+.num{
+    font-size: 30rpx;
+    color: #CD0000;
+}

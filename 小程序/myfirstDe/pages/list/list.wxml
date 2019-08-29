@@ -1,0 +1,274 @@
+<!-- <view style="{{color}}">{{flag ? '珊珊最美' : '珊珊最漂亮'}}{{b}}</view> -->
+ <!-- 这种写数据的方式是数据绑定 它不仅可以在组件之间能用数据来绑定的方式来写 
+           还可以在组件的行间 在行间写数据绑定的方式它的双括号必须用双引号来包着
+           不然会报错 一个组件可以写n多个数据 -->
+
+<!-- <view >{{a}}{{b}}</view>    
+<view wx:for="{{array}}" wx:for-item="arrayItem" wx:for-index="arrayIndex">{{arrayItem}}-{{arrayIndex}}</view> -->
+
+
+<!-- 加入你想用同一个列表渲染两种组件  想要一个元素一个索引 要用一个标签把它包起来 在你想用列表渲染多个 
+     你就可以使用block这样的一个元素 这个元素没有任何的意义 它只是一个包裹块 它也不会渲染到我们小程序的代码中
+     不会担心多一个标签 为什么旁白有黄色的东西 它是一个警告 警告很多时候可以忽略 但是多了也很烦人 -->
+<!-- <block wx:for="{{array}}">
+   <view>{{item}}</view>
+   <view>{{index}}</view>
+</block> -->
+
+
+<!-- wx: key给列表中的每一项添加唯一的标识 这个标识一定是唯一的 怎么写这个key 
+      1. 数组中列表每一项是object的情况 这样列表中的每一项都是object类型
+         如果是这样的情况下 我们可以使用数组当中的唯一的一个 我的第一项和第二项是不一样的 
+         我的第二项和第三项是不一样的 它都是不重复的 我们当中不重复的是id值
+      2. 列表中的元素本身就是一个数字或者字符串的情况 只要你通过wx:key这样的属性 
+         它就带给你这样的警告了 如果说你在意提高性能这件事情 你可以随便给一个wx:key
+         如果我们只想消除这样的警告的话 我们随便提供一个wx:key 甚至可以不写  -->
+<!-- <view wx:for="{{array}}" wx:key="id">{{item.id}}</view>
+<view wx:for="{{array1}}" wx:key="0"></view> -->
+
+
+<!-- <view style="width: 100px; height: 100px; background-color: red;" bindtap="parentTap" data-parent="parent"> -->
+   <!-- 在parent这个组件上执行的 只不过事件原对象是我们的child这个组件 这个就是currentTarget和target的区别 -->
+   <!-- <view style="width: 50px; height: 50px; background-color: blue;" bindtap="childTap" data-child="child"></view>
+</view>  -->
+
+
+<!-- <button open-type="share" class="ceshiBtn">
+   <image src="/image/list/article/icon/Icon_relay.png"/>
+</button> -->
+
+
+<!-- <button size="mini" type="warn" plain="{{true}}" disabled="{{true}}" loading="{{true}}">kk</button> -->
+
+
+<!-- <view wx:if="{{aaa}}">呵呵</view>
+<view wx:else>哈哈</view> -->
+
+
+
+
+<view class="container">
+ 
+
+   <!-- tuijian -->
+   <view class="recommend-container">
+     
+      <view class="recommend-article">
+         <text bindtap='ceshi' class="date">{{recommend.date}}</text>
+         <text class="recommend-title">{{recommend.title}}</text>
+         <image mode="widthFix"  class="recommend-cover" src="{{recommend.imgSrc}}" />
+      </view>
+     
+      <view class="recommend-box">
+         <text>+</text>
+         
+         <!-- 我可能标记喜欢了三种标签 你如果喜欢一百个标签我还得写一百个text标签的 -->
+         <text bindtap="onArticleTypeTap" data-articleTypeId="{{item.typeId}}" wx:for="{{markType}}" wx:key="typeId">{{item.type}}</text>
+
+         <!-- <text>{{markType[0].type}}</text>
+         <text>{{markType[1].type}}</text>
+         <text>{{markType[2].type}}</text>
+         <text>{{markType[3].type}}</text>
+         <text>{{markType[4].type}}</text>
+         <text>{{markType[5].type}}</text>
+         <text>{{markType[6].type}}</text> -->
+         <text>···</text>
+      </view>
+  
+  </view>
+ 
+
+   <!-- liebiao  这个列表是不是也是请求过来的数据 我们也是不知道它有多少个 -->
+   <view class="recommend-list-container">
+
+
+      <!-- <view class="per-article">
+         <view class="article-head">
+            <image src="/image/avatar.png" />
+            <text>neffy</text>
+            <text>等</text>
+            <text>96</text>
+            <text>人马克了</text>
+         </view>
+         <view class="article-cover">  
+            <image mode="widthFix" src="/image/list/article/1.png"/>
+         </view>
+         <view class="article-title">
+            <text>呢哇i欧文覅欧文覅为覅欧文你今晚可能的危机可能大家胃口</text>
+         </view>
+         <view class="article-handle-box">
+            <view class="article-type">
+               <text>深度阅读</text>
+            </view>
+            <view class="article-handle">
+               <view>
+                  <image src="/image/list/article/icon/Icon_more.png"/>
+               </view>
+               <view>
+                  <image src="/image/list/article/icon/Icon_relay.png"/>
+               </view>
+               <view>
+                  <image src="/image/list/article/icon/Icon_circle.png"/>
+               </view>
+            </view>
+         </view>
+      </view>
+
+       <view class="per-article">
+         <view class="article-head">
+            <image src="/image/avatar.png" />
+            <text>neffy</text>
+            <text>等</text>
+            <text>96</text>
+            <text>人马克了</text>
+         </view>
+         <view class="article-cover">  
+            <image mode="widthFix" src="/image/list/article/1.png"/>
+         </view>
+         <view class="article-title">
+            <text>呢哇i欧文覅欧文覅为覅欧文你今晚可能的危机可能大家胃口</text>
+         </view>
+         <view class="article-handle-box">
+            <view class="article-type">
+               <text>深度阅读</text>
+            </view>
+            <view class="article-handle">
+               <view>
+                  <image src="/image/list/article/icon/Icon_more.png"/>
+               </view>
+               <view>
+                  <image src="/image/list/article/icon/Icon_relay.png"/>
+               </view>
+               <view>
+                  <image src="/image/list/article/icon/Icon_circle.png"/>
+               </view>
+            </view>
+         </view>
+      </view> -->
+      
+       <view class="per-article" wx:for="{{articleList}}" wx:key="typeId">
+         
+         <view class="article-head">
+            <image src="{{item.markPeopleAvatar}}" />
+            <text>{{item.markPeople}}</text>
+            <text>等</text>
+            <text>{{item.markCount}}</text>
+            <text>人马克了</text>
+         </view>
+         
+         <view class="article-cover">  
+            <image mode="widthFix" src="{{item.articleImgSrc}}"/>
+         </view>
+         
+         <view class="article-title">
+            <text>{{item.articleTitle}}</text>
+         </view>
+         
+            
+         <view class="article-handle-box">
+            
+            <view class="article-type">
+               <text>{{item.articleType}}</text>
+            </view>
+            
+            <view class="article-handle">
+              
+               <view>                        <!-- 我们在用这种方式写的时候 即使是在这写的大写的 在js也必须用小写来写 它会自动的变成小写 -->
+                  <image bindtap='onMoreTap' data-articleType="{{item.articleType}}" src="/image/list/article/icon/Icon_more.png"/>
+               </view>
+              
+               <view>
+                  <button open-type="share">
+                     <image src="/image/list/article/icon/Icon_relay.png"/>
+                  </button>
+               </view>
+              
+               <view>
+                  <image bindtap="onLikeTap" data-articleIndex="{{index}}" wx:if="{{listLike[index]}}" src="/image/list/article/icon/Icon_circle.png"/>
+                  <image bindtap="onLikeTap" data-articleIndex="{{index}}" wx:else src="/image/list/article/icon/Icon_circle_fill.png"/>
+               </view>
+            
+            </view>
+         
+         </view>
+      
+      </view>
+
+
+   
+   
+   
+   
+   
+   </view>
+
+</view>
+
+
+
+<!--
+    当我们拿到一个设计稿的时候 我们首先观察这个页面的结构 我们每次都要把这个页面当成一个整体
+       然后整体里面分成一部分 一块一块的部分 这里可以分成两大块 上面是推荐的详情 下面是文章的列表
+
+    小程序很好的兼容了伪元素
+
+    首先给它个flex布局 方向是列方向
+
+ -->
+
+ <!-- 
+    这节课学了wx:for wx:for的item和index wx:key
+    也了解了数据绑定 还会从服务器获取数据
+  -->
+
+  <!-- 出现菜单提示的功能 -->
+
+  <!-- 点击转发 取消或者发送 在页面内点击某个按钮进行一次转发
+       1. open-type -->
+      
+
+ <!-- ................................................................................................. -->
+  <!-- 
+     2-1
+     喜欢和取消喜欢 你会发现它在切换一张图片 说明这里是两张图片的
+     条件渲染  和列表渲染是一样的 跟js当中用if/else操作是一样的
+     是不是可以采用一组数据来记录每篇文章是否被喜欢
+   -->
+
+   <!-- 
+      数据缓存的方法
+      只用一个页面实现不同的展示 从首页跳转到这个页面的时候给它传了一些值 
+          然后在这个页面当中接收了这个值 然后通过这个值来找到不同的数据
+          从A页面跳转到B页面 A页面存了一些值给B页面  
+          B页面通过值去获取信息然后展现在我们屏幕上
+      在页面跳转的时候传递一些数据    
+
+      单一职责原则 就是我们这个接口就干这样的事情 
+          我在干这件事情的时候在我最大限度内给你返回你所需要的信息
+      
+      作业
+         1. 把页面写好
+         2. 改之前在list文件夹里面只请求一次数据 根据这个文档再多进行几次数据请求
+
+    -->
+
+    <!-- 
+       从这个页面跳转到这个页面 在跳转的过程中传递一些值 通过一些值来找到数据 通过这个数据填充这个页面
+       像以前一样把整个页面看作一个整体 分为上部分和下部分 
+
+       自定义组件 我们自己写出来的组件 不想再去复制样式/结构
+       如果在这里找不到它的样式 会去app.wxss去找
+       如果写在app.wxss好吗 不好 如果想把所有想复用的样式都写在app.wxss里面 那你这个页面应该很乱把
+           我们可以把这个样式单独抽离出来写在一个wxss文件里面 如果想在一个wxss文件想用另一个wxss文件可以用导入
+     -->
+
+     <!-- 
+        会通过读书页面的列表进入一个文章的详情 可以听音乐 看视频
+
+        整体布局 首先分为标题 时间 图片轮播 阅读 阅读数量 视频 音乐
+      -->
+
+      <!-- 
+         音乐播放 暂停 
+         audio组件不再维护 以后不会用到了 那我怎么模拟这个方法 把这样的页面用我们自己的一些组件来模拟出来 
+       -->

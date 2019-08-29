@@ -1,0 +1,61 @@
+<view class="container">
+     <!-- <image src="../../image/avatar.png" /> -->
+     <image class="avatar" src="/image/avatar.png" />
+     <!-- <text class="name" decode="{{true}}">广   &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;开</text> -->
+     <text class="name" decode="{{true}}" space="ensp">广   开</text>
+     <text class="welcome" bind:tap="toNextPageTap">欢迎你</text>
+</view>
+
+<view class="ceshi-container" hover-class="ceshi-hov">
+  <view class="box" hover-class="box-hov" hover-stop-propagation="{{true}}" hover-start-time="1000" hover-stay-time="2000"></view>
+</view>
+
+
+<!-- 
+     div => view  它代表的是容器组件
+     img => image 图片组件  相对路径
+     span => text 文字组件
+
+     写入一个文件夹的地址一般都不会用绝对路径 因为绝对路径指向的是我们的C盘 跟小程序有一定区别的是 小程序可以使用绝对路径的方式来引入一个图片
+         为什么说这么说呢  因为小程序的根目录就是这个整个文件夹就是myfirstDe这个文件夹 关于写图片绝对路径和相对路径这两种方式的选择
+         我们可以根据自己的方便来 因为现在我们从根目录当中去找到这个图片是非常好找的 而从index.wxml所在的这个文件去找到这个图片 我还得跳到上两级
+         是一个比较麻烦的方式 所以就根据你方便来 怎么方便怎么来 没有特定的要求
+
+     我们在wxml文件当中 我们不需要用任何的标签来引入这样的样式文件和js文件 是因为它能自动的帮我们识别 然后并且把这个样式赋予了wxml上了
+         所以我们直接在wxss文件当中来写它对应的样式就可以    
+     
+     小程序很好的兼容了flex布局 所以在很多的情况下我们用的布局方式都是flex
+
+     小程序会自动给我们加上根标签 不用我们自己来写 这个根标签就相当于我们html这个标签
+
+     json文件是一个配置页面的文件 app.json是配置整个小程序的 每个页面中的json是配置这个页面 index.json是配置index这个页面的 
+
+     怎么样加上这样的空格
+     
+     图片放到iPhone和iPad都那么大 这样是不是不符合移动端设计的原则 我们希望我们的图片是随着屏幕的改变而改变 我们想要它自适应 我们该怎么样来做呢
+
+
+
+
+     作业    
+     1. 在小程序text组件当中如何添加一个空格 
+     2. image如何让它自适应 
+     3. 给小程序添加标题    
+
+
+     正常在小程序写一个文本也是可以被识别的 为什么用text组件给它包裹上呢 
+         1. 就是因为我们代码更美观更整洁一些
+         2. 直接写小程序当中的文字不能够被常按选中的 
+         3. 小程序text组件可以设置一些属性
+     
+     解码是什么意思 我们在html当中写的&nbsp;这样的实义字符可以在小程序当中也能实现 就是把它decode变成true
+         
+    小程序给我们提供一个单位可以实现自适应 rpx 是小程序定义的一个新的长度单位 小程序把所有机型的宽度都设置为750rpx 高度1334rpx 无论是ipad还是iphone
+        它的宽度都是750rpx 简单来说rpx就是你手机的长度单位 假如你的手机是500cm 1rpx=500cm/750 iphone上rpx是不等于ipad上的rpx长度
+        正常微信小程序text字体的一个大小 它的font-size 它的单位就是rpx 它可以跟随机型的变化而变化
+
+    li:hover{} 当鼠标划过li进行样式的改变 在小程序类似hover点击    
+
+    hover-stop-propagation: 如果说子元素有一个点击tab 父元素同时也设置一个点击tab 当你点击子元素的时候 父元素的点击tab也会出来
+
+ -->

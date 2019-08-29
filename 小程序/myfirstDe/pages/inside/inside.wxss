@@ -1,0 +1,46 @@
+/*
+  .container还要我们设置display: flex吗 虽然在列方向的 但是两个view的display都是block
+     都不独占一行 所以我们不用给它设置了
+*/
+.container{
+    padding: 0 10rpx;
+}
+.picture-box{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+}
+.picture{
+    width: 730rpx;
+    /* 图片有个模式 跟图片的宽固定 图片的高随着图片的宽进行自适应 */
+}
+.title{
+    /* width: 18em; */
+    width: 20em; /* 1em等于当前字体的尺寸 */
+    font-size:  36rpx;
+    letter-spacing: 4rpx; /* 字间距 */
+    line-height: 72rpx; /* 行高 */
+}
+.name-box{
+    width: 20em;
+    margin-top: 20rpx;
+    text-align: right;
+}
+
+/* 
+  换机型的话18字不是在一行了 可以用em 
+  怎么变小了 字也被挤下来了 因为我们设置了字间距
+  4 * 18 / 36 = 2
+*/
+
+
+.ceshi{
+    width: 300rpx;
+    height: 300rpx;
+    background-color: red;
+}
+.ceshi-child{
+    width: 150rpx;
+    height: 150rpx;
+    background-color: yellow;
+}

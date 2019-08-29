@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="demo"></div>
+    <script src="./jquery.js"></script>
+    <script>
+
+        $.ajax({
+            type: 'GET',
+            url: 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?',  // 接口文档所规定的名称   回调函数的名字
+            dataType: 'jsonp',
+            success: function(data) {
+                console.log(data)
+            },
+            error: function(data) {
+                console.log(data)
+            },                                
+            
+            jsonp: 'cb',                // jsonp就是规定接口文档这个名叫什么  cb
+            jsonpCallback: 'cbs',                        // jsonpCallback 回调函数的名称
+            data: 'wd=lol'
+        })
+
+        function cbs(data) {
+            // var value = JSON.parse(data);
+            console.log(data);
+        }
+    
+    // Access-Control-Allow-Origin
+    // 头部信息不满足要求  在这个头部信息当中它会定义某些字段  这个字段就是当前你的主机名  如果这个字段后面有你的主机名  就允许你向这个地方跨域获取数据 
+    //     当前ajax跨域获取数据拿不到   普普通通的ajax也能跨域  前提条件是服务器那边必须给你配置这样的字段( Access-Control-Allow-Origin :它允许哪些主机来向这里取数据 )
+    //     它允许的字段中有我当前这个主机的地址  我当前的主机去请求数据的时候就允许  如果没有配置我的主机地址 我请求数据的时候就是跨域
+    //
+    //
+    //  在咱们用Ajax跨域获取数据的时候  咱们前端发送的东西没有任何变化 只不过在服务器那边需要配置 它允许咱们  它会在后台代码把咱们配置到那里去 
+    //        它不允许的怎么也不好使 除非你换种方式用jsonp
+    //
+    //
+    // ajax 1) 普通的ajax  2)jsonp
+    //
+    //  使用jsonp不需要使用服务器了
+    //
+    //  crossDomain 尽量不要动它  默认写个dataType能发送数据就不要动crossDomain
+    //
+    //  sucess    ====    jsonp jsonpCallback
+    //
+    // 
+    //  start 从第几条帮你传回去
+    // total 对应的数据库中有多少条数据  
+    //  count 返回多少条数据    
+    //
+    //
+    </script>
+
+</body>
+</html>
+
+//**********************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="demo"></div>
+    <script src="./jquery.js"></script>
+    <script>
+
+        $.ajax({
+            type: 'GET',
+            url: 'https://api.douban.com/v2/music/search?callback=cbs',
+            dataType: 'jsonp',
+            data: 'q=成都',
+            // success: function(data) {
+            //     console.log(data);
+            // }
+           
+        })
+        function cbs(data) {
+            console.log(data);
+        }
+        //
+        //
+        //  用了jsonp的请求 并且还没传callback回调函数名的话  默认给你添加个callback
+        //
+        //  传个cb=cbs  豆瓣后台接口不是这个字段 传了也不好失败
+        //
+        //  后台接口就是callback这个字段  它拿到这个字段就截取后面的字段处理一下  封装成这个样子cbs({})
+        //
+        //
+        //   不告诉你 就是默认帮你拼成这个样子
+        //
+        //
+        //
+        //
+        //
+    </script>
+/********************************************************************************/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./test.css">
+</head>
+<body>
+
+    <div class="nav">
+        <div class="top-nav-info">
+            <a href="#" class="nav-login">登录</a>
+            <a href="#" class="nav-register">注册</a>
+        </div>
+        <div class="top-nav-app">
+            <a href="#" class="down-load">下载豆瓣客户端</a>
+        </div>
+        <ul>
+            <li><a>豆瓣</a></li>
+            <li><a>读书</a></li>
+            <li><a>电影</a></li>
+            <li><a>音乐</a></li>
+            <li><a>同城</a></li>
+            <li><a>小组</a></li>
+            <li><a>阅读</a></li>
+            <li><a>FM</a></li>
+            <li><a>时间</a></li>
+            <li><a>市集</a></li>
+            <li><a>更多</a></li>
+        </ul>
+    </div>
+
+    <div class="nav-music">
+        <div class="nav-wrap">
+            <div class="nav-logo">
+                <a href="#"></a>
+            </div>
+            <div class="nav-search">
+                <form action="">
+                    <input type="text" placeholder="唱片名·表演者" class="search">
+                    <input type="submit" class="submit">
+                </form>
+            </div>
+            <div class="nav-list">
+                <ul>
+                    <!-- <li><img src="" alt=""></li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="./jquery.js"></script>
+    <script src="./test.js"></script>
+
+
+
+
+
+
+
+
+    <script>
+        
+    // 能尽量少写就少一下 因为在网络爬虫的时候 你写的内容层级嵌套过深的话 里面的内容网络爬虫找不到    
+        
+    </script>
+
+</body>
+</html>
+
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+}
+.nav{
+    width: 100%;
+    height: 28px;
+    min-width: 950px;
+    background: #545652;
+    color: #d5d5d5;
+    font-size: 14px;
+}
+.nav a{
+    color: #d5d5d5;
+    line-height: 28px;
+    padding: 0 10px;
+}
+.nav li{
+    display: inline-block;
+}
+.nav .top-nav-info{
+    float: right;
+}
+.nav .top-nav-app{
+    float: right;
+}
+/************************************************************/
+.nav-music{
+    width: 100%;
+    background: #ccc;              /* 居中  padding */
+    padding: 20px 0;
+}
+.nav-music .nav-wrap{
+    position: relative;
+    width: 950px;
+    margin: 0 auto;
+}
+.nav-music .nav-wrap::after{ /* 脱离文档流 */
+    display: inline-block;
+    content: '';
+    clear: both;
+}
+.nav-music .nav-wrap .nav-logo{
+    float: left;
+    width: 150px;
+    height: 50px;
+}
+.nav-music .nav-wrap a{
+    width: 150px;
+    height: 50px;;
+    display: inline-block;
+    background: url('https://img3.doubanio.com/dae/accounts/resources/19507ad/music/assets/lg_music_a12_2.png?s=1') no-repeat;
+}
+.nav-music .nav-wrap .nav-search{
+    float: left;
+    width: 300px;
+    height: 50px;
+}
+.search{
+    padding: 10px;
+    width: 200px;
+}
+
+.nav-list ul{
+    position: absolute;
+}
+
+
+
+
+(function () {
+    var $search = $('.search'),
+        $ul = $('ul', '.nav-list');
+
+    $search.on('input', function() {
+        var value = $(this).val();
+        getData(value, 7);
+    
+    })
+
+    function getData(value, num) {
+        $.ajax({
+            type: 'GET',
+            url: ' https://api.douban.com/v2/music/search',
+            data: 'q=' + value + '&count=' + num,
+            dataType: 'jsonp',
+            success: addItem
+        })
+    }
+
+    function addItem(data) {
+        console.log(data);
+        var list = data.musics;
+        var str = '';
+        list.forEach(function (ele, index) {
+            str += '<li><a href="https://music.douban.com/subject/'+ ele.id +'/"><img src="'+ ele.image +'"></a></li>'
+        });
+        $ul.html($(str));
+    }
+
+
+
+})()
+
+
+
+
+
+//
+//  翻页  class类名
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+
+    
+    <script src="./jquery.js"></script>
+    <script src="./itemPage.js"></script>
+
+</body>
+</html>
+
+
+(function() {
+    $.ajax({
+        type: 'GET',
+        url: 'https://api.douban.com/v2/music/26899717',
+        dataType: 'jsonp',
+        success: cb
+    })
+
+    function cb(data) {
+        console.log(data);
+    }
+
+}())
+
+
+

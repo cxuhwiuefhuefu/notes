@@ -1,0 +1,9 @@
+<view class="container">
+    <image class="image" src="image/circle.png" catch:tap="onLike" hidden="{{like}}" />
+    <image class="image" src="image/circle_fill.png" catch:tap="onLike" hidden="{{!like}}" />
+</view>
+
+<!-- 
+    如果like是true的情况下 我就让它false 
+        如果false的情况下就让它变成是一个true
+ -->

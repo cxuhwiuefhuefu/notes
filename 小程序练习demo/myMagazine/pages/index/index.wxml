@@ -1,0 +1,72 @@
+<view class="container">
+
+
+
+  <view class="recommend">
+    
+    <view class="currentTime">
+      <text >{{recommendInfo.date}}</text>
+    </view>
+    <view class="mainTitle">
+      <text >{{recommendInfo.title}}</text>
+    </view>
+    <view class="coverImage">
+      <image class="image" mode="widthFix" src="{{recommendInfo.imgSrc}}" />
+    </view>
+    <view class="typeList">
+      <text class="add">+</text>
+      <block wx:for="{{markTypeList}}" wx:key="{{item.typeId}}">
+        <text bind:tap="goTypePage" data-typeId="{{item.typeId}}">{{item.type}}</text>
+      </block>
+      <text class="more">···</text>
+    </view>
+ 
+  </view>
+
+
+
+
+
+  <view class="articleList">
+
+
+    <view class="article"  wx:for="{{homeArticleList}}" wx:key="{{item.id}}">
+
+      <view class="userInfo">
+        <image class="icon" src="{{item.markPeopleAvatar}}" />
+        <text >{{item.markPeople}}等{{item.markCount}}人马克了</text>
+      </view>
+      
+      <view class="articleImage">
+        <image mode="widthFix" class="image" src="{{item.articleImgSrc}}"/>
+      </view>
+      
+      <view class="articleTitle">
+        <text >{{item.articleTitle}}</text>
+      </view>
+      
+      <view class="article-bottom">
+        <text class="articleType">{{item.articleType}}</text>
+        <view class="controler">
+          <view >
+            <image src="/image/more.png" bind:tap="tapMore" data-type="{{item.articleType}}"/>
+          </view>
+          <button class="share-btn" open-type="share" >
+            <image src="/image/share.png" />
+          </button>
+          <view >
+            <image src="/image/like.png"  wx:if="{{likeList[index]}}" bind:tap="tapLike" data-index="{{index}}" />
+            <image src="/image/no_like.png" wx:else bind:tap="tapLike" data-index="{{index}}" />
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+
+
+  
+
+
+</view>

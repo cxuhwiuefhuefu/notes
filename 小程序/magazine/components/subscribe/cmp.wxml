@@ -1,0 +1,12 @@
+<view class="container {{class == 'common' ?  '' : 'subscribe'}}" catch:tap="onTap">
+    {{class  == 'common' ? '订阅' : '已订阅'}}
+</view>
+
+
+<!-- 
+
+    点击它的时候 它的样式会变 
+
+    如果是白色点的时候是已经点阅了 在这里面判断一下 如果为common是订阅 不为common是未订阅 
+
+ -->

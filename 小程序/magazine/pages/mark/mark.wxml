@@ -1,0 +1,86 @@
+
+<view class="container">
+
+    <view class="user-container">
+        <view class="user-info">
+
+            <view class="user-name">{{userInfo.nickName}}</view>
+            <view class="user-avatar">
+                <image wx:if="{{authorized}}" src="{{userInfo.avatarUrl}}" />
+                
+                <!-- <button wx:else class="get-user-info" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">
+                     <image src="/images/mark/login.png" />
+                 </button> -->
+
+                 <!-- <d-imgBtn open-type="getUserInfo"/> -->
+
+                 <d-imgBtn open-type="getUserInfo" bind:getuserinfo="onGetUserInfo">
+                    <image src="/images/mark/login.png" slot="img"/>
+                 </d-imgBtn>
+            </view>
+
+            <!-- <open-data type="userAvatarUrl" /> -->
+            <!-- <open-data type="userNickName" class="user-name" />
+            <open-data type="userAvatarUrl" class="user-avatar" /> -->
+
+            <!-- <button wx:if="{{!authorized}}" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">呵呵</button> -->
+
+        </view>
+
+        <view class="share">
+            <!-- <image src="/images/mark/relay.png" /> -->
+            <!-- <d-imgBtn open="getUserInfo" /> -->
+            <d-imgBtn open-type="share">
+                <image src="/images/mark/relay.png" slot="img"/>
+            </d-imgBtn>
+       </view>
+        
+        <!-- <button class="share">
+            <image src="/images/mark/relay.png" />
+        </button> -->
+
+    </view>
+
+    <d-articleList articleList="{{likeList}}" />
+
+    <d-imgBtn />
+</view>
+
+
+
+<!-- 
+    这个马克页面 下面我们喜欢过的文章列表  上面是我们展示用户的信息
+       点击这个图片可以选择拒绝和允许 选择允许的时候可以展示用户的信息
+  
+
+    怎么获取用户的信息 开放能力  open-data
+
+    如果你这个项目只是单纯的展示用户的昵称和用户的头像的话 那你用这种方式是比较好的
+        如果你这个项目是想通过用户的一些信息来获取一些数据的话 那你用这个方式就不太好了
+        button组件有获取到用户的信息 可以通过button组件开放除的功能来写了
+
+    有没有什么一进来就获取用户的信息 API开发接口中的用户信息 wx.getUserInfo
+        怎么样才能让用户授权  通过button的方式来询问用户授权 在页面第一次进来的时候 
+        只要我们授权过就显示我们的用户信息 
+
+    当用户的信息显示的时候它就在这里面了    
+
+
+    这两个都用了开发能力 我们可以把它写成一个组件
+
+
+    用缓存来做 把一篇文章所需要的信息都放到缓存内 马克页面去缓存去拿取信息然后进行一些页面的展示 在like组件内实现对文章的缓存
+        那我们怎么把信息传给我们的article组件 是不是还是利用自定义事件 我们在like组件自定义事件 然后在article组件内监听这个自定义事件
+ 
+    
+    我们要在这个页面缓存内找到值 
+    
+    第一次刷新的时候才会执行onload函数
+
+    在没有授权的情况不让它看到我们喜欢的文章 在你没有登录获取个人信息的时候你不应该出现这样的喜欢的列表
+        可以把这些代码放进授权之后的执行这样的代码 或者得到这样的用户信息的时候执行这样的代码
+
+    不要把你们的代码直接写在onload函数中    
+ 
+ -->
+ 

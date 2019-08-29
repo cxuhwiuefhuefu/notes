@@ -1,0 +1,77 @@
+<view class="container">
+
+    <d-search />
+
+    <view>
+        <view class="mark-control">
+            <view class="my-magazine">我的杂志</view>
+            <view class="manage-magazine">管理杂志</view>
+        </view>
+
+        <d-tagList mark-list="{{myTagList}}">
+            <d-add slot="before" style="margin-left: 20rpx;"/>
+        </d-tagList>
+    </view>
+
+
+
+    <view >
+
+        <view class="tag-list-container" wx:for="{{tagInfoList}}" wx:for-item="tagListItem" wx:key="title">
+            
+            <view >{{tagListItem.title}} ></view>
+            <view >
+
+                <view wx:for="{{tagListItem.tagList}}" class="tag" wx:key="tag">
+                    <text class="tag-text"># {{item.tag}}</text>
+                    <!-- <view >订阅</view> -->
+                    <d-subscribe tag="{{item.tag}}" tag-id="{{item.tagId}}" catch:tag="onSubscribeTap" />
+                </view>
+            </view>
+        </view>
+        
+
+    </view>
+
+</view>
+
+
+
+<!-- 
+    这个页面可以分成上中下三个部分 下面是喜欢过 订阅的标签 下面是标签的列表
+
+    这个的数据不需要去服务器去请求这样的数据 因为我们目录所涉及的标签基本上是不会变的 所以把它写死就可以了
+        可以用for循环来解决这个事情
+
+
+    订阅承载了一些功能 首先点击它的时候样式会变 它变的同时这块存放着我喜欢过什么 我标记过什么这个列表 意味着我们这里需要处理一些功能
+        也就是我不仅要换它的样式 我还有要把它的一些信息无论是发到我的服务器也好 还是像我们这个页面写的依旧是采用缓存的写法也好
+        它是不是处理一个功能 它处理的功能虽然说这个就只是在我目录里面出现了 但是它既然有了这个复杂的功能 最好把它抽离成为是一个组件
+
+    我们现在的功能集中在订阅的租价中 所以先打开这个组件来写它所需要的功能
+
+
+    这个应该使用缓存的方式 因为我们在写喜欢文章的时候也是用缓存的 因为没有服务器 思路和马克的页面是一样的 
+
+
+    是不是想刚进入这个页面的时候就能显示的出来我们订阅了那个标签 所以要对比 是不是意味着我们先获得所有喜欢过的列表 再来循环一下 如果里面的tagId == 里面tagId
+        让它的class值变一下
+
+
+     搜索页面 怎么进入搜索页面 在目录这个页面搜索词然后回车点击搜索然后可以进入页面了 只能搜索读书   
+ 
+    
+     可以利用插槽把+放进去了  既然要使用插槽就要把它定义成双标签了
+
+    怎么进行改变 点击订阅的时候它要改变这个组件 意味着我们要重新获取一次缓存 点击它的时候还要去调用一次getData
+
+
+    我们自定义的组件只能监听我们自定义的事件 我们小程序官方的事件小程序是监听不了 所以要给订阅的组件执行一个自定义的事件
+ 
+
+    上面搜索框布局很简单的 不能直接写在页面目录里面
+
+
+    功能是输入一些字来跳转页面 什么时候代表我们输完字了  bindinput事件
+
+ -->
