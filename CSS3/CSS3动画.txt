@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .box{
+            margin: 200px;
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+        }
+        .item{
+            width: 100px;
+            height: 100px;                   /* 随着元素的旋转 轴也会旋转 */
+            background: red;               /* X  Y  Z:垂直屏幕向外的 */
+            /* transform: rotate(10deg); */  /* 2D效果  正值的顺时针/负值的时候逆时针  直接写个rotate会默认走的是rotateZ */
+            /* transform: rotate3d(1, 1, 0, 45deg); */  /* 跟分开来写不一样   受力 既有方向又有大小  前三个代表XYZ各个方向的思量值 */   
+
+            /* transform: scale(1, 3);*/  /* 绝对值大于1是放大  绝对值在0-1之间是缩小  绝对值是正的是正方向扩大  绝对值是负的反方向缩小  正负决定的是方向  什么都不写默认接受两个参数XY,第二个参数不写默认和第一个一样 */
+            /* transform: scale3d(1, 1, 1); */  /* 跟拆开写是一样的效果 */
+           
+            /* transform: skew(45deg, 20deg); */
+
+            transform: translate(50%, 50%);   /* 没有脱离文档流  类似position的left/top  可以添加百分号:相对本身的宽高的百分比而言的 */
+            font-size: 30px;
+            color: #fff;
+            text-align: center;
+        }
+    
+    </style>
+</head>
+<body>
+    
+    <div class="box">
+        <div class="item">B</div>
+    </div>
+
+</body>
+</html>
+//**********************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .box{
+            margin: 200px;
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+            font-size: 0;   /* 两个div之间有空白的制表符,导致不能在一行的状态  空的宽度由字体的宽度决定的  默认font-size:14px */
+        }
+        .item{
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background: red;
+            font-size: 30px;
+            color: #fff;
+            text-align: center;
+        }
+        .item1{
+            transform: translateX(50px);  /* 覆盖的效果的 */
+            background: green;
+        }
+    
+    </style>
+</head>
+<body>
+    
+    <div class="box">
+        <div class="item item1">B</div>
+        <div class="item item2">A</div>
+    </div>
+
+</body>
+</html>
+//**************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .box{
+            position: relative;
+            margin: 200px;
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+            font-size: 0; 
+        }
+        .item{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            /* margin-top: -50px;
+            margin-left: -50px; */   /* 如果说当前的item的宽高是由里面的文本撑开的 文本是由你通过网络请求获取过来的 但你通过网络请求获取过来的文字可多可少都不确定  
+                                        长短不确定 意味着你元素具体的宽高不清楚 可能你宽不固定但高不固定  高度由文字撑开的  实现水平垂直居中的  */
+            
+            transform: translate(-50%, -50%);  /* 不需要知道具体当前元素的具体宽高是多少吧 不用知道你这个宽高   没写会接受两个参数,只写一个参数,第二个参数默认是0 */
+            width: 100px;
+            height: 100px;
+            background: red;
+            font-size: 30px;
+            color: #fff;
+            text-align: center;
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <div class="box">
+        <div class="item">B</div>
+    </div>
+
+</body>
+</html>
+
+
+//********************************************************************************8
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+
+        .box{
+            position: relative;
+            margin: 200px;
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+            font-size: 0; 
+        }
+        .item{
+            transform: rotateY(89deg) translateZ(100px);  /* 先旋转再漂移和先漂移再旋转的效果不一样的  因为坐标轴都不同了  translateZ:是向前平移的 */
+            width: 100px;                                 /* 要想这个方块要有多种变化的效果 你要考虑谁先谁后  */              
+            height: 100px;
+            background: red;
+            font-size: 30px;
+            color: #fff;
+            text-align: center;
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <div class="box">
+        <div class="item">B</div>
+    </div>
+
+</body>
+</html> 
+//************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .demo{
+            position: absolute;
+            top: 200px;
+            left: 200px;
+            width: 100px;
+            height: 100px;
+            background: red;
+            /* transform-origin: top left; */
+            /* transform-origin: bottom right; */
+            /* transform-origin: top; */ /* 上面的中心点 */
+            /* transform-origin: 0 0; */
+            /* transform-origin: 0% 0%; */
+            /* transform-origin: 0 100%; 8/ /* 百分之相对自身而言的 */
+            /* transform-origin: 100% 100%; */
+            /* transform-origin: 50px 50px; */
+            transform-origin: 200px 200px;   /* 最开始左上角 0 0 */
+            transform: rotateZ(45deg);
+        }
+    
+    </style>
+</head>
+<body>
+    
+    <div class="demo">a</div>
+
+</body>
+</html>
+//********************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .box{
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 1px solid #000; 
+        }
+        ul{
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        li{
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%);
+            display: inline-block;
+            /* width: 4px;
+            height: 20px;
+            background: #333; */
+             transform-origin: 50% 100px;
+        }
+        li:nth-of-type(2) {
+            /* transform: rotate(90deg); */  /* 旋转是相对自身而言的   默认的中心点在center center这个位置上 */ 
+            transform: rotateZ(30deg);
+        }
+        li:nth-of-type(3) {
+            transform: rotateZ(60deg);
+        }
+        li:nth-of-type(4) {
+            transform: rotateZ(90deg);
+        }
+        
+        /* 行级元素是没有办法进行操控的 需要变成inline-block */
+        span{
+            display: inline-block;
+        }
+        li:nth-of-type(2) span{
+            transform: rotateZ(-30deg);
+        }
+        li:nth-of-type(3) span{
+            transform: rotateZ(-60deg);
+        }
+        li:nth-of-type(4) span{
+            transform: rotateZ(-90deg);
+        }
+
+    </style>
+</head>
+<body>
+     <!-- 一般这些规则的都用UL来写 -->
+    <div class="box">
+        <ul>
+            <li><span>12</span></li>
+            <li><span>1</span></li>
+            <li><span>2</span></li>
+            <li><span>3</span></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+
+</body>
+</html>
+//*************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .item{
+            position: absolute;
+            left: 0px;
+            top: 30px;
+            width: 100px;
+            height: 100px;
+            background: red;
+            opacity: 0;
+            /* transition: left 2000ms linear 1s; */  /* 过渡属性  过渡时间(动画执行的时间):2s == 2000ms   过渡函数(过渡速率)   延迟:1s   会过渡去也会帮你过渡着回来 */
+            /* transition: left 2000ms linear 1s, top 2000ms linear 1s; */  /* 同时执行 */
+            transition: left 2000ms linear, top 2000ms linear 2s, opacity 4000ms linear; /* 延迟达到动画连贯的效果 */ /* 如果要画一个正方形 要有判断加入js 纯CSS3不行 */
+        }
+        .demo:hover + .item{  /* 并不是所有的css属性都可以让它实现过渡的  xxx --> display: inline-block/none */
+            left: 300px;      /* 颜色 可以一像素一像素的变化的,可以一点一点的变化的这种会有过渡属性 */
+            top: 300px;
+            opacity: 1;
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <div class="demo">demo</div>
+    <div class="item"></div>
+
+</body>
+</html>
+
+
+//  作业   ？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？
+
+//***************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .item{
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100px;
+            height: 100px;
+            background: red;
+            opacity: 1;
+            animation: move 5000ms linear;    /* name 这组动画需要完成的时间 运动的速率函数 */
+        }
+        
+        @keyframes move{
+            0%{
+                left: 0px;
+                top: 0px;
+            }
+            25%{
+                left: 300px;
+                top: 0px;
+            }
+            50%{
+                left: 300px;
+                top: 300px;
+            }
+             /* 50%{    2.5s的时候 
+                left: 700px;
+                top: 30px;
+                background: green;
+            }  */
+            75%{
+                left: 0;
+                top: 300px; 
+            }
+            100%{
+                left: 0px; 
+                top: 0px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    
+    
+    <div class="item"></div>
+
+    <script>
+
+
+        // 其实在计算机当中 动画是一帧一帧完成的  每一帧都是不同的图案  把这些帧连贯起来我们看到的视觉效果就是动画了
+        //
+        //  animation 就是给这些动画设置一些关键帧
+        //
+        // animation要延迟,而且不能重复的定义   animation属性可以重复的定义,不用做延迟
+        
+    
+    </script>
+</body>
+</html>
+//**************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .item{
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100px;
+            height: 100px;
+            background: red;
+            opacity: 1;
+            animation: move 5000ms linear 1s both;    /* name 这组动画需要完成的时间 运动的速率函数                infinite/number */ 
+        }
+        
+        @keyframes move{
+            /* from{
+                left: 0px;
+                top: 0px;
+            } */
+            from{
+                left: 200px;
+            }
+            to{
+                left: 500px; 
+                
+            }
+        }
+        button{
+            position: absolute;
+            top: 200px;
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <button id="btn">btn</button>
+    <div id="item" class="item"></div>
+
+    <script>
+
+        var flag = true;
+        btn.onclick = function() {
+            if(flag) {
+                flag = false;
+                item.style.animationPlayState = 'paused';
+            }else {
+                flag = true;
+                item.style.animationPlayState = 'running';
+            }
+        }
+
+        // 其实在计算机当中 动画是一帧一帧完成的  每一帧都是不同的图案  把这些帧连贯起来我们看到的视觉效果就是动画了
+        //
+        //  animation 就是给这些动画设置一些关键帧
+        //
+        // animation要延迟,而且不能重复的定义  animation属性可以重复的定义
+        //
+        //  如果初始的状态和你定义的状态一样  可以不写from
+        //
+        
+
+    </script>
+</body>
+</html>
+//********************************************************************************************************8
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+       .wrapper{
+           position: absolute;
+           left: 50%;
+           top: 50%;
+           transform: translate(-50%, -50%);
+       }
+       .table{
+           width: 100px;
+           height: 100px;
+           border-radius: 50%;
+           border: 50px solid #333;
+           background: url('./img/logo4.jpg');
+           background-size: cover;
+           animation: move 10s linear paused infinite;
+       }
+       .pin{
+           position: absolute;
+           top: -50px;
+           left: 50%;
+           width: 10px;
+           height: 150px;
+           background: #ccc;
+           border-bottom-right-radius: 100%;
+           border-bottom-left-radius: 100%;
+           transform-origin: top;
+           transform: rotateZ(-60deg);
+           transition: all 0.5s linear;                                    /* all: 支持所以过渡的属性 */
+       }
+
+       @keyframes move{
+           0%{
+               transform: rotate(0deg);
+           }
+           100%{
+               transform: rotate(360deg);
+           }
+       }
+       .active{
+           transform: rotate(-30deg);
+       }
+
+       /* animation transtion 哪个好    animatin无限次 */
+       
+        
+    </style>
+</head>
+<body>
+    
+    <button id="btn">btn</button>
+    
+    <div class="wrapper">
+        <div class="table"></div>
+        <div class="pin"></div>
+    </div>
+
+    <script>
+
+        var oTable = document.getElementsByClassName('table')[0];
+        var oPin = document.getElementsByClassName('pin')[0];
+        var flag = true;
+        btn.onclick = function() {
+            if(flag) {
+                flag = false;
+                // item.style.animationPlayState = 'paused';
+                oPin.className = 'pin active';
+                oTable.style.animationPlayState = 'running';
+            }else {
+                flag = true;
+                // item.style.animationPlayState = 'running';
+                oPin.className = 'pin';
+                oTable.style.animationPlayState = 'paused';
+            }
+        }
+
+        // 其实在计算机当中 动画是一帧一帧完成的  每一帧都是不同的图案  把这些帧连贯起来我们看到的视觉效果就是动画了
+        //
+        //  animation 就是给这些动画设置一些关键帧
+        //
+        // animation要延迟,而且不能重复的定义  animation属性可以重复的定义
+        //
+        //  如果初始的状态和你定义的状态一样  可以不写from
+        //
+        //
+        // 动画这块能用CSS3就不用js了
+        // CSS3做动画效果非常简单  不会有动画队列添加到一起的效果 频繁点击  js会有动画队列的,会把一步一步放到动画队列当中  等待时间线来对她执行
+        //      但CSS不用 你有这个类名我就添加  没有就去除  不会有动画队列  所以用起来非常简单  比计时器好很多 计时器有些问题 计时器有延迟
+        //      你设计一个计时器让它10秒后进行一个什么样的动画 但是在这个10s的期间进来一个操作 这个操作比较耗时  它需要20s的时间  当时的这个事件在执行的时候已经到10s的时间了
+        //      由于你这个事件没有执行完  你的动画10s延迟只能往后推  它完成后才执行你这个延迟  所以说计时器做动画的效果还是有些欠缺的
+        
+
+    </script>
+</body>
+</html>

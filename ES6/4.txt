@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+        // ES6当中新型的数据结构   ----- 数据结构其他语言已经有了 我们js原来没有 之前一直原来模拟这样的结构 但没有真正的实现 在ES6中添进来了 
+        // 数据结构重在后面结构 数据结构在计算机中被称之为在计算机当中的状态或者形式 更正确来说叫计算机组织数据的方式 那就是你这个数据怎么排 怎么列
+        //     怎么放置 更方便我们很好的找到它 很好的操作它 这是计算机组织数据的方式  
+        // 在js数据结构有什么呢 数组它是数据结构 怎么体现这个结构 
+        // let arr = [1, 2, 3]; //  在我们看来这个数组存了一组数 它是连续的 正常来说如果按照底层来说对于数组它一定是连续的内存空间 
+                             //      一维数组一定分配的是连续的内存空间 方便指针寻找下一位 一定在编程语言中它的底层语言关于数组一定是连续内存的分配
+                             //      如果我想申请占用计算机内存百分之五十以上的数组 不要意思 你申请不下来 可能你说计算机内存非常小了 还要申请一个数组
+                             //      也可能申请不下来 真正数组只要你去申明它使用它 真正在物理上真正在磁盘上一定是连续的 
+                             //      我们这个js数组跟那个有些不一样 因为正常其他编程语言数组是定长的 我们js中的数组不是定长的 它的底层是什么 
+                             //      它的原理是什么 一定是连续的磁条片段去存储一个数组 这种东西被称之为线性表 因为它是线性的 你画出图 一块一块挨着的
+                             //      这样的一维都称之为线性表 什么是非线性的 就像数跟图 它不是 它属于多维的结构 它分叉 数据无论是有项无关图 二叉树 
+                             //      红黑数 蚂蚁数 它都是分叉的 就是有不同的路去表示它   
+        //                  
+        // js当中数组的特点 有序 不定长 支持栈操作和队列操作   栈操作是先进后出                         
+        // ((()))  入栈 遇到左括号入栈 遇到右括号跟它进行匹配 相同出栈
+        // 栈操作被称之为Fist in last out  对应我们数组的操作是什么   arr.push() arr.pop()
+        // 队列操作 先进先出 first in first out操作 arr.push()  arr.shift()
+        // 数组也是一个数据结构 有序的用来存储 通过数据展现形式的 这样的一组数 有序  
+        // let obj = {
+        //     name: 'wxb',
+        //     age: 18,
+        //     msg: {}
+        // }
+        // 对象是一种key: value结构 因为给我们来说它是有专一的key对应专一的value 这种一对一的关系 这种查找数据非常快 如果把数据放到数组当中 
+        //     我们想找一个数据的话是不是要遍历啊 for循环找到元素一样的 把它返回
+
+
+
+
+        // 数组去重
+        // let arr = [1, 2, 4, 4, 1, 5];  // [1, 2, 4, 5]
+        // Array.prototype.unique = function() {
+        //     let itemIndex = {}; 
+        //     let resArr = [];
+        //     this.forEach(item => {
+        //         if(!itemIndex[item]) {
+        //             itemIndex[item] = 1;
+        //             resArr.push(item);
+        //         }
+        //     })
+        //     console.log(itemIndex);
+        //     return resArr;
+        // }
+        // arr = [1, '1', 1]; // 1. ('1'和1真的能去重么)数字1和字符串1能分出来吗 字符串1并没有被保存下来 这是一种弊端 
+        //                    //    对于对象来说我们可以通过这种key:value的形式存值 速度非常之快 让我们用起来非常的方便 感觉是不错的 但是遇到这
+        //                    //    它的key值是字符串 那数字1跟字符串1无异了 所以这里说第一个问题是对象的问题 作为key值的时候字符串1和数字1无异
+        //                    //    '1'和1不能去重
+        // var obj = {};
+        // obj[{}] = 1;
+        // arr = [1, '1', , 1, {}];  // 2. (key值存的是对象会发生什么)看看对象作为key值在对象中存在的是什么样的形式  
+                                  //        预期是'{}' 但是转化为'[object Object]' 调用的是哪个方法 调用的是Object.prototype.toString()
+                                  //        会把这个key值无论是什么类型的 我都会给你转换成 只要是对象我们都会给你转化成它'[object Object]'
+                                  //        那在这是不是又有问题了 尽管这么写能把它分出来 作为对象的比较我们都用地址去比较              
+
+        
+
+
+        // // ES6新的数据结构
+        // // Map Set 它们两个是构造函数 ---- 纯js能模拟 但是性能不高 ----  哈希算法 桶的方式
+        // // Map是字典 加强的对象 指的书的目录 指的是索引 它会跟对象很像 为什么说是加强的对象
+        // let map = new Map();
+        // let obj = {};
+
+        // map.set('1', 'wxb'); // 这是对它进行设置 给我们的map结构创建一个索引 key值叫1 对应的value值是'wxb'这样的一组键值 Map当中就是由若干组键值组成
+        //                      //     所以叫加强对象  跟obj['1'] = 1;很像 操作不太一样 
+        // obj['1'] = 'wxb';
+        // console.log(map, obj);                          
+        
+        // // 这是设置值 如果我想进行重新的安排
+        // map.set(1, 'dxb');
+        // obj['1'] = 'dxb';
+        // console.log(map, obj);
+
+        // console.log(map.get('1'));
+        // console.log(obj['1']);
+
+        // map.set(1, 2);
+        // obj[1] = 2;
+        // console.log(map, obj);  // 是不是map这个索引相对于这个对象更强大些 在这里字符串1和数字1能分的开 这是相对于对象它有些不完善的地方
+        //                         //     正常来说对象也不是来做这个的 之前没有这样的结构 我们用通过对象这种查找方式更快速的查找数据来去做这样的查找通过对象
+        //                         //     但正常来说都要有这样的Map结构 而且之前也是通过对象去模拟的 
+        // // set是什么 是若干键值对的集合 它不会发生类型转换 你是数字1就是数字1 你是字符串1就是字符串1  set对这个结构进行赋值 添加键值对
+        // //    然后get我是能取到这个键值是否存在 然后我判断它有没有这样的键值怎么办呢 map.has()  map.has()用来判断当前的map结构是否有这个键这个key是否有
+        // //    其实就是相对于检测
+        // console.log(map.has(1)); // 可以看到新型数据结构的便利性 它的方法都封装好给我们了 而且语义化特别好 直接使用 
+        //                          //     我们在日常写代码的时候也要注意这些方面
+        // console.log(map.has('1'));   
+        // console.log(map.has(2)); 
+        
+        // // 删除
+        // map.delete(1);
+        // console.log(map.has(1));
+        
+        // // 删除的比较彻底的
+        // map.clear();
+        // console.log(map);
+        
+        // // map在这里不会发生类型转换 你想怎么存我就给你拿到特定的值 我们不转
+        // map.set(true, 1);
+        // console.log(map);
+        // console.log(map.get(true));
+        // var obj1 = {};
+        // map.set(obj1, 1);
+        // console.log(map.get(obj1));
+        // console.log(map.get({})); // 这样不行
+        // map.set({}, 1); // 什么展开key是空 key是一样的还被存进去 为什么 因为它们的地址是不一样的 再比较起来也是不一样的  它可以具有这样的功能 
+        //                 //     但是它这种操作在我们工作当中用的比较少的 因为什么 因为如果你要存一个对象 你必须把这个对象留着 要不然你取不到这个值
+        //                 //     但是一般来说我们存dom元素 通过这种方式 但是一般都不用 而更多的都是用我们的原始值 就是不通过地址比较 
+        //                 //     直接比较明明白白的那张
+        // console.log(map); 
+
+        // // map.forEach();用来遍历当前的map结构
+        // console.log(map.forEach((value, key, map) => console.log(value, key, map)));
+       
+        // // map当中有个size 这个size属性就是表示当前map结构当中的键值对的长度 有多少对键值对
+        // // map相console.log(map.has(1)); // 可以看到新型数据结构的便利性 它的方法都封装好给我们了 而且语义化特别好 直接使用 
+        //                                  //     我们在日常写代码的时候也要注意这些方面
+        // console.log(map.has('1'));   
+        // console.log(map.has(2)); 
+
+        // // 删除
+        // map.delete(1);
+        // console.log(map.has(1));
+
+        // // 删除的比较彻底的
+        // map.clear();
+        // console.log(map);
+
+        // // map在这里不会发生类型转换 你想怎么存我就给你拿到特定的值 我们不转
+        // map.set(true, 1);
+        // console.log(map);
+        // console.log(map.get(true));
+        // var obj1 = {};
+        // map.set(obj1, 1);
+        // console.log(map.get(obj1));
+        // console.log(map.get({})); // 这样不行
+        // map.set({}, 1); // 什么展开key是空 key是一样的还被存进去 为什么 因为它们的地址是不一样的 再比较起来也是不一样的  它具有这样的功能 
+        //                 //     但是它这种操作在我们工作当中用的比较少的 因为什么 因为你存一个对象 你必须把这个对象留着 因为你取不到这个值
+        //                 //     但是一般来说我们存dom元素 通过这种方式 但是一般都不用 而更多的都是用我们的原始值 就是不通过地址比较 
+        //                 //     直接比较明明白白的那种
+        // console.log(map); 
+        
+        // // map.forEach();用来遍历当前的map结构
+        // console.log(map.forEach((value, key, map) => console.log(value, key, map)));
+        // // map当中有个size 这个size属性就是表示当前map结构当中的键值对的长度 有多少对键值对
+        // // map相对于对象的那种存储方式是不是更有效一些 因为我是字符串1就是字符串1 我是数字1就是数字1 初始化的时候可以传参数的
+        
+
+
+
+        // let map = new Map([['name', 'wxb'], ['age', 18], [1, 2]]);  // 第一个参数代表key 第二个参数代表value  这是关于map的初始化
+        // console.log(map); 
+
+
+
+
+        // 根据我的map结构写一个新的数组去重
+        // let obj = {};
+        // let arr = [1, '1', 1, obj, 1, obj];
+        // Array.prototype.unique= function() {
+        //     let itemIndex = new Map();
+        //     let resArr = [];
+        //     this.forEach(item => {
+        //         if(!itemIndex.has(item)) {
+        //             itemIndex.set(item, 1);
+        //             resArr.push(item);
+        //         }
+        //     })
+        //     console.log(itemIndex);
+        // }
+        // console.log(arr.unique()); // 因为只有地址相同 {}这里我没办法拿到地址 因为js引擎知道它的地址 因为在处理它的时候给它编码
+                                   //     但是我没办法通过暴漏出来的API获取到当前变量的地址
+
+
+
+        
+        // 手写map结构 不用原生的js去模拟s'd'f 我们用真正的在传统语言中的这个map 传统语言中map的实现 涉及到hash算法 这个算法能给我们带来什么样的便利性呢 
+        // function myMap() {
+        //     // this.__entries__ = [];
+        //     this.init();    
+        // }
+        // myMap.prototype.len = 8;
+        // myMap.prototype.bucket = [];
+        // myMap.prototype.init = function() {
+        //     for(let i = 0; i < this.len; i++) {
+        //         this.bucket[i] = {next: null}; // 让桶当前的下一位都是空的
+        //     }
+        // };
+        // myMap.prototype.set = function(key, value, arr) {
+        //     // 我们在set的时候 跟对象的找是一样的 我们先找到当前的key存不存在 如果存在了 改它这个key值对应的value 如果这个key值不存在 我们需要加
+        //     // 假如我们现在有value 遍历__entries__
+        //     // this.__entries__.forEach(item => { // 如果entries长度为一万 是不是要遍历一万次 遍历一万次的效率很低 为什么要用map
+        //     //                                    //     因为map的查找速度特别高
+        //     //     if(item.key === key) { //  你可以通过这种方法去找 但是这样做效率慢
+        //     //         item.value = value;
+        //     //     }else {
+        //     //         arr.push(key, value);
+        //     //     }
+        //     // })
+        //     let hash = this.makeHash(key); // 变成哈希值 
+        //     let list = this.bucket[hash % this.len]; // 之后确定它在哪个桶里
+        //     // 找到改值 找不到放到这个链表的尾部
+        //     let nextNode = list; // 下一个链表中的节点
+        //     while(nextNode.next) {
+        //         if(nextNode.key === key) {
+        //             nextNode.value = value;
+        //             return;
+        //         } else{
+        //             nextNode = nextNode.next  
+        //         }
+        //     }
+        //     nextNode.next = {key, value, next: null}; // 找不到的话 最后一位的next等于新的key和value 对象简写的方式
+        //     // 第一步先把我们传来key哈希操作给它变成哈希值 因为有这个哈希值就知道它放哪个桶里了 然后第二步我们知道他放哪个桶里了
+        //     //     接下来我们知道它在哪个桶就把它放到哪个桶里 下一步是链表操作 通过对象取模拟的节点看看它还有没有next 
+        //     //     如果没有next我直接在它的next进行赋值 等于我们新的值 如果有next就往下取去找 如果key值相同 把对应的value变化返回
+        //     //     如果不相等接着往下走
+        // }
+        // myMap.prototype.makeHash = function(key) { // 先把key值转换成hash值 转换成hash值之后我们知道把它放到哪个桶里了 数字 true false 
+        //                                            //     放进去直接能转 如果是字符串的话通过charCodeAt进行计算
+        //         let hash = 0;
+        //         if((typeof key) === 'string') {
+        //             // 取后三位字符串处理 怎么取 因为字符串可以通过数组的方式去取 转换成对象了 arr[-1]这样取不行 因为转换成包装类了 长度小于3怎么办
+        //             let len = (key.length > 3) ? key.length : 3;
+        //             for(let i = len - 3; i < len; i++) { // 主要取后三位 因为不能负取 只能这么取
+        //                 hash += (key[i] !== undefined) ? key[i].charCodeAt() : 0; // 取一个值不存在加0
+        //             }
+        //         }else {
+        //             hash = +key;
+        //         }   
+        //         return hash;                             
+        // } // 把这些值通过哈希算法合理转换成数字 这也是哈希数放到魅力所在了
+        // myMap.prototype.get = function(key) { // get通过get取value
+        //     let hash = this.makeHash(key);
+        //     let list = this.bucket[hash % this.len];
+        //     let nextNode = list;
+        //     while(nextNode.next) {
+        //         if(nextNode.key === key) {
+        //             return nextNode.value;
+        //         }else {
+        //             nextNode = nextNode.next;
+        //         }
+        //     }
+        //     return;
+        // }
+        // myMap.prototype.has = function(key) { // has只要有key就行
+        //     let hash = this.makeHash(key);
+        //     let list = this.bucket(hash % this.len);
+        //     let nextNode = list;
+        //     while(nextNode.next) {
+        //         if(nextNode.key === key) {
+        //             return true;
+        //         }else {
+        //             nextNode = nextNode.next;
+        //         }
+        //     }
+        //     return false;
+        // }
+        // myMap.prototype.delete = function(key) {
+        //     let hash = this.makeHash(key);
+        //     let list = this.bucket[hash % this.len];
+        //     let nextNode = list;
+        //     while(nextNode.next) {
+        //         if(nextNode.next.key === key) {
+        //             nextNode.next = nextNode.next.next; // 这就是链表的操作
+        //             return true;
+        //         } else{
+        //             nextNode = nextNode.next;
+        //         }
+        //     }
+        //     return false;
+        // }
+        // myMap.prototype.clear = function() {
+        //     this.init();
+        // }
+        // // let hash = myMap.prototype.makeHash;
+        // let map = new myMap();
+        // map.set(1, 1);
+        // map.set('1', 1);
+        // map.set(9, 1);
+        // console.log(map);   
+        // console.log('1'.charCodeAt());
+        // console.log(map.has(1));
+        // console.log(map.has(2));
+        // map.get('1');
+        // map.delete(1);
+        // map.clear();
+        // console.log(map);
+
+        // 每个桶装一样的东西 这就是桶的概念
+        // 邻接链表 为什么用这个hash
+        // 我们哈希的目的是把两个很像的东西为了给它区分开 其实整个是为优化我们的查找算法 正常查找的话你要整体遍历一遍 首先你就少了遍历次数
+        //     桶是一个分类 这个邻接列表和我们的hash是什么关系呢 怎么进行操作呢 我们现在有什么字符串1 0 true false  因为对象我们不参与这样的操作 
+        //     因为它必须是地址处理 且我们没办法拿到地址 而且就算拿到地址还要把拿原对象保存才能找到 因为只有它们两个地址才一样 所以存对象没意义 
+        //     装桶的目的是为了它们更好的查找 你把它放到这个桶的时候 邻接链表 假设这些全部可以转化为数字并且 邻接链表是一个数组后面放若干个链表
+        //     这个链表是什么 这个next指向链表的第一块 链表当中的第一块有什么呢  最后一块next指向下一块 用next存下一块的地址 
+        // map底层是怎么实现 如果后面有长达一百或者一万个 因为其他地方没用上 我没把它分类 都把它分到一类里面 那不是一条 查找还慢 怎么办 把它变成红黑树
+        //    什么是红黑树 就是比他小放左边 比它大的放右边 什么意思 给它变成二叉树 这个二叉树查找起来就快很多 为什么 2的10次方是多少 如果你是一千多值
+        //    我只要查10次 但是你是链表我需要遍历一千次才能查到 这个东西的重要性 如果真的是使用map 存到一个桶里 分类都分到一个桶里面 查找非常慢 
+        //    就把它变成树形结构了  这个桶长是8 我们分类的时候每个桶都装满 每个桶很长 每个桶一千个 很慢 正常会有一个阈值 
+        //    当某一条链例如6后面这个长度大于8了 或者大于9之后会给当前的桶加一些次数 加当前桶的二分之一个 就是当前八个桶会加四个
+        //    加了四个之后所有的值会进行重排序 它到底是分到哪个桶 这是傻瓜用这个map结构 因为它不知道这个原理 所以说它在存的时候 框框的一直存 
+        //    这样的结果会耗费性能 怎么办 我们map底层实现当你某一个数量任意一个桶当中存的值大于我指定的阈值 如果大于这个阈值加当前长度的二分之一
+        //    让桶中的每个数小于我当前的阈值这个阈值的限定保证我当前查找的速度最快
+        // 怎么数字 字符串 布尔值有效的转化成合理的哈希值    '1'.charCodeAt(); // 转成Unicode编码 数越大后面几位变的越多 越到后面不一样的概率越高
+        // 首先应该定桶了
+        // 对象是完全哈希 因为它每个值对象找的是最快的 哈希也是在一定范畴之内 如果对象太大就没了 完全哈希是什么意思 每个值对应的一个桶 所以速度是最快的
+        //     这个桶得多大 所以是完全哈希  之后有了哈希值就可以有放桶查桶的操作
+
+        // var mymap = new myMap();
+        // myMap.set('1', 2);
+
+        // 算法
+        // 存邻接列表的每一个表是这样的 hash存值 这样不会发生类型转换了
+        // {
+        //     key, 
+        //     value,
+        //     next
+        // }
+
+
+        // map的封装 map的去重
+
+
+
+
+        // WeakMap指的是弱引用 弱引用怎么体现呢  工作当中用map来存字符串 它跟正常的map还很像 WeakMap有要求 它有get和map方法 但是有区别
+        //    它必须使用对象作为key值 map也能使用对象为key值 他俩唯一的不一样关于内存的处理 也就是引用 它们的区别是WeakMap不能用forEach方法
+        //    还有一些东西它都不能用 它最重要的是弱引用的概念 在我们Map源码封装实现的时候 我们用key取存对应的key 说明这个key会拿到你存进来的值
+        //    会有个引用  这个引用称之为强引用 弱应用是当我js内存回收机制被触发的时候 为什么我map里面定义空对象 没人拿到它 
+        //    那么在这个WeakMap里面也没有人拿到它 拿到的是弱引用 也就是说 因为没有明确的变量取拿到这个对象的时候 
+        //    只要内存机制回收的时候会把它所占的空间回收掉 一般用来存dom元素 哪怕我们封装的时候也用这个key来存这个对象 说明这个是强应用
+        //    只不过在这个WeakMap它是存在一个弱引用的 也就是说当只要不是其他变量存着我这里面的key值 我这个key会随着内存回收机制释放
+        //
+        // 内存回收机制分为两种情况 内存回收也是耗性能的 为什么这么说 直接let a = 1; a = 2; a=1的那个空间会自动释放了 其实它给你分配内存是真的 
+        //     是不是释放这个不好说 为什么 分两种情况 一种是定时清理内存 这是比较合理的let a = 1; a = 2; a = 1那个直接释放了 js引擎始终监听你吗
+        //     它怎么知道你这个内存要变 是不是要单独跑一个线程或者说单独有个方法定时的去监听 一直去监听 只要你变量不用了 我就删除了 所以这很耗费性能
+        //     定时清理是什么意思 假设我5分钟遍历内存看看有不用的我回收一下 这个10分钟遍历一次 这是定时回收 还有内存达到一定量时清理
+        //     假设我这个项目占用内存的百分之十 比较大了 我走一遍 也就是当内存占用到一定程度的时候 它会清理一遍内存 一般都是这两种机制 
+        //     不是说内存不用了直接回收 可能当内存很大的时候 它根本就不考虑回收的问题 我直接分配新的就完了 因为它回收是为了重应用
+        //     这就是WeakMap对象弱引用 主要对象外面的变量不对它引用的时候 而是是存对象 当内存机制被触发的时候它才被释放 
+        // let Wmap = new WeakMap();
+        // Wmap.set({}, 1);
+        // var m = new Map();
+        // m.set({}, 1);
+        // console.log(Wmap, WeakMap);
+        
+
+
+
+        // // Set有什么特点呢 是一个有序列表 可以看作数组 它跟数组完全一样 包含一些相互独立且不相等的值
+        // let set = new Set([1, 2, 3, 4, 4, 4, 4, '1']);
+        // set.add(1); //如果添加一个值已经在set当中 它会忽视掉不管你操作
+        // set.add(5);
+        // let obj = {};
+        // set.add(obj); // 能把obj放进去 比较的是地址值 
+        // console.log(set);
+        // // 我们发现set结构和map结构非常像
+        // set.delete(obj);
+        // console.log(set.has(1));
+        // set.forEach((item, i, set) => console.log(item, i, set)); // 我们看到item和i是一样的 在这个方法设的时候 为了跟我们现有的forEach
+        //                                                           //     数组的forEach 包括我们这个Map的forEach 
+        //                                                           //     都是三个参数保持参数统一才这么设计 因为它们两个item和i是一样
+        //                                                           //     所以说感觉是有点问题 但是是从程序实际的角度去设计的 为了更好去用 
+        //                                                           //     然后同时set也支持clear操作
+        // set.clear();
+        // var arr = [...set]; // set可以转换成数组                                                           
+        // console.log(set);
+        // // 根据set里面没有重复的值 对象也是地址不一样
+        // set.add({});
+        // set.add({});
+        // set里面结构都是不一样的 用他实现数组去重很容易
+        // var s = new Set([1, 2, 3, 4, 4, 5, 5, 5, 1, null]);  // 数组去重它是最快的 只要不是存在地址比较它是最快的 对于Set可以实现数组去重 
+        //                                                      //     放的引用值 原始值也可以放
+        // var a = [...s];
+        // console.log(a);
+        //
+        // // map有WeakMap set有WeakSet 其实原理一样 必须存放引用值
+        // var ws = new WeakSet();
+        // ws.add({}); // 同时它也具有弱引用的特性 当内存回收机制外面没有拿着它 它就被释放
+        // var obj = {};
+        // ws.add(obj);
+        // obj = null; // 没有obj拿到这个对象 只有WeakSet拿到 当内存回收机制执行的时候 它会被回收 但我们现在看不到 当内存回收的时候 它就没有了
+        //            //     WeakSet没有forEach方法 也不支持set属性 
+
+
+                    
+                    
+        // 总结: Map是字典 是加强的对象 对于我们的索引值区分的很明白 是什么类型都行 对象引用值也可以 把引用值作为key还是很少 因为我们如果想查的话
+        //          必须把这个对象保留住 所以基本不那么做 所以数字和字符串就够了 然后map的实现原理 哈希算法 邻接链表
+        // 作业: Set实现     Map和Set唯一的区别是什么 我们Set里面的值是唯一的 说明把Map里面的key单纯拿出来做就是Set 其实Map结构是由Set结构发展而来的
+        //
+        // Set邻接的链表 
+        // {
+        //     value,
+        //     next
+        // }
+        // Map邻接链表
+        // {
+        //     value,
+        //     key, 
+        //     next
+        // }
+
+        // Set是里面相互独立且不重复的值 原始值要保持地址一样 我们的Map key值要独立 我们每一个索引 每一个key值不能重复的 
+        
+
+
+
+
+//**************************************************************************************************************************************
+
+        // https://www.sohu.com/a/201923614_466939
+        //
+        // 二叉查找树特性
+        //     1. 左子树上所有结点的值均小于或等于它的根结点的值
+        //     2. 右子树上所有结点的值均大于或等于它的根结点的值
+        //     3. 左丶右子树也分别为二叉排序树
+        //
+        // 二分查找的思想
+        //     查找所需的最大次数等同于二叉查找树的高度
+        //
+        // 在插入节点的时候也是利用类似的方法 通过一层一层比较大小 找到新节点适合插入的位置
+        //
+        // 二叉查找树的缺陷
+        //
+        // 如何解决二叉查找树多次插入新节点而导致的不平衡呢 
+        //     红黑树是一种子平衡的二叉查找树 除了符合二叉查找树的基本特性外 它还有下列的附加特性
+        //         1. 节点是红色或黑色
+        //         2. 根节点是黑色
+        //         3. 每个叶子节点都是黑色的空节点(NIL节点)
+        //         4. 每个红色节点的两个子节点都是黑色(从每个叶子到根的所有路径上不能有连续的红色节点)
+        //         5. 从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点     
+        // 红黑树从根到叶子的最长路径不会超过最短路径的2倍
+        // 当插入或删除节点的时候 红黑树的规则有可能被打破 这时候就需要做出一些调整 来继续维持我们的规则
+        // 
+        // 破坏红黑树的规则 怎么办
+        //     调整有两种方法 变色 和 旋转(左旋转 右旋转)
+        // 变色: 为了重新符合红黑树的规则 尝试把红色节点变为黑色 或者把黑色节点变为红色
+        // 左旋转: 逆时针旋转红黑树的两个节点 使得父节点被自己的右孩子取代 而自己成为自己的左孩子  
+        // 右旋转: 顺时针旋转红黑树的两个节点 使得父节点被自己的左孩子取代 而自己成为自己的右孩子
+        //
+        // 红黑树的插入和删除包含很多种情况 每一种情况都有不同的处理方式
+        // 红黑树的应用很多 其中JDK的集合类TreeMap和TreeSet底层就是红黑树实现的 在Java8中 连HashMap也用到了红黑树
+        
+    </script>
+
+</body>
+</html>

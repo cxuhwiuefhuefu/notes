@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .wrapper{
+            width: 620px;
+            border: 1px solid #000;
+            /* column-count: 2; */
+            column-width: 200px;      
+            /* columns: 200px 2; */ /* 缝宽 要保证这个宽度大于等于这个值的 然后才能保证是不是这些列 */
+                                    /* 用的时候你要明确到底想让它呈现几列 每列至少要保证多宽 这个时候才知道你这个列数到底是个什么效果 一定要想好你要什么效果才使用 */
+                                    /* 最好不要用这个columns 因为你两个你一使用但凡写错效果就不知什么样子了 不太好控制 最后使用其中一个 */
+                                    /* 浏览器默认有个8px的像素值 margin值 */
+                                    /* 字体默认的大小 font-size默认是16px 缝隙继承字体的font-size的大小 列宽就是16px */
+            font-size: 20px;        /* 1-9px的字体大小相似 可能跟各个浏览器的最小值也有关 之前的chrome的最小的字体大小支持10px 一般没有设置这些小的  浏览器会分不清的 */
+            column-gap: 10px;    
+            /* column-rule: 50px solid red; */    /* 不占列宽 不占整个dom宽度的  dotted: 圆    dashed: 矩形  */ 
+            column-rule-width: 2px;
+            column-rule-style: dotted;
+            column-rule-color: red;                   
+        }
+        h1{
+            column-span: 3;   /* all:整个标题贯穿所有的列 */
+                              /* 标题要么跨整个列的长度 要么只在第一列上 很可惜只能设跨一列或所有列 不能跨两列或者三列  */      
+                              /* 默认把columns设置为1 */  
+        }
+
+    </style>                  
+</head>
+<body>
+
+    <div class="wrapper">
+        <h1>我是标题</h1>
+        <p>答农村的我对我复合物合法的客户无百问百答农村的我对我复合物合法的客户无法和文化分为访问量地方了我和地方为了妇女法和文化分为访问量地方了我和地方百问百答农村的我对我复合物合法的客户无百问百答农村的我对我复合物合法的客户无法和文化分为访问量地方了我和地方为了妇女法和文化分为访问量地方了我和地方为了妇女为范围分为</p>
+        <p>答农村的我对我复合物合法的客户无百问百答农村的我对我复合物合法的客户无法和文化分为访问量地方了我和地方为了妇女法和文化分为访问量地方了我和地方百问百答农村的我对我复合物合法的客户无百问百答农村的我对我复合物合法的客户无法和文化分为访问量地方了我和地方为了妇女法和文化分为访问量地方了我和地方为了妇女为范围分为</p>
+        <p>答农村的我对我复合物合法的客户无百问百答农村的我对我复合物合法的客户无法和文化分为访问量地方了我和地方为了妇女法和文化分为访问量地方了我和地方百问百答农村的我对我复合物合法的客户无百问百答农村的我对我复合物合法的客户无法和文化分为访问量地方了我和地方为了妇女法和文化分为访问量地方了我和地方为了妇女为范围分为</p>
+        <p>答农村的我对我复合物合法的客户无百问百答农村的我对我复合物合法的客户无法和文化分为访问量地方了我和地方为了妇女法和文化分为访问量地方了我和地方百问百答农村的我对我复合物合法的客户无百问百答农村的我对我复合物合法的客户无法和文化分为访问量地方了我和地方为了妇女法和文化分为访问量地方了我和地方为了妇女为范围分为</p>
+        <p>答农村的我对我复合物合法的客户无百问百答农村的我对我复合物合法的客户无法和文化分为访问量地方了我和地方为了妇女法和文化分为访问量地方了我和地方百问百答农村的我对我复合物合法的客户无百问百答农村的我对我复合物合法的客户无法和文化分为访问量地方了我和地方为了妇女法和文化分为访问量地方了我和地方为了妇女为范围分为</p>
+    </div>
+    
+    <script>
+        
+        // 怎么均分每一列里面有多少个文字呢 文字突然增加,又怎么改变它呢??
+        // 尤其我在展现一些数据的时候 这些数据往往从后台获取过来的 后台获取数字的长短不一定的多少不一定的 每次都要截取一下它的长度岂不是很耗性能
+        //     你可以拿到它的字符串 获取它的总长度之后进行一个截取  但是截取出来并不准确 这个字符串当中会掺杂许多英文啊 会掺杂着许多东西 
+        //     截取出来的长短大小也不一致 而且你每次拿都截取耗性能   
+        // 
+
+    </script>
+
+</body>
+</html>
+//*************************************************************************************************8
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        div{
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            padding: 10px 30px;
+            border: 1px solid #000;
+            box-sizing: border-box;  /* box-sizing默认的情况下是content-box */ 
+                                     /* 在有些情况下我就想固定div盒子的宽度的时候 可以用box-sizing固定好 里面用padding.margin...该怎么加就怎么加 往里调 */
+                                    
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div>btn</div>
+
+    <script>
+
+        // IE6混杂模式盒模型触发的情况是 你当前触发一个怪异模式 但是怪异模式下会有不同的渲染方式 
+        //     除了盒模型还有很多的渲染方式跟W3C标准盒模型的渲染方式是不同的
+        //     在怪异模式下可以给行级元素设置宽高 在怪异模式下图片的padding值会失效   margin: 0 auto设置水平居中在IE下会不好使 
+        //
+        // 什么时候才能让它按照IE6混杂模式盒模型来解析呢??   1)怪异模式  2)IE6及以下的浏览器
+    
+    </script>
+
+</body>
+</html>
+
+//*******************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+             font-size: 0;
+        }
+        .wrapper{
+            display: flex;  /* 当前这个盒子是弹性盒子 里面所有元素的布局方式按照弹性盒子默认的布局方式来 但可以把默认的属性值进行调整 不调整的话会按照弹性盒子默认的属性来 */
+            width: 500px;
+            height: 500px;
+            border: 1px solid #000;      
+        }
+        .item{
+            /* display: inline-block; */   /* display在flex布局中不用设 不设也不会换行   弹性盒子规定好这些元素默认沿着这个轴排列 */
+            width: 50px;   /* 当前你宽度超了 不会换行 会帮你等比的压缩      这些都是弹性盒子的功劳 为什么教弹性盒子?? 因为很融洽的处理超出或者不足的情况怎么帮你等比缩 等比的放 */
+            height: 30px;          /* wrapper这个盒子简称为容器  里面的每一个子元素叫做项目 */
+            line-height: 30px;     /* 主轴 默认跟X轴方向相同(从左向右)  Y轴/侧轴/交叉轴(从上向下的)  可以通过某些属性进行调整 */
+            text-align: center;    /* 侧轴/交叉轴  默认跟Y轴相同 */
+            background: red;     /* 默认的制表符 由font-size决定的 */
+            border: 1px solid #000;
+            box-sizing: border-box;
+            font-size: 20px;
+            /*flex-grow: 1; */     /* 剩余的空间按一比一平均分配到他们的dom结构上 */
+        }
+        .item:nth-of-type(1) {
+            flex-grow: 1;
+        }
+        .item:nth-of-type(2) {
+            flex-grow: 2;
+        }
+        .item:nth-of-type(3) {
+            flex-grow: 3;
+        }
+    
+    </style>
+</head>
+<body>
+
+   <div class="wrapper">
+       <div class="item">1</div>
+       <div class="item">2</div>
+       <div class="item">3</div>
+   </div>
+
+</body>
+</html>
+//***************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+             font-size: 0;
+        }
+        .wrapper{
+            display: flex;  
+            width:100%;
+            height: 500px;
+            border: 1px solid #000;      
+        }
+        .item{
+            /* display: inline-block; */   /* 在弹性盒子就规定好了这些元素默认情况下沿X轴进行排列  设置了也无用  所以不用设置了 */
+            height: 30px;      
+            line-height: 30px;    
+            text-align: center;   
+            border: 1px solid #000;
+            box-sizing: border-box;
+            font-size: 20px;
+        }
+        .item:nth-of-type(1) {
+            width: 200px;
+          
+        }
+        .item:nth-of-type(2) {
+           flex-grow: 1;      /* 它把剩余的空间分了一份 它占了一份 */
+        }
+        .item:nth-of-type(3) {
+            width: 200px;
+        }
+    
+    </style>
+</head>
+<body>
+
+   <div class="wrapper">
+       <div class="item">1</div>
+       <div class="item">2</div>
+       <div class="item">3</div>
+   </div>
+
+   <script>
+
+       // 三列布局 左右定宽 中间自适应
+       // 两列布局 类似  右侧定宽左侧自适应的
+   
+   </script>
+
+</body>
+</html>
+
+//*********************************************************************************************8
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+             font-size: 0;
+        }
+        .wrapper{
+            display: flex;  
+            flex-direction: column;
+            width:500px;
+            height: 500px;
+            border: 1px solid #000;      
+        }
+        .item{
+            width: 200px;  
+            flex-basis: 100px;  /* 如果width 和flex-basis同时存在 flex-basis会把width覆盖掉 */
+                                /* 当主轴沿X轴方向的话  flex-basis相对于宽    当主轴变(Y轴)垂直方向的时候 flex-basis占主轴的空间相对于height */
+            height: 30px;      
+            line-height: 30px;    
+            text-align: center;   
+            border: 1px solid #000;
+            box-sizing: border-box;
+            font-size: 20px;
+            /* flex-shrink: 1; */  /* 为什么不超出?? 在弹性布局当中 flex-shrink有个默认的值1    超出100px怎么办?? 每个人平均占1/3每个要砍掉33.33px 剩余166。66px */
+        }
+        .item:nth-of-type(1) {
+           flex-shrink: 1;
+        }
+        .item:nth-of-type(2) {
+           flex-shrink: 1;
+        }
+        .item:nth-of-type(3) {
+           flex-shrink: 0;
+        }
+    
+    </style>
+</head>
+<body>
+
+   <div class="wrapper">
+       <div class="item">1</div>
+       <div class="item">2</div>
+       <div class="item">3</div>
+   </div>
+
+</body>
+</html>
+
+//****************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+             font-size: 0;
+        }
+        .wrapper{
+            display: flex;  
+            width:500px;
+            height: 500px;
+            border: 1px solid #000;      
+        }
+        .item{
+            width: 200px; 
+            /* height: 30px; */
+            border: 1px solid #000;
+            box-sizing: border-box;
+            font-size: 20px;      
+            /* margin-top: 100px; */
+            align-self: flex-start;     /* align-self定义的是每个项目的对齐方式 在侧轴上的对齐方式 */
+                                        /* stretch: 当前项目的高度就是父级容器的高度    这时候就不能设置高度了 如果设置好固定的高的话就不会跟父级容器一样的高度了  没有设置高度默认继承父级的高度 */
+                                        /* baseline: 按照第一行文字来对齐        当里面没有文字的时候 没办法拿第一行跟文字找齐了 会拿整个dom元素的最下面来跟第一行文字进行对齐 */
+            /* flex-shrink: 1; */       /* 在弹性布局当中  flex-shrink有个默认的值1      超出100px怎么办?? 每个人平均占1/3每个要砍掉33.px 剩余166。66px */
+        }                               /* 加权值 每个item的shrink乘与它的width加和 */
+        .item:nth-of-type(1) {           
+           flex-shrink: 1;
+           /* margin-top: 100px; */
+           /* order: 0; */               /* order: 定义项目的排序方式 默认情况下排序跟我们dom结构书写的方式进行排列 当然我们可以通过调整位置进行改变position(left top) 不调整的话按照html结构进行排序的 */
+                                         /* baseline: 基准线 当前我让这个项目按基准线对齐    按照哪个基准线呢??按照第一行文字开始对齐  */
+        }                                /* order值可正可负可为0 项目的排列是按从小到大 */
+        .item:nth-of-type(2) {              
+           flex-shrink: 1;        
+           /* order: -1; */
+        }
+        .item:nth-of-type(3) {
+           flex-shrink: 0;
+           /* order: 1; */
+        }
+    
+    </style>
+</head>
+<body>
+
+   <div class="wrapper">
+       <div class="item">1</div>
+       <div class="item">2</div>
+       <div class="item">3</div>
+   </div>
+
+</body>
+</html>
+
+//**************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+             font-size: 0;
+        }
+        .wrapper{
+            display: flex;  
+            /* flex-direction: column-reverse; */               /* 规定主轴的方向 */
+            /* flex-wrap: wrap; */                              /* flex-wrap默认的情况下是不换行的    项目有默认的属性flex-shrink:1 超出等比的砍了 */
+                                                                /* 为什么中间有个间距呢 ？？  因为有个默认的属性值 因为在多根轴排列的时候 多根轴就是把整个父级充满的效果 可以改 */
+            justify-content: space-around;                      /* 定义了项目在主轴上的对齐方向  默认的主轴在水平方向上 规定在主轴上的排列方式是什么样的 */
+                                                                /* space-between: 每两个项目的间距是相等的 */
+                                                                /* space-around:  每一个项目两边的间距/距离是相等的    只有一个项目水平居中: sapce-around */
+                                                                
+            width:500px;                                      
+            height: 500px;
+            border: 1px solid #000;      
+        }
+        .item{
+            width: 50px; 
+            text-align: center;
+            height: 30px;
+            border: 1px solid #000;
+            box-sizing: border-box;
+            font-size: 20px;           
+        }                            
+        .item:nth-of-type(1) {           
+           flex-shrink: 1;
+        }
+        .item:nth-of-type(2) {              
+           flex-shrink: 1;                  
+        }
+        .item:nth-of-type(3) {
+           flex-shrink: 0;
+        }
+    
+    </style>
+</head>
+<body>
+
+   <div class="wrapper">
+       <div class="item">1</div>
+       <div class="item">2</div>
+       <div class="item">3</div>
+   </div>
+
+   <script>
+
+       // 默认的flex-firection的方向是从左到右
+
+   </script>
+
+</body>
+</html>
+//***************************************************************************************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+             font-size: 0;
+        }
+        .wrapper{
+            display: flex;  
+            flex-wrap: wrap;     
+            width:500px;                                      
+            height: 500px;
+            border: 1px solid #000;      
+            justify-content: space-around;   /* space-between; */     /* space-around: 实现所有元素居中的效果 */
+                                             /* align-items: 所有的项目都按这个属性来  */
+                                             /* align-self: 单个项目 《--》  align-item: 全部的项目       侧轴方向上的排列 */    
+        }
+        .item{
+            width: 100px; 
+            text-align: center;
+            height: 50px;
+            border: 1px solid #000;
+            box-sizing: border-box;
+            font-size: 20px;     
+            align-self: stretch;
+            background: orange;
+            margin: 10px;      
+        } 
+    
+    </style>
+</head>
+<body>
+
+   <div class="wrapper">
+       <div class="item">1</div>
+       <div class="item">2</div>
+       <div class="item">3</div>
+       <div class="item">4</div>
+       <div class="item">5</div>
+       <!-- <div class="item">6</div> -->
+   </div>
+
+</body>
+</html>
+//****************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+             font-size: 0;
+        }
+        .wrapper{
+            display: flex;  
+            flex-wrap: wrap;     
+            width:500px;                                      
+            height: 500px;
+            border: 1px solid #000;      
+            justify-content: space-around;  
+            align-items: center;       /* wrapper上设置了align-item(单个项目的)  .item上设置了align-self(所有项目的)  .item设置的align-self会把父级的align-items覆盖掉 */
+        }
+        .item{
+            width: 100px; 
+            text-align: center;
+            height: 50px;
+            border: 1px solid #000;
+            box-sizing: border-box;
+            font-size: 20px;     
+            /* align-self: center; */
+            background: orange;
+            margin: 10px;      
+        } 
+    
+    </style>
+</head>
+<body>
+
+   <div class="wrapper">
+       <div class="item">1</div>
+       <div class="item">2</div>
+       <div class="item">3</div>
+   </div>
+
+</body>
+</html>
+//****************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+             font-size: 0;
+        }
+        .wrapper{
+            display: flex;  
+            flex-wrap: wrap;     
+            width:500px;                                      
+            height: 500px;
+            border: 1px solid #000;      
+            justify-content: space-around;  
+            align-content: space-between;      /* 多根轴也有对齐方式 */  
+                                               /* space-between: 两个项目之间的间距相等 */
+                                               /* sapce-around:  每一根轴两边的距离相等   跟容器当中的justify: center效果类似  */
+        }
+        .item{
+            width: 200px; 
+            text-align: center;
+            height: 50px;
+            border: 1px solid #000;
+            box-sizing: border-box;
+            font-size: 20px;     
+            align-self: center;
+            background: orange;
+            margin: 10px;      
+        } 
+    
+    </style>
+</head>
+<body>
+
+   <div class="wrapper">
+       <div class="item">1</div>
+       <div class="item">2</div>
+       <div class="item">3</div>
+   </div>
+
+</body>
+</html>
+
+//****************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        html, body{
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center; /* 实现水平居中 主轴上的对齐方式 */
+            align-items: center;     /* 实现项目在侧轴上的对齐方式 */
+        }
+        .wrapper{
+            display: flex;  
+            flex-wrap: wrap;     
+            width:500px;                                      
+            height: 500px;
+            border: 1px solid #000;      
+            align-content: space-around; 
+        }
+        .item{
+            width: 200px; 
+            text-align: center;
+            height: 50px;
+            border: 1px solid #000;
+            box-sizing: border-box;
+            font-size: 20px;     
+            align-self: center;
+            background: orange;
+            margin: 10px;      
+        } 
+    
+    </style>
+</head>
+<body>
+
+   <div class="wrapper">
+       <div class="item">1</div>
+       <div class="item">2</div>
+       <div class="item">3</div>
+   </div>
+
+   <script>
+
+       // 实现水平垂直居中
+
+   </script>
+
+</body>
+</html>
+//**************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .item{
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+            background: transparent;  /* 透明色依然能把红色透过来   不会把颜色覆盖的 */
+                                      /* 设置白色其实是有值  会把颜色覆盖的 */
+                                      /* 白色和透明色不一样的 */
+        }
+        .demo{
+            width: 100px;
+            height: 200px;
+            background: red;
+        }
+    
+    </style>
+</head>
+<body>
+    
+    <div class="item"></div>
+    <div class="demo"></div>
+
+</body>
+</html>
+//******************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .item{
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            border: 50px solid transparent;
+            border-top-color: red;
+            /* border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: transparent; */
+            /* background: transparent;  */
+        }
+    
+    </style>
+</head>
+<body>
+    
+    <div class="item"></div>
+
+</body>
+</html>
+
+//*********************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .item{
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            border: 50px solid transparent;
+            border-top-color: red;
+            /* border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: transparent; */
+            /* background: transparent;  */
+        }
+    
+    </style>
+</head>
+<body>
+    
+    <div class="item"></div>
+
+</body>
+</html>

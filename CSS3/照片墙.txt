@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="./index.css">
+</head>
+<body>
+
+	<div class="wrapper init">
+		<ul class="content">
+			
+			<li class="item">
+				<div class="inner">
+
+					<div class="bg"></div>
+				
+					<div class="title">
+						<h2>image1</h2>
+					</div>
+				
+					<div class="dis">
+						<div class="header">bird1</div>
+						<div class="close"></div>
+					</div>
+				
+				</div>
+			</li>
+
+
+			<li class="item">
+				<div class="inner">
+					<div class="bg"></div>
+					<div class="title">
+						<h2>image2</h2>
+					</div>
+					<div class="dis">
+						<div class="header">bird2</div>
+						<div class="close"></div>
+					</div>
+				</div>
+			</li>
+			<li class="item">
+				<div class="inner">
+					<div class="bg"></div>
+					<div class="title">
+						<h2>image3</h2>
+					</div>
+					<div class="dis">
+						<div class="header">bird3</div>
+						<div class="close"></div>
+					</div>
+				</div>
+			</li>
+			<li class="item">
+				<div class="inner">
+					<div class="bg"></div>
+					<div class="title">
+						<h2>image4</h2>
+					</div>
+					<div class="dis">
+						<div class="header">bird4</div>
+						<div class="close"></div>
+					</div>
+				</div>
+			</li>
+			<li class="item">
+				<div class="inner">
+					<div class="bg"></div>
+					<div class="title">
+						<h2>image5</h2>
+					</div>
+					<div class="dis">
+						<div class="header">bird5</div>
+						<div class="close"></div>
+					</div>
+				</div>
+			</li>
+			<li class="item">
+				<div class="inner">
+					<div class="bg"></div>
+					<div class="title">
+						<h2>image6</h2>
+					</div>
+					<div class="dis">
+						<div class="header">bird6</div>
+						<div class="close"></div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<script src="./jquery.js"></script>
+	<script src="./index.js"></script>
+
+	<script>
+
+		// 漂移 自身高度的百分之百
+		//  inner --》 背景区域 中间的image1区域 header(birder1  x)
+		//
+		// flex居中
+		//
+		// display: inline-block;  float: left;  
+		// 缝隙16px
+		//  
+		// CSS书写顺序: 影响布局(diaply position)往顶上写    
+		//             宽高 盒模型的属性 padding margin border往下写   
+		//             其次是font-size line-height   再是color backgroundColor这些颜色值
+		//
+		// js和css代码怎么取舍????  
+		//      首先要看你做这个项目是否需要兼容IE8以前的浏览器 如果不需要的话这个动画的效果尽量用CSS3来做 
+		//             因为CSS3做动画把它变成3d可以开启UPU加速 而且用CSS3做动画没有时间队列 不然的话你还要加个锁什么的
+		//             如果需要兼容的话没办法了 因为transition animation对之前的浏览器是不兼容的 
+		// H5的方法 类似setTimout 屏幕刷新才会执行一次 这样比计时器稍微准确一点  但是也会有时间队列的问题
+		//
+		// 当点击的时候高度先缩没的 再展示宽度
+		//
+		// 怎么让它的高度往中间缩？？  让它的item一直中间居中
+		//
+		// 怎么画×
+		// ::before ::after默认是行级元素 行级元素不能设宽高 1)display: inline-block 2)position单位;一个元素给它设置position: absolute;是块元素了(脱离文档流定位) 可以设置宽高了
+
+	</script>
+
+</body>
+</html>
+//*************************************************************************************************8
+
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+html, body{
+    width: 100%;
+    height: 100%;
+}
+.wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    color: #fff;
+}
+.content{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* space-between: 两个项目的距离相等 */
+    width: 80%;                     /* space-around: 每个项目两边的距离相等  */
+    height: 80%;
+    /* background: orange; */
+}
+.item{
+    width: 16%;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;   /* 不写overflow: hidden; 即使外面做了圆角 但里面的内容一旦比这区域大也会把这个角撑开 我们还会看到那个角 */
+    background: #333;
+    /* opacity: 0.7; */    /* 用rgba写颜色的话子元素是不会有透明度的继承 */
+    transition: height 0.5s linear 0.5s, width 0.5s linear;
+}
+.wrapper-active .item{
+    transition: height 0.5s linear, width 0.5s linear 0.5s;
+}
+.active{
+    width: 100%;
+
+}
+.wrapper-active .item:not(.active){
+    width: 0%;
+    height: 0%;
+}
+
+
+.item .inner{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden; /* 为什么要设置？？？？？？？ */
+    transition: transform 0.5s linear ;     /* 怎么改变translate的值  1.js  2.借助一个class */
+}  
+.item:nth-of-type(2) .inner{
+    transition-delay: 0.1s;
+}                         
+.item:nth-of-type(3) .inner{
+    transition-delay: 0.2s;
+} 
+.item:nth-of-type(4) .inner{
+    transition-delay: 0.3s;
+} 
+.item:nth-of-type(5) .inner{
+    transition-delay: 0.4s;
+} 
+.item:nth-of-type(6) .inner{
+    transition-delay: 0.5s;
+} 
+
+.init .item .inner{
+    transform: translate3d(0, 100%, 0);  /* 200毫秒之后  init类型清除掉 */
+}                                        /* 为了使动画效果更流畅些建议使用3D 开启GPU加速 */
+
+
+.item .inner .bg{
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.7; 
+}
+.item:nth-of-type(1) .inner .bg{
+    background-image: url('./img2/1.jpg');
+}
+.item:nth-of-type(2) .inner .bg{
+    background-image: url('./img2/2.jpg');
+}
+.item:nth-of-type(3) .inner .bg{
+    background-image: url('./img2/3.jpg');
+}
+.item:nth-of-type(4) .inner .bg{
+    background-image: url('./img2/4.jpg');
+}
+.item:nth-of-type(5) .inner .bg{
+    background-image: url('./img2/5.jpg');
+}
+.item:nth-of-type(6) .inner .bg{
+    background-image: url('./img2/6.jpg');
+}
+
+.item .title{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  /* 由于宽高不定 因为鼠标hover的时候字体变大了 titel的区域表达 没办法通过margin-top margin-left写具体的值 */
+}
+.wrapper-active .item .title{
+    opacity: 0;
+    transition: opacity 0.2s linear;
+}
+.wrapper .title{ /* 注意权重 */
+    transition: opacity 0.2s linear 1s;
+}
+.item .title h2{
+    font-size: 14px;
+}
+.item:hover .title h2{  /* 总结: hover的放大方法  */
+    font-size: 16px;
+    transition: font-size 0.2s linear;
+}
+.item:hover .bg{
+    opacity: 1;
+}
+
+.item .dis{
+    position: absolute;
+    top: 30px;
+    width: 100%;
+    height: 30px;
+    opacity: 0;
+}
+.item .header{
+    float: left;
+    margin-left: 30px;
+    line-height: 30px;
+}
+.item .close{ /* 为什么往上漂移15px?????? */
+    position: relative;
+    float: right;
+    width: 30px;
+    height: 30px;
+    margin-right: 30px;
+}
+
+.item .close::before,
+.item .close::after{
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 0;
+    margin-top: -1px;/* ??? */
+    width: 30px;
+    height: 2px;
+    background: #fff;
+}
+.item .close::before{
+    transform: rotate(45deg);
+}
+.item .close::after{
+    transform: rotate(-45deg);
+}
+.active .dis{
+    opacity: 1;
+    transition: opacity 0.2s linear 1s;/* ???? */
+}
+
+
+/*
+
+   总结:  1) 分模块化 区分脉络  position   
+          2) 用class来改变状态  好维护
+          3) 命名语义化 可读性强  
+          4) 性能优化
+
+*/
+
+
+
+//**********************************************************************************
+
+var timer = setTimeout(function() { /* 只用一次 */
+    $('.wrapper').removeClass('init');
+}, 200)
+$('.item').click(function() {
+    $(this).addClass('active');
+    $('.wrapper').addClass('wrapper-active');
+})
+$('.close').click(function(e) {
+    e.stopPropagation();
+    $('.wrapper').removeClass('wrapper-active');
+    $('.active').removeClass('active');
+})
+
+//****************************    红包   ***************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.wrapper{
+			position: relative;
+			width: 300px;
+			height: 400px;
+			border: 2px solid #000;
+		}
+		.money{
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			line-height: 400px;
+		}
+		.bao{
+			position: absolute;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+		.one{
+			width: 100%;
+			height: 150px;
+			background: orange;
+			transition: transform 0.5s linear 0.5s;
+		}
+		.two{
+			width: 100%;
+			height: 250px;
+			background: red;
+			transition: transform 0.5s linear 0.5s;
+		}
+		.th{
+			position: absolute;
+			left: 50%;
+			margin-left: -50px;
+			top: 115px;
+			width: 100px;
+			height: 70px;
+			border-radius: 50%;
+			background: green;
+			text-align: center;
+			line-height: 70px;
+			transition: opacity 0.5s linear;
+		}
+		.active-one{
+			transform: translate(0, -100%);
+		}
+		.active-two{
+			transform: translate(0, 100%);
+		}
+		.active-th{
+			opacity: 0;
+		}
+	
+	</style>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="money">
+			一百万
+		</div>
+		<div class="bao">
+			<div class="one"></div>
+			<div class="two"></div>
+			<div class="th">拆</div>
+		</div>
+	</div>
+
+	<script src="./jquery.js"></script>
+	<script>
+
+        $('.th').click(function() {
+			$('.one').addClass('active-one');
+			$('.two').addClass('active-two');
+			$('.th').addClass('active-th');
+		})
+
+        //
+		// 后面的数字 可以用随机数自己生成
+		//
+		// 其实红包中多少钱一般是后台来调用的  不是前端自己生成的
+		//     像这些数据问题基本一般从后台拿 当它一刷新就从后台请求过来 拿多少钱插入到后面的dom元素中 
+		//     后面的值不是我们前端生成的一般是后台给我们传来的   数据一般后台从数据库中拿的
+		//
+		// 刮刮乐
+
+	</script>
+
+</body>
+</html>
+//**************************************************************************************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.wrapper{
+			perspective: 600px;
+			position: relative;
+			width: 200px;
+			height: 200px;
+			border: 1px solid #000;
+		}
+		.item{
+			position: absolute;
+			top: 50px;
+			left: 50px;
+			width: 100px;
+			height: 100px;
+			transform-style: preserve-3d;
+			animation: move 3s linear infinite;
+			
+			/* overflow: hidden; */    /* 再设置3D效果的时候不能使用overflow-hidden */
+		}
+		.font, .back{
+			position: absolute;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-size: cover;
+			background-position: center;
+			/* backface-visibility: hidden; */  /* ？？？？ */
+			border-radius: 50%;
+		}
+		.font{
+			transform: translateZ(1px);
+            background-image: url('./img/3.jpg');
+		}
+		.back{
+			background-image: url('./img/4.jpg');
+			transform: rotateY(180deg) translateZ(-1px);
+		}
+		@keyframes move{
+			100%{
+				transform: rotateY(360deg);
+			}
+		}
+
+	</style>
+</head>
+<body>
+	
+	<div class="wrapper">
+		<div class="item">
+			<div class="font"></div>
+			<div class="back"></div>
+		</div>
+	</div>
+
+	<script>
+
+		// 旋转需要3D
+		//
+		// 为什么正反面都是它?????
+		//
+		// 让他们距离远些  
+		// 景深
+		//
+		// 厚度
+		//
+		// 在设置3D效果的时候不能写overflow: hidden 不然会出错
+	
+	</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

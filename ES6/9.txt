@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body> 
+
+    <script>
+        
+
+
+        // class myPromise {
+        //     constructor(fn) {
+        //         if(typeof fn !== 'function') {
+        //             throw TypeError(`myPromise resolver ${fn} is not a function`);
+        //         }   
+        //         this.status = 'pending';
+        //         this.data = undefined;
+        //         // this.resolveCB = null;
+        //         // this.rejectCB = null;
+        //         this.resolveCBArr = []; // 一个存不了 用数组存 我们用数组存 相应的回调函数如果状态没变你全扔到我数组当中 
+        //                                 //     然后当我执行的时候执行就ok了 正常你执行完应该是unshift一下 从前面干出去一个 执行完出去一个
+        //                                 //     如果再p.then  这个时候then的状态已经变了 你就不会走那个状态变的那个函数了 直接利用p的状态走第一个回调函数和第二个回调函数了
+        //                                 //     所以它就不会再次执行上面的那两个函数了
+        //         this.rejectCBArr = [];
+        //         let resolve = (data) => { // 箭头函数具有绑定this的能力 根据箭头函数绑定this的原则 当它定义的时候 它的this已经被绑定了
+        //                                   //     无论之后它在哪里执行 它的this都是固定了 这里会产生作用域  父级作用域是constructor这个函数
+        //                                   //     constructor函数这个this是谁 是我们接下来要产生的实例 这里写的this就是我们实例中的this
+        //             if(this.status == 'pending') {
+        //                 // this.status = 'resolved';
+        //                 // this.data = data;
+        //                 // // 什么时候执行
+        //                 // // this.resolveCB && this.resolveCB();
+        //                 // this.resolveCBArr.forEach(fn => fn());
+        //                 setTimeout(() => {
+        //                     this.status = 'resolved';
+        //                     this.data = data;
+        //                     this.resolveCBArr.forEach(fn => fn());
+        //                 }, 0)
+        //             }                 
+        //         }   
+        //         let rejected = (data) => { 
+        //             if(this.status == 'pending') {
+        //                 // this.status = 'rejected';
+        //                 // this.data = data;
+        //                 // this.rejectCB && this.rejectCB();
+        //                 setTimeout(() => {
+        //                     this.status = 'rejected';
+        //                     this.data = data;
+        //                     this.rejectCB && this.rejectCB();
+        //                 }, 0)
+        //             }
+        //         }
+        //         fn(resolve, rejected);
+        //     }
+        //     then(resolveFn, rejectedFn) { // 我们要执行这两个函数 怎么去执行这两个函数 因为Promise最后是由两个状态的 这两个状态决定着两个函数执行
+        //         if(this.status === 'resolved') {
+        //             let res = resolveFn(this.data);
+        //             if(res instanceof myPromise) { // 看这个返回值是不是Promise对象 如果是就把这个Promise对象返回 因为Promise有then方法
+        //                                             //     如果不是你根据这个结果生成一个带有明确状态的Promise对象
+        //                 return res; 
+        //             } else {
+        //                 return myPromise.resolve(res);
+        //             }
+        //         }
+        //         if(this.status === 'rejected') {
+        //             let res = rejectedFn(this.data);
+        //             if(res instanceof myPromise) {
+        //                 return res;
+        //             } else {
+        //                 return myPromise.resolve(res);
+        //             }
+        //         }
+        //         if(this.status === 'pending') { // 为什么会出现peeding这个状态吗 
+        //             // 存起来 谁点then存谁身上
+        //             return new myPromise((resolve, reject) => { // 它的状态不变 接下来它的then函数就不会执行 为啥 因为它不知道它将来会干啥
+        //                                                          //     它的回调函数不知咋执行 因为没办法执行 我不知道我下一步要干什么
+        //                                                          //     所以说只有这两个函数执行之后才能决定我返回的这个Promise对象
+        //                                                          //     然后这个Promise对象它的状态怎么改变 只有当这两个(resolve, reject)执行
+        //                                                          //     这两个让我们存到这个函数当中 只有它身上的resolveCB执行之后
+        //                                                          //     我们这个里面的结果 它是Promise对象 那应该把它映射到外面来
+        //                                                          //     它是谁 决定我们这个Promise对象的状态是什么 如果是Promise对象
+        //                                                          //     正常来说应该返回它res 但是没办法 因为我们最外层是这样的Promise对象
+        //                                                          //     怎么办 把它映射到它身上 怎么映射呢 通过让它调用它的then方法
+        //                                                          //     它调用它then方法无论第一个还是第二个 对应的就是外层的函数成功还是失败的状态
+        //                                                          //     然后我调用里面的resolve 因为它是一个普通的数值 非Promise对象
+        //                                                          //     我直接就把这个myPromise对象的状态直接变成它就Ok了
+        //                                                          //
+        //                 // this.resolveCB = resolveFn; // 这个this指向的是谁 这么存能执行吗 执行完这个结果放到哪里 这么存我只存一个函数 
+        //                 //                             //     函数的参数怎么传啊 我函数里的参数是谁 我利用立即执行函数闭包的形式把它存一下
+        //                 //                             //     this指向then 不知道它状态什么时候变 我只能存一下
+        //                 this.resolveCBArr.push(((resolveFn) => { // 当它执行的时候会改变谁 改变我们外层Promise对象的状态
+        //                     return () => {
+        //                         let res = resolveFn(this.data);
+        //                         if(res instanceof myPromise) {
+        //                             res.then(resolve, reject);
+        //                         }else {
+        //                             resolve(res); // 它一执行影响的是这个Promise状态
+        //                         }
+        //                     }
+        //                 })(resolveFn));
+
+        //                 this.rejectCBArr.push(((rejectedFn) => {
+        //                     return () => { // 全用箭头函数的目的是保证this是最外层的 如果用普通函数来写 是不是要定义一个变量用self self.this = 'xxx'
+        //                         let res = rejectedFn(this.data);
+        //                         if(res instanceof myPromise) {
+        //                             res.then(resolve, reject); // 这个.then决定外层Promise的状态
+        //                         }else {
+        //                             resolve(res);
+        //                         }
+        //                     }
+        //                 })(rejectedFn));
+        //             })
+        //         }
+        //     }
+        //     // 如何在构造函数中声明静态方法 静态成员 只能是方法 属性声明不了    
+        //     // 如果你想写在里面也定义在构造函数上  ----  返回自定义的Promise对象 然后我让当前的Promise对象的值状态是resolve状态 把这个值存起来 
+        //     //       通过这种方法声明的方法叫做静态方法 通过static进行声明相对于定义在这个构造函数的上面 函数的静态方法 在这个构造函数上
+        //     static resolve(data) {
+        //         return new myPromise(resolve => resolve(data));
+        //     }
+        //     static reject(data) {
+        //         return new myPromise((resolve, reject) => reject(data + 'err'));
+        //     }
+        // }
+        
+        // 构造函数之内的方法   写在函数体内定义的方法
+        // 原型链上的方法       地狱在prototype上 跟constructor平级的方法
+        // 静态方法             Object.is() 定义在构造函数之上的方法 static
+
+        // var p = new Promise((resolve, reject) => {
+        //     setTimeout(function() {
+        //         reject('strong');
+        //     }, 2000)
+        // })
+        // console.log(p);
+        // p.then(null, err => console.log(err));
+        // 对于同一浏览器来说 同一对这样的值始终保持一致的 表象它们不一样 实际它们一样的 这是浏览器的特性  
+        
+        // var p = new myPromise((resolve, reject) => {
+        //     setTimeout(function() {
+        //         resolve('strong');
+        //     }, 2000)
+        // })
+        // p.then(err => console.log(err));
+        // CB执行会改变Promise的状态
+
+        // p = {
+        //     status: 'pending',
+        //     data: null,
+        //     cb: null
+        // }
+
+        // var p = new myPromise((resolve, reject) => {
+        //     setTimeout(function() {
+        //         resolve('strong');
+        //     }, 2000)
+        // })
+        // p.then(data => {
+        //     console.log(data);
+        //     return new myPromise((suc, err) => {
+        //         setTimeout(function() {
+        //             suc(2334);
+        //         }, 2000)
+        //     })
+        // })
+        // .then(data => {
+        //     console.log(data);
+        //     return new Promise((suc, err) => {
+        //         setTimeout(function() {
+        //             suc('Winner is me');
+        //         }, 2000)
+        //     })
+        // })
+        // .then(data => console.log(data));
+
+        // var p = new myPromise((resolve, reject) => {
+        //     setTimeout(function() {
+        //         reject('strong');
+        //     }, 2000)
+        // })
+        // p.then(null, data => {
+        //     console.log(data);
+        //     return new myPromise((suc, err) => {
+        //         setTimeout(function() {
+        //             err(2334);
+        //         }, 2000)
+        //     })
+        // })
+        // .then(null, data => {
+        //     console.log(data);
+        //     return new Promise((suc, err) => {
+        //         setTimeout(function() {
+        //             suc('Winner is me');
+        //         }, 2000)
+        //     })
+        // })
+        // .then(data => console.log(data));
+
+        // var p = new myPromise((resolve, reject) => {
+        //     setTimeout(function() {
+        //         resolve('strong');
+        //     }, 2000)
+        // })
+        // p.then(data => console.log(data));
+        // p.then(data => console.log(data)); // 为什么不等了 后面覆盖前面
+
+        // 如果用setTimeout跟它有什么关系吗
+        // let p = new Promise((suc, err) => {
+        //     console.log(1);
+        //     suc(2);
+        // }).then(data => console.log(data));
+        // console.log(3);
+        // 为什么是132 对应里面的回调函数 它采用了这样的事件队列的机制 里面其实有个setTimeout 这个setTimeout作用是干什么 将setTimeout里面的回调函数
+        //     无论是不是0 setTimeout(() => console.log(1), 0); console.log(2) 为什么是2 1 因为setTimeout里面的函数会把它放到事件队列的尾部
+        //     把它放到事件队列的尾部的意义是什么 目的是让所有的主函数 什么是主函数 只要不在setTimeout/setInteval里面的函数都是主函数 先让哪些语句执行完之后
+        //     这个东西才开始执行 只不过那个东西开始计时 就是执行到它已经计时了 只不过那个时候会把它放到事件队列的尾部 当整体函数除了setTimeout以及setInteval里面的函数
+        //     除了这两个函数之外呢所有东西都执行完之后 它们才会执行 所以你看到的结果是2 1 不是说这里面有0.多少秒的延迟 尽管它不准确是因为有事件队列的原因给它卡着
+        //     setTimeout这个0有什么影响啊 就是把它放到事件队列尾部 当主函数执行完之后才会执行它
+
+        // let p = new myPromise((suc, err) => {
+        //     console.log(1);
+        //     suc(2);
+        // }).then(data => console.log(data)); // 这在真正的源码中 这确实是这么去写的 就是里面利用了一个seTimeout把这里面要执行的函数放到事件队列尾部让它去执行
+        //                                     //     做到真正的异步 把它放到最后去执行
+        // console.log(3);
+        // 我们写的结果是123
+
+
+
+
+        // 模块化
+        // 使用模块化必须通过Babel去转一下 要不然它不认识 我们webpack基于node
+
+
+       
+
+    </script>
+    
+</body>
+</html>

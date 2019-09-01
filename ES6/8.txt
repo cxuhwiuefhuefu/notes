@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        
+        // Promise(pending => resolve / reject)
+        // 用来解决回调地狱的问题(V >) 代码也不好看 代码逻辑也显的复杂 然后我们通过Promise可以让我们这个代码更容易去读 思路更清晰 
+        //     更好的解决我们实际当中的问题 将多层次的代码转化成两层 引入一个状态 这个状态是Promise Promise承诺它里面存在一个将来才会发生的结果
+        //     为什么是将来 因为我们都用在异步 异步为什么有回调函数 因为我不知道这个异步去读取数据 我去本地读代码会读一些其他的东西
+        //     这个过程多长我没法预算 我有回调函数 读完之后我通知回调函数去执行 有了Promise我们就不用等了 有个状态通知我们了 
+        //     那个状态变了告诉我们读取成功还是有问题 看那个状态就可以了 我们不用纠结等着它有没有读完 我们去看那个状态 然后前者读也是改变那个状态
+        //     让我们去看
+        
+
+
+
+        // 封装一个加载图片的例子
+        // function loadURL(url) {
+        //     var img = new Image();
+        //     // img.src = url; // 为什么不在这里  如果图片极度小 你走到这的时候拿出来 代码还没走到下面呢 这个图片已经加载过来了
+        //                       //     所以它就不会触发这个两个函数了 比较的保险的做法是先把中两个函数先绑定上 绑定上你再把src给它 
+        //                       //     无论你速度多快 无论你是本地还是网络 请求完数据指定会触发 你要不加载成功要不加载失败 所以不要写在这里 
+        //                       //     防止错过我们对应的回调函数
+        //     return new Promise((resolve, reject) => {
+        //         img.onload = function() {
+        //             resolve(img);
+        //         }
+        //         img.onerror = function() {
+        //             reject(`${url} is not an effective URL`);
+        //         }
+        //         img.src = url; // 为什么不创建完之后
+        //     })
+        // }
+        // loadURL('xxxx.com').then(img => document.body.append(img), data => console.log(data));
+        // loadURL('https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2213670986,2923778817&fm=27&gp=0.jpg').then(img => document.body.append(img), err => console.log(err));
+        
+
+
+
+        // Promise API
+        // Promise status
+        // status: peeding       状态的转变是不可逆的
+        // let p = new Promise((suc, err) => { // 我们在里面的时候创建一个Promise对象 它这个对象是由回调函数中的两个函数决定当前Promise的状态
+        //     suc(1);
+        //     err(1);
+        // })
+        // console.log(p);
+        
+
+        // Promise.resolve .reject .all .race
+        // Promise.prototype.then .catch
+
+
+        // var p1 = Promise.resolve(1);
+        // var p2 = Promise.reject(2);
+        // console.log(p1);
+        // console.log(p2);    
+        // 如果调用Promise.resolve或者Promise.reject 它会返回一个Promise对象 这个Promise如果你调用resolve这个方法 
+        //     它就返回的是resolve状态的Promise对象 这个括号你写啥对应的value值就是啥 它会产生一个promise对象 它支持then调用 你调用哪个方法
+        //     状态就是哪个 括号传什么里面对应里面存的值就是什么
+        // 这个东西用来生成已经具有明确状态的Promsie对象 它在源码中会有很大的用处 
+
+
+        // Promise.all(PromiseArray); // 当我们这个PromiseArray每个Promsie对象的状态都为resolved的时候 返回每个Promise状态对应的值形成的数组 
+                                      //     由它们的结果返回相应的数组
+        // Promise.race(PromiseArray);
+        // PromiseArray由多个Promise对象构成的数组 数组中的每一位是Promise对象
+    
+        // var p1 = new Promise(resolve => resolve(1));
+        // var p2 = Promise.resolve(2);
+        // var p3 = Promise.reject(3);
+        // var p4 = Promise.all([p1, p2]);
+        // console.log(p4);
+        // var p5 = Promise.all([p1, p2, p3]);
+        // var p5 = Promise.all([p3, p1, p2]); // 跟前后顺序没关系 只要当前的数组由若干个Promise对象构成的数组当中 只要有一个状态变为reject状态
+        //                                     //     它会返回Promise对象的状态 也是reject状态
+        // console.log(p5);
+        // 因为我们Promise.all方法里面的任意一个Promise对象只要有一个状态为reject 它把它对应的值返回
+        // 这个Promise.all一般都用来什么的呢 同时发送多个请求 可能我们要完成一个功能 这个功能只有一个基础数据 通过这个基础数据请求三个接口
+        //     只有三个接口的数据都回来之后我才能往下做 
+        // var p5 = Promise.all([p3, p1, p2]).then(data => console.log(data), err => console.log(err));
+        // 只要遇到第一个状态为reject状态的Promise对象 当前返回的新的对象的状态就是reject 其他它都不管了 立马返回
+
+
+        // race谁跑的快算谁的 如果你失败的那个跑的快算失败 成功的跑的快的算成功的   
+        // var p1 = new Promise(resolve => resolve(1));
+        // var p2 = Promise.reject(2);
+        // var p3 = new Promise((suc, err) => {
+        //     setTimeout(() => {
+        //         suc(3);
+        //     }, 2000)
+        // })
+        // var p4 = Promise.race([p1, p2]); 
+        // console.log(p4);
+
+        
+
+        // var p1 = new Promise(resolve => setTimeout(() => resolve(1), 3000));
+        // var p2 = Promise.reject(2);
+        // var p3 = new Promise((suc, err) => {
+        //     setTimeout(() => {
+        //         suc(3);
+        //     }, 2000)
+        // })
+        // var p4 = Promise.race([p1, p3]); 
+        // console.log(p4);
+        // 同步的时候跟顺序有关系 异步的话谁来的快先搞谁
+        // var p4 = Promise.race([p1, p3, p2]);
+        // console.log(p4);
+        // 这个一般来做测试 什么测试 就是我们发一堆请求 我看哪个请求返回的最快 测试网络 测试接口的请求速度和反应速度 用race方法
+
+
+        // resolve和reject返回一个Promise 然后这个Promise对象带有明确的状态 调用哪个方法这个Promise状态就是谁
+        //    all是指若干个Promise对象必须保证每个Promise对象都是resolve的话 才会把若干个结果值返回 形成数组 race谁先返回就用谁
+
+
+        // Promise实例的回调函数
+        // Promise.reject(3).catch(err => console.log(err)); // 这个catch相对于.then(null, err => console.log(err)) 它也会返回一个Promise对象
+                                                          //    继续调用 继续去写
+        // Promise.reject(3).then(data => console.log(data), ).catch(err => console.log(err + 'err')); // 这个相对于这多了回调函数 
+                                                                           // 但是这么写语义化更好 因为前面then就取第一个参数 成功时的回调函数
+                                                                           //     resolve状态对应的函数 catch是失败的时候对应的函数
+                                                                           //     正常是这么写 如果成功就走then 如果失败就走catch
+        // Promise.reject(3).then(data => console.log(data), err => console.log(err)).catch(err => console.log(err + 'err'));  
+                                                  // 后面的catch是整个then返回的Promsie对象之后的catch 如果你只写一个回调函数 
+                                                  //     第二个catch会自动补进来 但最后还是返回统一的Promise对象                                                                 
+
+
+       
+
+        // myPromise
+        // 状态 Pending => resolved/rejected
+        // 数据 往往执行完那个函数会把数据返回
+        // then还支持链式调用
+
+        // function myPromise(fn) {
+        //     if(typeof fn !== 'function') {
+        //         throw TypeError(`myPromise resolver ${fn} is not a function`);
+        //     }
+        //     this.status = 'pending';
+        //     this.data = undefined;
+        //     var that = this;
+        //     function resolve() {
+        //         if(that.status === 'pending') {
+        //             that.status = 'resolved';
+        //         }
+        //     }
+        //     function rejected() {
+        //         if(that.status === 'peeding') {
+        //             that.status = 'rejected';
+        //         }
+        //     }
+        //     fn(resolve, rejected);
+        // }
+        // var p = new Promise(function(resolve, rejected) {
+        //     // console.log('resolve');
+        //     resolve();
+        // });
+        // var p1 = new myPromise(function(resolve, rejected) {
+        //     resolve();
+        // });
+
+
+        // 作业是用ES5的方式写出来
+
+
+        // class myPromise {
+        //     constructor(fn) {
+        //         if(typeof fn !== 'function') {
+        //             throw TypeError(`myPromise resolver ${fn} is not a function`);
+        //         }   
+        //         this.status = 'pending';
+        //         this.data = undefined;
+        //         let resolve = (data) => { // 箭头函数具有绑定this的能力 根据箭头函数绑定this的原则 当它定义的时候 它的this已经被绑定了
+        //                                   //     无论之后它在哪里执行 它的this都是固定了 这里会产生作用域  父级作用域是constructor这个函数
+        //                                   //     constructor函数这个this是谁 是我们接下来要产生的实例 这里写的this就是我们实例中的this
+        //             if(this.status == 'pending') {
+        //                 this.status = 'resolved';
+        //                 this.data = data;
+        //             }                 
+        //         }   
+        //         let rejected = (data) => { 
+        //             if(this.status == 'pending') {
+        //                 this.status = 'rejected';
+        //                 this.data = data;
+        //             }
+        //         }
+        //         fn(resolve, rejected);
+        //     }
+        //     then(resolveFn, rejectedFn) { // 我们要执行这两个函数 怎么去执行这两个函数 因为Promise最后是由两个状态的 这两个状态决定着两个函数执行
+        //         if(this.status === 'resolved') {
+        //             let res = resolveFn(this.data);
+        //             if(res instanceof myPromise) { // 看这个返回值是不是Promise对象 如果是就把这个Promise对象返回 因为Promise有then方法
+        //                                             //     如果不是你根据这个结果生成一个带有明确状态的Promise对象
+        //                 return res; 
+        //             } else {
+        //                 return myPromise.resolve(res);
+        //             }
+        //         }
+        //         if(this.status === 'rejected') {
+        //             let res = rejectedFn(this.data);
+        //             if(res instanceof myPromise) {
+        //                 return res;
+        //             } else {
+        //                 return myPromise.resolve(res);
+        //             }
+        //         }
+        //         if(this.status = 'peeding') { // 为什么会出现peeding这个状态吗 
+        //             console.log('peeding');
+        //         }
+        //     }
+        //     // 如何在构造函数中声明静态方法 静态成员 只能是方法 属性声明不了    
+        //     // 如果你想写在里面也定义在构造函数上  ----  返回自定义的Promise对象 然后我让当前的Promise对象的值状态是resolve状态 把这个值存起来 
+        //     //       通过这种方法声明的方法叫做静态方法 通过static进行声明相对于定义在这个构造函数的上面 函数的静态方法 在这个构造函数上
+        //     static resolve(data) {
+        //         return new myPromise(resolve => resolve(data));
+        //     }
+        //     static reject(data) {
+        //         return new myPromise((resolve, reject) => reject(data + 'err'));
+        //     }
+        // }
+        
+        // var p = new Promise(function(resolve, rejected) {
+        //     resolve(1);
+        // });
+        // p.then(() => {}, ()   => {}); // then方法写在原型上的
+        // p.then(data => console.log(data)).then(data => console.log('sec' + data)); // 原生的Promise对象支持链式调用 
+                                                    //   then方法之所以链式调用的原因是我们每次then它都会返回一个Promise对象 只有Promise对象有then
+                                                    //   其他对象没有then的 我们这会返回一个Promise对象 我们每次.then都会返回Promise对象   
+                                                    //   不能直接返回this
+        // var p1 = new myPromise(function(suc, err) {
+        //     err(1);
+        // })
+        // p1.then(data => console.log(data), err => console.log(err + 'err')); 
+
+        // var p = new Promise(function(resolve, rejected) {
+        //     resolve(1);
+        // })
+        // p.then(data => console.log(data)).then(data => console.log('sec' + data)); // 我们支持then方法链式调用 then方法之所以支持链式调用的原因是
+                                                             // 我们每次then都会返回一个Promise对象 只有Promise对象有的 其他对象没有的
+                                                             // this指向实例化对象
+        // p.then(data => data).then(data => console.log('sec' + data)); // 说明它在这返回了一个Promise对象
+                                                             // 这个Promise对象里面的状态是{status: 'resolved', data: 1} 只有这样的Promise对象再调用then的时候
+                                                             // 这个data是1 状态是resolved 我们会执行第一个回调函数                                                
+        
+        // var p = new Promise(function(resolve, rejected) {
+        //     rejected('err');
+        // })              
+        // p.then(data => data, err => {
+        //     console.log(err + 'err');
+        //     return err;
+        // })                   
+        // // {status: resolve, value: err}  为什么是resolve呢
+        // .then(data => console.log(data + 'suc'), err => console.log(err + 'err' ));   
+        
+        // var p = new Promise(function(resolve, rejected) {
+        //     rejected('up');
+        // })              
+        // p.then(data => data, err1 => {
+        //     console.log(err1 + 'err');
+        //     return new Promise((suc, err) => {
+        //         // err(err1);
+        //         suc(err1); 
+        //     })
+        // })                   
+        // // {status: resolve, value: err}  为什么是resolve呢
+        // .then(data => console.log(data + 'suc'), err => console.log(err + 'err' ));   
+        //  这里得出一个结论 对于then函数 如果返回的是Promise对象 那接下来的then它所执行的函数由返回的Promise对象决定 因为这个对象里面有状态
+        //      根据这个状态决定执行哪个函数 如果不是Promise对象 会返回一个Promise对象 这个Promise对象的状态是一定的 返回一个状态resolve的Promise对象        
+    
+        // var p = new Promise(function(resolve, rejected) {
+        //     // rejected('up');
+        //     resolve('up');
+        // })                 
+        // p.then(data => data + 'fir', err => err + 'firErr') // 它会根据这个值封装一个Promise对象 返回一个带有明确状态的Promise对象
+        // .then(data => console.log(data));    // 说明值走第一个函数 是因为它返回的不是Promise对象 它默认的给它封装成一个正确状态的Promise对象
+                                             //     是一个常值
+
+        // var p = new Promise(function(resolve, rejected) {
+        //     resolve('up');
+        // })
+        // p.then(data => new Promise((suc, err) => { // 执行它的时候它会返回一个正常状态的Promise对象 指定会走第一个函数
+        //     // suc(data);
+        //     err(data);
+        // }), err => err + 'firErr')
+        // .then(data => console.log(data), err => console.log(err + 'ERROR')); // 返回一个Promise对象 这个Promise对象是suc 是第一个回调函数
+                                                        // 所以它是resolve状态的Promise 所以它一定会走第一个 因为我没有做任何的处理 直接把这个值拿来
+                                                        // 改成err(data) 这个返回的Promise对象是啥 是resolve 但一定会执行err => console.log(err + 'ERROR)
+                                                        // 跟上一个Promise没有关系                    
+
+        // var p = new myPromise((resolve, reject) => {
+        //     // resolve('strong');
+        //     reject('strong');   
+        // })
+        // p.then(data => console.log(data), err => console.log(err + 'err'))
+        //     .then(data => console.log(data + 'undefined')); // 虽说走的是'strong' 但值是undefined 因为它返回的是一个普通值 不是一个Promise对象 
+                                                            //     所以一定会走他
+
+        // var p = new myPromise((resolve, reject) => {
+        //     reject('strong');
+        // })
+        // p.then(data => console.log(data), err1 => new myPromise((suc, err) => {
+        //     // suc(err1);
+        //     err(err1);
+        // }))
+        // .then(data => console.log(data + 'undefined'), err => console.log(err));
+        // 它可以接着.then 这个链式调用跟我们jQuery不一样 不是返回this 而是返回一个新的Promise对象 只要.then 它一定会返回一个新的Promise对象
+
+        // var p = new myPromise((resolve, reject) => {
+        //     setTimeout(function() {
+        //         reject('strong');
+        //     }, 2000)
+        // })
+        // p.then(null, err => console.log(err)); // 它不会走reject这个回调函数了 因为我们这个代码不会等人 我们创建完p之后紧接着p.then
+        // 这个时候状态既不是resolve也不是reject 值是peeding 因为它还在异步当中 所以结果是peeding 这个问题怎么解决呢 如果你这个状态还是peeding的话
+        //     我接着返回一个Promise对象 为啥 我可能接下来还要then 但是我返回这个Promise对象之后它会有回调函数 这个回调函数我要存起来
+        //     因为只有它状态变的时候我才能让这个函数去执行 所以这个函数我要先存起来 然后当这个状态一变之后就去触发就ok了
+
+
+        // new Promise(11);  //  "Uncaught TypeError: Promise resolver 11 is not a function" 说明这必须写一个函数
+        // new Promise(function() {})
+
+    </script>
+    
+</body>
+</html>

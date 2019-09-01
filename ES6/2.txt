@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+        // 块级作用域 const less这两种新型声明变量的方式
+
+        // 函数
+        // 把实现特定功能的代码段这样的代码段封装起来 这样的一块称之为函数 可以使用若干次的代码用来实现特定功能的这样代码段 我们把它封装成函数 
+        //     也称之为函数
+
+        // var person = function () {};
+
+        // 之前的函数可以当作函数进行调用 当作方法用来执行特定的功能 构造函数 call/apply(在函数执行的时候调用this)
+        // bind(返回一个新的函数 带有明确this指向的新的函数 当你这个函数无论在哪个函数下执行 无论谁点它 它的默认this就是绑定的this 绑定了就不能再变 
+        //      唯一改变this的值是new操作符)
+
+        // function show() {
+        //     console.log('welcome 2 duyi!');
+        // }
+        // show();
+
+        // function Person(name) {
+        //     this.name = name;
+        // }
+        // var p1 = new Person('wxb');
+        // Person.call(window, 'window'); 
+
+
+
+
+        // 闭包
+        // 返回长度为n的随机数字符串的函数
+        // function Random(n) {
+        //     let max = 1;
+        //     for(let i = 0; i < n; i++) {
+        //         max *= 10;
+        //     }
+        //     return function() {
+        //         let str = '' + parseInt(Math.random() * max);
+        //         let count = n - str.length; // 补位操作
+        //         for(let i = 0; i < count; i++) {
+        //             str += '0';
+        //         }
+        //         return str;
+        //     }
+        // }
+        // let random8 = Random(8);
+        // random8();
+
+        // 函数式编程 ----> 防抖 偏函数 curry化.....
+
+
+
+
+        // 1. 函数的默认值
+        // function Person(name) {
+        //     // this.name = name || 'none';
+        //     this.name = name === undefined ? 'none' : name;
+        // }
+        // let p = new Person('wxb');
+        // let p1 = new Person();
+        // let p2 = new Person(null);
+        // let p3 = new Person(undefined);
+        // let p4 = new Person(0);
+        // let p5 = new Person('');
+        // let p6 = new Person(false);
+
+        // 2. ES6 函数的默认值
+        // function Person(name = 'none') { // 这种方法显得更简洁 使用风格简单 这样写给我们使用这个函数的人去看更明朗更好看
+        //     this.name = name;
+        // }
+        // let p = new Person('wxb');
+        // let p1 = new Person();
+        // let p2 = new Person(null);
+        // let p3 = new Person(undefined);
+        // let p4 = new Person(0);
+        // let p5 = new Person('');
+        // let p6 = new Person(false);
+
+        // function Person(name, age = 0, weight) { // 这里面name和weight被我们称之为必要参数 这个值你一定要传 因为它是我们这个对象很重要的部分
+        //                                          //     而且它没办法给默认值 对于如何去走默认值 当你传的这个值它绝对等于undefined的时候
+        //                                          //     才会走默认值 否则其他的就按你传的来 如果想让它走默认值就走undefined
+        //     this.name = name;
+        //     this.age = age;
+        //     this.weight = weight;
+        // }
+        // // let p1 = new Person('wxb', 6, 30);
+        // let p1 = new Person('wxb', undefined, 30);
+
+
+        // arguments对默认函数影响
+        // function max(num1, num2) { // 说明在这种情况下无论你传的这个具体的实参对于这个实参列表始终保持着同步
+        //     console.log(num1, arguments[0]);
+        //     console.log(num2, arguments[1]);
+        //     num1 = 4;
+        //     console.log(num1, arguments[0]);      
+        //     arguments[0] = 6;
+        //     console.log(num1, arguments[0]);    
+        // }
+        // max(1, 2);
+
+        //  function max(num1, num2) { // 在严格模式下我们的arguments跟我们具体的某个形参发生了这个微妙的变化 它们两个不会产生这样的绑定
+        //                             //     你变你的 我变我的 如果没有严格模式的话实时保持对应
+        //     "use strict" 
+        //     console.log(num1, arguments[0]);
+        //     console.log(num2, arguments[1]);
+        //     num1 = 4;
+        //     console.log(num1, arguments[0]);      
+        //     arguments[0] = 6;
+        //     console.log(num1, arguments[0]);    
+        // }
+        // max(1, 2);
+
+        //  function max(num1 = 0, num2) { // 我用了默认值虽说没取它但是我们的表现模式跟严格模式下的表现行为一样 当我使用默认值这种形式 
+        //                                 //    函数体内部自动变为严格模式
+        //     console.log(num1, arguments[0]);
+        //     console.log(num2, arguments[1]);
+        //     num1 = 4;
+        //     console.log(num1, arguments[0]);      
+        //     arguments[0] = 6;
+        //     console.log(num1, arguments[0]);    
+        // }
+        // max(1, 2);
+
+        // 惰性求值
+        // function getValue() {
+        //     console.log('hello'); // 调式
+        //     return 6;
+        // }
+        // function count(n, m = getValue()) {
+        //     console.log(n + m);
+        // }
+        // count(1, 1);
+        // count(1);
+
+
+
+
+        // 函数跟TDZ有什么关系
+        // function add(m, n = m) {
+        //     console.log(m + n);
+        // }
+        // add(1, 2);
+        // add(1);
+        // 你在调用它的时候 尤其是默认值的时候
+        // TDZ = [m, n];
+        // let m; // TDZ = [n];
+        // let n = m; // TDZ = [];
+
+        // function add(m = n, n) {
+        //     console.log(m + n);
+        // }
+        // add(1, 2); // 说明没走n还是惰性的
+        // add(1);
+        // add(undefined, 2); // 为什么会报错呢 TDZ = []; let m; let n;由于它先不走默认参数 扫描一下 TDZ = [m, n];  接着执行代码 发现TDZ当中有m和n
+                           //     n还在TDZ当中 但是你这还用n就得报错了 如果没有n就正常了 这是暂存性死区给我们带来的特点 先定义不操作
+                           //     函数的参数是绝对等于undefined才取默认值 相对我们原来手动写好很多 节省代码量 让人容易懂
+
+
+
+
+        // 无命名参数和拓展运算符
+        // 无命名参数是什么 传统的ES6之前的参数存在的问题 解决了 
+        //     1. 默认值的问题  
+        //     2. 参数不定的时候怎么办 用arguments 假如参数不定 前三个是必要参数 后几个是不定参数 你传不传都行 这个时候通过下标去访问
+        //        这样的话能访问是访问 但是语义化是不好 还得arguments[0] arguments[1]...去获取前几个的必要值 后面几个值随便了 
+        //        所以通过arguments去访问 通过下标访问不直接不方便 
+        //     3. 箭头函数不支持arguments
+        // 新的规范出现就是为了解决这些问题的
+
+        // 需求: 一个函数 把若干数字 + 1 添加到指定数组当中 
+        // function count(arr, ...arg) { // 它跟拓展运算符的原理是一样的
+        //     console.log(arg);
+        //     console.log(arguments);
+        //     for(let i = 0; i < arg.length; i++) {
+        //         arr[i] = arg[i] + 1;            
+        //     }
+        // }
+        // count();
+        // count([], 1, 2, 3, 4, 5); // 说明arg是个数组
+        // let arr = [];
+        // count(arr, 1, 2, 3, 4, 5);
+        // console.log(arr);
+
+        // 它也是有限制的 每个函数当中最多有且只能有一个不定参数
+        // function fn(a, ...arg   , ...arg1s) { // 为什么有两个不定参数 为什么把它分组 如果你是计算机的话的话怎么把它分组
+                                                 //     因为计算机不知道怎么分组 
+        // }
+       
+        // 它也不能用默认值 
+        // function fn(a, ...arg = []) {
+        // }
+
+        // 如果有不定参数一定把它放到最后 --- 计算机怎么执行的 从左向右依此去看 如果有不定参数必须放到最后 只能有一个不定参数
+        // function fn(first, ...arg, last) {
+        // }
+        // fn(1, 2, 3, 4, 5);
+
+        // 总结: 在每个函数中 最多有且只能有一个不定参数 不可以有默认值 必须是最后一个参数 因为js引擎会解析不明白 这就是不定参数
+
+
+
+
+        // 拓展运算符
+        // call/apply 改变this指向
+        // 为什么你执行为什么改变window 只想把arr当成普通参数传到这个max函数当中 但是你为什么通过这种方式去操作 还是有些不便利性
+        // let arr = [1, 2, 3, 4, 5, 6];
+        // function max(...arg) {
+        // }
+        // max.apply(window, arr);
+        
+        // ...: 扒掉括号操作([], {})
+        // ...[1, 2, 4, [5]] = 1, 2, 4, [5] // 扒括号不是所有都扒掉 只扒掉最外层 在js这种结果是不允许单独存在 只有参数是这种情况
+                                            //     只把最外层的括号扒掉 对象也是一样 这种形态无法单独存在我们的普通语句当中
+                                            //     但这个东西往往存在函数当中                                    
+        
+        // let arr = [1, 2 , 3, 4];
+        // max(...arr); // 如果你是数组我就进行扒括号的操作
+        // max(1, 2, 3, 4);
+
+        // 好处: 语义化好 数组合并
+
+        // var arr1 = [1, 2, 3, 4, 5];
+        // var arr2 = [6, 7, 8, 9];
+        // arr1.concat(arr2);
+        // var arr3 = [...arr1, ...arr2]; // 之前不是说拓展运算符只能用一个吗 那是函数定义的时候只能有一个它 
+                                          //     但是它用的时候只要进行扒括号操作怎么扒都行
+                                          //     后面的vue中的mapMutations mapActions这些方法都会用到拓展运算符
+
+
+
+
+         // 箭头函数
+         // => 通过它来定义的函数
+         // 基本结构:  () => {}    传统函数function() {}
+        
+        //  let getName = name => name;
+        //  getName('cmh');
+        //  它们在等同的 小括号大括号不见了 这也是在特殊情况下不见的 对于小括号()函数的参数有且只能有一个 才可以不写小括号 我写也可以
+            //  let getName = (name) => {return name}  
+        //  let getName1 = function(name) {
+        //      return name;
+        //  }
+        // let getName = (name) => name; // 对于{} 函数体仅仅只有一条语句的时候 不写
+
+        // let show = (name, age) => console.log(name, age);
+        // show('cmh', 1); 
+
+        // let fn = () => {}
+        // function fn() {}
+
+        // 如果在函数中想返回一个对象怎么处理
+        // 在箭头函数中返回对象
+        // let returnObj = (name) => ({name: name}); // 属性名和值一样 可以进行简写 ({name})
+        // returnObj('cmh');
+
+        // 立即执行箭头函数 
+        // let fn = ((name) => name)('cmh');
+        // let name = function(name) {return name}('cmh');
+
+        // 箭头函数特点: 箭头函数中没有this 没有arguments 用拓展运算符 不定参数 super(class) 原型(prototype)也是没有的
+        //     不能被new操作符执行 箭头函数更常用在我们的计算当中 因为它代表的是数据的流向 这个箭头代表的是数据的流向 它可以一层一层的往里推/嵌套
+        //     箭头函数不能被作为构造函数 更多的功能用于计算 数据流向 只要不是通过箭头函数去定义构造函数 任何函数都可以写的 
+        //     由于具有这些特点方便JavaScript引擎优化代码 因为它不会北作为构造函数 所以根本不用去管他会被new操作符去调用 更方便的进行代码优化
+        // let fn = () => {}
+        // new fn();
+
+        // 箭头函数具体绑定this的能力 跟bind基本一样 this绑定分为四种  
+        //     默认绑定(空执行函数 函数单纯执行 this指向window)
+        //     隐式绑定(谁调用this指向谁)
+        //     显式绑定(apply call bind)  call/apply只有执行的时候改变this bind会返回带有this指向的函数
+        //     new绑定 new操作符返回一个对象 this指向这个对象 
+        // 然后权重依次到下最高 先看看有没有new绑定 有new绑定一定就指向当前创建的实例 如果没有new绑定就看向显示绑定执行过没有
+        //     哪怕你bind之后的函数再调用通过new操作符进行调用的话 this还指向当前实例 而不是指向被Bind改变的this指向
+
+        // var name = 'window';
+        // var obj = {
+        //     name: 'obj',
+        //     print: function() {
+        //         console.log(this.name);
+        //     }
+        // }
+        // obj.print();
+        // var newPrint = obj.print.bind(window);
+        // var newPrint = newPrint.bind(obj);
+        // newPrint();
+        // newPrint();
+        // 发现bind只能绑定一次 再绑定无效了 其实箭头函数跟它一样
+
+        // var name = 'window';
+        // var obj1 = {
+        //     name: 'obj',
+        //     print: () => console.log(this.name)
+        // }
+        // obj1.print();
+        // var newPrint = obj1.print.bind(obj1);
+        // newPrint();
+        // scope(箭头函数) -> window
+
+        // 绑定this的规则: 箭头函数中没有this 箭头函数具有绑定this的能力 箭头函数中绑定的this是谁 绑定离自己最近的非箭头函数作用域中的this
+        //     这里有两步 先找到它的父级作用域是谁 紧接着判断当前作用域的this是谁 第一步是找作用域 第二步是找作用域的this
+        //     箭头函数的非箭头函数产生的父级作用域 这个this就是我们的this 箭头函数也会产生作用域
+
+        // let obj3 = {
+        //     name: 'obj3',
+        //     getName: function() {
+        //         let show = () => console.log(this.name);
+        //         show();
+        //     }
+        // }
+        // obj3.getName();
+        //                 this = obj3
+        // scope2(show) => scope1(getName) => window 
+        // 只要定义了就绑定了this 
+
+        // var name = 'window';
+        // function scope() {
+        //     setTimeout(() => {
+        //         console.log(this.name)
+        //     }, 1000)
+        // }
+        // scope();
+        // scope.call({name: 'now you see me'});
+                                                                                                                              
+        // function fn(cb, timeout) {
+        //     cb();
+        // }
+
+    </script>
+    
+</body>
+</html>

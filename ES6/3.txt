@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+        // 对象拓展 
+        // 创建对象
+        //     1. 对象字面量
+        //        let obj = {};
+        //     2. new操作符
+        //        let obj1 = new Object();
+        //     3. Object.create()
+        //        let obj2 = Object.create(null); // 产生一个指定具有明确原型指向的对象 继承  
+        // 
+        // 对象增删改查
+        // obj.name = 'xxx'; // (增加和修改)
+        // obj[name] = 'xxx'; 
+        // delete obj.name;
+        // obj.name
+        
+
+        // ES6对于对象的拓展 --- 给我们带来一个新的对象 我们写对象会越来越轻松 写的东西越来越明确
+        // let name = 'wxb';
+        // let person = {
+        //     // name: name  // 属性名和属性值同值  key: value  key和value值一致不太好 
+        //     name // 当属性值和value值相同我可以这么写 省略 它会自动寻找当前访问作用域去找这个name值 然后把它赋值进来
+        // }
+        // console.log(person.name);
+        // function Person() { // 不能这样写的 规则是当你的属性名和属性值相同可以省略
+        //     return {
+        //         this.name,
+        //         this.age
+        //     }
+        // }
+        
+        // let name = 'wxb';
+        // let person = {
+        //     name,
+        //     // sayName: function() { // 这样写有些冗余
+        //     //     console.log(this.name);
+        //     // }
+        //     sayName() {  // 这样写更好的解释它是一个函数 这种形式是我们ES6对函数简写的行为
+        //         console.log(this.name); // 在对象当中简写函数
+        //     }
+        // }
+        // 你这么写了 首先JavaScript引擎遇到name之后会在这个name所在的作用域所能访问的作用域 无论它存储作用域链顶端 
+        //     一层一层根据作用域链往下找还是存在直接window 它一定会在能访问的作用域中查这个值 如果找到了 把它返回回来 如果没找到就是undefined
+        
+        
+        //     代码量少 对象更清晰了
+
+
+
+
+        // 可计算属性
+        //     中括号方法去属性赋值
+        // let front = 'elem-';
+        // let name = 'zhansan';
+        // let stuff = 'stuff';
+        // // let stuffList = {
+        // //     [front + stuff]: name // 它们进行拼接     可计算属性就是通过这种方式对现有的对象进行属性的拼接 属性的计算
+        // // }
+        // let stuffList = {
+        //     ['elem' + stuff]: name
+        // }
+        // console.log(stuffList['elem' + stuff]); // 通过这种方式去读一个对象
+
+
+
+
+        // ES6中关于对象新增的一些方法
+        // 为什么这么说呢 这个ECMA组织有这样的设计理念 有这样的设计目标 这个设计目标是什么 不再去创建全局的函数 
+        //     例如isNaN(判断这个数是非数)就是一个全局函数 因为我没有定义它 isFinit() 有这样若干的辅助函数放到全局中 
+        //     如果我不知道的话也没办法进行调用 所以说在规定 定义新的方法的时候 不在全局定义 因为不方便去查找 而且比较多 
+        //     万一你定了一个语义化的名字跟原来进行冲突了是不是也不好 不在全局定义新的方法或者数据 不在Object.prototype的上定义方法
+        //     如果你在什么定义一些方法的话 有可能也会被触及到 不在全局更新新的方法 不在Object.prototype上定义新的方法 又想增加一些属性怎么办 
+        //     于是引入了静态方法 在对象的身上定义 Object.is()
+        //     加强的比较运算符 ==  ===        ===用的比较多 不会让等式两边的值产生隐式类型转换
+        // console.log(Object.is(1, 1));   
+        // console.log(NaN == NaN); // 非数一定不等于非数的
+        // console.log(NaN === NaN);  
+        // console.log(Object.is(NaN, NaN));
+        // console.log(Object.is(+0, -0)); // 如果在数学宏观层面上+0跟-0是相等的 从微观层面上是不等于的 在工作中用来表示方向或者其他特殊的一些性质
+        // console.log(+0 === -0); 
+        // console.log(Object.is([], []));
+        // console.log(Object.is([], 0));
+        // console.log([] == 0); // 任何的比较它都会最后转化成数字比较
+        // console.log(+[]);
+        // console.log(0 == false);
+        // console.log([] == false);
+        // console.log(0 == []);
+        // 非数跟非数不相等 有时候我需要判断是不是非数 这个时候 我们可能前面这我做一个值 前面是一个操作一个运算 我可能做一个完整性安全性的处理
+        //     我需要有这样的判断能力 判断我这个值运算完之后它是不是非数 可能判断完是非数报错我就不往下走了 
+        //     如果你通过NaN === NaN这种方法判断是有弊端的 这种方法不安全      === 更简洁更易于我们去处理      Object.is()加强比较运算符
+
+
+
+
+        // Object.assign()  max-in 混合 混合是多对象之间的混合 
+        // 需求: 把friend对象上面的属性copy到person对象上面
+        // Vue定义的max-in方法 对外暴漏也有max-in方法
+        // function maxin(receive, obj) { // 把obj的属性放到receive上
+        //     for(let prop in obj) {
+        //         receive[prop] = obj[prop];
+        //     }
+        //     return receive;
+        // }
+        // let person = {
+        //     name: 'wxb',
+        //     age: 18,
+        //     height: 180,
+        //     height: 170 
+        //     // ...200
+        // }
+        // let friend = {
+        //     weight: 100, 
+        //     height: 100
+        // }
+        // maxin(person, friend);
+        // console.log(person);
+        // 发现一个问题: 属性覆盖
+        // 对象有非常多的属性 创建人物 可能我看这个设计稿可能对人物原型有哪些属性往下写 在同一个对象里面定义两个相同的属性会怎么样 在IE5之前会报错
+        //     ES6之后会把这个覆盖了 这个不算错 应该要避免 
+
+        // let person = {
+        //     name: 'wxb',
+        //     age: 18,
+        //     height: 180
+        // }
+        // let friend = {
+        //     weight: 100,
+        //     height: 100
+        // }
+        // let obj = {
+        //     name: 'dxb'
+        // }
+        // let p = Object.assign(person, friend, obj); // 这个方法支持多个属性的 可以拼接多个属性到person 然后返回一个person
+        // console.log(person);
+        // // 怎么判断它是否相等 对象比较的是地址
+        // console.log(p === person); // 说明它会改变原始值同时返回person值
+
+
+
+
+        // Object.keys
+        // Object.values
+        // Object.entries
+        // let person = {
+        //     name: 'wxb',
+        //     age: 18,
+        //     height: 100
+        // }
+        // console.log(Object.keys(person)); // 把对象的key值返回
+        // console.log(Object.values(person)); // 把这几个key值对应的value值返回 返回一个数组
+        // console.log(Object.entries(person)); // 把每个key-value拆成一个数组 0为key 1为value 这个辅助函数
+
+
+
+
+        // 增强对象原型 怎么增加呢
+        // let p = {
+        //     sayName() {
+        //         console.log(this.name);
+        //     }
+        // }
+        // let person = Object.create(p);
+        // console.log(person.__proto__ == p);
+        // console.log(Object.getPrototypeOf(person));
+        // console.log(Object.getPrototypeOf(person) == p);
+        // 之前想拿对象原型是通过__proto__ __proto__是私有属性 私有属性是干什么的 本意是不要暴漏给我们 不想暴漏给我们去拿这个属性的 
+        //     而且通过这种方法拿这个属性也不符合开发的理念和开发性质 因为正常来说我们要暴漏一个接口 假设person.getPrototype()用来返回它的原型
+        //     这个才符合计算机科学的思维 因为它更安全 属于一个暴漏接口 你不能去通过这个方法操作这个值
+        //     但是你可以通过这个方法geyPrototype()方法去拿到这个值 在ES5中定义了一个方法 Object.getPrototypeOf()
+        //     相比于这个返回原型是更好的方式  在面试的时候 __proto__要说理解它底层 你看过怎么获取 
+        //     更符合标准的是getPrototypeOf()获取person的原型通过这种方法 通过这种方法获取原型更符合计算机思维
+        //     也就是这种出于计算机编程对于软件构造的安全性的考虑 一个健壮性的考虑 这样暴漏接口的方式获取它的原型
+        
+        // 单纯的改变原型
+        // function Person(name = 'none') {
+        //     this.name = name;
+        // }
+        // Person.prototype.sayName = function() {
+        //     console.log(this.name);
+        // }
+        // var p1 = new Person();
+        // p1.sayName();
+        // Person.prototype.sayName = function() {
+        //     console.log(this.name + 'proto');
+        // }
+        // var p2 = new Person();
+        // p1.sayName();
+        // p2.sayName();
+        // // Object.getPrototypeOf(xxx);
+        // let obj = {
+        //     sayName() {
+        //         console.log(this.name + 'obj');
+        //     }
+        // }
+        // // Object.setPrototypeOf(p1, p2); // 让p1的原型等于p2 可以这种方法可以设置具体某个对象的原型 而且不会改变原有原型 
+        //                                   //     所以这种方法是用来干什么 用来指定某个对象让它对象指定的原型是谁
+        // Object.setPrototypeOf(p1, obj); 
+        // p1.sayName();
+        // p2.sayName();
+        // console.log(Object.getPrototypeOf(p1) == obj);
+        // let p3 = {
+        //     name: 'p3',
+        //     sayName() {}
+        //         // return Object.getPrototypeOf(this).sayName.call(this); // 拿到p3上的原型
+        //         // console.log(super === Object.getPrototypeOf(this)); // 不能用来比较
+        //         // super.sayName(this); // super代表当前对象的原型 super相当于Object.getPrototypeOf(this) super就是指向当前对象的原型 
+        //                                 // 但是有一点切记            
+        //                                 // 不用.call来绑定 因为它自动绑定的
+        //         return Object.getPrototypeOf(this).sayName(this);
+        //     }
+        // }
+        // // let p3 = {
+        // //     name: 'p3',
+        // //     sayName: function() { // 用命名函数的方式来简写 为什么它报错 因为内部有个私有属性[[homeObject]] 这个属性是干什么的 
+        // //                           //     这个属性当你这种方式创建的时候 它是个匿名函数 这时 这个[[homeObject]]属性值没办法绑定 不知道是谁
+        // //                           //     但是如果你通过sayName() {}这种函数简写的方式 它可以告诉你这个值等于p3 即[[homeObject]] = p3
+        // //                           //     然后导致你访问super的时候自然而然的去找p3的原型 这种方式可以 sayName: function() {}不可以 
+        // //                           //     是因为如果你通过匿名函数 因为它当成普通函数 它没办法绑定这个值 只有当它执行的时候 它才会进行绑定 
+        // //                           //     但是sayName() {}这种方式它会默认的绑定这样的属性值[[homeObject]] = p3
+        // //                           //     这个时候我调用我的super的时候我就知道我的原型是谁了 这个时候我就可以调用我原型上面的方法 
+        // //                           //     然后同时将这个this自动绑定到当前作用域的this
+        // //         super.sayName.call(this); 
+        // //     }
+        // // }
+        // Object.setPrototypeOf(p3, p1);
+        // p3.sayName(); // 
+
+
+
+
+        // 函数的简写 属性的简写 多几个静态方法 拓展合并的方法
+        // 不写分号绝大多数是对的 因为你换行的时候如果写小括号的时候 它就会把你合并成一个方法 给你报这样的错误  
+
+
+
+
+        // 解构赋值
+        // resDate = {
+        //     director: 'xxx',
+        //     imgs: [],
+        //     casts: {},
+        //     // ... 200行
+        // }
+        // resDate.director;
+        // let director = resDate.director;
+        // let imgs = resDate.imgs;
+        // let casts = resDate.casts;
+        // 这样拿出来 代码量非常的庞大 而且没有任何的意义 
+        // 复杂图形公式 总写非常麻烦
+
+
+        // let random = Math.random;
+        // let floor = Math.floor;
+        // 当Math什么有非常多的属性和方法 难道你一个一个字母去写吗 因为有的时候我们真的需要用到它 我们还想给它个简明 
+
+
+        // 我们解构赋值做的一件事就是模式匹配 它的实质是模式匹配 怎么进行模式匹配
+        // resDate = {
+        //     director: 'xxx',
+        //     imgs: [],
+        //     casts: {},
+        //     // ... 200行
+        // }
+        // let {director, imgs, casts} = resDate = {director: 'xxx', imgs: [], casts: {},}; // 说明我这里面的值被声明了 
+                                                          // 然后每个值对应的是这里面的属性值 这里写个逗号没报错的 其实正常来说如果真正理解js机制 
+                                                          // 后面写个逗号是好的 这个js引擎更好的去查找每个key值和value值 更好的去匹配
+                                                          // 对象简写 let{director: director, imgs: imgs, casts: casts}
+                                                          // 前面这部分(冒号+key值)是规则 在同一规则下可以进行赋值 前面的东西真没关系 我起个别名叫
+                                                          // let {director: dir, imgs: img, casts: c} key值和冒号组成的模式 具体根据什么匹配
+                                                          // 这个是我们对象的解构赋值  但是我们可以把它声明成变量然后全局的去用
+
+        // let director, imgs, casts;
+        // {director, imgs, casts} = resDate; // 属性简写  'Uncaught SyntaxError: Unexpected token ='两个大括号之间会被js引擎解析成我们的一个代码块
+                                           //     代码块是不能被赋值的 如果你这块写了一个功能等于谁谁 左边是被赋值 右边是要赋值给左边的 
+                                           //     这样写js执行的时候会把{director, imgs, casts}单独看成一块 然后进行等于 所以会报错 怎么办 
+                                           //     最外层外面加个括号 根据括号优先级你中间先进行一个操作 解构赋值的操作 然后再干别的
+        // ({director, imgs, casts} = resDate); // 如果是已经声明的变量还想对于对象进行解构赋值 director:是模式/规则 后面的东西跟后面的东西进行匹配
+                                             //     是这样的一个逻辑    
+
+        // 解构失败 解构不成功 解构出来的值为undefined 说明我这个value值没有找到对应的值 解构失败 
+            //    let {director, imgs, casts, value} = resDate;    
+        // 不完全解构 一个不够 一个剩余
+            //    let {director, imgs} = resDate;
+        // 这两种都是正常解构的极端现象 一种是我没匹配到这个值就被称之为解构失败 另一种是我没全构到你的值 这种称之为不完全解构    
+        // let{PI, random, pow, floor} = Math;  // 通过这种方法也称之为不完全解构
+        
+
+        // 解构赋值其中也有默认参数 函数中的默认参数解决了一类问题 同样这里也是
+        // 解构默认值
+        // let {PI = 3.14, random, pow, floor, A: A=0} = Math; // 可以通过这种方式进行默认值  A=0     A: A=0
+
+
+        // 嵌套解构
+        // let node = {
+        //     type: 1, 
+        //     parentNode: {
+        //         tagName: 'div',
+        //         values: {
+        //             value: 123
+        //         }
+        //     }
+        // }
+        // let {type, parentNode, parentNode:{ tagName, values: {value}}} = node; // 哪些值是变量 冒号+key值这都是规则
+
+
+
+
+        // 数组的解构赋值
+        // let = [a, b, c] = [1, 2, 3]; // 它的模式匹配是位置对应
+        // let [d, [e], f] = [1, [2], 3]; // 它的匹配模式位置对应
+        // let [g = 10, h, i] = [, , 10];  // g走的叫默认值     h是undefined没匹配到 这叫解构失败 没有    如果这个i是10 正常解构
+        // 只要结构一样就行 数组就一种形态 前后的状态一样就行
+        // let [a, [b, c, [d], [e], f]] = [1, [2, 3, [4], [5], 6]]; 
+        // 数组的解构就是模式匹配 数组它用的没有对象多 默认值 解构成功 解构失败 不完全解构都有
+
+
+
+
+        // swap函数 交换a与b的值
+        // let a = 1;
+        // let b = 2;
+        // let temp = a;
+        // a = b;
+        // b = temp;
+
+        // let a = 1;
+        // let b = 2;
+        // [a, b] = [b, a]; 
+        // 它的原理是什么  0x000  1 a    0x001  2 b   a和b怎么进行交换 本来是原始值的 原始值的话 无论是引用值还是原始值 只要你对它重新赋值
+        //     它都重新开辟一块内存空间 0x002  a b     0x002  b a     位置对应 解构赋值 进行这样的交换
+
+
+        // 经过对象的解构赋值 数组的解构赋值  只要记住规则一样就能解构
+    </script>
+    
+</body>
+</html>

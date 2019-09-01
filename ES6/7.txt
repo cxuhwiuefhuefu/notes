@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        
+        // Promise Class
+        // Class  类  种类
+        // 把人所有的特征抽象提取出来形成抽象的概念称之为类 逐渐细化的过程 为什么要引入class类这个概念 在我们原来有构造函数
+        //     构造函数也是把公共的部分提取出来 用来产生同一类型的对象 只不过我们每个实例化的对象可能有些不同
+        // function Person(name, age = 0) {
+        //     this.name = name;
+        //     this.age = age;
+        // }
+        // var p1 = new Person('zhangsan');
+        // console.log(p1);
+        // 通过这种方法去定义一个构造函数有什么问题
+        //     1. 和普通函数一样 不好区分 可能是方法/函数/构造函数     大驼峰
+        //     2. 构造函数普通执行的话会给全局带来两个变量             对于这样的构造函数必须通过new操作符执行
+        // Person('zhangsan');
+
+
+        // 函数声明 VS class声明
+        // function Animal(name, age = 1) {
+        //     this.name = name;
+        //     this.age = age;
+        //     this.showMsg = function() {
+        //         console.log(this.name, this.age);
+        //     }
+        // }
+        // Animal.prototype.xxx = function() {}
+        // class Person {  // 这相对于Person的一个描述 和普通函数有什么区别 是function 意味着class是语法糖 糖衣语法 
+        //                 //    指定是构造函数 指定是类了 它不能是普通函数
+        //     constructor(name, age = 0) {
+        //         this.name = name;
+        //         this.age = age;
+        //         this.fn = function() {
+        //             console.log('inner');
+        //         }
+        //     }
+        //     // 如果我们想在里面添加方法怎么办 跟它并列的去写 只要不命名constructor 用什么方式命名都可以 中途不能写逗号 每个方法中间是没有逗号的
+        //     //     这里面写的东西其实都是原型上 就算你不写constructor它也会给你默认写一个 跟constrctor并列的写函数将会写到原型上 为什么这么设计
+        //     //     为什么把方法写到原型上 我在实例化的时候 如果实例中有方法 每实例化一次这个方法都会被实例化一次 每次创建一个新的对象的话
+        //     //     这个方法都会跟着去创建 如果我方法很多呢 如果我写在原型上 我实例化自身的属性 指定放到自身里 我想调用方法去原型上找
+        //     //     大家都用原型 哪怕原型变了 哪怕原型链上的方法变了 所有的对象都共享同一原型 大家的方法都会变 如果你想给自己添加 
+        //     //     就在当前的实例对象添加一些方法 所以这是把方法定义在原型上的重要性 目的是我们共享原型同时在实例化的时候不用做过多的操作 
+        //     //     这种形式我们通过class声明可以把方法写在我们对象内部吗
+        //     showMsg() {
+        //         console.log(this.name, this.age);
+        //     }
+        // }
+        // // Person.prototype = {
+        // //     constructor() {},
+        // //     showMsg() {}
+        // // }
+        // console.log(typeof Animal, typeof Person);
+        // var p1 = new Person('wxb', 18); // showMsg在原型上
+        // var dog = new Animal('茅台'); 
+        // console.log(p1);
+        // console.log(dog);
+        // console.log(p1.showMsg === Person.prototype.showMsg);
+        // console.log(dog.showMsg === Animal.prototype.showMsg);
+        // p1.fn();
+        // console.log(Person.prototype.constructor === Person);
+        // console.log(Animal.prototype.constructor === Animal);
+        // 就是语法糖 只不过在里面加了有些限定
+        // Person(); // "Uncaught TypeError: Class constructor Person cannot be invoked without 'new'"
+        
+        
+        // 函数声明整体提升    class必须先定义再使用的 不存在变量提升 对于class来说它没有函数声明整体提升 
+        //    在定义的时候class声明的类必须通过new操作符进行实例化
+
+
+
+
+        // 函数在js当中被称之为高等公民 因为函数能用的地方特别多 他可以被当成参数去执行 去传进去 普通函数可以作为参数传进去 可以返回函数
+        //     可以进行赋值 函数的灵活性
+        // class也可以作为函数
+        // function createObject(classDefine) { // 这个函数的目的是返回唯一的对象 哪怕你传两次函数体都是相同的 
+        //     return new classDefine();
+        // }
+        // let obj = createObject(class {
+        //     constructor() {
+        //         this.value = 'null';
+        //     }
+        // })
+        // console.log(obj);
+
+
+        // 函数能做的它也能做 我们可以直接实例化一个obj对象 同时传参数
+        // let obj = new class {
+        //     constructor(name) {
+        //         this.name = name;             
+        //     }
+        // }('wxb');
+        // console.log(obj);
+
+
+        // 想创建一个可以被迭代的类 它产生的实例可以被迭代
+        // class IteratorArr {
+        //     constructor() {
+        //         this.arr = [1, 2, 3, 4, 5, 6];
+        //     }
+        //     *[Symbol.iterator]() { // 我们通过这个迭代器进行 把里面的这个属性数组进行迭代 然后这里写的是生成器的方式 自己去遍历当前实例里面的数组
+        //         // yield *this.arr[Symbol.iterator]();
+        //         yield *this.arr.entries();
+        //     }   
+        // }
+        // var i = new IteratorArr();
+        // for(let item of i) {  // 原理 i[Symbol.iterator]()
+        //     console.log(item);
+        // }
+        // 说明class里面添加我们的生成器 只要是迭代器就要[Symbol.iterator]这个暴漏的接口 它用来提供默认的迭代器 
+        //     只要是能迭代的对象一定被for of循环进行遍历
+
+
+
+
+        // 继承      圣杯模式
+        // ES5
+        // function Animal(name = 'none', age = 1) {
+        //     this.age = age;
+        //     this.name = name;
+        // }
+        // Animal.prototype.eat = function() {
+        //     console.log('animal eat');
+        // }
+        // Animal.prototype.drink = function() {
+        //     console.log('animal drink');
+        // }
+        // function Person(name, age) {
+        //     Animal.call(this, name, age);
+        // }
+        // Person.prototype = Object.create(Animal.prototype); // 跟圣杯模式一样 借用中间的构造函数
+        // Person.prototype.eat = function() {
+        //     console.log('person eat');
+        // }
+        // var p = new Person('dg', 60);
+        // console.log(p instanceof Person);
+        // console.log(p instanceof Animal);
+        // p.eat();
+        // Animal.prototype.eat();
+        // 通过这种方法实现圣杯模式 不共享原型 你改你的 我改我的 我们两个互不影响 所以说这涉及重写
+        // 继承的目的 增加代码复用        
+        // 模块化 高内聚低耦合 高内聚是每个模块的功能尽量低 就是说每个模块所有的功能都是一起 不依赖其他模块 低耦合是指我们彼此之间的关系特别少
+        //     防止出现A模块不能用 导致B模块也不能用 这就是弱耦合的好处 耦合就是我不依赖你 内聚是尽量把功能 只要是一块业务内尽量放到一起
+
+
+        // class Animal {
+        //     constructor (name, age) {
+        //         this.age = age;
+        //         this.name = name;
+        //     }
+        //     eat() {
+        //         console.log(this);
+        //         console.log('animal eat');
+        //     }
+        //     drink() {
+        //     }
+        // }
+        // Animal.prototype.type = 'animal';
+        // class Person extends Animal {
+        //     constructor(name, age) {
+        //         super(name, age); 
+        //         // this = Animal.call(this, name, age);
+        //         this.nose = 1;
+        //     }
+        //     // 重写 
+        //     eat () {
+        //         console.log(super.type);
+        //         console.log(super.eat()); // 你通过这种方法去调用父类原型上的方法 但是这个this指向的是当前的这个this 会绑定字类的this
+        //         console.log('person eat');
+        //     }
+        // }
+        // var p = new Person('dg', 60);
+        // console.log(p);
+        // p.eat();
+        // Person.prototype.eat;
+        // Animal.prototype.eat;
+        // extends super
+        // 这个extends谁就继承谁
+        // super假如不调用的话 "ncaught ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor"
+        //     翻译过来就是如果你想调用this必须执行super super是继承Animal super也可以称之为子类 派生类 为什么调用super super如果当函数执行
+        //     代表父类构造函数 父类构造函数会返回一个对象 首先我们的字类中没有this 因为刚刚报错 如果你想用this必须调用super
+        //     说明super的作用是产生this 刚开始能用 是因为它代表的是父类的构造函数 同时在super(name, age)这会产生一个实例 就是this
+        //     相对于Animal.call(this, name, age); 调用父类的构造函数为子类实现一个对象 同时super具有自动绑定this的功能 自动绑定字类
+        //     就是通过它调用产生this 同时产生一个对象 是字类的对象 只不过借用的是父类的构造函数 super可以当成对象去用 怎么当成对象 
+        //     当成对象有什么用  super如果当成对象代表的是父类的原型
+        // 我们在继承字类的时候要调用super要为当前的实例/为字类创建一个实例并且产生this this指向当前实例
+        // 先用父类的方法创建一个对象 再让这个对象变成我们字类的 
+
+
+
+
+
+        // Promise 承诺
+        //    回调 地狱(表现的是状态) >
+        // fn1((suc, err) => {
+        //     fn2((suc, err) => {
+        //         fn3((suc, err) => {
+        //             fn4((suc, err) => {
+        //                 fn5((suc, err) => {
+        //                     fn6((suc, err) => {
+        //    
+        //                     })
+        //                 })
+        //             })
+        //         })
+        //     })
+        // })
+        // 代码多分不清层次    地狱指的是这个状态 无穷无尽
+        // 依赖关系 fn1 => fn2 => fn3 ...  彼此依赖的关系 每个函数的执行都依赖于下一个函数 栈结构
+        // A (
+        //     B (
+        //         C (
+        //             D (
+        //                 F (
+        //    
+        //                 )
+        //             )
+        //         )
+        //     )
+        // )
+        // 老板 给 A 完成一个工作 只需A给一个结果
+                // A
+                //   s1 = 'pending' => 'resolve' new Promise(function(resolve, reject) {
+                //        resolve(); 
+                //   }).then();
+                // B
+                //   s2 = 'pending' => 'resolve' new Promise();
+                // C
+                //   s3 = 'pending' => 'resolve' new Promise();
+                // D  
+                //   s4 = 'pending' => 'resolve' new Promise();
+                // E  
+        // 这个解决了闭环的过程 解决了这个回调地狱的麻烦 我们的步骤多了 但是层数减少了 这更好读 不是进行降维的过程 从六层变为两层 只不过步骤添加了一些
+        //     每个状态都是一个Promise对象 每个Promise对象是有状态的        
+        // var A = new Promise(function(resolve, reject) { // 这两个分别对应的是不同的状态
+        //     // resolve(); // 执行这个就会把这个状态变成resolve
+        //     // reject(); // 其实不是报错 因为它是走的是reject的状态 reject的状态默认是true的状态
+        //     // 异步我怎么知道呢
+        //     setTimeout(function() {
+        //         resolve();
+        //         // reject();
+        //     }, 2000)
+        // }).then(function() { // A的状态变了怎么通知B
+        //     console.log('success');
+        // }, function() {
+        //     console.log('error')
+        // }) // 为什么写两个函数 因为你这有两个状态 两个状态对应这两个回调函数
+        // console.log(A);
+        // Promise有个生命周期 刚开始的状态是pending(准备状态)  =>  resolve(sucess), reject(fail)
+
+
+        // var A = new Promise(function(resolve, reject) {
+        //     setTimeout(function() {
+        //         resolve({value: '1234'});
+        //     }, 2000)
+        // })
+        // A.then(function(data) { 
+        //     console.log(data);
+        //     console.log('success');
+        // }, function(err) {
+        //     console.log('error');
+        // })
+        // A.then(function(data) {
+        //     console.log(data);
+        //     console.log('success');
+        // }, function() {
+        //     console.log('error');
+        // })
+        // A是一个对象 这个对象存在一个状态 要么是resolved状态 要么是reject状态 只不过它这个状态是一直存在的 这两个回调函数谁也不看
+        //    就看它的状态成功我就执行第一个失败我就执行第二个 如果你啥也没有我就等 只要你确定我就去找对应的回调函数执行就可以了
+        // A如果是Ajax的话 它保存的是你请求回来数据的那个状态 是成功了还是失败了 同时把你请求回来的数据拿走 它们两个同时执行 
+        //    如果你发送一次Ajax请求能返回两次数据吗 你发送一次Ajax你只能拿到一次数据 我们这拿到两次数据 A是带有状态同时也把你这个数据也做了缓存
+        //    只不过我后面要做的事情不看别的 就看A的状态 A的状态变我就照常输出 A的状态没变我啥也没干 就等A的状态
+        // Promise承诺你在未来会做的成或者做不成 Promise会存在未来一段时间内要做的事情
+
+
+        // var S1 = new Promise(function(resolve, reject) {
+        //     console.log('A is doing');
+        //     setTimeout(function() {
+        //         resolve({value: 'A'});
+        //     }, 2000)
+        // })
+        // S1.then(function(data) { 
+        //         console.log('A 做完了, B正在做');
+        //         return new Promise((resolve, reject) => {
+        //             setTimeout(function() {
+        //                 resolve({value: 'B'})
+        //             }, 2000)
+        //         })
+        //     }, function(err) {
+        //         console.log('error');
+        //     })
+        //     .then(function() {
+        //         console.log('B 做完了, C正在做');
+        //         return new Promise((resolve, reject) => {
+        //             setTimeout(function() {
+        //                 resolve({value: 'C'});
+        //             }, 2000)
+        //         })
+        //     }, function() {})
+        //     .then(function() {})
+        // 用它特别方便 因为你不需要考虑 不会写成回调地狱那种代码 把刚才的代码写到上面的话会比下面乱很多 而且它的内容没有这里面的内容明确
+        
+        
+        // Promise就是一个带有状态的对象 这个状态是未来才会决定它到底是成功还是失败的 如果成功的话 我想让这个状态成功的话就执行resolve
+        //    不想让它成功就执行reject 无非就这两种操作 能把它的状态从peeding转成resolve跟peeding转成reject
+        //    这两个函数会把当前的状态改变之后返回一个Promise对象  
+        // var p = new Promise(function(resolve, reject) {
+        //     resolve(1);
+        // })
+        // var p2 = p.then(data => console.log(data), err => console.log(err)); // 我们后面这个回调函数完全根据它这个状态来操作的 
+                                                                             //     只要then执行 无论这个函数返没返回Promise对象
+                                                                             //     它都会默认返回一个
+        // var p2 = p.then(data => data, err => console.log(err)); // 虽然你这没有显示的写Promise对象 
+                                                                //     它会把这个值返回为resolve状态值为1的Promise对象                                                                     console.log(p); 
+        // var p2 = p.then(data => new Promise((resolve, reject) => resolve(data)), err => console.log(err)); // 跟刚才是一样的 
+                                                                                  // 如果你显示返回一个Promise那就由这个Promise状态决定
+        // var p2 = p.then(data => new Promise((resolve, reject) => reject(data)), err => console.log(err)); // 这里报了个小错 
+        // console.log(p2);    
+        // 所以我每个Promise对象都是有状态(peeding resolve/reject)的和返回值(你的函数传的值作为返回值)
+        // Promise对象.then(suc, err) 无论执行成功或者失败的函数 都会返回一个新的Promise 为什么要返回一个新的Promise对象 方便链式调用
+        //     这都是有条件的 新的Promise对象的状态由谁决定呢 如果显式返回Promise对象 return new Promise()
+        //     .then的结果就跟返回的Promise对象由它决定 如果隐式 就是我没有明确的返回Promise对象 会返回一个状态为resolve 
+        //     也就是成功状态的Promise对象 这是它的表象 我们能看到它的表象 这就是Promise的基本用法和基本的特点
+        //     只不过我们一直在上面模拟这个状态 解决回调地狱的问题 由多层变为两层
+
+
+
+
+        // 你这个怎么算成功怎么算失败
+        // var p3 = new Promise((suc, err) => {
+        //     var random = Math.random() * 100;
+        //     if(random > 60) {
+        //         suc(random);
+        //     } else {
+        //         err('太小了');
+        //     }
+        // })
+        // p3.then(data => console.log(`数字为 ${data}`), err => {
+        //     console.log(err);
+        // })
+        
+
+        // 对于Ajax也一样
+        // let myAjax = (url, method = "GET") => {
+        //     return new Promise((resolve, reject) => { // 这个Promise状态怎么变呢 由这个Ajax来决定
+        //         $.ajax({
+        //             url, 
+        //             method,
+        //             success(data) {
+        //                 resolve(data);
+        //             },  
+        //             error(err) {
+        //                 reject(err);
+        //             }
+        //         })
+        //     })
+        // }
+        // var ajax1 = myAjax('www.xxx.com');s
+        // ajax1.then((data) => {}, (err) => {}); 
+        // ajax1.then((data) => {}, (err) => {});   // 可以多次进行调用
+        // 它去请求这个网站的资源会返回这个Promise对象 这里面的Promise对象的状态由里面的Ajax请求成功还是失败决定
+        // 这个相对于传统的利用Promise进行Ajax封装的 因为Ajax1会存在Promise状态
+
+    </script>
+
+</body>
+</html>

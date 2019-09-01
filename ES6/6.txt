@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        
+        // 迭代器(遍历器) Iterator    生成器
+        // 什么是迭代 就是重复反复的过程 称之为迭代 那么对于我们js当中的迭代就是数据的迭代 然后我们这个迭代也叫遍历 所以这个迭代器也叫遍历器
+        // 在ES6中引入这个迭代器为了进行数据的迭代 我学过的数据类型需要进行遍历 首先我的数组需要遍历 我们的对象也可以遍历 for in循环
+        //     map结构和set结构也有forEach 它们都需要遍历 都需要迭代
+        
+
+
+
+        // 原来对于数组的迭代怎么操作 
+        //     1. for循环
+        //     2. map(返回数组) forEach filter(在过程中符合条件的返回 把符合条件的过滤出来) (ES5)
+        // 为什么提供这些方法 单纯拿forEach/for来说
+        // var arr = [1, 2, 3, 4];
+        // var len = arr.length;
+        // [[[1, 2], [3, 4]]]  先遍历最外一层 再遍历里面的一层 再遍历里面的每一个 如果通过for循环需要监控i, j, k
+        //    因为你需要通过它们三个确定在数组中的每个值 这样的话容易存在一些问题的 当你这三个值没把控好 尤其是做+1/-1的时候 这样的话产生一些差异
+        //    因为我们的遍历是不定的 而且需要你对i, j, k把握的的非常严格 因为你需要知道它是几才能对它进行一些操作 可能从数组取一个值 
+        //    可能从数组中删除一个值 你需要对这些值进行操作 这样对我们是非常复杂的 因为我们要维护的值特别多 三维数组需要维护3个变量 
+        //    n维数组需要维护n个变量 有什么好办法 其实forEach是对for循环的加强版本 为什么这么说 你这有item少了相关的比较 item语义化也很好
+        //    代表的是数组当中的每一位 再加上这个函数'console.log(item);'让它的层级变的更清楚 
+        // for(let i = 0; i < len; i++) { // 这么写比较耗费性能的 arr.length     如果我去遍历多维的数组 我们可能要多重循环 
+        //     console.log(arr[i]);
+        //     console.log(arr[i][j][k]); // 假如我们写个多重循环的话 通过这种方式去访问数据的一个位置 它一定是一个多维的 
+        // }
+        // arr.forEach(item => console.log(item)); 
+        // arr.forEach(item => {
+        //     item.forEach(i => console.log(i)); // 这个i是item数组里面的内容 是给二维数组 如果是多维的继续写下去 现在是变量的降维过程 
+        //                                        //     原来你如果想遍历二维数组需要两个变量 到forEach依然选两个变量 
+        //                                        //     当item和i的关系变的没有那么密切了 item单纯指的是当前这个值 当前这个数组的遍历器
+        //                                        //     我就把它当成一维的去看 具体我里面的是一维的还是二维的 里面的值再去判定 我不需要管了
+        //                                        //     其实这是一种由繁到简化的过程 我们今天说的迭代器不单纯是对数组的迭代
+        //                                        //     对于所有需要被迭代的数据提供统一的接口
+        // })
+
+
+
+
+        // 我遍历数组用map forEach filter 遍历我们的Map结构和Set结构我们只有forEach 然后我们遍历对象用for in  它们的方法各不相同
+        //     对于这个迭代器我们在ES6当中对它进行引入 通过统一的接口 就是所有的人都可以用同一个方法去迭代当前可被迭代的对象
+        //     只不过它里面迭代的规则是不一样的 但是这个迭代规则谁写呢 这个默认的迭代器已经写好了 我们也可以写迭代器
+        // 迭代器是一个特殊的对象 它有专门为可迭代对象设计的统一接口 各种对象都可以使用这个方法进行迭代 这个接口用来遍历数据 接口就是一个方法
+        // Iterator = {
+        //     next() {
+        //         return {
+        //             value,
+        //             done
+        //         }
+        //     }
+        // }
+        // 迭代器对象的特点
+        //     每个迭代器都有next方法 每次执行next方法返回一个结果对象 {value, done} value是每次迭代的数据   done表明迭代是否结束(Boolean类型值)
+        //         到底有没有结束       原理 它是怎么做到的 每个迭代器有专用指针 我第一次迭代的时候默认指针指向1 
+        //         然后我调用next方法之后每个迭代器都有专用指针 开始时指向数据结构当中的第一个值 每次调用next方法指针下移 每次调用方法返回当前值
+        //         然后指针下移 当指针的对应值不存在 我遍历这个数据结果遍历完了 我迭代完之后它的value是undefined done是true
+        //     迭代器可以通过for of循环进行调用 怎么调用 是通过调用底层的迭代器进行遍历的 每个迭代器可以支持for of循环
+        //
+        // 这个迭代怎么来 像数组这些数据结构是经常被迭代的 我们就对被迭代的对象进行一个方法的封装 提供统一的接口
+        // let arr = [1, 2, 3];
+        // arr.iterator.next();     {value: 1, done: false}; // 我当前迭代的数据的值是1 我并没有迭代完成
+        // arr.iterator.next();     {value: 2, done: false}; // 这是下一次迭代 走下一次数据
+        // arr.iterator.next();     {value: 3, done: false}; // done还是false表名当前本次并没有结束
+        // arr.iterator.next();     {value: undefined, done: true}; // 表明迭代完成了 结束了
+        // Iterator = {
+        //     next() {
+        //         return {
+        //             value,
+        //             done
+        //         }
+        //     }
+        // }
+
+
+        // 迭代器对象 创建一个可以迭代数组的迭代器   
+        // 每个迭代器都有一个专用指针 所以要有个指针
+        // let arr = [1, 2, 3];
+        // function createIterator(arr = []) {
+        //     let nextIndex = 0; // nextIndex相对于数组的索引 所以要跟它去比
+        //     return {
+        //         next() {
+        //             if(arr.length - 1 < nextIndex) {
+        //                 return {
+        //                     value: undefined,
+        //                     done: true
+        //                 }
+        //             }else {
+        //                 return {
+        //                     value: arr[nextIndex ++], // 先用后加
+        //                     done: false
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // var i = createIterator(arr);
+        // i.next(); // {value: 1, done: false}
+        // i.next(); // {value: 2, done: false}
+        // i.next();
+        // 对于数组的实际迭代也是这么做 迭代器支持for of循环 它是怎么做到的 
+
+
+        // 默认的Iterator接口 就是对于特定的数据它已经支持了 里面有一个对象可以去访问Iterator接口 具有内置Iterator接口的对象对象是哪些
+        //     Array Map Set String arguments NodeLists 为什么没有对象呢 这些数据都带有默认的迭代器 默认的迭代器都有哪些 这些都是默认的类型
+        //         都是自带的
+        //     Array Map Set 为什么说它们三个 因为它们长的像 它们三个有默认的迭代器 有entries(), keys(), values() 
+        //         看看它们每个forEach方法里面的参数 尤其是Set前面两个参数一样    
+        // let arr = [1, 2, 3, 4];
+        // let map = new Map([['name', 'wxb'], ['age', 18], ['hobbit', 'boy']]);
+        // let set = new Set([1, 2, 3, 4, 5]); // Set就是一个一维的 通过key相不相同去重
+        // let arrEntries = arr.entries();
+        // let mapEntries = map.entries();
+        // let setEntries = set.entries();
+        // 迭代器对象有next方法 
+        // arrEntries.next();
+        // arrEntries.next();
+        // arrEntries.next();
+        // arrEntries.next();
+        // entries迭代器对于数组每次迭代返回的是[index, value]
+        // mapEntries.next();
+        // mapEntries.next();
+        // map也是返回一个数组 [key, value] 也是由key和value值决定
+        // Set里面有[key, key]
+        // setEntries.next();
+        // setEntries.next();
+        // setEntries.next();
+        //
+        // 所有迭代器都支持for of操作
+        // for(let item of arrEntries) {
+        //     console.log(item);
+        // }
+        // for(let item of mapEntries) {
+        //     console.log(item);
+        // }
+        // 既然是数组 通过解构赋值的规则 模式匹配 只要规则一样就能匹配到
+        // for(let [key, value] of mapEntries) { // for of之所以能循环 是它找它的 遍历迭代器的 对遍历器进行迭代 调用的是遍历器的接口 
+        //                                       //    每循环一次都调用遍历器的next方法 只要是迭代器 都用for of来遍历
+        //     console.log(key, value);
+        // }
+        //
+        // keys values 返回当前结构的由keys组成的 keys每次迭代会把每个keys值返回  values每次迭代都把values返回
+        // let arrkeys = arr.keys();
+        // let mapkeys = map.keys();
+        // let setkeys = set.keys();
+        // for(let key of mapkeys) { // for of循环利用的是迭代器对象进行依次重复的过程 把当前可迭代数据当中的每个值迭代出来
+        //     console.log(key);
+        // }
+        // setkeys.next();
+        // let arrvalues = arr.values();
+        // let mapvalues = map.values();
+        // let setvalues = set.values();
+        // for(let value of mapvalues) {
+        //     console.log(value);
+        // }
+        //
+        // 迭代器的遍历过程是什么 原理 怎么进行迭代的 刚才不是说有统一的接口吗 
+        // for(let item of arr) {
+        //     console.log(item);
+        // }
+        // for(let item of arr.values()) {
+        //     console.log(item);
+        // }
+        // 对于所有的迭代器对象 可迭代的数据都会有一个属性 [Symbol] 必须通过中括号访问 这是js引的新的数据类型 这个数据类型主要是处理一些命名冲突
+        //     每个Symbol值都不一样
+        // [Symbol.iterator](); // 这个方法执行会返回一个迭代器对象 只要是可迭代的数据都有这个方法
+        // for(let item of arr[Symbol.iterator]()) { // 每个可迭代的数据都有它
+        //                                           //     只要用这个for of循环都会默认的去找当前迭代数据的[Symbol.iterator]这个方法
+        //                                           //     把这个方法取出来 因为这个方法可能会返回当前数据类型的迭代器 然后进行迭代
+        //                                           //     所有的迭代器都有这个方法 包括我们后面创建的迭代器也有这样的方法
+        //     console.log(item);
+        // }
+        // 所有的迭代器都有Symbol.iterator 属性必须通过中括号的形式访问[Symbol.iterator] 返回默认的迭代器 无论是set也会map也好都会返回这个
+
+
+
+
+        // 原理 它是怎么遍历的 对于数组是非常好处理 数组中每次调用next函数 指针下移 指针指向我下一个索引就可以了 
+        //     数组中迭代器指针每次指向下一个索引就实现数组的迭代 这个next方法比for循环好在哪里 你只需要next就可以去迭代 就可以去访问下一个数据
+        //     不用管别的 多维数组它是怎么遍历的 它跟这个forEach循环一样 把多维数组看成一维的 你里面的每一块都看成一位的 既然是数组 
+        //     然后里面的元素也有自己的默认的迭代器 这样一点点的去迭代 在数组中 迭代器默认指向下一位索引
+        // Map和Set是怎么迭代的 怎么遍历的 从桶的第一个位置往下找 找它的next 找它的next 再找第二个桶的next... 这样它就成了线性的结构 就变成链表了
+        //     这样的实现Map和Set结构的遍历 迭代器原理就是这个 会把临接链表转化一个单向链表  指针每次指向一个节点 指针下移 每次调用next方法 
+        //     指针下移 这样实现关于数据的迭代 
+        //
+        // let arr = [1, 2, 3, 4];
+        // let map = new Map([['name', 'wxb'], ['age', 18], ['hobbit', 'boy']]);
+        // let set = new Set([1, 2, 3, 4, 5]);
+        // for(let item of arr) { // 会调用arr[Symbol.iterator]()方法 => arr.values()方法 我们的每一个属性 说明它调用的是values这个方法
+        //                        //     我们默认的迭代器返回的是这个规则values 这个是显示每个数组都有明确的values entries keys 
+        //                        //     只要是可迭代对象都有Symbol.iterator
+        //     console.log(item);
+        // }
+        // arr.values().next();
+        // for(let key of map) { // map[Symbol.iterator]() => map.entires()
+        //     console.log(key);
+        // }
+        // for(let key of set) { // set[Symbol.iterator]() => set.keys()
+        //     console.log(key);
+        // }
+        // 只要是可迭代对象都有[Symbol.iterator]
+       
+        
+
+        
+        // 对象是不是可迭代的
+        // var obj = {};
+        // obj[Symbol.iterator]().next(); // 'Uncaught TypeError: Cannot read property 'next' of undefined'说明我们对象是不可迭代的 
+        //                              //     因为它没有这个方法 对象没有迭代器 说明对象是不可迭代的  
+        // [1][Symbol.iterator]().next(); // 它能遍历出来数组                             
+        // for in循环可以遍历我们的对象 对于迭代 它真正能实现迭代的机制是因为我们的数据是有序的  数组是有序 所以可以被迭代 怎么对象就无序了 
+        //    对于对象来说不仅是无序的问题 还有就是面向对象思想的问题 无序怎么来说 对于对象来说 因为遍历它有两种情况 可能按照字母去升序排列
+        //    也可能按照你创建对象的时候 你往里放属性的顺序进行输出 所以对于对象来说它没有明确的顺序 这个其实不算太大的问题 这个对象是完全哈希
+        //    对于我们js当中你每次输出的顺序还是固定的 它主要还是面向对象的思想 对象是用来干什么的 对象点什么什么 说明对象能做什么
+        //    表明的是这个 而非是全看它的属性 就算是全看它的属性 它也应该给我暴露一个接口 obj.show 这才是面向对象的思想 而非用来遍历的
+        //    这是传统的面向对象思想的影响 所以说对象是不可迭代的 
+        
+        
+        
+
+        // String   
+        // '123'[Symbol.iterator]().next(); // 能迭代 在这过程中发生什么 是不是把原始值转化为字符串类型的对象 通过包装类包装一下 包装之后它是对象
+                                            //     对象可以通过下标去访问1, 2, 3  这是有序的  在这有序的过程当中 在ES6制定标准的时候它是有序的 
+                                            //     也是需要迭代的 也给他内置了一个迭代器Symbol.iterator 但它不仅限于此
+        
+
+        // 双字节词
+        // var str = 'I??U';
+        // console.log(str);
+        // console.log(str.length); // 怎么是4呢 说明是双字节
+        // console.log(str[1]); // 这样是输出不了 
+        // console.log(str[2]); // 这样是输出不了 只有把1和2放到一起才能输出 用for循环遍历不了它  但如果for of能遍历它
+        // for(let s of str) { // 这就是迭代器的厉害之处 它是按块找的 因为它们两个是一起的 所以是按块进行查找的 找到双字节 把这个字符找出来进行输出
+        //     console.log(s); 
+        // }
+        // 我们字符串没有显示的方法 只能调用隐式的中括号Symbol.iterator这个方法 对这个返回的迭代器对象进行迭代
+        
+
+
+
+        // likeArray
+        // function fn() {
+        //     for(let arg of arguments) { // arguments不是迭代器对象 它去找它默认的Symbol.iterator这个属性让它执行 它返回一个迭代器对象
+        //         console.log(arg);
+        //     }
+        // }
+        // fn(1, 2, 2, 2, 2, 2);
+        // function fn() {
+        //     for(let arg of arguments[Symbol.iterator]()) {
+        //         console.log(arg);
+        //     }
+        // }
+        // fn(1, 2, 2, 2, 2, 2);
+        //
+        // 以上的内容都是ES6制定规范在我们一些原有的数据结构给我们定义的迭代器 我们怎么自己去写迭代器呢 
+        
+
+
+
+        // 生成器 Generator   --- 用于生成迭代的器 用来产生对象的 通过生成器可以生成迭代器 
+        // 生成器长什么样子 生成器是函数 但和函数不一样 * yield  只不过在工作当中被acync, await取代
+        // function *createIterator() { // 它会生成一个迭代器对象 它生成这个对象是可迭代的
+        //     console.log('first before');
+        //     yield 1;
+        //     console.log('second before');
+        //     yield 2;
+        //     console.log('third before');
+        //     yield 3;
+        // }
+        // var i = createIterator();
+        // i[Symbol.iterator]();
+        // i[Symbol.iterator]().next();
+        // i.next();
+        // i.next();
+        // i.next();    
+        // 好像这个程序中途暂停 我们能要这个1 最后把这个1当成value值给我返回了 说明它执行到yield 1之后停止了 我再next之后 从这往接着下走 又停了 
+        //     说明这个yield是迭代器中的指针 每次走一个yield yeild可以中止语句 我们不next整个函数不会往下走 包括我们这个函数能不能当作构造函数去使呢
+        //     指定不能的 要不就乱了 new createIterator()  不能通过new操作符来调用 只能用来生成迭代器的 我们这个生成器和普通函数调用方式是一样的
+        //     每次执行next它都会执行一个yeild及其之上的语句 每次执行next只会往下走一块 遇到yeild就停止 yeild的表达式有没有值 包括后面能写什么
+
+
+        // function *createIterator() {
+        //     var res = yield 1;
+        //     console.log(res);
+        //     yield 2;
+        //     yield 3;
+        // }
+        // var i = createIterator();
+        // i.next();
+        // i.next(); // 这里输出undefined 说明yield的表达式暂时看起来是没有返回值的 就是单纯执行 相对于我们这个指针每次调用next调用指针依次向下移
+                     //     说明它没有返回值
+        // i.next();             
+                  
+                  
+        // 我们能不能写一个赋值          
+        // function *createIterator() {
+        //     var res;
+        //     yield res = 1;
+        //     console.log(res);
+        //     yield 2;
+        //     yield 3;
+        // }
+        // var i = createIterator();
+        // i.next();
+        // i.next();
+        // i.next();
+        // i.next();
+        //  1是不是把当前的值返回了 第一次遍历赋值同时把这个1当成value值返回 然后第二次遍历的时候这个res始终是1 这边添加表达式也行 函数执行也可以
+        //     yeild能不能跨作用域 
+         
+
+        // function *createIterator(arr = []) {
+        //     for(let i = 0; i < arr.length; i++) {
+        //         yield arr[i];   
+        //     }
+        // } 
+        // var i = createIterator([1, 2, 2, 3]);
+        // i.next();
+        // i.next();
+        // i.next();
+        // 说明在for循环当中也能用 它可以在其他作用域也能使用 也能暂停 说明把这个for循环停了 我们说它跨作用域去使 使当前程序暂停
+        //     在它里面再写一个函数可以吗
+
+
+        // function *createIterator(arr = []) {
+        //     arr.forEach(item => { 
+        //         yield item;
+        //     }) 
+        // }
+        // var i = createIterator([1, 2, 2, 3]); // 不能用 说明它是违法的 这是因为这是一个普通函数 箭头函数原因不能使用
+
+
+        // function *createIterator(arr = []) {
+        //     arr.forEach(function(item) {
+        //         yield item;
+        //     }) 
+        // }
+        // var i = createIterator([1, 2, 2, 3]); // 因为它是普通函数 普通函数是不能使用yeild关键字 只有我们生成器函数当中才有这个内容的才能用
+                                                 //     不是说跟作用域就没关了 普通函数中是不能用它  
+
+
+        // function *createIterator(arr = []) {
+        //     yield 1;
+        //     yield 2;
+        //     return 3
+        //     yield 4;
+        // }           
+        // var i = createIterator();
+        // i.next();
+        // i.next();
+        // i.next();
+        // i.next();
+        // 说明有return的话 后面的yeild是不会被执行的 跟正常函数是一样的  那return就很明确了 因为我遍历到当前的时候我不知道后面有没有
+        //     所以我遍历1是false 遍历2还是false 但遍历3的时候我知道这个值是return 后面一定没有了 所以这个值是true                          
+
+
+        // 这是它的一些基本内容 以及一些注意项 最有意思的是它能停止 它走一步它能停一下 这个都是我们创建的生成器
+        //     关于生成器它创建的每个生成器由于执行会产生一个可以被迭代的对象 这是数据结构 相对于我们自己定义的
+        //     这个迭代器对象是具有Symbol.iterator接口的 也支持for of循环 有这个Symbol.iterator接口就支持for of循环
+
+
+
+
+        // 它可以把异步的流程描述被同步的 异步还是异步 只不过我的描述变为同步了 因为对于异步我们知道异步容易产生回调地狱的
+        // ajax(url, {
+        //     success(data) {
+        //         ajax(url, data, {
+        //             success() {
+        //                ajax(ur, )
+        //             }
+        //         })
+        //     }
+        // }) 
+        // 这样是不是形成回调地狱了 为什么会存在这种情况呢 因为我每个异步 就是我去执行这个事件不知道多久能执行完 而且我还有一个需求 
+        //     我必须在上一个事件执行完之后这个请求执行完之后我才能执行下一次请求 所以我必须在它请求完在它的回调函数中写 这样就形成回调地狱了 
+        //     这是一个问题 我们知道yeild能暂停
+
+
+        // 把大象装冰箱分几步
+        //     open loadElephant close
+        // open(function() {
+        //     load(function() {
+        //         close();
+        //     })
+        // })
+
+
+        // function open() {
+        //     console.log('opening');
+        //     setTimeout(() => {
+        //         console.log('open Refrigrator');
+        //         // load();
+        //         process.next();
+        //     }, 1000)
+        // }
+        // function load() {
+        //     console.log('loading');
+        //     setTimeout(() => {
+        //         console.log('load over');
+        //         // close();
+        //         process.next();
+        //     })
+        // }
+        // function close() {
+        //     console.log('closeing');
+        //     setTimeout(() => {
+        //         console.log('close Refrigrator');
+        //     }, 1000)
+        // }
+        // function *loadElephant() {
+        //     yield open();
+        //     yield load();
+        //     yield close(); 
+        // }
+        // 这样写我要知道我的上一步是谁 要明确知道下一步干什么
+        // let process = loadElephant();
+        // process.next();
+        // 我不知道我下一步干什么 我都让我的迭代器去做 迭代器里告诉我 在函数当中我只知道我做完这件事做下一件事 下一件事是什么 我的迭代器去管
+        //     就是把异步函数同步化这种方式去书写
+
+
+        // yeild是没有返回值的
+        // function *create() {
+        //     var res;
+        //     yield 1;
+        //     res = yield 2;
+        //     yield res;
+        // }
+        // let i = create();
+        // // i.next();
+        // // i.next();
+        // // i.next();
+        // // i.next();
+        // 1 2 undefined 说明没有返回值的
+        // i.next();
+        // i.next();   
+        // i.next('hello'); // 这个next传的值相对于上一次的返回值  当第三次赋值的时候影响上一次的结果   
+
+
+        // function *create() {
+        //     var res = yield 1;
+        //     yield res; 
+        // }
+        // let i = create();
+        // i.next('hi'); // 返回的还是1 没有任何影响
+        // i.next('hi'); // 第二次传值影响的是res 其实你也看成每次的返回值 因为指针指向的是它 因为它不知道它下一个有没有 
+        //               //     它传的值作为上一个yeild的返回值
+        // i.next('hi'); // 指针下移 下一个没有   
+        // 第一次就算你传值 它也会把它关闭 第一次next作为我迭代器的开启 因为没有值去接着它 当它继续next的时候它返回的是 
+        //     在next传值相对于它上一个yeild的返回值
+
+
+        // 我需要利用上一步的结果才能往下做
+        // 吃橘子过程   洗手 扒皮 吃
+        // function watchHeads() {
+        //     console.log('洗手中');
+        //     setTimeout(function() {
+        //         process.next('一双干净的手');
+        //     }, 2000)
+        // }
+        // function peeling() {
+        //     console.log('扒橘子中....');
+        //     setTimeout(function() {
+        //         process.next('一个处理好并且能吃的橘子');   
+        //     }, 2000)
+        // }
+        // function eat() {
+        //     console.log('吃橘子中...');
+        //     setTimeout(function() {
+        //         process.next('真好吃');
+        //     }, 2000)
+        // }
+        // function *eatOrange() {
+        //     let result = `${yield watchHeads()} --拿着-- ${yield peeling()} --边吃边说-- ${yield eat()}`;
+        //     console.log(result);
+        // }
+        // let process = eatOrange();
+        // process.next();
+        // 我们在next当中传值 next传值相对于上一次的返回值 第一次事情做完返回的值是第一次yeild返回的值 紧接着走二个函数 它返回的是上一次yeild的值
+        //     eat是第四次调用传的值 是上一次的返回值 我们做的是一个全局图 我们每次都是用上一次处理的结果去处理它们 每次都需要我做完的结果
+        //     可能我们做工程的时候 可能先需要A做 A做完要B做 B做完才能C做 每个过程必须有严格的控制 这是前驱图   跟同步的书写方式是一样的
+
+
+
+
+        // 委托迭代器 yeild *
+        // 同时遍历数组和字符串  for of只能一个遍历完再遍历另一个
+        // yeild *它正常的话是返回当前这个值 当加上yeild *这个表达式会遍历*后面的内容
+        // function *show(arr, string) {
+        //     yield *arr;
+        //     yield *string; 
+        // }
+        // let i = show([1, 2, 3], 'i love you');
+        // for(let item of i) {
+        //     console.log(item);
+        // }
+        // yeild *语句相对于继续把里面的这个表达式 也会调用它的迭代器进行迭代 先迭代数组再迭代字符串 把这样的迭代过程合在一起 可能需要分成A和B两大块
+        //    但是这两大块当中还有若干个任务
+        
+        // 为什么要用迭代器 是因为原来的迭代方式有诸多的不好 for循环它要控制的变量特别多 每个被可迭代的数据的API不同 我们给你提供统一的
+        //     你可以通过这种方式进行迭代 同时我们对于迭代的需求比较常用的 然后这个生成器是我们自定义的迭代器 自定义的数据结构 通过生成器的方式去生成
+        //     通过迭代器的语法迭代
+
+    </script>
+
+</body>
+</html>

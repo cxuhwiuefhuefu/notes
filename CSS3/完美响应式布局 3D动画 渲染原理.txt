@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{
+            width: 1000px;
+            height: 100px;
+            background: red;
+        }
+    
+    
+    </style>
+</head>
+<body>
+
+    <div>1才能解开能否尽快让乳房么考虑买个可热了</div>
+
+    <script>
+		
+
+        // <meta name="viewport" content="width=device-width, initial-scale=1.0">: 无论在移动端 PC端  像素不变   把PC端的页面放在移动端依然好看
+		// viewport: 视口大小
+        // width= device-width: 当前视口的宽度等于设备的宽度
+        // initial-scale=1.0: 一个比例/定义最初我们在加载页面的时候一个等级的比例  1.0(不放不缩 视觉效果一样)
+        // user-scalable=no: 不允许用户进行缩放
+        // minimun-scale=1.0;maximun-scale=1.0: 不允许你进行缩放  固定1.0 
+        // 一般不允许我们进行缩放, 缩放会使我们的页面布局出现一点混乱, 所以我们现在做的页面不太允许进行缩放 
+        //     可能之前的哪些页面允许缩放,因为之前把PC端的页面放在移动端看起来很小,所以支持你缩放
+        //     
+        // 移动端一般符合流式布局
+        // 现在所有的响应式布局都是用媒体查询来做的
+        //
+        // 之前的效果, 以前的人为了用户效果更好些, 设计师不得不对各种设备做出各种不同的视觉方案, 同一个网站要做出多份设计图效果
+        //  
+        // 响应式布局 为了更好的迭代  好维护
+        //
+        // 同样是一个页面, 根据媒体查询来查找当前你这个页面的分辨率多么大, 尺寸多么大, 如果是大尺寸的情况下CSS样式就按这个来, 如果小尺寸的话CSS样式按这个来 
+        //     但无论是哪个CSS这个页面始终是一个, 就是说一个页面有多种可能, 这样一个页面就可以适配各种尺寸的屏幕, 这样便于更新和迭代
+        //
+        // 现在移动端的市场占有率95%
+        //
+        // 媒体查询, 以前只能适配你的设备是什么样子, 并不能适配你的屏幕尺寸长什么样子
+        //
+        // screen代表彩色屏幕的意思   (all --> screen  --> print) media type 
+		// 由于我们是做前端开发的, 我们前端开发基本针对彩色屏幕的
+        //         max-width定义了一个属性media features(媒体特性)
+        //
+        // 常用的: max-width min-width orientation
+		//
+		// CSS2只能判断你媒体类型是什么样的, 并不能根据这些媒体特性进行一步判断吧, 所有说media query是media type的增强  
+	
+	</script>
+	
+</body>
+</html>
+
+
+//*****************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" media="screen and (max-width: 800px)" href="./index.css">
+	<link rel="stylesheet" media="screen and (min-width: 800px)" href="./index1.css">
+</head>
+<body>
+	
+	<div></div>
+</body>
+</html>
+
+//******************************************************************************************************
+
+// and： 连接的意思        特性要写在括号里
+@media screen and (max-width : 800px) {
+    div{
+        width: 100px;
+        height: 100px;
+        background: red;
+    }
+}
+@media screen and (min-width: 801px) {
+    div{
+        width: 200px;
+        height: 100px;
+        background: green;
+    }
+}
+
+/* 减少CSS文件的引入 每次下载CSS文件的时候都需要发送请求的 减少请求, 只引入一次 */ 
+
+//*****************************************************************************************************
+
+
+@media screen and (max-width: 800px) {
+    div{
+        width: 100px;
+        height: 100px;
+        background: red;
+    }
+}
+
+@media screen and (min-width: 801px) and (max-width: 1000px) {
+    div{
+        width: 100px;
+        height: 100px;
+        background: green;
+    }
+}
+
+@media screen and (min-width: 1001px) {
+    div{
+        width: 100px;
+        height: 100px;
+        background: orange;
+    }
+}
+
+/* screen and (min-width: 1001px): 我们一直是用合并类型和属性 */
+/* (min-width: 801px) and (max-width: 1000px): 合并属性和属性 */
+/* ,: 相对于或的功能 */
+/* only/not只能放在媒体查询的最前面来使用 */
+/* 早期浏览器其实不知道什么是媒体查询的含义, 它遇到only, 不认识only, 所以后面的样式没有了, 向早期浏览器隐藏媒体查询的 */
+/* device-width: 设备的宽度  height: 渲染区域的宽度 渲染区域(浏览器) 浏览器的宽高其实可以调整的, 默认情况下可以让它撑开整个屏幕
+            渲染区可以根据用户的操作进行变化的   device-height: 是不能进行变化的 设备的宽度和高度出厂的时候就决定好了 是固定好的 */
+
+/* flex布局(定宽 超出换行 flex-grow:1  剩余的区域平均分配 没办法让它换行了 只能把他们超出父级的宽度 超出父级的宽度的话不能让他自适应了 )     百分比 */
+
+
+//*******************************************************************************************************************************************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="./index.css">
+</head>
+<body>
+	
+	<div class="wrapper">
+		<div><img src="./images/1.png" alt=""></div>
+		<div><img src="./images/2.png" alt=""></div>
+		<div><img src="./images/3.png" alt=""></div>
+		<div><img src="./images/4.png" alt=""></div>
+		<div><img src="./images/5.png" alt=""></div>
+		<div><img src="./images/6.png" alt=""></div>
+		<div><img src="./images/7.png" alt=""></div>
+		<div><img src="./images/8.png" alt=""></div>
+		<div><img src="./images/9.png" alt=""></div>
+		<div><img src="./images/10.png" alt=""></div>
+		<div><img src="./images/11.png" alt=""></div>
+		<div><img src="./images/12.png" alt=""></div>
+		<div><img src="./images/13.png" alt=""></div>
+	</div>
+
+</body>
+</html>
+
+//********************
+
+*{
+    padding: 0;
+    margin: 0;
+    font-size: 0;
+}
+.wrapper{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+.wrapper div{
+    flex-grow: 1;
+    width: 20%;
+    display: inline-block;
+}
+/* 为什么会互相盖住呢？？？？    */
+/* img的宽度比div的宽度要宽 img撑开了 */
+.wrapper div img{
+    width: 100%;
+}
+
+@media screen and (max-width: 1000px) {
+    .wrapper div{
+        width: 25%;
+    }
+}
+@media screen and (max-width: 800px) {
+    .wrapper div {
+        width: 33.33%;
+    }
+}
+@media screen and (max-width: 600px) {
+    .wrapper div{
+        width: 50%;
+    }
+}
+@media screen and (max-width: 400px) {
+    .wrapper div {
+        width: 100%;
+    }
+}
+
+//************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="./index.css">
+</head>
+<body>
+	
+	<script>
+	   
+	   // 物理像素值: 它是一个实实在在存在的物理显示单元
+	   //            存在类似于光子的小东西 这个东西可以在系统的调度下给它一个特定的颜色 
+	   //            或者给它一个亮度值 每个小光点可以通过一个程序来进行控制的 让你呈现绿色 你的小光点就呈现绿色 屏幕上的每个小光点就是一个物理显示单元
+	   // 设备独立像素: 这个点是个相对的值  不像厘米/千克这样的绝对单位 
+	   //
+	   // px  相对值 相对你屏幕而言的 只不过我们平时在用的时候一个物理像素对应一个设备独立像素给它一一对应上 这样我们就误以为1px是绝对值
+	   //     为什么一对一呢???  因为它是一个物理单元  如果一个CSS单元跟一个物理单元能一一对应上了 这个CSS像素显示红色 这个小光点展示红色  一一对应上方便显示  
+	   // dpr=2   dpr:设备像素比  视网膜屏(retain)的设备像素比为2: 1  光点多至少是原来的2倍  宽和高多一倍的物理光子  尤其是iphone是使用视网膜屏        
+	   //
+	   // 位图像素:  就是放大之后会失真的图片      就近取色 所以图片比较模糊
+	   // 矢量图:    放大不会失真的
+	   //
+	   //  第一种情况: 高清屏上dpr是2用一个普通的图片会导致模糊的效果  就是因为四个物理像素要共享一个独立设备像素 会导致模糊的效果 采用分辨率为2倍的图片来解决这个问题
+	   //  第二种情况: 一个分辨率是2倍的图片放到普通的设备上 四个CSS的像素对应上一个物理像素 一个小光点分享四个信息值 它会根据一个计算公式取一个就近的颜色来展示 
+	   //             它看起来的视觉效果是不会模糊 但会有些视觉色差 锐利度差些 但是不会模糊就可以接受
+	   //
+	   //  如果DOM树有个span标签  CSS树有个属性display: none  和一起的情况下span标签会有个样式: display: none
+	   //      span并不是隐藏掉  直接不占dom结构 直接不在这个render树当中了 直接把span拿掉了 合成的时候这个span树根本没有合成出来 因为display: none
+	   //
+	   //  display: none --> display: block   会占dom结构的
+	   //
+	   // 重排浪费时间 要计算在什么位置 
+	   //
+	   // 蓝色： 网络通信和HTML解析的时间  黄色javaScript执行的时间  紫色: 计算样式布局的时间 重排的时间   绿色: 重绘的时间
+	   //      为什么重排比重绘时间短??  它会根据当前你页面的性能每次画出来的值都不一样 
+	   // 提高页面的节省性能:  1) 减少网络请求: 1.懒加载 2.防抖节流    ==> 想办法合并一下 降到最少
+	   //                    2) javaScript执行的时间:  1.for循环当中 arr.length  每次for都要计算length是多少 最好写的时候提前把length值提前存起来  2.获取dom存  jQuery也是存的 不存的话每次都要浪费时间和浪费性能的
+	   //                    3) 尽量减少重排重绘的过程 
+	   //
+	   // 推荐书: 高性能javaScript ==> 提高页面性能的方法  
+	   //                                                                                                                                           
+	   // 为什么会重排??   执行这个方法的时候, 浏览器会认为你想取一个最新的值, 它会帮你重新计算这个值是多少, 然后把这个值返回给你
+	   // 浏览器也智能, 它不会每操作一个重排一次, 它会把多个重排的操作放到一起集中操作, 排成一个队列, 依次执行, 但是你操作的时候要把他们放到一起 
+	   //     不放到一起的话那么浏览器也没有办法帮你放到一个队列当中执行
+	   //  
+	   // 生成1000li插入ul  1)文档碎片  2)字符串  拼接成字符串最后一次性的放到UL里
+	   //
+	   // 放到一个clas类名一起添加   一次性操作  比js(dom.style.left)一个一个操作好
+	   //
+	   // dom.style.cssText -->   div.style='width:100px;height:100px;background:red';
+	   //
+	   // 动画减少重排: 可以在动画执行的过程中先给它脱离文档流, 只要它不在文档流当中就不影响下面元素的样子, 不在文档流就不会有什么问题
+	   //        能给它display:none就先给它display:none, 让它变化完再给它block, 能给它脱离文档流先给它脱离文档流, 完了之后回到文档流中 
+	   //        这样可以减少重排重绘, 至少在它动的过程中重排重绘  
+	   
+	</script>
+
+</body>
+</html>
+//***********************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+	<title>Document</title>
+	<style>
+		.wrapper{
+			transform-style: preserve-3d;
+			perspective: 600px;
+			width: 200px;
+			height: 200px;
+			border: 1px solid #000;
+			perspective-origin: top;
+		}
+		.item{
+			width: 200px;
+			height: 200px;
+			background: red;
+			transform: rotateX(45deg);
+		}
+	
+	</style>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="item"></div>
+	</div>
+	
+	<script>
+
+		// 我们生活都是一个3D的空间
+		//
+		// 如果想一个元素是3D元素的话 必须给它一个空间 
+		//
+		// transform-style:flat  默认走这个(平面的2D的效果)     preserve-3d: 你当前下面所有的子元素都是3D元素
+		//
+		// transform-style:preserve-3d: 把元素变成3D的元素
+		// 要有景深才会有这样的3D效果图
+	 
+	</script>
+
+</body>
+</html>
+//*****************************************************************************************************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+	<title>Document</title>
+	<style>
+		.wrapper{
+			transform-style: preserve-3d;
+			perspective: 600px;
+			width: 200px;
+			height: 200px;
+			border: 1px solid #000;
+			perspective-origin: top;
+		}
+		.item{
+			width: 200px;
+			height: 200px;
+			background: red;
+			transform: rotateX(75deg);
+		}
+	
+	</style>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="item"></div>
+		<div class="item"></div>
+		<div class="item"></div>
+		<div class="item"></div>
+	</div>
+
+</body>
+</html>
+
+//******************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+	<title>Document</title>
+	<style>
+		.wrapper{
+			transform-style: preserve-3d;
+			
+			width: 200px;
+			height: 200px;
+			border: 1px solid #000;
+			perspective-origin: top;
+		}
+		.item{
+			width: 200px;
+			height: 200px;
+			background: red;
+			transform: perspective(600px) rotateX(75deg);
+			
+		}
+	
+	</style>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="item"></div>
+		<div class="item"></div>
+		<div class="item"></div>
+		<div class="item"></div>
+	</div>
+
+	<script>
+
+        // 设置在父级上原来只有一个透视点
+		//
+		// 设置在子元素上 每个图形都有自己的一个透视点
+
+	</script>
+
+</body>
+</html>
+
+//***************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+	<title>Document</title>
+	<style>
+		.wrapper{
+			transform-style: preserve-3d;
+			perspective: 600px;
+			width: 200px;
+			height: 200px;
+			border: 1px solid #000;
+			
+		}
+		.item{
+			width: 200px;
+			height: 200px;
+			background: red;
+			transform: rotateX(75deg);
+			backface-visibility: hidden;
+		}
+	
+	</style>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="item"></div>
+	</div>
+
+</body>
+</html>
+//*******************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+	<title>Document</title>
+	<style>
+		.wrapper{
+			margin: 200px;
+			transform-style: preserve-3d;
+			perspective: 600px;
+			width: 200px;
+			height: 200px;
+			border: 1px solid #000;
+			
+		}
+		.item1{
+			position: absolute;
+			top: 0;
+			width: 200px;
+			height: 200px;
+			background: red;
+			transform: rotateX(90deg) translateZ(100px);
+		}
+		.item2{
+			position: absolute;
+			top: 0;
+			width: 200px;
+			height: 200px;
+			background: green;
+			transform: rotateX(-90deg) translateZ(100px);
+		}
+	</style>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="item item1"></div>
+		<div class="item item2"></div>
+	</div>
+
+</body>
+</html>
+
+//************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		.wrapper{
+			position: relative;
+			width: 200px;
+			height: 200px;
+			margin: 0 auto;
+			transform-style: preserve-3d;
+			margin-top: 200px;	
+			animation: turn 3s infinite;
+		}
+		.wrapper div{
+			position: absolute;
+			width: 200px;
+			height: 200px;
+			opacity: 0.5;
+			text-align: center;
+			line-height: 200px;
+			font-size: 30px;
+		}
+		.wrapper .item1{
+			background: red;
+			transform: rotateY(0deg) translate3d(0, 0, 200px);
+		}
+		.wrapper .item2{
+			background: green;
+			transform: rotateY(60deg) translate3d(0, 0, 200px) ;
+		}
+		.wrapper .item3{
+			background: orange;
+			transform: rotateY(120deg) translate3d(0, 0, 200px);
+		}
+		.wrapper .item4{
+			background: deepskyblue;
+			transform: rotateY(180deg) translate3d(0, 0, 200px) ;
+		}
+		.wrapper .item5{
+			background: deeppink;
+			transform: rotateY(240deg) translate3d(0, 0, 200px);
+		}
+		.wrapper .item6{
+			background: purple;
+			transform: rotateY(300deg) translate3d(0, 0, 200px) ;
+		}
+		@keyframes turn{
+			0%{
+				transform: rotateX(-20deg) rotateY(0deg);
+			}
+			100%{
+				transform: rotateX(-20deg) rotateY(360deg);
+			}
+		}
+
+		.demo{
+			width: 200px;
+			height: 200px;
+			border: 1px solid #000;
+			transform-style: preserve-3d;
+			perspective: 600px;
+		}
+		.aa{
+			width: 200px;
+			height: 200px;
+			background: green;
+			transform: rotate3d(1, 0, 0, 90deg); /* 当单个方向的0.5或者多少都没效果    */
+			                                     /* webkit */
+		}
+	</style>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="item1">1</div>
+		<div class="item2">2</div>
+		<div class="item3">3</div>
+		<div class="item4">4</div>
+		<div class="item5">5</div>
+		<div class="item6">6</div>
+	</div>
+
+
+	<div class="demo">
+		<div class="aa"></div>
+	</div>
+
+</body>
+</html>
+	

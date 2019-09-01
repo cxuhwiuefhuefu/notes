@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="./test1.css">
+</head>
+<body>
+	
+	<div class="wrapper">
+		<ul>
+			
+			<li> <!-- 最好不要旋转li  因为li旋转的话,li跟着动的,可能li不在高200宽200的区域内,你不太好判断它是从那里挪出来的,所以li尽量不要动 -->
+				<div class="picBox">
+					<div class="show"><img src="./img2/3.jpg" alt=""></div>
+					<div class="hide"><h3>可爱的成哥</h3></div>
+				</div>
+			</li>
+
+			<li> 
+				<div class="picBox">
+					<div class="show"><img src="./img2/3.jpg" alt=""></div>
+					<div class="hide"><h3>可爱的成哥</h3></div>
+				</div>
+			</li>
+			<li> 
+				<div class="picBox">
+					<div class="show"><img src="./img2/3.jpg" alt=""></div>
+					<div class="hide"><h3>可爱的成哥</h3></div>
+				</div>
+			</li>
+			<li> 
+				<div class="picBox">
+					<div class="show"><img src="./img2/3.jpg" alt=""></div>
+					<div class="hide"><h3>可爱的成哥</h3></div>
+				</div>
+			</li>
+			<li> 
+				<div class="picBox">
+					<div class="show"><img src="./img2/3.jpg" alt=""></div>
+					<div class="hide"><h3>可爱的成哥</h3></div>
+				</div>
+			</li>
+			<li> 
+				<div class="picBox">
+					<div class="show"><img src="./img2/3.jpg" alt=""></div>
+					<div class="hide"><h3>可爱的成哥</h3></div>
+				</div>
+			</li>
+
+		</ul>
+	</div>
+	
+	<script src="./test1.js"></script>
+	<script>
+        
+        // 大概是什么样的原理
+        //     立方体  根据鼠标进入和出来的方向进行转动
+        //
+        // 如果做立方体需要5个div  html加载单线程阻塞加载 上面的标签没解析完下面的标签不会解析  如果小简单的功能写很多div会使页面最开始加载的时候会慢些
+        //     无论从那个方向进入都是一个div样式 只写一个div 根据鼠标的进入这个div拼接到不同的地方 控制后面的div在哪个方向上就好了
+        //
+        // 最好不要旋转li 如果设置li会跟着动的 如果鼠标挪出来不太好判断从哪里挪出出来的 li尽量不要动
+        //
+        // 命名: pictureBox   图片换成不同的
+        //
+        // 快捷键  后退内容: ctrl+z    前进内容: ctrl+y
+        //
+        // background 与img的使用区别??????
+		//
+		// 鼠标进入的方向
+		//
+		// 怎么把后面的样子拼成这种样子
+		//    无论从哪个方向这个字都是正的???
+		//    旋转90度 + 平移	
+		//
+		// 拼到哪由鼠标决定的 设置CSS 通过clas来控制的 每个CLASS类名对应不同的状态
+		//	in out的状态 
+        //
+        //  
+        //
+
+	</script>
+
+</body>
+</html>
+
+//***************************************************************************************************
+
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.wrapper{
+    width: 700px;
+    margin: 0 auto;
+    border: 1px solid #000;
+}
+.wrapper ul{
+    display: flex; /* 自动变成行级块元素 默认的情况 flex-shrink:1 把这些li超出的部分按照一比一的比例砍了 所以在一行上 */
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+.wrapper ul li{
+    /* display: inline-block; */
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    perspective: 300px;
+}
+.wrapper .picBox{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d; 
+
+    transform-origin: 50% 50% -100px;  /* 中心点 */
+    animation: 0.3s ease-out forwards;
+}
+.wrapper .picBox .show,
+.wrapper .picBox .hide{
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;             /* 把四个方向拼好 */
+}
+.wrapper .picBox .show img{ /* 不是按一比一的,图形变形了  想要它不变形的话,可以让它背景图片引入,只能裁剪一部分了  */
+    width: 100%;
+    height: 100%;
+}
+.wrapper .picBox .hide{
+    position: absolute; /* 为了在X轴Y轴同一位置  脱离文档流 */
+    left: 0;
+    top: 0;
+    background: #000;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    line-height: 200px;
+    transform: translate3d(0, 0, -1px);  /* 为了使动画效果更流畅 像这些CSS就是rotate translate最好设置3d 设置3d会开启GPU加速 */
+}                                        /* 要让它有3D的属性的话 首先这个图形是3D元素 */
+                                         /* 如何拼接???   旋转再漂移  or 漂移再旋转 */
+                                         /* 先让它向上漂移  改变transform-origin */
+                                         /* 拼接到哪里由鼠标决定的 通过Class来进行控制 四个class类名 每个class类名对应不同状态 */
+                                         /* 给谁设置这个class类名呢??    CSS好写 js的话还得通过dom来查找 所以给li添加 */
+                                         /* 状态分进来和出去的状态 */
+                                         /* 鼠标进来和出去 根据进入的坐标判断你当前是从哪个方向进入的 
+                                            根据这个坐标算出这个角度 根据这个角度可以返回一个值 这个函数是获取角度值添加class类名 
+                                            能判断这个方向值是多少 不能判断这个方向值是进入的还是出去的值 还要个附加的参数 */
+                                         /* 怎么旋转?? 动态的旋转效果 只需改变一下picBox沿X轴旋转的值 旋转有动态的效果可以用animation
+                                                      来做 写几个关键帧 */
+                                         /* animation所以的动画都是一样的 所以把公共的样式写在上面 就名称不同 高内聚弱耦合 */
+
+.wrapper .in-top .picBox .hide,   /* ?????  怎么拼接的?????  出去和进入拼接的位置一样    */
+.wrapper .out-top .picBox .hide{    /* 只设置3D元素没有设置景深 你是看不到3D立体的效果  给谁设置景深呢??? */
+    transform-origin: bottom;
+    transform: translate3d(0, -100%, 0) rotate3d(1, 0, 0, 90deg);
+}
+.wrapper .in-top .picBox{
+    animation-name: in-top;     
+                        /* animation所有的动画除了关键帧的名称之外都一样的 (运动速度 是否停留在最后的关键帧 运动的时间)一样 */
+}
+.wrapper .out-top .picBox{
+    animation: out-top;
+}
+@keyframes in-top{ /* 如果默认的初始状态跟你0%的状态一样直接写to就可以了  谁需要这个关键帧??  有in-top class类名的picBox需要这个关键帧 */
+    0%{transform: rotate3d(0, 0, 0, 0);}
+    100%{transform: rotate3d(1, 0, 0, -90deg);}
+}
+@keyframes out-top{ /* 如果初始状态跟你0%的状态一样写to就可以了 */
+    0%{transform: rotate3d(1, 0, 0, -90deg);}
+    100%{transform: rotate3d(0, 0, 0, 0);}
+}
+
+.wrapper .in-bottom .picBox .hide,
+.wrapper .out-bottom .picBox .hide{
+    transform-origin: top;
+    transform: translate3d(0, 100%, 0) rotate3d(1, 0, 0, -90deg);
+}
+.wrapper .in-bottom .picBox{
+    animation-name: in-bottom; 
+}
+.wrapper .out-bottom .picBox{
+    animation-name: out-bottom; 
+}
+@keyframes in-bottom{ /* 如果初始状态跟你0%的状态一样写to就可以了 */
+    0%{transform: rotate3d(0, 0, 0, 0);}
+    100%{transform: rotate3d(1, 0, 0, 90deg);}
+}
+@keyframes out-bottom{ /* 如果初始状态跟你0%的状态一样写to就可以了 */
+    0%{transform: rotate3d(1, 0, 0, 90deg);}
+    100%{transform: rotate3d(0, 0, 0, 0);}
+}
+
+.wrapper .in-left .picBox .hide
+.wrapper .out-left .picBox .hide{
+    transform-origin: right;
+    transform: translate3d(-100%, 0, 0) rotate3d(0, 1, 0, -90deg);
+}
+.wrapper .in-left .picBox{
+    animation-name: in-left; 
+}
+.wrapper .out-left .picBox{
+    animation-name: out-left; 
+}
+@keyframes in-left{ /* 如果初始状态跟你0%的状态一样写to就可以了 */
+    0%{transform: rotate3d(0, 0, 0, 0);}
+    100%{transform: rotate3d(0, 1, 0, 90deg);}
+}
+@keyframes in-left{ /* 如果初始状态跟你0%的状态一样写to就可以了 */
+    0%{transform: rotate3d(0, 1, 0, 90deg);}
+    100%{transform: rotate3d(0, 0, 0, 0);}
+}
+
+.wrapper .in-right .picBox .hide,
+.wrapper .out-right .picBox .hide{
+    transform-origin: left;
+    transform: translate3d(100%, 0, 0) rotate3d(0, 1, 0, 90deg);
+}
+.wrapper .in-right .picBox{
+    animation-name: in-right; 
+}
+.wrapper .out-right .picBox{
+    animation-name: out-right; 
+}
+@keyframes in-right{ /* 如果初始状态跟你0%的状态一样写to就可以了 */
+    0%{transform: rotate3d(0, 0, 0, 0);}
+    100%{transform: rotate3d(0, 1, 0, -90deg);}
+}
+@keyframes out-right{ /* 如果初始状态跟你0%的状态一样写to就可以了 */
+    0%{transform: rotate3d(0, 1, 0, -90deg);}
+    100%{transform: rotate3d(0, 0, 0, 0);}
+}
+
+//******************************************************************************************************
+
+var oLi = Array.prototype.slice.call(document.getElementsByTagName('li'));  // 类数组转化为数组
+
+oLi.forEach(function (ele, index) { // 这个函数是自己执行的 this指向window
+                                    // 建议在这里存?? 因为你绑定的时候不是循环遍历每个LI进行绑定的 
+                                    // 有可能里面的元素的宽和高不一样 有的元素可能大点 有的元素可能小点
+                                    // 这样的话你每次绑定的时候你可以从这个元素里获取自身 这样的话for循环每个大小你都能获取的到
+                                    // 有可能每个变量的大小不一样 拿一个变量来显然不可以了  怎么来存????
+                                    // 来一个数组 数组里存好多个对象 这样也不好吧  对应
+                                    // 可以存在dom元素身上 给dom元素添加个属性  spec: 规格
+
+    ele.spec = getSpec(ele);    // 循环遍历每个元素的时候 都会返回有个对象 也就是说给每个元素上都添加了自身的一个方法
+                                //     添加自身的属性 自身的属性里就带自身的X和Y值  这样的话你获取的话也好获取
+                                
+                                // 建议在这里存 因为你绑定的时候不是循环遍历每个li进行绑定的吗 有可能里面的元素宽和高不一样 
+                                //    有的元素大些 有的元素小些 这样每次绑定的时候每次获取它自身 这样的话每次for循环每个大小你都能获取的到  
+                                
+                                // 最好有个专门的函数帮你获取当前元素的规格                  
+    ele.addEventListener('mouseenter', function(e) {
+        addClass(this, e, 'in');
+    })
+    ele.addEventListener('mouseleave', function(e) {
+        addClass(this, e, 'out');
+    })
+});
+
+function getSpec(ele) {
+    return {
+        w: ele.offsetWidth,
+        h: ele.offsetHeight
+    }
+}
+
+function addClass(ele, e, state) {
+    var x = e.offsetX - ele.spec.w/2;   // e.offsetX: 当前你这个鼠标相对于这个方块X轴的坐标是什么  相对于dom元素进入的位置是什么
+    var y = e.offsetY - ele.spec.h/2;
+
+    var d = (Math.round((Math.atan2(y, x) * (180/Math.PI) + 180)/90) + 3)%4;
+    var direction;
+
+    switch(d) {
+        case 0:
+            direction = 'top';
+            break;
+        case 1:
+            direction = 'right';
+            break;
+        case 2:
+            direction = 'bottom';
+            break;
+        case 3:
+            direction = 'left';
+            break;             
+    }
+    ele.className = state + '-' + direction;
+}
+
+// 主要写这个样式为什么????
+//     每个class类名负责一个样式 判断通过class类名决定你是什么样子的 
+//     不然通过一个in-top值还得判断你进还是出的状态  鼠标进还是出是不好判断值的
+//
+// 屏幕有个X轴从左向右的  Y轴从上到下的方向  不光浏览器有X轴和Y轴 任意一个盒子也有X轴和Y轴  
+//
+// 判断方向的思想  --- 总结学习
+//
+//  进入判断一下你当前进入的坐标是什么 坐标可以知道你当前是从哪个方向进入的 根据这个坐标算出一个角度 根据这个角度返回一个值
+//     无论进入还是离开 你调用的都是同一函数 这个函数是获取角度值添加class类名  这个函数获取方向值和你当前这个class类名是什么样子的给它设置的
+//     并不能判断你这个元素是进入的还是出去的值 如果你想它调用这个函数鼠标是进入的还是出去 必须给这个函数传个附加的参数 比如进入给它传个1 离开的时候给它传个2
+//     这个时候你在里面判断一下是进入的还是离开的 这个在js中稍微有些麻烦 要根据你这个参数进行处理 现在通过进入传个'in'  出去传个'out'
+//     假如不传in/out 传1/2  怎么办???   无意之间多了很多操作  在js中操作CSS样式  跟行为样式结构分开写的原理不相符合了 初衷是样式归样式的 
+//         js主要操控它的class就好了  你把CSS样式添加 你在js控制class类名就好了  不用再设置它CSS样式了  
+//
+// 设计思路 
+// 性能优化  触发重排重绘 offsetWidth offsetHeight 回流
+//     即使你没有发生改变 但你获取的offsetWidth/offsetHeight某某值 
+//     它会重新计算一下布局返回给你一个最新的值 会重新走了一遍回流的过程
+//     所以你每次动画都要执行一下这个函数的时候都要重新计算一下布局 没有必要  
+//     在你这个元素最开始绑定的时候元素大小尺寸已经决定好了
+//     在你最开始的/刚进来的时候 没必要每次都获取
+//
+// 重构: 重新构建
+//
+// 总结
+//     项目最开始的时候  会进行旋转根据我的鼠标进入的方向来进行不同的旋转 进来的时候是一个状态 出去的时候又是个状态
+//     这个我们就考虑到可不可以给它进来的时候是一个关键帧 出去的时候是一个关键帧 这样的话我们可以操控同一个关键帧来实现 进来添加一个in..  出来的添加一个out..
+//     我们发现它进入的时候始终是一个div 没必要写多个div 只需操控这个div就可以了 操控这个div怎么保证这个一会在左一会再上呢????
+//     我们可以通过特殊的class类名 当你从左边进入的时候给你添加一个left的class类名 当你从上边进入的时候给你添加一个top的class类名 这样left的
+//     时候给你拼接好一个样式 top的时候给你拼接好一个样式 只要你进入的你有这样的类名就有这样的样式了 然后你有这样的样式之后再配合上我刚才设置好的关键帧
+//     进入的时候添加in.. 拼接到上面再加上你设置好in..的动画的样式 这样你就会出现集体看到出现的效果 接下来获取鼠标的位置 获取鼠标位置的时候 当我鼠标进入
+//     这个元素身上 它会返回一个 它距离这个元素X轴方向上的位置是什么 在Y轴方向上的位置是什么 可以返回这个坐标 返回它进入这个元素坐标的效果是什么 
+//     我们可以拿到坐标值通过Math方法计算角度 算完 角度之后返回是一个弧度值  返回之后拿这个弧度值变成角度值  由于有正负不好判断+180
+//     通过计算在各个边拿到的值是否唯一 左边的值不为一再判断 再处理拿到每个方向都是唯一的值来展示
+//     用switch来判断 0拼接什么名...    根据in或out + 状态 确定这个class是什么样子的 class确定之后动画就有了
+//
+// X Y 坐标系挪到中间
+//   不算角度 直接判断值
+//
+// 角度计算的方案??
+//
+// 一个值代表一个方向 不是为了一个简化的数学问题根据一个函数/一个公式处理完成后变成一个简单的数/一个方向 
+//
+// Math.ceil(): 向上取整    Math.floor(): 向下取整     Math.round():四舍五入取整
+//
+//
+//          求唯一值:       + (max-1) % max 
+//          1    2   3     + 7 % 8
+//          8/0      4
+//          7    6   5
+//            
+//

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head> 
+<body>
+
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+
+    <script>
+        
+        // ES6对字符串和数组的拓展
+        //
+        //
+        // String
+        // String.prototype charAt(num); // 返回当前字符串上的第几个字符
+        // let str = 'welcome to duyi';
+        // console.log(str.charAt(3));
+        // console.log(str.charAt(3) == str[3]); // 一样的 只不过str.charAt()更符合语法规范 str[3]这种方式去读不是因为字符串是数组 
+                                              //     而是因为能点都是对字符串进行包装 因为原始值它不是对象 但我又想把它当成对象去操作 怎么办
+                                              //     所以包装一下 于是有了包装类 相对于string把这个返回字符串类型的对象 
+                                              //     通过str调用字符串类型的对象上的方法charAt() str[3]返回字符串具体位置的单串
+        
+        
+        // charCodeAt();  也是在原型上 返回当前位置的字符串的Unicode编码
+        // let str = 'welcome to duyi';
+        // console.log(str.charCodeAt(3));
+        // console.log(str.charCodeAt(0));
+
+
+        // slice(start = 0, end = this.length)  字符串截取           [start, end)   能取到start 不能取到end 所以end是终止位 它之前的和start之后的中间的字符串
+        // let str = 'welcome to duyi'; 
+        // console.log(str.slice()); // 如果直接调用slice()方法 会把整个字符串返回 它会做一个字符串截取 从0开始截取到自身长度 假设是10 下表0-9
+        // console.log(str.slice(0, 4));
+        // console.log(str.slice(4));
+
+
+        // indexOf(str, start = 0)  匹配当前字符串类的子串是否在当前的字符串内 成功返回子串的起始索引  如果失败了返回-1           
+        //                              这个方法很有用 ES6当中对它进行了升级
+        //                              第二个参数选择开始值 从哪开始匹配 第二个参数的目的是减小我们的字串的范围 可能说我们拿到一个字符串 我知道它前半部分
+        //                              它可能有个前缀的 可能前缀占了一部分字符 把这个前缀刨除 算后面的内容 所以我可以通过限制起始位置让它去找
+        //                              那这种方式会让它找到更快
+        // let str = 'welcome to duyi';
+        // console.log(str.indexOf('come'));
+        // console.log(str.indexOf('comee'));
+        // console.log(str.indexOf('come', 3));
+        // console.log(str.indexOf('come', 4));    
+        // 我们要判断这个字串在不在当前的字符串当中 我们更期待的是返回true或者false 它给我们的是下标 这有些不太完美
+
+
+        // split('')  按照某些规则拆分
+        // join() join()方法不是字符串 它跟数组的join()方法 它俩是互逆的 
+        // split()把字符串变成数组 按照特定的规则拆开   join()按照特定的规则把数组中的每位拼接到一起
+        // let str = '1, 2, 3, 4, 5, 6';
+        // console.log(str.split(','));
+        // console.log([1, 2, 3, 4, 5, 6].join(','));
+
+
+        // toUpperCase() // 将字符串内所有的小写字母变成大写字母 toLowerCase() // 将字符串内的所有的大写字母变成小写字母     它们对汉字没影响
+        // let str = 'hi 广开 123';
+        // console.log(str.toUpperCase()); // 只把字母进行转换     都定义在原型上
+
+
+
+
+        // ES6当中对字符串的优化和拓展
+        // 字串的识别  indexOf()
+        // String.prototype.isInclude = function(str) { // 看看这个字串是不是它的 这个是includes的实验方法 这是一种思想
+        //     if(this.indexOf(str) != -1) {
+        //         return true;
+        //     }else {
+        //         return false;
+        //     }
+        // }
+        // console.log('123'.isInclude('12')); // 偏向这种返回索引 我们更偏向于有还是没有 所以我们在这做了封装 其实对于字串的查找还是非常有用的 
+                                            //     用处非常多的 能用的地方非常多 所以在ES6中把它封装成一个方法includes
+        
+        
+        // includes
+        // let str = 'you were, are and will be in my heart';
+        // console.log(str.includes('heart')); // 其实它也支持第二个参数的 从哪个位置开始 跟indexOf()一模一样
+        // console.log(str.includes('heart', 10));
+        // 在ES6当中给它做了一个升级 就是通过indexOf实现includes方法
+
+
+        // startsWith endsWith 就是我们判断一下这个字符串是以谁起头的   它们都支持第二个参数 它是第几个位置从哪开始的
+        // let str = 'you were, are and will be in my heart';
+        // console.log(str.startsWith('you'), str.endsWith('heart'));
+        // console.log(str.startsWith('you'), str.endsWith('hear'));
+        // console.log(str.startsWith('w', 4), str.endsWith('you w', 5)); // 这个是从第四位开始 这个是从第五位 不包含第五位
+        
+        // 前后缀比较
+        // let stuffLists = [
+        //     'Google-Page',
+        //     'Alibaba-mayun',
+        //     'Tencent-mahuareng',
+        //     'FaceBook-Zuckerberg',
+        //     'Duyi-ding',
+        //     'Duyi-song',
+        //     'Duyi-cheng'
+        // ];
+        // let DuyiStuffs = stuffLists.filter(stuff => stuff.startsWith('Duyi-')); // 可以做前缀的筛选    
+        // console.log(DuyiStuffs);
+        // 可以做域名的匹配 域名的分类       .com  .gov .net .cn .edu ....
+
+
+
+
+        // repeat 重复 
+        // 产生由10个*组成的字符串
+        // let str = '';
+        // for(let i = 0; i < 10; i++) {
+        //     str += '*';
+        // }
+        // console.log(str);
+
+        // let str = '*'.repeat(10); // 把当前的字符串反复拼接几次 然后进行返回
+        // console.log(str);
+
+        // let str = '&$'.repeat(10); // 目的是把当前的字串重复几次返回 比for循环更容易用好用 需求: 由相同字符串产生很大的字符串通过这个方法特别好用
+        // console.log(str);
+
+
+        // 子串的匹配   子串的生成多个
+        
+
+
+
+        // 模板字符串 什么是模板 模板字符串主要体现在里面可以添一些东西 主要体现在模板两个字 模具 产生一批一批一样的
+        // '[] love []'
+        // ''     ""     ``(反撇号 由它构成的字符串称之为模板字符串)
+        // let str = `i love you`; // 通过这种引号产生的字符串跟普通字符串一样
+        // console.log(str);
+        // console.log(typeof str);
+
+        // 模板插值语法
+            // let name1 = 'i';
+            // let name2 = 'you';
+            // let str = `${name1} love ${name2}`; // 这个传值一传就定了 这样传值语义化更好 符合字符串的规则 字符串还同时在字符串里面
+            // console.log(str);
+        // let str2 = name1 + ' love ' + name2;
+        // console.log(str2);
+        // 这两种字符串进行比较 相比传统字符串来说取代我们的一个字符串拼接 这样的话还都在引号内引着 只不过用引号内独有的一些规则 这个被我们称之为插值语法
+
+        // let name1 = 'i';
+        // let name2 = 'you';
+        // let str = `${name1} love ${name2}`; // 这个传值一传就定了 一旦遇到name1会找当前作用域上面的值 把这个值取出来填充当前的模板
+        // name1 = 'She';  
+        // console.log(str);
+
+
+        // 字符串的回车换行问题  --- 为了语义化更好常常取换行
+        // let str = '<div>\
+        //              <span></span>\
+        //           </div>'; // 这个不具备换行的功能 必须加上换行符号\n
+        
+        // let str = '<div> \n \
+        //              <span></span> \n \
+        //            </div>'; // 这样比较复杂 如果里面要用到字符串拼接变的更复杂了  模板字符串就很好的解决这个问题
+
+        // let title = 'hello';
+        // let newStr = `
+        //              <div>
+        //                 <span>${title}</span>
+        //              </div>
+        //             `; // 这种语法让字符串有了很大的提升 我们用起来特别舒服 特别爽  随心所欲的用  上面换行还得加个转义符号 字符串拼接问题比较大的 
+        //                //     模板字符串首先解决字符串拼接的问题 我们使用插值语法 更符合规范 语义化更好
+        // console.log(newStr);             
+
+        // ${} 这里面可以放原始值 引用值 正常的值
+        // let title = {};
+        // let newStr = `
+        //              <div>
+        //                 <span>${title}</span>
+        //              </div>
+        //              `;
+        // console.log(newStr); // {} => [objet Object]  自动转换了             
+
+        // let newStr = `
+        //              <div>
+        //                 <span>${[1,2,3]}</span>
+        //              </div>
+        //              `;
+        // console.log(newStr); // [1, 2, 3] => 1, 2, 3       
+        
+        // 会进行一个操作 当前的值toString
+        // console.log(({}).toString());
+        // console.log([1, 2, 3, 4].toString());
+
+        // 表达式 函数
+        // function returnStr(a, b) { // 这样写让我们的字符串变的更加灵活 因为我们在里面随便运算 不会报错
+        //     return `${a}x${b}=${a*b}`;
+        // }
+        // console.log(returnStr(1, 2));
+        // console.log(returnStr(2, 2));
+
+        // 记得要转义
+        // var str = `\``;
+        // console.log(str);
+        // var str = `\${}`;
+        // console.log(str);
+        // var str = `\\`;
+        // console.log(str);
+
+
+        // 模板字符串的优点
+        // 更标准的字符串  体现在let str = `${name1} love ${name2}`; 无论我这个字符串拼接好无论什么样也好 它让我的这个整体性都在引号的管辖体内
+        //                    所以说它的字符串是更标准的 尤其是更好的处理字符串拼接问题 因为里面有先后顺序啊 可能还出现类型转换 因为里面可以加数字
+        //                    数字要数字想加的话 需要加括号 里面的内容还是比较多的 更好的处理了字符串拼接的问题 更标准的字符串
+        // 更灵活 语义化更好
+        // 防止注入 其实不是它防 它可以帮我们防注入 
+        //     什么是注入 XSS攻击 XSS就是在我当前页面植入一段脚本 让我这个页面中不能正常的执行 怎么插入脚本呢 document.ret插入的一个插入一个script标签
+        //     让我们的script标签在当前页面执行 是不是页面就挂掉了 怎么防止 标签模板   标签 => 函数
+        // alert('hello');
+        // alert `hi`;  // 说明这种格式它支持函数调用 函数调用可以采用这种方式
+        // console.log(parseInt(`123`)); // 会把这个字符串转化成数字
+        // console.log(parseInt`12${3}`); // 为什么是5 能分组的数字是12和3
+        // console.log(parseInt(12, 3)); // 通过模板字符这种方式取执行函数 它跟我们正常来说不一样 具体怎么不一样  刚才我们猜测它把12和3分开了
+                                      //     不是我们看到的简单的调用 所以这也是标签模板的一种 模板体现在哪里 体现在参数这
+        // function print(arg1, arg2) {
+        //     console.log(arg1, arg2);
+        //     console.log(arguments); // 其实它们是一样 说明我这样调用函数它会把12和3分开
+        // }                          
+        // print`12${3}`;    
+        // print`12${3}4${5}`; // 这个明白结果是一个数组[12, 4, ''], 3, 5  相对于执行parseInt(['12', ''], 3)
+        // console.log(parseInt(['12', ''], 3));
+        // // 尝试用自己的知识取写一个parseInt() 尽量把里面的内容考虑全
+        // print `12${3}4${5}6`;
+        // 首先按照模板分开 ['12', '4', 6]
+        // 有几个模板 就把这几个模板中的值做成参数 我们把没用的东西1246它们放到一个数组 剩下的把模板的内容拿出来做成其他参数 这就是标签模板的含义
+        //     也就是函数模板的含义 就是通过这种传值把普通的非面板的内容放到一起 模板中的内容作为单独的函数进行处理 所以对于这种形式 
+        //     我们会给它一个通用的写法 因为我后面有几个你不知道 你可能里面涉及多个模板语法 所以我不知道 怎么办
+        // function print(listArr, ...arg) { // 第一个是以这个模板分开的其他字符串构成的数组 剩下的是若干参数 value1, vlue2... 把它们放到一起
+        //                                  //     因为我们不知道有多少个参数 不定参数  用...res运算符    
+        //                                  //     这样的话不是把它们分类 这个仅限于我们通过标签模板的形式进行函数调用才可以  
+        //     console.log(listArr);
+        //     console.log(arg);                             
+        // }
+        // var a = 10;
+        // var b = 10;
+        // print`${a}x${b}=${a*b}`; // 这个很好的把我们模板的内容分出来 把我们这个非模板的放到一起 什么东西会丢失这样的一种操作
+                                 //     有了这个东西之后 你插值插的是谁 我们就对你这个插值进行一些操作 比如XSS 怎么攻击呢
+        
+
+        // 需求: 通过document.write('<p>你好, xxx</p>')向页面输入这样的东西 把xxx变成模板往里面放内容
+        // let name = '张三';
+        // document.write(`<p>你好, ${name}</p>`);
+
+        // 因为script脚本可以执行的 所以写个脚本进去 可以用这种方式写进来 如果我不对它进行控制的话 就会让他得逞
+        //  let name = '<script>while(true) {alert("你中招了")}<\/script>';
+        //  document.write(`<p>你好, ${name}</p>`);
+
+        // let name = '<script>console.log("你中招了")<\/script>';
+        // function safeHTML(arr, name) {
+        //     // console.log(arr, name);  
+        //     return `${arr[0]}${name.repalce(/&/g, '$amp;').repalce(/</g, '&lt;').repalce(/>/g, '&gt;')}${arr[1]}`;
+        // }
+        // document.write(safeHTML`<p>你好, ${name}</p>`);
+        // 发现它没有被转义 你输入啥就是啥 通过这种方法防止 虽然这里写了一个不安全的脚本 我们这你写什么我就让你展示什么 无所谓 大不了丑一点
+        //     但你不会影响我的页面 因为你刚才中招了 如果我刚才写一个恶意程序的话是不是会影响当前页面的执行/展示 这都是我们需要注意的地方
+        //     这些内容都是关于字符串类型的拓展 我们对于字串的操作 更重要的是什么 关于模板字符串的内容
+
+
+
+
+        // ES6当中数组的拓展
+        // 初始化数组
+        // 字面量 var arr = [];    通过构造函数 我们不怎么用 因为它不好用
+        // var arr = new Array(9); // 当你传一个数字而且只有一个参数的时候 创建一个长度为n的数组
+        // var arr1 = new Array('7'); // 非数字m 创建一个数组[m]
+        // var arr2 = new Array('1', 2, 3); // 多个参数 返回多个参数构成的数组
+        // console.log(arr, arr2, arr2);
+        // 这些是构造函数的一些弊端
+
+
+
+
+        // Array.of 加强的Array的构造函数
+        // var arr3 = Array.of(9);
+        // var arr4 = Array.of('5');
+        // var arr5 = Array.of('1', 2, 3);
+        // console.log(arr3, arr4, arr5); // 说明通过Array.of()创建的返回的数组是 这里你传什么我这里就有什么 就不分什么数字非数字 几个参数
+                                       //     统一返回由参数构成的数组
+
+
+        // Array.from 将类数组转化成数组     这个类数组是什么 arguments NodeList                               
+        // var likeArr1 = document.getElementsByTagName('div');
+        // console.log(likeArr1); // 怎么看是类数组呢 看原型__proto__ HTMLCollection  真正的数组是Array(0) 所以它是类数组
+        // function fn() { // 发现它的__proto__是对象 不是数组
+        //     console.log(arguments);
+        // }
+        // fn(1, 2, 3);
+        // 为什么要把类数组转化成数组 因为类数组我还想让它具有数组的操作 我还想操作数组的方法取操作类数组 那就把类数字转换成数组
+        // Array.prototype.filter.call(likeArr1); // 可以是可以 但是语义化不好 怎么转化
+        // var realArr = Array.from(likeArr1); // 通过它可以转化成数组 这个你无论传真数组还是假数值都会转化成数组
+        // console.log(realArr);
+        // 拓展运算符也可以转化成数组
+        // var arr = [...likeArr1];
+        // console.log(arr);
+
+        // function fn(...arg) {
+        //     console.log(arg);
+        // }
+        // fn(1, 2, 3);
+
+
+
+
+        // indexOf
+        // var arr = [1, 2, 3, 4, 5, NaN];
+        // console.log(arr.indexOf(5));  // 返回对应的下标 因为对于数组来说 下标对我们是有用的 因为我们要取值各方面 如果字符串的话 实际意义不大  
+        // console.log(arr.indexOf(NaN)); // 因为NaN不等于NaN的 所以返回-1  这个indexof其实是有些限制的 NaN你找不到 假如你找到第一个偶数 
+                                       //    你是不是也找不到 第一个大于5的数字 涉及到推荐的话你是没办法的 如果有条件你就找不了 
+                                      
+
+
+
+        // find(fn) 模糊查找 我就想找到它在不在里面 找到把它返回 
+        // findindex(fn) 涉及到精确查找 这个是返回索引
+        // 两个都在原型上的   fn是制约条件 它们两个的特点是只要找到了立即停止
+        // let arr = [1, 2, 3, 4, 5, NaN];
+        // console.log(arr.find(x => Object.is(x, NaN)));    // x指当前所有的元素  如果判断NaN是不是等于NaN 用加强的等号 Object.is() 
+        // console.log(arr.findIndex(x => x > 2));
+        // console.log(arr.find(x => x % 2 == 0));
+        // console.log(arr.find(x => x%12 == 0));
+        // console.log(arr.findIndex(x => x > 10));
+        // 这个是加强的一下 让我们的index查找数组当中的内容更容易些
+
+
+
+
+        // fill(value, start = 0, end = length) 填充
+        // var arr = [1, 2, 3];
+        // arr.fill('*'); // 对于这个fill是用来填充的 可以用来进行传值
+        // console.log(arr);
+        // arr.fill('$', 1);
+        // console.log(arr); // 从第一个位子开始就后面所有的都复制了
+        // arr.fill('&', 1, 2);
+        // console.log(arr);
+        // 这个fill用来干什么的 用来初始化填充操作 怎么初始化填充操作  扫雷的时候 创建一个二维数组 默认都是0 最后生成了1 
+
+        // let arr = new Array(10);
+        // arr.fill(0);
+        // console.log(arr);
+        // let list = new Array(10);
+        // list.fill(arr);
+        // console.log(list);  
+        // 这样的初始化操作是不是更容易一些
+    </script>
+    
+</body>
+</html>

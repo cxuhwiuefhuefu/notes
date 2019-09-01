@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        ul{
+            display: inline-block;
+            background: rgba(255, 165, 0, 1);
+            border-radius: 10px;
+            box-shadow: 0 5px 7px #666;
+        }
+        @font-face{
+            font-family: 'myFirstFamily';
+            src: url('./Wildemount Demo.ttf');
+        }
+        li{
+            display: inline-block;
+            border-right: 1px dashed #fff;
+            padding: 0 30px;
+            margin: 10px 0;
+            color: #fff;
+            font-size: 30px;
+            line-height: 20px;
+            text-shadow: 4px 4px 2px #888;
+            font-family: 'myFirstFamily';
+        }
+        .last{
+            border-right: 0;
+        }
+    </style>
+</head>
+<body>
+    
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li class="last">6</li>
+    </ul>
+
+</body>
+</html>
+//******************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        :root{
+            background: #ccc;
+        }
+        html{
+            background: deeppink;
+        }
+        li[class*='la'] {  /* li[class~='la']: 只要在class当中任意一个的位置有item就可以 多个clas类名有一个叫la   其实匹配的是class类名  不是只有这样的字符就行 */
+            color: red;  /* li[class^='la']: 第一个class类名以la开头的 */
+        }                  /* li[class$='la']: 以la结尾的clas类名 */
+                           /* li[class*='la']: 只要整个值当中存在我想要的这个字符串 */
+        li:not([class*='la']) {
+            background: green;
+        }
+        input[dg*='ds'] {
+            background: red;
+        }                 
+        .lademo:after{  /* after: 在它整个标签的内部的最后的位置   after/before是伪元素选择器,因为它选择的是当前这个标签里面的东西,选择的要么是这个标签最后的位置/要么是这个标签的最前的位置   */
+            content: '123';  /* 伪元素选择器: 都是选择dom元素里面的内容了,选中整个文档里面的内容       伪类选择器: 通过class类名选择整个dom的  */
+        }  
+        ul li.item{
+            background: blue;
+        }
+
+    </style>
+</head>
+<body>
+
+    <ul>
+        <li class="item">1</li>
+        <li class="item">2</li>
+        <li class="item">3</li>
+        <li class="delamo">4</li>
+        <li class="lademo demo la">5</li>
+        <input type="text" name="age" dg="ds">
+    </ul>
+   
+
+    <script>
+    
+    // css2: 标签选择器  class选择器  id选择器  父子元素选择器  直接元素选择器 属性选择器(li[class~='la']):只要在class当中任意一个位置有last就可以,在你class类名当中有last就可以   伪类选择器(:before :after)
+    
+    // css3: 属性选择器  伪元素(选中它整个文档里面的内容)    伪类(通过class类名选择出来dom)    伪类选择器:(link :visited active focus) 
+    //       伪类选择器/伪元素css选择器的权重要高于标签选择器  (*: 0   标签: 1   class: 10   id: 100   行间样式: 1000   import: 无限大)
+    //       我们在选择根标签的时候建议使用root  不建议使用html 因为整个文档除了html文档还有xml文档  xml文档的根本标签就不是html       
+
+    </script>
+</body>
+</html>
+//**************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        ul li:empty{
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        li::after{
+            content: '122'
+        }
+
+    </style>
+</head>
+<body>
+
+    <ul>
+        <li class="item"></li>
+        <li class="item">2</li>
+        <li class="item">3</li>
+        <li class="delamo">4</li>
+        <li class="lademo demo la">5</li>
+        <input type="text" name="age" dg="ds">
+    </ul>
+
+    <script>
+        
+        // 空标签选择器: 哪怕是字符串这种文本也会当成文本元素,它还认为里面是个元素不是空的   除非里面什么内容都没有,否则什么都不算空的
+        //                       用伪元素添加的内容算文本内容吗?  不算  伪元素选择不出来 根本不占dom结构 所以认为里面是空的 
+        
+    </script>
+   
+</body>
+</html>
+//***************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+            height: 2000px;
+        }
+        a{
+            position: fixed; /* 相对整个屏幕而言定位的 脱离文档流*/
+            top: 0;
+        }
+        .item{
+            position: absolute;
+            top: 1000px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        #item1{
+            top: 500px;
+        }
+        #item2{
+            top: 1000px;
+        }
+        #item3{
+            top: 1500px;
+        }
+        .item:target{
+            background: green;
+        }
+    
+    </style>
+</head>
+<body>
+    
+    <a href="#item1" style="left: 200px;">click1</a>  <!-- 只能添加id值 不能写class值    .item会跳转,#item不会跳转？？ #item直接拼接url后面,我们把这种方式叫做哈希值, 并且锚点到这个位置 -->
+    <a href="#item2" style="left: 300px;">click2</a>
+    <a href="#item3" style="left: 400px;">click3</a>
+    <div id="item1" class="item">1</div>
+    <div id="item2" class="item">2</div>
+    <div id="item3" class="item">3</div>
+
+</body>
+</html>
+//**********************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        /* li:first-child{
+            color: red;
+        } */
+        /* ul li:first-child{
+            color: red;
+        } */
+        /* body li:first-child{
+            color: red;
+        } */
+        /* body li:last-child{
+            color: red;
+        } */
+        body li:nth-child(2n - 1){ /* number从1开始的   even偶数 odd奇数   表达式 2n + 1(n从0开始的) */
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+
+    <li>0</li>
+    <li>4</li>
+    <ul>
+        <!-- <p>pp</p> -->
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <p>pp</p>
+    </ul>
+    <li>5</li>
+    <li>6</li>
+
+    <script>
+        // first-child: 找某个元素下的第一个子元素
+
+    </script>
+
+</body>
+</html>
+//************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        /* body li:first-of-type{
+            color: red;
+        } */
+        /* body li:last-of-type{
+            color: red;
+        } */
+        body li:nth-of-type(2){
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+
+   <li>7</li>
+   <ul>
+       <p>pp</p>
+       <li>1</li>
+       <li>2</li>
+       <li>3</li>
+       <li>4</li>
+       <li>5</li>
+       <li>6</li>
+   </ul>
+   <li>0</li>
+
+   <script>
+
+       // first-of-type: 找的是某个元素当中这个类型的第一个  同一个类型的第一个
+   
+   </script>
+
+</body>
+</html>
+//*******************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        /* li:nth-child(2) p{
+            color: red;
+        } */
+        li:nth-of-type(2) p{  /* 同类型中的第几个   减少设置class类名 减少代码量 */
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+
+    <ul>
+        <li>
+            <p>p1</p>
+        </li>
+        <li>
+            <p>p2</p>
+        </li>
+        <li>
+            <p>p3</p>
+        </li>
+    </ul>
+   
+</body>
+</html>
+//************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        /* li:only-child{
+            color: red;
+        } */
+        li:only-of-type{
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+
+    <ul>
+        <li>0</li>
+    </ul>
+    <li>1</li>
+
+
+</body>
+</html>
+//**********************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        /* input:enabled{
+            background: green;
+            width: 50px;
+            height: 50px;
+        }
+        input:disabled{
+            background: red;
+        } */
+        /* input:checked{ 
+            width: 30px;
+            height: 30px;   
+        } */
+        input:checked + span{  /* 找紧挨的span元素 */
+            display: inline;
+            color: deeppink;
+        }
+        span{
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+        <input type="text" disabled>
+        <input type="text">
+        
+        <input type="radio" name="a"><span>dg</span>
+        <input type="radio" name="a"><span>ds</span>
+
+        <input type="checkbox" name="a"><span>dg</span>
+
+   <script>
+
+       //  disable: 禁用的状态
+       //  并不是所有的input样式都是可以改变的
+       //  状态选择器 表单元素
+       //
+       //  只能选一个  加一个name属性,属性值相同
+
+   </script>
+
+</body>
+</html>
+//********************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        /* input:read-only + span{
+            color: #ccc;
+        } */
+        input:read-only ~ span{
+            color: #ccc;
+        }
+        input:read-write + span{
+            color: red;
+        }
+
+        p{
+            display: inline-block;
+            width: 200px;
+            border: 1px solid #000;
+        }
+        p::first-letter{
+            font-size: 30px;
+        }
+        p::first-line{
+            color: green;
+        }
+        p::selection{
+            background: green;
+            color: red;
+        }
+        p{
+            user-select: none;  /* 复制粘粘不了 */
+        }
+    
+    
+    </style>
+</head>
+<body>
+
+    <p>呢五年的加尔库为你觉得肯定可能我就看到的经文的我呢你纷纷看</p>
+    
+    <input type="text" name="a" readonly>
+    <em></em>
+    <span>dg</span>
+    <input type="text" name="a" read-write><span>ds</span>
+
+    <script>
+
+        // readonly:  只读 不可以写了  选都选不中
+        //
+        // 伪元素支持一个冒号  两个冒号的写法   建议写两个冒号
+        //  直接选择器 其实是 CSS3的内容 在CSS2的时候讲了
+        //
+        // ~: 下面所有的兄弟节点
+    
+    </script>
+
+</body>
+</html>
+//**************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .wrapper{
+            margin: 0 auto;
+            position: relative;
+            width: 400px;
+            height: 400px;
+            border: 1px solid #000;
+            text-align: center;
+        }
+        .wrapper input{
+            width: 30px;
+            height: 30px;
+        }
+        .wrapper div{
+            display: none;
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 400px;
+            height: 370px;
+            text-align: center;
+            line-height: 370px;
+            font-size: 30px;
+            color: #fff;
+        }
+        .wrapper div:nth-of-type(1){
+            background: red;
+        }
+        .wrapper div:nth-of-type(2) {
+            background: green;
+        }
+        .wrapper div:nth-of-type(3){
+            background: yellow;
+        }
+        input:checked + div{
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <input type="radio" name="a" checked>  <!-- checked: 默认被选中的状态 -->
+        <div>a</div>
+        <input type="radio" name="a">
+        <div>b</div>
+        <input type="radio" name="a">
+        <div>c</div>
+    </div>
+
+    <script>
+
+        // css选择器用好的话可以节省很多代码
+    
+    </script>
+
+</body>
+</html>

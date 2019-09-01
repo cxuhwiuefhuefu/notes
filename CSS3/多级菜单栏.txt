@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .demo{
+            width: 200px;
+            height: 100px;
+            background: green;
+            /* border-radius: 20px 40px 60px 80px; */
+            border-top-left-radius: 145px 107px;  /*  x y */
+            border-bottom-right-radius: 127px 97px; 
+
+            /* -webkit-border-radius: 50%; /* 这个就是兼容规范确定之前的chrome浏览器 */
+            /* -moz-border-radius: 50%;
+            /* -ms-border-radius: 50%; */                                                  
+            /* -o-border-radius: 50%;  /* 自打欧朋从webkit之后 兼容都少写了这一步了 因为欧朋现在的内核都采用了webkit的了 之后就可以少写这么一行了 */
+        }          /* 因为各个浏览器对这些属性的渲染方式都不相同的 所以他们就以内核为区分作为前缀来区分开  border-radius现在很多浏览器本版都支持了,没必要再向前兼容了 */
+                   /* 其他的属性是不是写一个就要查一个呢?? 其实不用,我们打包构建工具,这些打包构建工具在开发的时候会自动帮我们补全这些前缀,像这些前缀没技术含量的交给工具补全,所以开发中就不写这些兼容性的写法了 */
+                 
+                   /* 标签选择器 class选择器 div选择器 父子选择器  css3中有非常多的伪类选择器精准的选择出 */
+                   /* 盒模型包括的是 content padding border   如果加背景图片从padding区域开始引入的 为什么从padding区域开始引入呢 因为它是从css3当中走了一个默认的值padding css3中的默认的repeat */
+                   /* ps em rem 相对单位 米/厘米毫米、绝对的单位 */
+                   /* 动画能用css3效果好性能高比js高,所以以后做动画能用CSS3就不用js */
+                   /* border-radius: 50%;  其实取的是整个宽高的50% */
+                   /* border-radius 复合性属性值 (左上 右上 右下  左下)  */
+                   /* 当然设计不会要求我们用border-radius画图 因为border-radisu我们只是用它做一些简单的圆角一些好看的图片 要么设计给我们 要么用H5的方法来进行绘制 */
+                   /* em相对单位 */
+
+    </style>
+</head>
+<body>
+    
+    <div class="demo"></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+
+</body>
+</html>
+//************************************************************************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .demo{
+            width: 200px;
+            height: 100px;
+            background: rgba(0, 255, 0, 0.5);
+            border-radius: 100px 100px 0 0;
+            box-shadow: 10px 10px 4px 3px red inset;  
+            /* 模糊半径:只能大于等于0的值 阴影扩展半径:负的时候影子是缩小的/正的时候影子是放大的 阴影的投影方式:默认是向外投影的,不能添值;向内投影inset */
+            /* 向外投影还能减少我们做很多样式的 当我们鼠标hover到上面的时候有个突出展示的效果的 加个阴影 有立体的效果 */
+        }
+
+        ul{
+            margin: 100px;
+            width: 300px;
+            border: 1px solid #ccc;
+        }
+        li{
+            width: 100%;
+            height: 40px;
+            border-bottom: 1px solid #ccc;
+        }
+        li:hover{
+            box-shadow: 0 -3px 6px 0px #888, 3px 0 6px 0px red, 0 3px 6px 0px green, -3px 0 6px 0px orange;
+        }/* box-shadow是性能杀手  如果一个页面引入很多box-shadow 会使你的页面性能降低  box-shadow可以用但适量使用  text-shadow  blur模糊程度的意思 */
+
+        p{
+            text-shadow: 10px 10px 3px deeppink;
+        }
+        
+        /* rgb: 0-255    a: 0-1 */
+
+    </style>
+</head>
+<body>
+    
+    <div class="demo"></div>
+    <p>邓哥不是很帅</p>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+</body>
+</html>
+//***************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .demo1{
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .demo2{
+            position: absolute;
+            top: 50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.5); /* 我们眼睛看到的颜色都是根据发射决定的吧 它发射的是什么就是什么 没有任何色值就显示为黑色 */
+        }
+    
+    </style>
+</head>
+<body>
+    
+    <div class="demo1"></div>
+    <div class="demo2"></div>
+
+</body>
+</html>
+//***************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .demo1{
+            margin: 100px;
+            width: 300px;
+            height: 300px;
+            /* background: linear-gradient(to top, red, green); */
+            /* background: linear-gradient(to top left, red, green); */
+            /* background: linear-gradient(133deg, red, green, orange, deeppink); */ /* 0:默认to top   正值默认顺时针往右转  负值逆时针往左转  默认是均衡的位置上渐变的 */
+            /* background: linear-gradient(0deg, red 10%, green 20%, orange 80%, deeppink 100%);*/
+    
+            /* background: radial-gradient(circle at 50% 50%, red 10%, green 20%, orange 80%, deeppink 100%) */
+            /* background: radial-gradient(circle at center center, red 10%, green 20%, orange 80%, deeppink 100%) */
+            /* background: radial-gradient(circle at 30px 100px, red 10%, green 20%, orange 80%, deeppink 100%)   */
+                                                  /*  position: (百分比 关键字 像素值)   position: 只写一个值,第二个值不写默认走一个center */
+            /* background: radial-gradient(circle 100px at center, red 10%, green 20%, orange 80%, deeppink 100%); */
+            /* background: radial-gradient(circle 100px at center, red 10%, green 20%, orange 80%, deeppink 99%, transparent 100%); */
+                                         /* 可以规定渐变的范围是多少 */
+            background: radial-gradient(ellipse 150px 100px at center, red 10%, green 20%, orange 80%, deeppink 99%, transparent 100%);
+                                        /* 椭圆  x    y  */  
+        }
+
+        @font-face{
+            font-family: 'myFirstFamily';
+            src: url('./Wildemount Demo.ttf');
+        }
+        p{
+            width: 100px;
+            overflow: hidden;
+            border: 1px solid #000; 
+            word-break: break-all;  /* 没有空格浏览器会把你理解成一个单词 一个单词是不换行的  强制换行 */
+            font-family: 'myFirstFamily';   /* 正常引一个用font-family的方式 字体的名称   字体格式: ttf*/
+        }
+       
+    </style>
+</head>
+<body>
+    
+    <div class="demo1"></div>
+    <p>webfwuebfuwiebfuewfbuebfueru</p>
+    <p>http://www.baidu.com邓哥</p>
+
+</body>
+</html>
+
+//**********************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .demo{
+            width: 100px;
+            height: 100px;
+            border: 50px solid #000;
+            background: red;
+            /* border-image: url('./img/147374623290763311.png') 100; */  /* 为什么把img填充到border的四个角当中了？？  默认的取的都是背景图片的100%   第二个参数:可以切割图片 */
+            /* border-image: url('./img/147374623290763311.png') 149; */  /* 剩余两像素默认的把中间填充满  要想中间有填充的效果,必须保证左边的border右边的border剪完中间还能剩余的一些背景图片,这样才能帮你填充到这个border里面 */
+            /* border-image: url('./img/147374623290763311.png') 100 repeat; */  /* 会向中间为中心向两边展开 */
+            border-image: url('./img/147374623290763311.png') 100 round;  /* 当宽度到一定的程度裂变 始终保持中间图层的完整 当它的宽度大于它的1.5倍的时候裂变 */
+        }
+     </style>
+
+     <div class="demo"></div>
+
+
+</body>
+</html>
+//******************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .demo{
+            width: 100px;
+            height: 100px;
+            padding: 50px;
+            border: 50px solid rgba(0, 0, 0, 0.5);
+            background-image: url('./img/147374623290763311.png');
+            background-repeat: no-repeat;
+            /* 默认情况下走的是padding区域 */
+            /* 为什么 border上有图片 是因为一个默认的值 repeat */
+            background-origin: border-box;
+            /* 为什么右下角也有图片 因为图片很大 */
+
+            background-clip: border-box;
+    /* 默认情况下是不裁剪的(no-clip) 图片多大都帮你引到这个背景图片里,直到引完这个背景图片为止  有repeat的话一个一个帮你展示出来 不repeat的话引完就拉倒了 */
+
+           /* background-size默认情况下是auto 不改变图片的原始高度和宽度 多大就引多大 */
+
+            /* background-size: 100% 50%; */
+            /* background-size: 100px 50px ; */
+            background-size: contain;  /* cover: 一张图片充满整个背景区域 让你背景区域没有空白的地方 */
+            /* contain 保证你这个背景图片完整的存在这里 */
+            background-position: center center;
+
+            /* 豆瓣评分 图片每次加载都要耗资源的  小图放在一张大图 */
+        } 
+
+
+        p{
+            width: 400px;
+            border: 1px solid #000;
+            word-wrap: break-word;
+            /* 给字体添加背景  webkit独有的属性  根据你这个背景为文字添加颜色  考虑兼容性*/
+            background: url('./img/logo2.jpg');
+            -webkit-text-fill-color:transparent;
+            text-fill-color:-webkit-background-clip;
+            -webkit-background-clip: text;
+            /* background放在这里会把background-clip覆盖掉 */
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div class="demo"></div>
+
+    <p>ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+       ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+    </p>
+
+
+</body>
+</html>
+//******************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .demo{
+            width: 100px;
+            height: 11px;
+            background-image: url('https://img3.doubanio.com/f/shire/b8f4c3672ef81106701071831e22422a745d3b74/pics/rating_icons/ic_rating_s.png');
+            background-position: 0 -19px;
+            background-repeat: no-repeat;
+        } 
+    </style>
+</head>
+<body>
+
+    <div class="demo"></div>
+   
+     <script>
+     //  作业
+
+
+      ？？？作业的困惑
+
+
+     </script>
+
+    
+   
+
+</body>
+</html>

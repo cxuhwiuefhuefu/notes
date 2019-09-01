@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        // 1. ES的全称是? 
+        //    ESMAScript
+        //
+        // 
+        // 2. ES6之前的作用域有哪些?  
+        //    全局作用域 函数作用域
+        // 
+        //
+        // 3. 在ES6中引入的作用域是?  
+        //    块级作用域 随着块级作用域的引入 让我们对这个变量操控更好用了些 它只能在当前作用域和它的子作用域内被访问 其他东西访问不到它     
+        //    其他编程语言有作用域 ES6之前没有 是在ES6中提出的块级作用域 
+        // 
+        //
+        // 4. 说说var和let声明变量的区别?(2018年百度面试题) 
+        //    let和const声明的时候具有识别块级作用域的能力 
+        //    let优点: 声明变量的时候 块级作用域 不允许重复声明(TDZ 先声明后使用 同时避免这种变量冲突 解决之前var这样的通病) 存在暂存性死区 
+        //             let是加强版的var 只不过在各方面做了约束 块级作用域 暂存性死区 const定义的是常量 不可改变的量
+        //             我在初始化的时候就必须进行赋值之后不能改变了 对于对象来说只要这个对象地址不变就行
+        // 
+        //
+        // 5. Set和Map数据结构的区别? 底层实现原理是什么?
+        //    封装Map 邻接链表和邻接矩阵是一样 把各个链表放一起 矩阵就是数组 把各个数组拼到一起 桶
+        //    set 产生一个类似数组的结构 里面的值唯一 对于原始值来说唯一就是它们相等 对于引用值来说只要地址相等的话
+        //    map 用来做字典 字典指的是索引 只要知道key就可以取拿value   
+        //    先有set后有map
+        //    map原理 结构是邻接链表 在我们js中是没有指针的概念的 有人说this是指针 this是JavaScript特殊的机制 它没有指针的含义 在C++ 
+        //       指针明确拿到的是地址 map是由set来的 set它其实也是一个邻接链表 相同的key值只存一次 所以我们做到数组去重
+        //       set为什么能去重 它的原理是 相同的key我就不管 只存同一个key map在set基础上加了个value这样的节点之后就让它变成map结构
+        //       桶长怎么定义合适 对于真正计算机当中的set和map结构来说 一般会有一个阈值 当一个桶的后面 每个桶存的值太多怎么办呢 达到阈值怎么办呢
+        //       把当前的桶长加原长的二分之一 里面所有的点进行重新的哈希 重新的分类 重新的分桶 这样的话使得它们每个后面的值都小于8 
+        //       因为8的话找起来非常好找 最多找8次    
+        //       map里面红黑树 后面的节点太多了 怎么办呢  1024 我二分 我找十次就能找到1024里面任意的值 只要它有序的话 
+        //       它在里面用的红黑树的结构是怎么样的 把很长很长的链表形式给它变成树形结构 怎么变 红黑树的原理 比它小放左边 比它大的放右边
+        //       这样形成了红黑树 要么加桶长 要么后面变成红黑树的形式 红黑树也是二叉树 只不过二叉和我们的二叉不太一样 因为二叉树也有平衡二叉树
+        //       红黑树就是二叉树 
+        // 
+        //
+        // 6. 怎么判断链表里面有环(18年小米面试题)
+        //    链表  O -> O -> O -> O 强调的是链接 把若干个点把它们相应的连接到一起 这个东西就可以称之为链表 为什么叫表 因为它是表结构
+        //          然后在我们数据结构当中也有线性表 指的是数组 [1, 2, 3, 4]
+        //          传统来说我们链表是非连续的 为什么是非连续的 我这申请了一块空间 我这申请了一块空间 
+        //          同时我在里面又多申请了一块空间用来存我指的下一个地址这样指针空间 它多用了一块空间但是可以使我们的内存不连续 假如有的在1块内存
+        //          有的在5块内存 但对于1块内存的来说我只要存一个 我下一个节点是5块内存 我就能通过这个指针寻址 我就能找到5块内存读到里面的值
+        //          就是链表是非连续的 当对于数组呢 对于我们js当中来说 数组可拓展的 真正的数组对于C语言/Java当中的 它的数组一定是连续的 如果是一维的
+        //          每个数组地址必连续 假如我申请的数组特别大怎么办 我内存有10G 我申请7G的数组 你申请不了 我申请一个非常小的数组 但是我内存快满了
+        //          你也申请不下来 它是对于内存的一种保护机制 对数据的一种保护机制 在真正的数据结构的意义上来说 数组必连续 它一定是挨着的 
+        //          数组里面多个数组 每个数组的首地址是连续的 每个里面的数组是连续的 针对于数组当中的每个数组它也是连续的 这是真正的数组 
+        //          对于我们这个链表 非连续的  怎么办 我通过一个指针 一个链给它串起来 这就叫链表 数组一定是连续的 对于我们js来说数组是可拓展的
+        //
+        // class Node {
+        //     constructor(key) {
+        //         this.key = key;
+        //         this.next = null;
+        //     }
+        // }  
+        // function insertNode(startNode, node, num = Infinity) { // 无论我这个链表多么长 我只知道头节点 我这个链表中的每一位都能找到
+        //     if(num < 1) { // 说明它有0 我们从1开始
+        //         return;
+        //     }
+        //     while(startNode.next && --num > 0) {
+        //         startNode = startNode.next;
+        //     }
+        //     // startNode.next = node;
+        //     let nextNode = startNode.next;
+        //     startNode.next = node;
+        //     node.next = nextNode;
+        // }    
+        // // 先找到我们链表当中的最后一位 再把最后的节点变成我们新的节点
+        // var node1 = new Node(1);                                    //s    ==》 这样写无头节点链表
+        // insertNode(node1, new Node(2));
+        // insertNode(node1, new Node(3));
+        // insertNode(node1, new Node(4));
+        // insertNode(node1, new Node(5));
+
+        // 有头节点链表什么意思呢 就是我在我整个链之前加一个头 这个头用来拿当前的链表 想插1怎么办 必须返回新的链表 我的头要重置一下 
+        //     我插后面头是node1无所谓 但我要插到前面呢 这个链表是不是要重置一下 你还拿着node1 虽然你前面有人链接着你 但你不知道前面是谁
+        //     单向链表 我有一个头的目的是方便我进行头插 我想插到1的前面的时候还拿到node1是不可以的 把node1重新赋值 指向我真正链表的头
+        //     有头节点链表之后你插哪里都行 我们称之为头插 我想插第零个位置就插这   
+        // let nodeHead = {type: 'head', next: null};
+        // insertNode(nodeHead, new Node(1));
+        // insertNode(nodeHead, new Node(2));
+        // insertNode(nodeHead, new Node(3));
+        // insertNode(nodeHead, new Node(4));
+        // insertNode(nodeHead, new Node(5));
+        // // 把node6插到第一个位置上
+        // var node = new Node(6);
+        // insertNode(nodeHead, node, 1);
+        // // 1 startNode = nodeNext.next
+        // insertNode(nodeHead, node, 1000);
+        // 有环说明形成了回路 在表中叫圈 单向链表环结构 怎么判断链表当中是否有环
+        // node.next = nodeHead.next.next;  // 你展示这么多它不占内存吗 因为它是一种循环引用 所以它不占内存 它就是环结构 
+                                            //     我看看这个节点什么时候指向空指针了 因为没有环这个链表的 它最后空指针一定指向null
+                                            //     假如这个链表十亿个长度 你需要跑多久你不知道它会不会有null 它里面有环的话就没有null了
+                                            //     所以说这种想法不行 怎么办呢 找也没有环 取一个步长为一 一个步长为二的指针
+                                            //     判断链表中有环 这两个指针相等 这两个相等指的是对象相等 然后不等于null 为啥一个走1一个走2可以呢 
+                                            //     是因为在相当于干嘛 2 3 4 其实在3对1对2求最大公约数 她两走多少之后能相同 一个走1%3 一个走2%3
+                                            //     她两最后相同的时候就意味着她两会重合 因为1跟2的最大公约数最小  
+                                            //     1 % 3 = 1  
+                                            //     2 % 3 = 2
+                                            //     2 % 3 = 2
+                                            //     4 % 3 = 1
+                                            //     3 % 3 = 0
+                                            //     6 % 3 = 0  
+
+                                            // 'head', next => 1, next => 2, next => 3, next => 4, next => 5, next => 6
+                                                                  //   ||                                          ||
+                                                                  //    --------------------------------------------
+         
+        // 如何判断单向链表中有环
+        //     1. 穷举遍历 首先从头节点开始 依次遍历单链表的每一个节点 每遍历到一个新节点 就从头节点重新遍历新节点之前的所有节点
+        //            用新节点ID和此节点之前所有节点ID依次作比较 如果发现新节点之前的所有节点当中存在相同节点ID 则说明该节点被遍历过两次 链表有环
+        //            如果之前的所有节点当中不存在相同的节点 就继续遍历下一个新节点 继续重复刚才的操作
+        //     2. 哈希表缓存 首先创建一个以节点ID为键的HashSet集合 用来存储曾经遍历过的节点 然后同样是从头节点开始 依次遍历单链表的每个节点 
+        //            每遍历到一个新节点 就用新节点和HashSet集合当中存储的节点作比较 如果发现HashSet当中存在相同节点ID 则说明链表有环
+        //            如果HashSet当中不存在相同的节点ID 就把这个新节点ID存入HashSet 之后进入下一个节点 继续重复刚才的操作
+        //            这个方法在流程上和方法一类似 本质的区别是使用了HashSet作为额外的缓存
+        //     3. 快慢指针 首先创建两个指针1和2(在Java里就是两个对象引用) 同时指向这个链表的头节点 然后开始一个大循环 在循环体中 
+        //            让指针1每次向下移动一个节点 让指针2每次向下移动两个节点 然后比较两个指针指向的节点是否相同 如果相同 则判断出链表有环 
+        //            如果不同 则继续下一次循环 
+        //        此方法也可以用一个更生动的例子来形容  在一个环形跑道上 两个运动员在同一个起点起跑 一个运动员速度快 一个运动员速度慢 
+        //            当两人跑了一段时间 速度快的运动员必然会从速度慢的运动员身上再次追上并超过 原因很简单 因为跑道是环形的                               
+        //
+        // 找环
+        // function findRing(nodeHead) {
+        //     let point1 = nodeHead.next;
+        //     let point2 = point1 && point1.next; // 为什么不这么写呢 直接写nodeHead.next.next 万一nodeHead.next是null
+        //                                         //     万一你再写next是不是报错啊 这是一种安全规范
+        //     while(point1 && point2) { // point1和point2都存在且不为null
+        //         if(point1 === point2) {
+        //             return true;
+        //         }
+        //         point1 = point1.next;
+        //         point2 = point2.next;
+        //         point2 = point2 && point2.next;
+        //     }
+        //     return false;
+        // }
+        // findRing(nodeHead);
+        //  
+        //
+        // 7. 判断下面this是指向谁 想想为什么
+        //    let show = () => {
+        //        console.log(this); // window
+        //    }
+        //    let obj = {show};
+        //    obj.show(); // window    
+        //    obj.otherShow = show.bind(obj);
+        //    obj.otherShow(); // 报错
+        //    let newObj = new obj.otherShow();
+        //
+        // 箭头函数具有绑定this的能力 跟bind基本一样 this绑定分为四种
+        //     默认绑定(空函数执行 函数单纯执行 this指向window)
+        //     隐式绑定(谁调用this指向谁)
+        //     显示绑定(apply call bind) call/apply只有执行的时候才会改变this bind会返回带有this指向的函数
+        //     new绑定 new操作符返回一个对象 this指向这个对象
+        //
+        //   箭头函数声明有什么特点 绑定作用域 当函数声明 它的作用域已经绑定了 指向的是window 这个show对象函数简写 obj调用这个方法 
+        //       但这个方法已经绑定this了 所以它指向的结果还是window show.bind(obj)相当于强行又把它绑定了this 箭头函数跟bind一样 只能被绑定一次
+        //       箭头函数中的this只会绑定一次 不会把其他的绑定 不会被其他的绑定 箭头函数是不能当作构造函数来用的 所以会报错的 怎么判断this绑定在哪里
+        //       this是谁的 默认绑定 隐式绑定 显示绑定 new绑定四种 对于箭头函数没有arguments 里面的this想用怎么办 它绑定离自己非箭头函数产生作用域
+        //
+        //  
+        // 8. 原生方式的继承怎么写(2018年美团面试题)
+        // function Animal(name, age = 0) {
+        //     this.name = name;
+        //     this.age = age;
+        // }
+        // Animal.prototype.showMsg = function() {
+        //     console.log(this.name, this.age);
+        // }
+        // function Person(name, age = 0) {
+        //     Animal.call(this, name, age);
+        // }
+        // Person.prototype = Object.create(Animal.prototype);
+        // // 圣杯模式的另外一种写法
+        // var p = new Person('zs');
+        // console.log(p instanceof Person);
+        // console.log(p instanceof Animal);
+        //
+        //
+        // 9. ES6中的class关键字声明的类具有什么特性?   
+        //    它的出现让我们的构造函数更明确 内容更专注些 让我们专门取做构造函数能做的一些事情 而且通过class声明这个类可以定义静态方法 
+        //        通过static关键字声明 具有和let/const声明变量一样 识别块级作用域 也存在暂存性死区 必须先声明 它不存在类声明整体提升
+        //        函数存在函数声明整体提升 对于类也是 必须先声明才能用
+        //
+        //
+        // 10. 判断字符串中时候包含哪个字符用什么方法?ES6引入了includes 利用原生语法实现字符串的inlcudes功能 
+        //     之前用indexOf 之后用includes
+        // 
+        //
+        // 11. 如果想让arguments NodeList 以及likeArray这样的类数组 如何使用数组的方法 有几种  
+        //     其实是把类数组把转化为数组
+        //     Array.from   扩展运算符...    Array.prototype.splice.call(likeArray, 0)
+        //
+        //
+        // 12. 简述结构赋值的好处
+        //     解构赋值原理 对应规则 数组的解构就是把数组当中的每一位位置相对应就可以了 对于对象 对象里面的key值作为我们的规则
+        // 
+        //
+        // 13. 通过解构赋值取出下面对象中的特定的值
+        // let moveList = {
+        //     start: 0, 
+        //     count: 1,
+        //     subjects: [
+        //         {
+        //             rating: {
+        //                 max: 0,
+        //                 min: 0,
+        //                 average: 9.6
+        //             },
+        //             genres: ['剧情', '喜剧'],
+        //             casts: 1,
+        //             title: '我不是药神'    
+        //         }
+        //     ]
+        // }
+        // 取出里面的subjects, rating, average, 剧情, 喜剧, 结构出来  
+        // let {subjects, subjects: [{rating}], subjects: [{rating: {average}}], subjects: [{genres: [type1, type2]}]} = moveList
+        //     
+        //
+        // 14. 利用Promise实现以下请求
+        //     我们需要做基于三个异步请求队列 A, B, C之后 把它们的返回结果都拿到之后 经过简单处理之后在发送最后一次请求 最终得到请求之后的结果
+        //     (异步请求用setTimeout模拟) 
+        // Promise.all(A, B, C).then(data => new Promise(data => console.log(data)));
+        //
+        //
+        // Promise源码
+    
+    </script>
+
+</body>
+</html>
