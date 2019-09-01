@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        // animation 一帧的意思 在CSS3可以做动画 前提是你需要给这个动画设置关键帧 0% 1% 100%的时候关键帧是什么样子 
+        //      那它从这个关键帧到那个关键帧就会以动画的形式过渡过去 animation主要是做动画的时候使用 
+        //   为什么做动画使用? 当你想实现方块的运动的话  ---------    
+        //       1. 计时器(缺点: 浏览器主线程是什么过程 比如一天之后要交一个作业 那么一天之后你是不是应该把你这个作业交上去 但是突然我给你布置完作业之后
+        //              你的女朋友突然跟你说想让你陪她去玩一天 结果一天没玩完够 js语言是单线程 执行完上面才能执行下面 我不交作业 
+        //              由于我设置完这计时器等待这一天又发生别的事情 这个时候你又去干别的函数 这个别的函数好长时间才能执行完 
+        //              只有你执行完才能调用计时器的函数 要是你执行不完那你依旧被执行着 因为这个线程在执行这个函数没有办法抽身去干别的事情 
+        //              只能干完再去干定时器你设置好一天之后的函数 一天之后这个函数是不是不存在了 依然存在等着你这个主线程干完之后然后了两天
+        //              那两天回来之后你往这交作业是不是超时了 我明明告诉你是一天之后交作业但是由于中间进来一个事情 而这个事情却执行了很长时间 
+        //              那导致你往这交作业的时间延迟了 那计时器就是这么回事 我们知道js语言是单线程 执行上面  上面执行完了才能执行下面
+        //              那事件 比如我布置完那个作业你应该要一天之后去交 但是由于我设置完这个计时器之后等待的这一天之内有发生了别的事情 
+        //              那就是说你干了别的函数 这个别的函数执行了好长时间才执行完 那执行完的情况下你才能去调用计时器那个函数
+        //              它要是执行不完你依旧在这执行这 因为这个线程被占用着在执行这个函数 没办法抽身去干别的事情 所以说这个时候只能把它干完
+        //              干完之后才去干定时器你设置定时器一天之后的函数  我明明设置一天之后 但是你这个函数干了两天 那这个一天之后的函数是不是不存在了?? 
+        //              存在 它依然存在 它在那等着 等着你主线程干完之后再调用这个函数 所以就会导致一个问题 这个计时器用来设置东西的时候并不准确 
+        //              定时器你用它来执行东西并不是百分之百准确的 比如你用它来做这个动画的时候 当你设置每隔100毫秒让方块动一下
+        //              但是由于你设置100毫秒空档期之内突然有别的函数插入 别的函数一执行就执行200毫秒导致你拖到200毫秒的位置上了
+        //              当前你这个动画等待200毫秒才进行运动 这个时候你会感觉页面的动画有些卡顿了
+        //              所以用计时器来做动画不是最优的选择   怎么办?? -->  requestAnimationFrame做动画能解决我们计时器做动画的缺点  
+        //           计时器还有个缺点： 这个计时器你觉得中间没有插入其他一些函数能准时的执行 那么我告诉大家 这个计时器要设置时间的 
+        //               每隔多长时间干一个事 每隔多长时间干一个事 我想问问大家这个设置时间设置多长合适呢?? 比如你让这个动画从左往右运动设置多久合适 
+        //               100ms 10ms 0ms 如果你设置100ms你会感觉这个动画并不是很流畅 一顿一顿的走起来 当你设置20ms你会感觉动画稍微流畅些
+        //               那具体设置多少毫秒流畅?? 是不是也不准确 你设置大了不行 一顿一顿的  你设置小了呢 你设置0ms也不会立刻执行的 
+        //               一般在设置计时器0ms后它会有延迟 大概4ms的时间 因为它把这个计时器放到计时器的夜幕执行当中 然后把它放到事件队列当中
+        //               然后再由主线程到那访问看事件队列当中有没有函数 如果有的话把它放到主线程当中执行 这个过程都需要时间的 
+        //               即使你设置0ms依然也会有4ms的延迟 所以你设置0ms也不好 
+        //           再一个什么问题 你设置的时间很短容易掉帧 比如你设置10ms动一下 但真的是每隔10ms动一下吗?? 其实不是的 为什么我们说动画会动呢??  
+        //               它会动的原因是因为我们浏览器的屏幕在不断的刷新 因为浏览器在不断的刷新 所以就像我们看的小人书 就是有种小书快点一翻就完成一套动作 
+        //               类似这样的 每一帧其实是静态的样子 当那些帧快速的连贯在刷新的话 我们就感觉这些动画在运动 比如第一帧是这样的 第二帧是这样的 
+        //               一刷新我们感觉动画在这快速的执行 因为人眼是会有个延迟的 我们就感觉动画在运动 但实际是根据浏览器刷新来的 设置时间小点 
+        //               10ms让它运动一次 可能10ms还卡顿 5ms 1ms 设置最小的其实也不行 刚刚我们也说即使设置0ms也会有4ms的延迟 设置4ms是不是最好呢？？
+        //               不是的 因为哪怕你设置4ms浏览器也不刷新 浏览器刷新不是无时无刻在刷新 它是大概每隔16ms刷新一次 
+        //               那就是说哪怕设置4ms浏览器现在不刷新你是不是依然看不到它在动 不刷新它停在这 它停在这你就看不到动画的效果
+        //               那就是说你设置时间小根本没有用 浏览器不刷新你根本看不到它在动 比如说你设置10ms动一下 实际是每隔16ms动一下 
+        //               保证每次刷新的时候都让动画动 这样不浪费 设置时间越小掉的帧数越多 设置大了容易卡顿 这个计时器把时间设置16ms最好 
+        //               浏览器刷新的时候你再执行 当然16ms也不绝对 根据你个人电脑的性能以及电脑现在运行的状态 这个时间都不确定的 大概16ms左右 
+        //               我们平时设置计时器的时候最好写16ms 也不精准 最精准的情况是浏览器刷新我执行 那么requestAnimationFrame在浏览器刷新的时候自动帮你执行
+        //               所以我们不要传时间 传它要执行的函数就可以了
+        //               requestAnimation存在兼容性: 由于是H5新提供的API 它的兼容性只限于IE10以上的浏览器 如果说为了兼容以前的浏览器要实现这样的动画怎么办??
+        //               可以用CSS3吗??  CSS的animation/transtion也只是在IE10以上的浏览器才能使用 只能优雅降级到计时器上了
+        //               如果你需要向前兼容这些浏览器实际上最好的方法还是用animationFrame animationFrame可以在里面写一套兼容性的写法
+        //               用CSS3做动画在新版本浏览器能使用 老版本浏览器不能使用 还得用计时器 如果说用CSS3+计时器就是两套 
+        //               用requestAnimationFrame一套就写完了              
+        //       ) 
+        //       2. CSS3
+        //       3. jQuery框架
+    
+    
+    </script>
+
+</body>
+</html>
+
+//*********************************************************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        #btn{
+            position: absolute;
+            left: 0;
+            top: 100px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div id="btn"></div>
+
+    <script>
+
+        // var timer;
+        // function move() {
+        //     btn.style.left = btn.offsetLeft + 10 + 'px';
+        //     if (btn.offsetLeft >= 300) {
+        //         btn.style.offsetLeft = '300px';
+        //         clearTimeout(timer);
+        //     } else {
+        //         timer = setTimeout(function () {
+        //             move();
+        //         }, 10)
+        //     }
+        // }
+        // move();
+
+
+
+        window.requestAnimationFrame = (function() {
+            return window.requestAnimationFrame ||
+                   window.webkitRequestAnimationFrame ||
+                   window.mozRquestAnimationFrame ||
+                   function(callback) {
+                       window.setTimeout(callback, 1000/60);
+                   }
+        })() // 时间 为了模拟跟requestAnimationframe相似的效果的话 最好在屏幕刷新的时候执行
+        window.cancelAnimationFrame = (function() {
+            return window.cancelAnimationFrame ||
+                   window.webkitCancelAnimationFrame ||
+                   window.mozCancelAnimationFrame ||
+                   function(id) {
+                       window.clearTimeout(id);
+                   }
+        })()
+        var req;
+        function move() {
+            btn.style.left = btn.offsetLeft + 10 + 'px';
+            if(btn.offsetLeft >= 300) {
+                window.cancelAnimationFrame(req);
+                btn.style.left = '300px';
+            }else {
+                req = window.requestAnimationFrame(move);
+            }
+        }
+        move();
+    
+    </script>
+
+</body>
+</html>
+
+//************************************************************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+   
+    <script>
+
+        // 客户端存储: 在实际开发中我们希望在客户端当中存储一些东西 我们可能会使用 所以就要涉及一下本地存储 本地存储实际分为两块知识点 第一块storage
+        //     第二块cookie QQ邮箱页面 当我在QQ邮箱输入我的QQ 点击登录之后关闭我这个页面再次进来的时候我那上次输入的QQ会自动的显示在input框中 
+        //     那这个它是怎么拿到这个值的 我每次打开新的页面都发送一个请求 这个值哪里来的??  那是你上次输入完成之后帮我们把这个值设置在cookie当中
+        //     然后页面一刷新的时候先从cookie当中先取一下值 如果有值的话就把值展示在input框当中 如果没有这个值的话就什么都不显示 
+        //     cookie存储其实它会有很多限制的 首先来说cookie它主要在传递的过程中会放到响应头当中发送过去 如果服务器前端会以响应头的形式返回回来
+        //     它是要随着http网络传输的 比较浪费宽带 再一个cookie是一些路径的限制 比如你这个路径不相同你也取不到同源cookie值 所以限制更多些 
+        //     再一个cookie它存储量很少 它主要是为了标识用户的 里面存的量就比较小 主要的数据在后台当中 所以说你用cookie来存东西的话可以存一点 
+        //     不是太实用 除了cookie本地存储的还有的方法就是storage  storage就可以解决cookie这些问题了 它存储量大 然后还能没有什么路径的限制
+        //     它也不需要在http请求的过程中经过来回传输 
+
+
+        // localStorage: 永久存储
+        // sessionStorage: 临时存储
+        // 区别： 一个是临时一个是永久的
+        // storage存值都是存字符串形式的 虽然说她能往里存一些数据 但是数据只能是字符串的  如果我想存个对象怎么办?? 你可以把它存成json的格式 
+        //        用json格式把存成字符串进行存储 存完之后再把它取出来 取出来的时候再把它转成json格式就可以点的方式来取值了
+        // 无论是localStorage还是sessionStorage都会受到作用域的限制 必须满足同源策略 如果不满足同源策略的话你是取不到它的一些值的
+        //     再一个sessionStorage它受到文档源的限制 不同源不能相互访问 还受到窗口的限制 只有在当前的窗口下才能取 其他窗口下取不到了 
+        //     因为其他窗口相当于不同的window 所以取不到 当前的窗口关闭了 它的生存周期就没有了 但两个窗口同时存在 因为它不是同一窗口它依然取不到这个值 
+        //     只有localStorage在不同的窗口下才能取的到   如果在这存个汉字怎么办?? 依然存到这个汉字 取的时候也能取出来  但有的时候我们使用会乱码
+        //     比如我们拼接到URL后面中文的话肯定会乱码的 乱码的话怎么办??  encodeURLComponent(): 编码的   decodeURLComponent(): 解码的
+        //     你把特殊字符包括汉字放到encodeURLComponent()里面来写 取的时候用decodeURLComponent()转一下码 这个时候就可以存一些中文和取一些中文字符
+        //     在cookie当中就容易出现中文乱码的情况  在cookie就可以使用这种方法 storage的好处就是它相对于cookie来说好用的一点就是它封装了比较完整的API
+        //     包括setItem() getItem() removeitem clear() 我们在这里设置 获取 删除这些storage   cookie当中是没有的 如果我们想使用增删改查这些方法的话
+        //     必须自己封装这个函数 所以说localStorage用于本地存储这方面比cookie方便的很多   cookie存储量大概4k左右 不设置时间默认是临时存储
+        //     设置时间有两种方式  max-age传一个数字就可以了,数字单位是秒  expires你要存一个时间节点  删除的话可以用时间过期就可以了 
+        //     只要当前的存储时间小于我现在的时间 浏览器一看你过期了 标签给你删掉了 再一个它可以设置一个域 
+        //     可以通过domain的方式可以实现那个域到那个域下可以进行访问这个cookie....
+        // 对比cookie和storage从四个方面来说有什么不同......
+        // storage有个浏览器的限制 在IE8以后才能使用
+
+
+        // localStorage.name = 'aimee';
+        // var obj = {
+        //     "name": "animee",
+        //     "age": 18
+        // }
+        // localStorage.obj = JSON.stringify(obj);
+        // console.log(JSON.parse(localStorage.obj));
+        // sessionStorage.age = '18';
+
+        // localStorage.getItem('name');
+        // localStorage.setItem('a', 'b');
+        // localStorage.removeItem('a');
+        // localStorage.clear();
+      
+    </script>
+
+</body>
+</html>
+
+//***********************************************************************************************************************************************************************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+</head>
+<body>
+
+    index
+    <script>
+        
+        // history是一个栈存储 我们把可以把访问过的历史记录一条一条存在我们的栈中 然后这个栈可以帮我们一条一条的返回 先走进去的肯定是最好返回出来的
+        // 为什么要管理这个历史记录?? 
+        //     为了给用户提供更方便的操作 比如用户刚才访问什么东西 现在又访问另一个东西 那他现在想回退一下看看刚才访问那个东西的里面的信息是什么
+        //     这个可以点一下回退 这样管理历史记录方便用户   histoty api的作用就是帮我们进行管理历史记录 不用非得用户点击前进或者后退或者什么操作
+        //     可以通过代码的方式/api的方式对它进行调用 
+        //  SPA:单页面应用(一个页面的应用) 因为在H5中提供这些方法主要为了实现单页面应用的 
+        //      比如淘宝 为什么说淘宝不是单页面应用呢?? 淘宝这个大页面下面有很多很多的内容 如果说所有的内容都放到一个页面当中使用 通过display:none/block
+        //          的方式来展示的话 那么一个页面的东西未免太多了 对把??  我们知道浏览器在解析一个页面的时候 它解析html结果是单线程执行的 从上面往下面解析 
+        //          但凡有个标签没解析完就不解析了 所以我们在让它解析的过程中就是html标签不宜过多 所以它内容这么多你也不可能一个页面让它实现出来
+        //          所以说淘宝这种大型的网站会有很多个页面组成的 比如像登录应该就是一个页面 当然每个都是不同的页面 它里面会有不同的页面 比如百度 
+        //          每个都是不同的子域 跨域更大了 每个都是不同的域下了 一般大型的网站都采用多页面 因为内容太多了 比如说你的网站比较小 内容比较小的情况下 
+        //          你就完全用单页面来实现了 实现单页面应用  比如一个小公司 它的各项业务介绍 它的业务当中可能有首页介绍 公司介绍 业务介绍 关于我们加入我们 
+        //          等等一系列的东西 那它就是一个单页面应用 哈尔滨工业大学的网站 点击上面的东西 虽然都叫html 但是路径是不一样的 所以说其实你每次点击的时候
+        //          你发现这块有个小图标进行了刷新 其实你点击不同的东西会跳转到不同的页面上了 像这种就不是单页面应用 因为每个都是由不同的页面拼成的
+        //          我们叫htm htm是html的缩写 当然有些历史遗留原因的 因为之前的时候拓展名不支持4位 所以说就用了htm来替代 像这种就不是单页面的应用
+        //          有可能它觉得内容有点多 写成一个页面的话内容会比较多 但如果说内容比较简单 就几个部门 两三个部门 每个页面下的内容比较少的话就不用写多个页面
+        //          写一个页面就能完成 写一个页面就能完成的话 点击它的话下面这块内容在这主页下 一直是这个页面不刷新 当你点击它的时候也是这个页面不刷新
+        //          只不过下面的内容进行刷新了 比如你用了什么方式让它隐藏起来 让它展示出来 像这种只用一个页面就是单页面应用 内容比较少可以用单页面应用来实现
+        //          单页面应用的好处是上面的这堆东西不需要再加载 上面这堆东西都是一样的 每个页面都重复使用了 虽然写不用写但是加载页面依然要加载这块内容  
+        //          因为我们开发的时候我们可能会用到框架 把这作为一个小组件拿过来使用就可以了 但是加载的时候你还不是要加载这块内容吗 
+        //          像头和为相同的这种 只有中间内容不同 你就可以做成单页面应用了
+        //
+        // pushState: 在原来基础上进行添加
+        // replaceState: 在原来的历史上进行替换 把当前这条历史替换掉 替换成我们所添加的这条历史记录url
+
+
+
+        // history.pushState(null, null, './demo.html'); // 一个对象 新页面的标题 一个可以跳转的地址
+                                 // demo页面不是应该显示demo为什么显示index??
+                                 //      无论是pushState还是replaceState能帮你替换历史记录 增添或者替换一条历史记录但是它不刷新页面
+                                 //      不刷新导致你这个结果是你这个当前的地址当中已经显示demo.html 但内容依旧是你刚才进来的index.html
+                                 //      虽然添加历史记录但是没有刷新页面 这没有用啊  压根没有刷新 一般不往里传新的页面 往里传一些标记
+        
+        // history.pushState(null, null, '?one'); // 因为它不会刷新 所以你放一个新的页面也没有太大的必要 一般我们会通过进这个参数往里传
+                                               //     让它添加历史记录 传那个参数干嘛?? 比如说: 假设你做的是单页面的应用 当你点它的时候
+                                               //     它会发送ajax请求获取这个内容 当你点击'科学研究'的时候会发送ajax获取这个内容 
+                                               //     当你点击回退的时候会回退到'科学研究'这块内容下吗?? 不会 因为我们的历史记录只有这一条 
+                                               //     从未往里添加任何历史记录 发送ajax请求是不会添加新的历史记录 所以说回退的话根本回退不回去
+                                               //     只能回退到上一条历史记录 可能是上一个页面 所以ajax是没有办法完成前进和后退的完美结合的
+                                               //     前进和后退可以用什么实现??  可以用iframe 以前是用iframe但是不方便 你要把下面这块有做成一个页面了
+                                               //     现在pushState/replaceState来实现 因为它可以在历史记录当中添加一条的历史记录
+                                               //     无论你往里传什么东西都会添加一条历史记录 你可以在点击它的时候发送ajax请求往历史记录当中添加一条 
+                                               //     你点击它的时候发送ajax请求获取一些东西显示出来往历史记录再添加一条 你回退的时候就可以回退上一个状态
+                                               //     比如你点击它的时候拼接到B 点击它的时候添加个C 你会退就回退到C里头去了 那个时候就可以前进和后退了
+                                               //     当然具体实现还要结合ajax 
+        
+        // history.replaceState(null, null, '?one'); // 替换当前的历史记录  回退直接回退到空页面 说明把之前的空页面替换掉了 
+
+
+        
+        // history.pushState({"name": "aimee"}, null, '?one');
+        // window.addEventListener('popstate', function(e) {
+            // console.log(e);
+        // })
+        // 为什么上一个好使 下个不好使??
+        //     它把这个值传到这个?one里头了 如果?one里头才能拿到这个值 如果你回退到index.html index.html里面没有传到这个值
+        //         这个值是空的 只有你往前翻 翻到?one历史纪录下才能传进来这个值 这个时候我们可以把这个值取出来 一刷新就执行popstate会往历史记录添加一条
+        //         当前历史记录会发生改变 但是没有触发popstate事件 即使历史记录新添加了一条依然没有触发  就像我们刚才说的pushState/replaceState
+        //         并不会触发onpopstate事件 所以这块并没有打印出来e 主要不通过pushState/replaceState方法改变都会触发onpopstate事件 
+        //         让你往回翻往前翻都会触发 只不过触发的时候什么时候有 只有在?one历史记录下才有 因为你是在这条历史记录下往里传的值
+        
+        
+
+        // 我们可以用popstate来进行ajax前进和后退历史记录的管理         
+        //     每次点击的时候都要往历史记录里添加一条历史记录      
+
+    </script>
+    
+</body>
+</html>
+//*****************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+</head>
+<body>
+
+    demo
+    
+</body>
+</html>
+
+//***************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+    <style>
+
+        *{
+            padding: 0;
+            margin: 0;
+            font-size: 0; /* 有制表符 */
+        }
+        .wrapper{
+            position: absolute;
+            left: 50%;
+            margin-left: -200px;
+            width: 400px;
+            height: 400px;
+            border: 1px solid #000;
+        }
+        .header{
+            width: 100%;
+            display: flex;
+        }
+        button{
+            flex-grow: 1;
+            width: 133px;
+            font-size: 16px;
+            height: 50px;
+        }
+        .item{
+            text-align: center;
+            line-height: 350px;
+            font-size: 16px;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="header">
+            <button data="one">1</button>
+            <button data="two">2</button>
+            <button data="three">3</button>
+        </div>
+        <div class="content">
+            <div class="item">11</div><!-- 不能写三个div 要是写3个div是display:none/block来实现 现在我们希望内容是通过Ajax发送请求 请求过来的数据
+                                           而不是写死在页面中 我们希望是请求过来的数据 请求完数据往这一插入 -->
+        </div>
+    </div>
+
+    <script src="./ajax.js"></script>
+    <script>
+
+        // 最开始刚进来的时候就展示第一个所对应的内容 我们希望替换index.html的历史记录 直接替换成one的样子
+        //     替换历史记录用replaceState
+
+        var item = document.getElementsByClassName('item')[0];
+        var header = document.getElementsByClassName('header')[0];
+        var page = '';
+
+        function init() {
+            history.replaceState({newPage:'one'}, null, '?one');
+            ajax('GET', './getData.php', true, 'page=one',doData);
+        }
+        init();
+        function doData(data) {
+            item.innerHTML = data;
+        }
+
+        header.addEventListener('click', function(e) {
+            page = e.target.getAttribute('data');
+            history.pushState({newPage:page}, null, '?'+ page); // 其实传什么无所谓 主要是为添加历史记录
+            ajax('GET', './getData.php', true, 'page=' + page, doData);
+        })
+        // 如果判断出来哪个才向后台发送请求 怎么判断是one two 根据数据往里传值
+        // 它能回退到历史记录了 为什么下面没有变 那是因为我们当前插入的内容就是333
+        //     因为是单页面应用 它内容是怎么插入 插入到这元素当中 回退历史记录是能回退
+        //     现在你回退回来之后是不是获取一下请求 不然你这块内容还是333
+        //     所以要监听历史记录的变化 历史记录变化才去发生ajax请求 所以这块要监听popState事件
+  
+        window.addEventListener('popstate', function(e) {
+            var newPage = e.state.newPage; 
+            console.log(newPage);
+            ajax('GET', './getData.php', true, 'page='+newPage, doData);
+            // 能发送ajax请求 但是有个东西不知道传什么 比如我点击的是123的顺序 我回退的话下一次是不是回退到2里面获取这个值
+            //     这个传的是2  万一我点的是132呢??  现在的话我是不是发送那个3请求 把这个3传过去 那就是说不知道怎么把这个值获取出来 
+            //     它是随机的 因为我们点的是随机  那这个值怎么办呢??   我们可以在URL取进行拼接 或者拆分字符串等等的方式
+            //     但是不好 为什么??  是因为你每次取这个字符串很麻烦 我们现在还有个东西没有用 data 不是到某个页面当中这个值会传到这个值的历史记录下
+            //     那我们何不把这个值往这传 往这传取值多方便啊
+        })
+
+        // 总结回馈
+        //     最开始进入这个页面希望当前页面被这个历史替换掉 我用了一个replaceState发送了一个ajax请求 然后把这个东西展示到这个区域下
+        //         现在我可以点击 每次点击我可以发送不同的请求 我为了拿到这个数据怎么办 在每个标签下进行每个数据的存储 存储这样的属性
+        //         然后根据这个属性传哪个值 传完这个值后把这个值放到历史记录当中并且发送ajax请求 然后让它展示到下面的显示区域当中
+        //         这个时候我会往回翻 我是能翻回上一个历史记录当中 但是由于这块dom结构的内容发生变化了 现在我要把它变回来 变回来的话可以再发送ajax请求
+        //         重新请求一下数据把这个新的数据替换掉 替换成现在的样子 这个就是popstate常用的地方
+        
+        
+        // hashchange: 那个hash值可以每次发生改变 每次变化的时候都会触发这个hashchange 比如单页面应用的时候我也可以放这个#键
+        //                 #是hash值的意思 hash值每次也会添加到历史记录当中 就不会非得用pushstate/replacestate 它也能帮我们添加到历史记录当中
+        //                 只要是hash值都能 比如data="#one" 只监听hash值得变化 点击它拼接hash... 点击它拼接hash.. 然后回退的时候就可以用hashchange
+        //                 它只监听hash值的变化 用a标签试试
+
+
+    </script>
+    
+</body>
+</html>
+//*************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+</head>
+<body>
+
+    <button id="btn"></button>
+    <a href="#btn">dd</a>
+
+    <script>
+
+        // 这样能添加hash值 回退也能回退过来
+
+        window.addEventListener('hashchange', function() { // 这个hash每次变不同的值也会触发它 这个是hashchange事件
+            console.log(888);
+        })
+
+
+
+        // Worker: 异步操作的新的API 
+        // 我们知道js在执行的过程中是以一个主线程 单线程来执行的 但这个时候如果说代码中如果非常大的计算量非常耗时
+        //     耗时的时候就卡在那里等它算完结果之后才能进行下面的函数 我们就在想像这样非常耗时的东西我们给它可不可以创建一个线程给它异步的操作它呢
+        //     反正我只要它算完之后的结果 我们可以把它算数的过程创建一个线程 异步的进行计算 计算完把这个结果返回给主线程 这个是不是非常完美
+        //     所以就出现这个Worker 
+
+        // 创建完Worker之后 我们想给Worker发送一个东西 有个函数可以完成处理 处理完成之后再通过一个东西给它返回回来
+        // 用postMessage方法发送数据 
+        // 用message事件可以接受数据
+        // 一个发一个收就可以完成主线程与Worker的一个通信
+    
+    </script>
+    
+</body>
+</html>
+
+//************************************************************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        var worker = new Worker('./worker.js');
+        worker.postMessage(20);
+
+        worker.onmessage = function(e) {
+            console.log(e.data);
+            worker.terminate(); 
+            worker.postMessage(100);
+        }
+
+        // Worker可以帮我们异步操作 不影响我们下面代码的执行
+        //      但是Worker有些局限性的 其实这个Worker是专用的Worker 其实还有个共享的Worker 但那个共享Worker创建的时候是new
+        //      由于现在浏览器的支持性不好 只有chrome4以上的版本支持 IE到现在依然不支持 很多浏览器对shareWorker不支持 那个shareWorker还有发展一段时间
+        //      现在shareWorker使用率很低 虽然Worker兼容性非常差 但至少各个浏览器都把它实现出来了 只是版本的问题
+        //      但是shareWorker是很多浏览器都没有支持这个方法
+
+
+        // worker.terminate()比close()好 因为它是一个工人 从整个项目的进程上来看的话 那工人应该是受老板的控制的 
+        //     所以异步操作应该是由我主线程控制 我主线程需要你的时候再调用你 不需要你的时候再把你断开 最好不要自己无缘无故的断开
+        //     有可能自己断开了老板还不知道 他还有的数据等待着你处理呢 等待着你处理的结果 但是你自己却把自己断开了 所以不要在这里实现close()
+        //     最好由主线程断开你链接
+
+
+        // 不可以通过importScript引入jQuery.js 为什么??  因为Worker只是window的一个子集 只能实现部分功能 并不是所有window的东西它都能获取到
+        //     所有这里有个东西获取不到 window document获取不到 所有document你获取不到的话你用jQuery的话或者zepto你就拿不到它这个对象了
+        //     拿不到document你就找不到dom元素了 所有在Worker里dom因素是没有办法进行操作的 它获取不到 那它能干嘛?? Worker只能进行一些数据的处理
+        //     简单的来说很大量的数据处理 想像Canvas中说的getImageData()获取像素信息的 后来我们说可以用高斯函数对每个像素进行处理 然后对它进行模糊
+        //     然后对它进行完的像素返回 高斯函数它是要处理很大的数据量 宽500高500的图片 那它要处理的话是要100万个数据 100万数据比较多了 这个时候我们可以把数据交给Worker来处理
+        //     由Worker进行异步处理 操作好的结果返回给我们 我们只要这个结果就可以  不耽误主线程的进行
+        //     navigator下面的东西可以部分使用 再一个他可以发送Ajax对象 所以xml http request可以使用 再一个计时器setTimeout/setInterval可以使用的
+        //     再一个就是worker里面再雇佣一个工雇佣第三方 文档中允许Worker再雇佣Worker的 但是chrome不支持 火狐好像支持 
+        //     所以Worker里面再雇佣Worker最好不要使用 因为浏览器的支持性很差   
+
+        // 练习 高斯模糊
+        
+    </script>
+
+</body>
+</html>
+
+//***************************
+onmessage = function(e) { // 想要的数据会传到这里e.data
+    console.log(e.data);
+    deal(e.data);
+    postMessage(deal(e.data));
+    this.close();
+}
+
+function deal(data) {
+    return data * data;
+}
+
+

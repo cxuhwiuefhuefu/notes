@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        #canvas1{
+            border: 1px solid #000;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas1" width="500" height="500"></canvas>
+    <canvas id="canvas2" width="100" height="100"></canvas>
+
+    <script>
+
+        var oCanvas1 = document.getElementById('canvas1');
+        var ctx = oCanvas1.getContext('2d');
+        var oCanvas2 = document.getElementById('canvas2');
+        var ctx2 = oCanvas2.getContext('2d');
+
+
+        // ctx.moveTo(100, 100); // 起始点
+        // ctx.lineTo(200, 100);
+        // ctx.lineTo(200, 200);
+        // ctx.lineTo(100, 100);
+        // ctx.lineTo(120, 100); // 一个图形画多个边才能闭合 麻烦
+        // ctx.strokeStyle = 'green';
+        // ctx.lineWidth = 40;
+        // ctx.fillStyle = 'red';
+        // ctx.stroke(); // 可以理解为画的意思
+        // ctx.fill(); // 默认填充的效果  怎么填充的 它是把结束点和起始点连在一起了 把在这个区域内的进行填充 实际这个图形没有闭合 
+	
+	
+
+        // ctx.moveTo(100, 100); 
+        // ctx.lineTo(200, 100);
+        // ctx.lineTo(200, 200);
+        // ctx.closePath();  // 不仅把起始点和终点连接  还把缺的角补全了 所以一般做闭合图形的时候一般用closePath()来实现元素的闭合
+        // ctx.strokeStyle = 'green';
+        // ctx.lineWidth = 40; 
+        // ctx.stroke();
+
+        // ctx.moveTo(300, 100);
+        // ctx.lineTo(400, 100);
+        // ctx.lineTo(400, 200);
+        // ctx.closePath();
+        // ctx.strokeStyle = 'red'; // 为什么两个都变成红色了??   覆盖 当前都在同一路径下 用moveTo()从一个地方挪到另一个地方不算重新开始一个新的路径
+        // ctx.lineWidth = 20;      //                                      同一个路径只能设置一个颜色  因为strokeStyle这个作用到整条路径下        
+        // ctx.stroke();
+        
+        // 当前它是同一条路径下 即使把笔从这挪到这 依然在一条路径下 只不过它叫第一个子路径 它叫第二个子路径 只要他们在同一个路径下这些值就会收到影响
+        //     他们是同一路径 只不过是同一路径下的不同子路径
+
+
+
+        //    前面的是绿色后面的是红色的等腰直角三角形 ???  怎么开启一个新的路径?? biginPath() 防止下面的属性影响到上面的样式
+
+        // ctx.moveTo(100, 100); 
+        // ctx.lineTo(200, 100);
+        // ctx.lineTo(200, 200);
+        // ctx.closePath(); 
+        // ctx.strokeStyle = 'green';
+        // ctx.lineWidth = 40; 
+        // ctx.stroke();
+
+        // ctx.beginPath();
+        // ctx.moveTo(300, 100);
+        // ctx.lineTo(400, 100);
+        // ctx.lineTo(400, 200);
+        // ctx.closePath();
+        // ctx.strokeStyle = 'red'; 
+        // ctx.lineWidth = 20;           
+        // ctx.stroke();
+
+
+
+
+        // 矩形
+        // ctx.rect(100, 100, 100, 200); // x/y代表起始点从哪里开启 后面dx/dy代表宽和高
+        // ctx.fill();
+        // ctx.stroke();
+
+       
+        // ctx.fillRect(100, 100, 100, 200); // 不仅能帮我们画出一个矩形 能帮我们描出一个矩形的形状 还能填充的画出来  并且它是单独的子路径
+        // ctx.strokeRect(300, 200, 100, 200);
+        
+        // 为什么不受影响??  因为他们能自动的开启一段新的路径 他们的每条路径都是单独的路径
+        // ctx.strokeStyle = 'green';
+        // ctx.strokeRect(100, 100, 100, 200);
+      
+        // ctx.strokeStyle = 'red';
+        // ctx.strokeRect(300, 100, 100, 200);
+       
+        // ctx.moveTo(100, 400);
+        // ctx.lineTo(200, 400);
+        // ctx.strokeStyle = 'deeppink';
+        // ctx.stroke();
+
+
+
+        // ctx.fillStyle = 'green';
+        // ctx.fillRect(100, 100, 100, 200);
+      
+        // ctx.fillStyle = 'red';
+        // ctx.fillRect(300, 100, 100, 200);
+       
+        // ctx.moveTo(100, 400);
+        // ctx.lineTo(200, 400);
+        // ctx.fillStyle = 'deeppink';
+        // ctx.stroke();
+
+        // ctx.clearRect(0, 0, 150, 150);
+        
+        // var w = oCanvas1.width;
+        // var h = oCanvas1.height;
+        // ctx.clearRect(0, 0, w, h); // 擦除整个区域
+
+
+        
+        // var w = oCanvas1.width;
+        // var h = oCanvas1.height;
+        // var y = 100;
+        // ctx.fillStyle = 'green';
+        // ctx.fillRect(100, 100, 30, 30);
+        // function drawRect(y) {
+        //     ctx.fillRect(100, y, 30, 30);
+        // }
+        // var timer = setInterval(function() {
+        //     ctx.clearRect(0, 0, w, h); // 不用非得找画布在哪个区域 整个清除完再画 
+        //     drawRect(y);
+        //     y += 10;
+        //     if(y > 470) {
+        //         clearInterval(timer);
+        //         drawRect(470);
+        //     }
+        // }, 50)
+
+        // 在dom结构中只有一个canvas元素 我们操作的并不是每个元素 因为canvas只有一个元素 我们操作的是canvas画布里面的东西 
+        //      我们用canvas来做动画的话能优化很多东西  不用频繁的操作dom元素了
+
+
+        
+        // 弧形
+        // 逆时针: 1/true    顺时针: 0/false 
+        // 0: x轴的正半轴
+        // ctx.moveTo(250, 250);
+        // ctx.lineTo(350, 250);
+        // ctx.arc(250, 250, 100, 0, Math.PI/180 * 67, 1);   // Math.PI = 180度  不添默认走顺时针
+        // ctx.closePath();
+        // ctx.stroke();
+
+
+
+        // 圆角 相当于border-radius
+        // x/y  画笔所在的位置
+        // 把切点处留下 其他的擦掉
+        // ctx.moveTo(300, 250);
+        // ctx.arcTo(350, 250, 350, 350, 30);
+        // ctx.arcTo(350, 350, 250, 350, 30);
+        // ctx.arcTo(250, 350, 250, 250, 30);
+        // ctx.arcTo(250, 250, 350, 250, 30);
+        // ctx.closePath();
+        // ctx.stroke();    
+
+
+        // canvas提供了二次贝塞尔曲线  三次贝塞尔        
+        // ctx.moveTo(100, 250);  // 控制点: p0 p1    结束点: p2  同时到达目标点
+        // ctx.quadraticCurveTo(150, 100, 300, 200);
+        // ctx.stroke();
+
+        // ctx.moveTo(100, 250);
+        // ctx.bezierCurveTo(150, 100, 400, 100, 500, 0);
+        // ctx.stroke();
+
+
+
+        // 坐标轴转换 
+        // ctx.translate(100, 100); // 挪整个画布
+        // ctx.fillRect(0, 0, 100, 100);
+        // ctx.fillRect(100, 100, 200, 100);
+
+        // 不想让第二个平移了
+        // save把canvas保存到栈当中
+        // store可以从栈中取出 先save进去后取出
+
+        // ctx.save();
+        // ctx.translate(100, 100); // 挪整个画布
+        // ctx.fillRect(0, 0, 100, 100);
+        // ctx.scale(2, 1);
+        // // ctx.restore();
+        // ctx.fillStyle = 'red';
+        // ctx.fillRect(100, 100, 200, 100); // 移动的变化
+
+        // ctx.save();
+        // ctx.translate(100, 100);
+        // ctx.save();
+        // ctx.scale(2, 1);
+        // ctx.restore(); // 没有缩放的功能 依然有平移的效果
+        // ctx.restore(); // 栈 先进的后出来
+        // ctx.rotate(Math.PI/4);
+        // ctx.fillRect(0, 0, 100, 100);
+
+
+        // 真： 顺时针  /  负： 逆时针
+        
+
+        // var oImg = new Image();
+        // oImg.src = './bg.jpg';
+        // oImg.onload = function() { // 这个图片一定要等它加载完了才能把它放到canvas当中 如果没加载完直接放的话会放不进去 它会默认的填充一个黑色的效果
+        //     var fill = ctx.createPattern(oImg, 'no-repeat');
+        //     ctx.fillStyle = fill;
+        //     ctx.fillRect(0, 0, 500, 500);
+        // }
+
+        
+        // 如果当前dom结构中有两个canvas 你可以把另外一个canvas当成createPattern内容填充到我们这个canvas当中
+        // ctx2.fillRect(0, 0, 50, 50);
+        // ctx.fillStyle = ctx.createPattern(oCanvas2, 'repeat-x');
+        // ctx.fillRect(0, 0, 500, 500);
+
+
+        // var bg = ctx.createLinearGradient(0, 0, 500, 500); // 渐变的方向 线性渐变
+        // var bg = ctx.createRadialGradient(250, 250, 100, 250, 250, 200);
+        // bg.addColorStop(0, 'red');
+        // bg.addColorStop(0.5, 'orange');
+        // bg.addColorStop(1, 'red');
+        // ctx.fillStyle = bg;
+        // ctx.fillRect(0, 0, 500, 500);
+
+        // var bg = ctx.createRadialGradient(250, 250, 100, 250, 250, 200);// 前三个是起始圆的xy半径  后三个是终点圆的xy半径
+        // bg.addColorStop(0, '#fff');
+        // bg.addColorStop(0.5, '#000');
+        // bg.addColorStop(1, '#fff');
+        // ctx.fillStyle = bg;
+        // ctx.fillRect(0, 0, 500, 500);
+
+    
+    </script>
+
+    <script>
+
+        // canvas主要做一些图形的或者一些动画的效果 
+        //    1. 游戏的场景 节省很多性能
+        //    2. 图表   canva/svg技术    canvas svg都是可以做一些图形的 但是应用场景不一样  
+        //          canvas是在一个标签上来写东西的 这个标签你可以理解为它是一个画布 相当你在画布上画东西  而svg你可以在上面现画圆都行 
+        //          它的每条路径都是一个标签 所以你的表格非常大 内容非常多的话 如果你用svg来做需要很多个标签 但你用canvas来做的话它只是一个画布 
+        //          你用js指令在这个画布上操纵这个画笔在这上面画东西 所以说canvas绘制一些比较复杂的情景的时候 它会节约很多性能  因为它都是用js操作
+        //          不是一些标签 所以它可以做一些图表  再一个它可以做动画  比如我们简单的一些游戏场景的动画 都可以用它来实现 比如一个小球的运动 
+        //          一个小圆圈在这转 这些动画都可以用canvas实现
+
+        // codepen.io 开源网站 
+
+        // casvas除了dom特有的属性 额外还有宽高的属性值
+
+        // 有了画布不行 还需要有一个画布的上下文对象 这个上下文对象给我们提供了很多方法 提供一些画图颜色 以及获取一些像素点等等的方法和属性
+        //    所以如果我们想在当前找个画布上画东西的话 必须获取一些getContext拿到找个上下文的对象 在上下文对象中使用它的方法和属性进行图形的绘制
+        //    找个上下文对象可以通俗的理解为画笔  dom元素理解为画布
+
+        // 为啥不添3d 因为当前这个地方我们画的canvas都是2d的图形 所以getContext()里面传2d就可以了 像webgl做3d图形的 
+
+    </script>
+    
+</body>
+</html>	

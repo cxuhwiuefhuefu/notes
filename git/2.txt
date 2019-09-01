@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+        // 实现并不复杂 执行顺序 执行流程 跟真正的源码多少有些差异 但是原理是这个的 ES6考的话比如结构赋值 扩展方法 class promise基本上都是这些点 
+        //     let const ES6声明变量的区别是什么 ES6添加的类 class class与传统的构造函数区别是什么 它如何去声明一个类 它声明类的过程中应该注意什么 
+        //     proxy代理用不到相对我们来说 难一些 去公司刚开始对我们来说接触不到的 后面可能还会学 
+        //
+        //
+        // 在这建一个本地仓库 gitDemo 怎么初始化一个本地仓库 在gitDemo文件夹下右键打开git bash hear   $ init 对本地仓库进行初始化 它会有隐藏文件夹 
+        //    里面有.git文件 .git文件是装这个关于本地仓库的一些相关配置 大家不要去动就好 这正常.git是隐藏文件夹 正常是看不到的
+        //    大家有必要去看的时候才去看 但是一般是不用的 看不到的 我们初始化之后 初始化完成之后 是不是我们本地的仓库就搭建好了 我可以在里面写项目
+        //    写一些东西 本地仓库对应的远程仓库在哪里  点击Start a project  删除一个项目的话在点击Settings 
+        //    复制一下名字在最下面粘粘点击delete this respository 是不是在我们的GitHub上 我们在GitHub上新建一个项目 
+        //    $ git remote add origin git@github.com:cxuhwiuefhuefu/gitDemo.git 把对应的git地址拿过来 相对于本地仓库与远程仓库进行联系 
+        //    我们把本地仓库的东西可以放到  远程仓库当中 本地仓库与远程仓库的关联 $ git remove -v 
+        //    就能看到远程的服务器上它会有个相应的仓库与我本地的相对应 这样的话我可以实时地向上传项目 向下拉项目 
+        //    然后的话我有个服务器包括在任意一台电脑上都可以添加密钥就ok 我可能以后写完代码 $ git push origin 分支master 这个先不用管 
+        //    这个origin它是固定的吗 其实这个参数git remote add后面这个参数(origin)是可变的 只不过就是说这个要给我远端服务器起个别名
+        //    在这里我就叫origin 我可不可以在这替换名呢 通过git remote rename重命名 老名字origin 新名字dev   $ git remote origin dev
+        //    $ git push origin master 它说没有origin这个目录 那我们改成什么啥呢  $ git push dev master 出问题了 正常先拉一下远端的代码
+        //    $ git pull dev master 出错 $  git remote   $ git push dev master 正常什么都没有 而且远端它什么东西都没有的话 这样的话
+        //    我们在gitDemo文件夹新建一个index.html     $ git add .  $ git commit -m 'first'   $ git push dev master
+        //    这个时候我相对于在本地写了一个东西 本地仓库有个东西 然后我成功的推到了我这个GitHub上面 我刷新一下 尽管这个index.html里面什么都没有 
+        //
+        //
+        // git remote -v这个指令它跟哪个远程仓库相关联   git remote add <name> <remote>这个name只是远程仓库的一个别名 
+        //    我想把本地仓库跟远程仓库连接起来 包括我后面可能说有些东西要推送我这个远程仓库当中 我需要给它个名 我需要告诉他是谁我要跟谁建立联系
+        //    我要跟谁进行发送还是拉取数据   git remote rename old new对远程仓库的程序命名 为了给大家保持一个好的习惯 我们改过来 先清一下屏幕 
+        //    $ clear   $ git remote rename dev origin    $ git remote 
+        //     
+        //
+        //
+        //
+        // 这个时候我们发现多了一些基础工作流  我们正常来说 我们把这个项目 我们看到三个区 一个工作目录 一个暂存区 一个Git仓库 
+        //     大家会在这写些代码的编辑器 这个内容区称之为我们的工作区 什么是暂存区 就是说我们会有一个把我们当前的工作目录 
+        //     把这里的改变放到我们这个暂存区当中 然后由暂存区再推送到本地仓库 为什么要这三个区呢 工作目录 我在这个编译器里写一些代码
+        //     这个就是工作目录的理解 这个暂存区和工作目录有什么关系呢 大家想我这个 假如说只有工作目录和仓库的话 是不是我们写完之后
+        //     我们就存到这个本地仓库当中 但有的时候这样是不行的 假如说我开发着呢 突然发生一些突发情况就是说我可能有些事需要去处理
+        //     但这个时候你有时间并不多 仅有让你写一行代码的时间  因为你需要给它保存一下 因为你要推到本地仓库了 可以 
+        //     那你推到本地仓库但是因为你这个东西是未完成的 如果别人或者说你把它放到仓库当中它会影响到整个项目进度 所以说这个时候就需要一个中间的区域
+        //     一个暂存区 我先把它放到这里 仓库里还不放 这样的话而且还有好处是啥 我可以写一部分存一部分 写一部分存一部分 然后我可能多个文件开发
+        //     但是我怕哪个文件进行丢失了 我可以写一部分存一部分 写一部分存一部分 只要暂存区里东西不丢 我们的工作目录改了它也能找回的
+        //     但是如果我们的工作目录里面东西删了 我暂存区里没存 那就找不到了 这个时候我可以写一部分存到暂区里 写一部分存到暂区里 
+        //     然后统一的再放到仓库当中 git指令是什么样的呢 我们已经写了这些东西 一个新的index.html文件 然后在这里面写了这些东西 
+        //     我们如何把它添加到缓存区呢 通过$ git add后面加上明确的文件名称 $ git add index.html 因为这个git指令它毕竟是维纳斯做出来的 
+        //     秉承这个Linux操作系统这种习惯 就是没有任何的反应就是最好的反应 在index.html写一些内容 写一些代码 我们又完成一部分 
+        //     这个时候我又通过这种$ git add index.html 又把它推入到暂存区当中 那怎么把它放到仓库当中呢 我们通过$ git commit -m后面写你这次修改 
+        //     这次往仓库里面放的这个东西的一些信息 可能说我们初始化 或者说一些关于你这次提交版本的信息 记住每次提交称之为一个版本
+        //     我们git它能帮你找回 我们每一次操作都可以在历史记录中查的 就好比我们给小姐姐写情书 但是大家会发现一个问题 
+        //     我要我这个很喜欢的女生说话的话 我会很斟酌我的话语 好比如我们写一封情书 尽可能的尽善尽美 体现我这份诚心 我要写这个东西
+        //     刚开始我写了一百字 读了还不错 我又写了一百字 感觉还行 然后发现加起来感觉这个地方不太好 
+        //     那你说不太好是在源文件上该还是说copy出一个副本改呢 有些困惑 我copy出一个副本 跟它一模一样的 觉得原来的挺好 
+        //     但是我觉得这个东西要仔细认真 不能有一点差错 然后我就重写了 复制一份了 一个新的版本 这个新的版本我继续改 
+        //     我按照我觉得这句话不好我重新改了一下 改完之后  是不是每次改版我都称之为一个版本 可能我第一次改版 第二次改版..直到改到我认为最完美的一次
+        //     这个时候通过我们这个commit这个方法 它每次提交都相当于一次改版 $ git comoit -m 'init'  '1 file change, 12 insertions'一个文件改动了
+        //     添加12行  接着新建一个index.css文件 为了展示文件的新操作 就是它怎么在git中运行呢 然后在index.css文件里面写一些代码 
+        //     编译器左边显示绿色的U 未跟踪的 它是新建的 是不是还要像刚才一样通过  $ clear   $ git add . 刚才是明确的添加了是index.html
+        //     左边编译器的index.css这块变成绿色的A了 已添加索引 说明我们已经把这个所有的改变 包括我们把index.html再改一下 
+        //     在index.html文件里面写一些代码 编译器左边的index.html显示棕色的M 然后在index.css里面写一些代码
+        //     它两都是M 变化无非index.css是新加的 index.html它是在原来的基础上变化的 $ git add如果正常来说后面写个index.css文件名
+        //     如果有多个文件同时进行修改了呢 可能我的html css js在一起 包括我们组件化可能改的东西比较多 所以文件比较多 通过.表示当前目录下所有的
+        //     $ git add . 所有都添加进去之后 $ git commit -m 'first' 关于masge尽量简短的语义化 起码人家看到你这次提交做了什么 可能说一般用英文
+        //     没有中文 比较修复了一个bug怎么怎么样 这样语义化明确点 正常学完git在工作中权限是没有这些多的
+        //     因为首先整个公司或者是我们整个团队的项目在这里 对于一个刚刚到我们这个团队或者是技术没有这么熟练来说 很多权限是没有 
+        //     所以说是为了能让大家更好的在公司中发展 注意事项 是不是通过commit提交到本地仓库  
+        //     '2 files changed, 10 insertions(+) create mode 100644 index.css'两个文件改变 然后添加了10行 创建了一个新的index.css文件 
+        //     我们是不是提交了两次 为什么说是版本 为什么说它是版本呢 $ git log    log就是打印出当前的操作 最上面是最新的一次操作  
+        //     最下面是我们第一次 就是我们刚初始化这个文件 正常这个地方会显示的 这个是我们刚开始创建的位置 我们现在是不是改了若干个版本 
+        //     我们现在可能涉及到版本回退 我们写到哪里忘了 或者我这个文件该到什么样的状态 这个时候就需要一些指令来告诉我们该做什么了
+        //     git status查看当前文件的状态是什么意思呢 在index.css文件里面写一些代码 添加背景颜色 我们改完之后变成绿色的M    $ git status
+        //     它告诉你这个文件已经被编辑过 已经被修改了 接下来使用git add 它提示我们应该添加文件了 这个时候我们应该执行    $ git add .
+        //     $ git status  已经被放到暂存区当中 看到'Change to be committed'这个时候 我们需要通过git commit指令把它添加到本地仓库
+        //     这个reset表示版本回退 因为我们说过每次commit相对于一个新的版本  $ git commit -m 'second'
+        //     '1 file changed, 1 insertion(+), 1 deletion(-)' 一个文件改变添加了一行 这个时候我们再通过 $ git status
+        //     'nothing to commit, working tree clean' 这个时候就表示你当前工作区里面的文件没有要提交了  已经与本地的仓库已经同步了  $ clear  
+        //     表示当前文件的状态它是 指我在工作区中改了 还是提到了暂存区 还是已经与本地仓库已经同步了 只是说在工作区中去改
+        //     它会告诉你下面应该添加这种方法git add <pathspec> 或者是恢复工作区 接下来我们需要通过 git commit这个方法 
+        //     我们add完之后再调用git status 它会告诉你版本回退或者怎么怎么样 这个时候意味着我们需要通过git commit指令去执行 
+        //     把我们当前缓存区的东西推到推到本地仓库 在index.css中去写代码  $ git status $ git checkout -- index.css
+        //     看到我们刚才写的那行代码没有了 它同步的 执行完这行代码就没有了 Ctr-Z相当于异步撤销  $ git status 
+        //     'nothing to commit, working true clean' 说明这个时候已经跟本地仓库同步了 这个指令能让它回退到跟本地仓库同步的时候那个情况 
+        //     相对于一个逆操作还回退记录 说明它能回退到我们之后commit的一个版本 我们已经添加到缓存区 在index.css文件写代码 
+        //     M说明这个文件保存的时候又发生了变化  $ git add .   把当前修改的文件夹推送到暂存区当中了 
+        //     这个时候我在index.css文件又写一些代码 刚才我们是不是能回到commit的地方 跟本地仓库一样 我们这个时候已经add . 把add .添加到缓存区当中了 
+        //     add之后我们又写了两行代码呢 它会回到哪里呢 $ git checkout -- index.css  $ git status这个时候是不是告诉我们该提交了 
+        //     $ git commit -m '3' 那说明我们这个git checkout -- <file>指令具有什么功能 它是回退到离自己最近一次add或者commit的地方 
+        //     我们刚才分别是对应的一个commit对应的一个checkout -- <file>  还有一个是checkout -- <file>对应的是我们执行完添加到缓存区那个状态
+        //     然后我们同步本地仓库它也会回到那个本地仓库的状态 但是它一定会回到离自己最近的两个状态中的一种进行返回 可能我添加完 
+        //     然后写一些东西把返回 返回的是我添到缓存区的那个状态 如果没添加缓存区就直接回到了我们跟本地commit的那个状态 
+        //     暂存区文件撤销git checkout -- <file> 什么意思呢 $ git reset HEAD^1 这个HEAD是什么意思呢 正常来说每个commit它都是一个版本 
+        //     这一横行表示的是每个对应的每个版本 它知道自己的父级  它知道它的上一位是谁 HEAD其实就是一个指针 我们想让它跳到哪个版本    
+        //     它一指就完事了 我想跳A的话 它直接指A版本 它只是一个头指针    ^1表示一次撤销  看看编译器左边的index.css的状态棕色的M
+        //     $ git status 'git add <file>....'说明这个时候回到什么状态 回到了当前工作区commit的状态  'git add <file>....'说明是不是回到我们git add前面一点 
+        //     这个时候我们就可以执行  $ git add .   $ git commit -m '4'  它中间有三个参数soft/mixed/hard
+        //     $ git reset --hard HEAD^它对应的是什么呢 可以用尖角号 版本回退一次就用一次尖角号 版本回退两次就两个尖角号  也可以用~1来代替
+        //     $ git reset --hard HEAD~1 看看编译器左边的index.css棕色的M 是不是已经回到上一个我们的那个状态 在index.css里面写代码
+        //     $ git status   $ git add .  $ git commit -m '4' 说明它回退的特别干净 
+        //     我们把之前提交到缓存区的和提交到本地的一个新的版本直接干到上一个版本 $ git reset --soft HEAD~1  soft安全的版本  发现没变 
+        //     $ git status  'changes to be committed'这个时候说明我应该commit $ git commit -m '4'  说明sort只是说回到我们commit之前的状态 
+        //     我们这个hard直接把当前的版本直接回退掉 $ git reset --mixed HEAD   $ git status 这个是不是刚开始跟我们打这个git reset HEAD^是一样的
+        //     回到了 只是改完这个版本 并没有对它进行添加 没有添加到缓存区和提交  $ git add .   $ git commit -m '5'   --sort只回退HEAD是什么意思呢
+        //     它只是说 只把你这个 只回到当前这个版本的上一步 也就是它sort对应的是commit之前 sort -> commit mixed对应的是add之前
+        //      mixed -> add 然后我们这个hard直接就是上一个版本了 我整体都回去了 是一个这样的过程
+        //
+        //
+        //     $ git log 我们所有的操作都在这 这只是说显示几部分 因为它后面写more的话会显示更多 git log是我们整体的操作 
+        //     那如果我们把git bash here关掉 它还会记录吗 再次在文件夹下打开git bash here  $ git log 它会显示这个 但是还有一个是什么呢  
+        //     $ git reflog 它会明确的显示你每一步到底干什么包括前面这个commitID 最下面这个我们刚开始初始化的过程 我们把这个倒数第二个id拷贝一下 
+        //     我们可以通过 git reset后面是不是可以加数或者commit ID  $ git reset --hard f4f9b7  这个index.css马上就没有了 回到之前的状态 
+        //     也可以通过这种方式进行版本回退 我们回到刚开始的状态 $ git reset --hard 35b3efa 最上面的ID  index.css回来了 
+        //     这个就是版本回退一些相关的操作 
+        //
+        //
+        //     接下来是git diff这个指令 diff差异比较  上面不是说过有工作区 暂存区 我们仓库三个区域 那我怎么比较改变说 
+        //     我工作目录跟我添加的它变了哪些呢 它是怎么给我显示出来 它怎么知道我变了多少呢 还有我的暂存区和本地仓库差异在哪里呢
+        //     还有我工作目录和本地仓库差异又在哪里呢 这就通过我们的git diff来实现 正常我们来说 $ clear 啥都没有 工作区与暂存区
+        //     是不是只比较我们当前这个工作区和add之后的 现在三区是不是一致的 都是一样的 现在改点东西 在index.html里面改点东西 现在我工作区已经变了
+        //     变成123 通过git diff看看工作区跟add区差在哪里 其实就是加了一行 变了一个123 在index.html里面写一些代码 我们再次 $ git diff
+        //     因为<h1></h1>是当前版本它当中的<h1></h1> 并不是比较上面这个<h1>123</h1> 我们改完之后 $ add . 把它添加进去 
+        //     这个时候$ diff 是空的 又在index.html文件里面写代码 这个时候$ git diff   git diff这个指令只表示当前这个区域跟我们这个缓存区中的差别
+        //     那我们缓存区已经添加完了 跟它目前来说是一样的 然后暂存区和本地版本库  现在我们暂存区已经添加有了 刚才添加了一次
+        //     那跟本地版本库差什么呢     $ git diff --cached   本地版本是刚才的<h1></h1> 然后刚才我们添加到目录的是定制<h1>这个东西
+        //     我们添加了一个标签 然后工作区和本地仓库中最近的一次commit的内容比较 这个跟它的结果是一样的 因为我本地区跟我们提交是一样的
+        //     跟我们缓存区是一样的 $ git diff HEAD  用来找我们之间的差异 想想你突然写了很多 但是又很棘手 去厕所呆了一会儿 
+        //     但是你出来的时候不知道改到什么版本了 或者你写到哪里 可以通过git diff来去比较比较看 我跟上一个版本添加了那句话 我下面该怎么说
+        //     通过git diff看一下它们之间的差异
+        //
+        //     git diff ： 对比工作区(未 git add)和暂存区(git add 之后)
+        //     git diff --cached: 对比暂存区(git add 之后)和版本库(git commit 之后)
+        //     git diff HEAD:  对比工作区(未 git add)和版本库(git commit 之后)
+        //           
+        //
+        //     分支 刚才一直在一根线上写了这么多东西 $ git push origin master:master 前一个master表示的是本地分支的master 
+        //     后面的master表示远程的master 将本地的master分支推送到远程的master分支 但是它简写就是这样 $ git push origin master 它会默认匹配 
+        //     如果默认匹配不到它会在远端新建一个 远端没有dev分支吧 看一下GitHub项目下的Code 下的 Branch:master 点击 对应就一个
+        //     $ git push origin master:dev  我们把master的东西push到dev当中  'master -> dev' 成功了 master推到dev
+        //     在GitHub上点击Branch:master下的dev 然后看dev分支是不是跟本地的东西是一样的 包括我拉代码也是  我把这个推到我自己的分支上 
+        //     $ git push origin master 什么是分支呢  $ git reflog 我们是不是可以看到每次提交以及我每次操作前面会有一个id 
+        //     这个就是对应我们每个版本的id 每次commit的id 这个是不是我从第一个版本开发 开发 开发 好比写情书的第一个版本 第二个版本..
+        //     假设这个是你最新的版本 这个时候 这个最新的版本称之为master主分支 主分支称之为master 这个时候你打算自己改一下同时我让一个人把把关
+        //     看看情书写的怎么样 这个时候你把你副本拷贝给它 一模一样的 这个时候就引出了分支的概念 它是它的副本 只不过从这开始之后 你走一个路线 
+        //     下面它也会走一个路线 它改完之后到这 假设你没动 它比较靠谱 这个时候根据你原有的分支创建你一模一样的分支 然后它进行了一些更改
+        //     到达一个新的状态 但是我这个还是在你之后 这个时候就需要另一种操作merge 合并操作 它俩合并成一个最新的状态 这个就是分支的概念   
+        //     正常在开发过程中是什么样子的呢 我们的leader已经把这个项目已经从这个头到尾哪怕手架都搭建好了 然后分别交给两个同学去开发 
+        //     然后这两个同学就应该在当前的主分支上新建两个分支 一个叫dev1 dev2跟它一模一样的 你开发这个页面 你开发后台怎么怎么样 这样的话给分开了
+        //     然后并行的开发 它俩都是 只不过它有自己开发的功能 它也有自己要开发的功能 然后它们觉得可以合到一起 其实就是这样的 
+        //     因为我们在正常开发中也是这样的 每f个人要有每个人的一根线理着走 每次提交或者说合并的时候我们都会合并 
+        //     没有bug的东西我们合并到主分支之后上线 一般都这样 这个就是分支的概念 它可以让我们开发变的更有效率 因为它并行 
+        //     因为我在原来这个点上跟它产生几个原来一模一样的这个点 然后同一时间进行并行开发 知道并行是什么吧 计算机三大处理模式 并行 并发 串型
+        //     并行就是说在同一时间点可以干多件事情 并发是你在一段时间内感觉你两是一起做的 串行就是一个时间点做一件事情
+        //     并发（concurrency）和并行（parallellism）是:
+        //         解释一: 并行是指两个或者多个事件在同一时刻发生; 而并发是指两个或多个事件在同一时间间隔发生.
+        //         解释二: 并行是在不同实体上的多个事件, 并发是在同一实体上的多个事件.
+        //         解释三: 在一台处理器上“同时”处理多个任务, 在多台处理器上同时处理多个任务. 如hadoop分布式集群
+        //         所以并发编程的目标是充分的利用处理器的每一个核, 以达到最高的处理性能.
+        //     现在开发也是 你可能开这个页面跟我开发这个页面我们同一时间做 并行开发 到这master分支指向这个 接下来走这个版本衍生出新的分支testing
+        //     $ git branch是看当前工作区当前这个仓库有哪些分支 新建一个分支 $ git branch dev 加上分支名  $ git branch 
+        //     它会指向当前的这个master分支 然后我还有其他分支叫dev 我们删除本地分支 $ git branch -d dev  -d是delete+分支名
+        //     $ git branch 创建一个分支$ git brach dev  怎么切换分支呢  $ git checkout dev   "Switch to branch 'dev'" 切换到相应的分支 
+        //     $ git status   $ git commit -m 'first'  这是我们的dev分支  然后$ git branch 现在所选当前分支 
+        //     那我能不能新建一个分支同时跳进那个分支  $ git checkout -b dev1 创建一个新的分支并且进入当前分支  $ git branch 我们看当前分支有几个
+        //     $ git status 这个是正常的 三个分支建立完是不是可以进行开发 三个分支都是一样的 包括dev1 dev它都是一样的 在index1.css文件写属性代码
+        //     这是我dev1这个分支改的一些东西 看看它最近一次提交 $ git diff   $ git add .    添加到工作区   $ git commit -m 'first'  
+        //     比如甲同学开发完了不能说乙同学再开发了 然后现在切换到乙同学模式下  checkout还有一个功能 
+        //     checkout -- file它会把当前这个文件推到离自己最近一次commit或者说add这个状态  $ git checkout dev  一个新的分支 
+        //     在index.css里面写一些代码 它俩不应该说改不同的东西 正常来说有几个文件夹 首页有同学去做 详情页有同学去做 展示页.. 
+        //     刚开始我们这个项目有初始化的东西 但是你觉得不满意改点 你觉得不满意改点  然后会出现一个问题 在index.css里面写一些代码 
+        //     $ git add .   $ git commit -m 'ding'  假如现在dev同学和dev1同学都开发完了 它俩都开发完了 现在是不是需要和一起了 因为你两都没问题了
+        //     先切换到master分支 $ git checkout master   $ git merge dev   $ git add .   $ git commit -m 'merge'   $ git diff
+        //     我们这个合并完了 没有问题 我们master我们dev分支 $ git checkout dev 没变 一样的   $ git checkout dev1  不一样了 看看dev有没有保存
+        //     保存了  $ git status   没有  先切换到master等我们dev1进行一个合并  $ git checkout master  $ git merge dev1   跟dev1分支进行合并
+        //     上面是自己写的 下面是它添加的 下面是git内部的比较方法 可能有时候你觉得你对没什么 哪怕差一个回车它也有可能给你比对出来 这也是它不好的地方
+        //     只不过我们写的地方比较少 上面的就是你原来有的 下面这个你新合并的 然后你用这个编译器的话上面就会告诉你采用当前更改还是传入更改
+        //     上面的是当前更改 下面的是传入更改 点击采用当前更改 当前这个就留下了 那个原来的就删除了 现在这个时候要把merge状态保存一下
+        //     $ git add .  $ git commit -m 'merge'  现在这个状态从(master|MERGING)变成master 已经合成功了 那如果没有呢 就留那一部分 
+        //     merge这个属性这个方法 小公司你可以用 大公司刚去的话你不能用 一般项目组长/老大进行merge操作   $ git push origin master:master
+        //     我们把本地分支的master推到远端分支的master 可以把当前本地分支的拆掉   $ git branch -d dev1 把1删掉了 $ git branch 没有 
+        //     这个时候创建一个新的分支并且切换到那里 $ git checkout -b dev1   因为这个dev1跟master它其实是一样的 因为在这个基础上创建的
+        //     到后面其实就一样了 因为线上有dev分支 可不可以先本地和一下dev1    $ git checkout dev  $ git pull origin dev:dev
+        //     把远端的dev分支拉回到本地的dev分支 ![rejected]出问题了 $ git push origin dev 因为其实是它版本比谁高一些 所以说出现这种情况
+        //     推代码我可以推给你 你推给我 但是master一般推不上去的 它设置权限 正常在你自己分支上进行推和拉 主要进行推  
+        //     因为你写的代码你传上去之后可能说我们是大项目分了三部分 但是一部分是我们两个负责的 这样的话我们两个需要协作 可能你写好一个组件我需要用 
+        //     那这个时候怎么办呢 这个时候你需要配置一下我再用怎么办呢 我拉一下你写的代码 就是我拉一下你的分支 然后我们再进行合作 
+        //     git push push主要是自己拉代码   git pull它会把整个项目仓库拉下来 就是Clone or download  git clone把整个项目拉下来 新建一个文件夹 
+        //     在它里面拉无所谓 在这个文件夹下打开git bash here  $ git clone git@github.com:cxuhwiuefhuefu/gitDemo.git 
+        //     这会把我线上的所有的东西拉下来  $ git branch  $ cd mygit/       $ git branch 只会拉取master分支下的代码 
+        //     这个时候我们可以切换其他分支然后这样的话进行一些合并
+        //
+        //
+        //     文件暂存 暂存和缓存是不一样的 暂存它会把文件放到堆栈当中 $ git checkout master  我们切换master分支 在index.css写属性代码 
+        //     改完之后 这个时候$ git status 它提示我们该进行这个操作 但是我们这个时候我不这么做 $ git stash save -a 'msg' 
+        //     'Saved working directory and index state On master msg'  $ git status  我们刚刚写的P标签是不是也没有了
+        //     它会把这个当前这个内容给你存起来 因为有的时候你这个东西可能没做完 那你提交上去是个的新的版本 不行 这个时候我们可以放到暂存区里面 
+        //     然后我们通过 $ git stash list 这有一部分 怎么把它取出来呢 $ git stash pop 接下来告诉你怎么做  $ git add .
+        //     $ git commit -m 'lala'
+        //
+        //
+        //
+        //
+        // 博客    html ---> md history博客  配合git    简单的博客
+        // 内容全局的 想利用npm这个包管理的话需要有node.js 需要按照node.js 因为node环境中有npm 没有npm Node是用不了的 
+        //     在电脑屏幕下打开git bash here  $ npm install hexo-cli -g 全局安装 相对于安装一个命令行 $ hexo init blog 通过它初始化一个blog 博客
+        //     它会通过这个下载一个模板然后就是把里面的配置文件都下好 跟vue-cli react-app 这都一样的 只不过它自己下了一个包 这它需要下一个模板
+        //     可能比较慢 平常的笔记都可以写在上面   $ cd blog/ 然后装一下依赖  把项目需要装的包安装一下 $ npm install    $ hexo server
+        //     通过这个指令它可以在本地开启一个服务供大家访问 大家将来博客是什么样子的   http://localhost:4000
+        //     这个是本地服务器 那我们如何挂到网上呢 如何利用一个免费的服务器把它挂到网上呢 点击文档下的部署 因为它里面多种形式多种方式去挂载
+        //     我们这里无非通过git这种形式去挂载 我们通过git会有相关的配置 然后我们需要下载一个hexo-deployer-git 装一个这个东西就可以了 
+        //     代码写在C:\Users\MI\Desktop\blog\source\_posts     $ npm install hexo-deployer-git --save 装完之后我们需要把配置文件改一下
+        //     所有的配置信息都在_config.yml文件里面 最下面的deploy属性 建议上文档上面去把这个东西copy下来 因为这里面有一个奇怪的符号 
+        //     里面差一个空格都不行 差一个空格都会报错  repo: 就是网上创建的项目     branch:master分支 message不需要 在GitHub上创建一个远程仓库
+        //     copy上面的仓库地址放到repo 这个时候因为它在我的博客下面 root: /blog 这个时候我的基本相关的配置也完事 
+        //     我们要这个配置信息改完之后是不是上传到git上了 不需要用git add .   里面直接有 通过$ hexo g   g:生产   $ hexo d 
+        //     这个时候刷新一下你的GitHub 都上传到这里来了同时如果在网址中看到我们这个setting点击它 下面有个GitHub Pages  把none改成master branch
+        //     再点击Save一下 再看看一下GitHub Pages下面会出现一个网址   https://cxuhwiuefhuefu.github.io/blog/index.html  
+        //     现在博客环境已经搭建起来了 那我搭建起来之后还差点东西 我们还写博客 $ hexo new post firstblog    在那个文件下写东西 完事之后就执行
+        //     $ hexo g    $ hexo d  刷新就可以了  学一下Markdown语言  md转换
+        //     
+        // 
+        //
+        //
+        //    Promise源码尽量背下来
+        //  
+        //      
+        // 谷歌自带的翻墙软件 用一些免费的服务器就可以进行翻墙 自动扩展工具 蓝灯 SetupVPN 支持点击它是空的什么都没有 这个你注册一个就行
+        //     选择语言 选择中文 
+        
+    </script>
+    
+</body>
+</html>

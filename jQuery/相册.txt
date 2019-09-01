@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .wrapper{
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    
+    
+    </style>
+</head>
+<body>
+    <div class="wrapper">wrapper</div>
+    <script src="./zepto.js"></script>
+    <script src="./touch.js"></script>
+    <script>
+        $('.wrapper').on('tap', function() {
+            console.log('dg');
+        })
+        $('.wrapper').on('swipeLeft', function() {
+            console.log('dg1');
+        })   
+    </script>
+</body>
+</html>
+/***************** 相册源码 *******************************/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./test1.css">
+</head>
+<body>
+    <ul class="wrapper"></ul>
+    <div class="show"></div>
+    <script src="./zepto.js"></script>
+    <script src="./touch.js"></script>
+    <script src="./fx.js"></script>
+    <script src="./test1.js"></script>
+   
+</body>
+</html>
+/****************************************************************/
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+html, body{
+    width: 100%;
+    height: 100%;
+    background: #000;
+    font-size: 0;
+}
+.wrapper{
+    width: 100%;
+}
+/* 换行会有制表符,制表符的大小由front-size的大小决定的  front-size默认的大小是16px  */
+.wrapper li{
+    display: inline-block;
+    width: 25%;
+    padding: 3px;
+    box-sizing: border-box;
+    overflow: hidden;
+    opacity: 0;
+}
+.wrapper li img{
+    width: 100%;
+    
+}
+.show{
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+}
+.show img{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* 漂移 默认接受两个方向XY轴方向 %是相对自身的宽高 */
+    opacity: 0;
+}
+/***************************************************************8**********/
+// 16px的缝隙
+// 标签的属性值最好是双引号
+//  backgroud-image图片异步加载会出现问题的          ？？
+// 动态的创建标签插入到body里,等你图片加载完再展示出来 ？？
+
+// 动态生成方便
+// 遮罩层
+// background-image: 图片设置背景,加载写死,图片异步加载的会出现问题的,展示图片是没有路径的
+// 动态的创建的每次加载完才展现出来,这样就不会由问题了
+// 最重要的是   移动端的布局, 在各个屏幕的分辨率下能实现更好的兼容
+//  图片 1.本地文件   
+//       2.网络请求过来的图片,刷新会向某个网站发送请求,发送请求之后会把图片的资源发给你,会返回一个数组的格式或者一个对象的格式
+//         一般数据都返回一个数组的格式 里面每个元素都是一个对象,对象都写成json格式 for循环数组来摘取某个元素的某个属性
+//
+//      [               取的方法:  1.for  2.froEach
+//            {title: 'dg', src='http://www.dd.com/sdf.png'}
+//            {title: 'dg', src='http://www.dd.com/sdf.png'}
+//      ]
+//
+//      fle布局:
+var total = 15,
+    liWidth = ($('ul').width() - 24) / 4,
+    activeIndex,
+    ratio = $(window).height() / $(window).width();
+
+function render() {
+    var str = '';
+    for(var i = 0; i < 15; i++) {
+        str += '<li style="height: '+ liWidth + 'px;"><img src="./images/'+ i +'.png" /></li>'
+    }
+    $(str).appendTo($('.wrapper')).animate({opacity: 1}, 500); // 为什么写appendTo  实现链式调用
+}
+render();
+
+// 绑定ul监听的话性能好
+$('ul').on('tap', 'li', function() {   // 事件类型  事件源  传参数(对象) 回掉函数
+    activeIndex = $(this).index();
+    show(activeIndex);
+})
+
+function show(i) {
+    $('.show').html("").show(); // display:none --> block
+    var oImg = new Image();
+    oImg.src = './images/'+ i +'.png';
+    // 等图片加载完之后再插入body,不然的等插入body再加载图片就看不到了
+    oImg.onload = function () {
+            // 这么判断横图还是竖图: 根据屏幕的宽高比
+        var h = this.height, // ???
+            w = this.width;  // ???
+        if (h / w > ratio) {
+            $(this).appendTo($('.show')).css('height', '100%').animate({opacity: 1}, 500);
+        } else {
+            $(this).appendTo($('.show')).css('width', '100%').animate({opacity: 1}, 500);
+        }
+    }
+    console.log(activeIndex);
+}
+
+$('.show')
+      .on('tap', function() {
+          $(this).hide();
+      })
+      .on('swipeLeft', function() {
+          activeIndex = activeIndex >= total - 1 ? total - 1 : activeIndex + 1; // activeIndex ++;为什么会是0  先赋值再++
+          // activeIndex >= total - 1 ? total - 1 : activeIndex++;
+         show(activeIndex); 
+      })
+      .on('swipeRight', function() {
+          activeIndex = activeIndex <= 0 ? 0 : activeIndex - 1;
+          //  activeIndex <= 0 ? 0 : activeIndex - 1;
+          show(activeIndex);
+          // 渐变是 fx.js模块
+      })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

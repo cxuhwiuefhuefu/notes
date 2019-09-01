@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <script src="./jquery.js"></script>
+    <script>
+        // // 1.拓展
+        // jQuery.extend({
+        //     aa: function() {
+        //         console.log('aa');
+        //     },
+        //     bb: function() {
+        //         console.log('bb');
+        //     }
+        // });
+        // $.aa();
+
+        // jQuery.fn.extend({
+        //     aa: function() {
+        //         console.log('aa1');
+        //     }
+        // });
+        // $().aa();
+        // console.log($());    
+
+        // // 2.合并  (原生值不可以改变   引用值可以改变)
+        // var obj1 = {name: 'dg'};
+        // var obj2 = {
+        //     age: 18,
+        //     geibi: {
+        //         name1: 'laowang1',
+        //         name2: 'laowang2'
+        //     }
+        // };
+        // console.log($.extend(obj1, obj2));  // 加个参数true就深拷贝
+        // console.log(obj1);
+        // obj2.age = 19;
+        // console.log(obj1.age);
+        // console.log(obj2.age);
+        // obj2.geibi.name2 = 'laowang3';
+        // console.log(obj1);
+        
+//*********************************************************************************
+        // 合并到谁身上    (目标对象, )
+        // 把用到的变量放到最上面  一目了然
+        // 最好把length存一下  这样提高性能
+
+        // $.extend(obj1);  
+        //       target: $,
+        //       i: 0,
+        //       deep: false;
+           
+        // $.extend(obj1, obj2, obj3);
+        //       target: obj1,
+        //       i: 1,
+        //       deep: false;
+
+        // $.extend(true, obj1);
+        //       target: $,
+        //       i: 1,
+        //       deep: true;
+
+        // $.extend(true, obj1, obj2); 
+        //       target: obj1,
+        //       i: 2,
+        //       deep: true;
+        
+        // 1.一种情况 2.找target找i 3.传不传true 4.是不是拓展(i--)
+
+        // var str = 'abc';
+        // var obj1 = {age: 18};
+        // console.log($.extend(str, obj1));
+        // console.log(str);
+
+         
+        //  兼容了一下
+        // var a = {};
+        // $.extend(a, {age: a});
+        // console.log(a);
+
+        // 版本信息
+        // console.log($().jquery);
+        // 类数组变数组
+        // console.log($('li').toArray());  // Array.slice.call()
+        // var domArr = document.getElementsByTagName('li');
+        // var arr = Array.prototype.slice.call(domArr, 0, 3);
+        // console.log(arr);
+        // slice和splice的区别 ？？？？？？
+
+        // 转原生dom
+        // console.log($('li').get(0));
+        // console.log($('li').get(-1));
+
+        // pushStack: 先进去的后出来    
+        // $('li').pushStack($('li:eq(1)')).css({background: 'red'}).end().css('color', 'orange');
+
+        // each循环时可以跳出的
+        // var arr = ['a', 'b', 'c', 'd'];
+        // $.each(arr, function(index, ele) {
+        //     console.log(ele);
+        //     if(index == 2) {
+        //         return false;
+        //     }
+        // })
+
+        // map源码
+        // slice源码   // 运用了入栈的形式
+        // console.log($('li').slice(1, 2).css('color', 'red'));
+
+        // eq('1')  // 可以传一个字符串的1
+        // first
+        // last
+        // console.log($('li').eq('1'));
+        // makeArray源码
+
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+//  init: 初始化数据   render:  渲染
+//  bindEvent: 绑定事件的    getIndex: 判断方向/节点 
+//  changeIndex: 小圆点的切换   toolFunc: 事件驱动    slider_auto:  自动切换
+// 小圆一般用ul li来写
+// 路径的话退一层就是:  ../
+// 怎么让一个靠左一个靠右呢： 1.position:left right    2.float:left right
+// 一个块级元素如果不设置宽高,其宽高有父级继承,要想它的宽高由子集撑开,可以设置inline-block
+// margin: 0 auto是针对块级元素居中  text-align:center是支持行级元素的   inline-block: 默认支持一些行级元素的属性
+// 由于是专门针对PPT特有的功能,因为一些特殊的功能,我们希望它在单独的作用域下,不污染全局变量,所有采用命名空间的来封闭作用域
+
+//  思路: 入口函数  --》  动态生成按钮/小圆点  --> 绑定点击事件(在点击事件里找索引) --> 整体的一部分隐藏一部分展示
+//        --> 找索引(通过找索引对应的找到slider)/判断索引 --》触发 ==》 文字/图片
+//  传值： 便于后期的更新迭代
+//
+
+//   初始化函数   --》 1.createDom:根据slider.length来动态的生成dom  2.bindEvent:纯粹的绑定事件(通过不同的class类名来给toolsFunc传不同的值)  
+//                    3.toolsFunc(函数里的最前面把direction来传值给getIndex,getIndex来这个函数只是决定nowIndex/lastIndex的值,然后根据nowIndex/lastIndex来驱动trigger,执行完就 
+//                      清除定时器,执行slider-auto(开启新的定时器) )
+//***************************************************
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./test1.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="slider-list">
+            <div class="slider">
+                <div class="title">
+                    <h1>标题一</h1>
+                    <p>哈哈</p>
+                </div>
+                <div class="image">
+                    <img src="./images/img-1.png">
+                </div>
+            </div>
+            <div class="slider">
+                <div class="title">
+                    <h1>标题二</h1>
+                    <p>哈哈</p>
+                </div>
+                <div class="image">
+                    <img src="./images/img-2.png">
+                </div>
+            </div>
+            <div class="slider">
+                <div class="title">
+                    <h1>标题三</h1>
+                    <p>哈哈</p>
+                </div>
+                <div class="image">
+                    <img src="./images/img-3.png">
+                </div>
+            </div>
+        </div>
+        <!-- <div class="slider-btn">
+            <span class="left-btn"></span>
+            <span class="right-btn"></span>
+        </div> -->
+        <!-- <div class="slider-order">
+            <ul>
+                <li class="active"></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div> -->
+    </div>
+    <script src="./jquery.js"></script>
+    <script src="./test1.js"></script>
+</body>
+</html>
+/***********************************************/
+
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+html, body, .wrapper, .slider-list{
+    height: 100%;
+    width: 100%;
+    color: #fff;
+}
+.slider-list .slider{
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover; /*cover:保证一个图片充满整个背景区域,多余的裁剪掉了   contain: 保证一张图片完整的存在盒子里面*/ 
+    padding: 200px;
+    box-sizing: border-box; /**?????????*****/
+}
+.slider-list .slider:nth-of-type(1) {
+    background-image: url("./images/bg-1.jpg");
+}
+.slider-list .slider:nth-of-type(2){
+    display: none;
+    background-image: url("./images/bg-2.jpg");
+}
+.slider-list .slider:nth-of-type(3){
+    display: none;
+    background-image: url("./images/bg-3.jpg");
+}
+.slider-list .slider .title{
+    float: left;
+    width: 40%;
+    font-size: 16px;
+}
+.slider-list .slider:nth-of-type(1) .title p{
+    font-size: 20px;
+}
+.slider-list .slider .image{
+    float: right;
+    width: 0%;
+}
+.slider-list .slider:nth-of-type(1) .image{
+    width: 40%;
+}
+.slider-list .slider .image img{
+    width: 100%;
+}
+/********************************************/
+.slider-btn{
+    position: absolute;
+    top: 50%;
+    margin-top: -15px;
+    width: 100%;
+    height: 30px;
+}
+.slider-btn .left-btn, .right-btn{
+    position: absolute;  
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.slider-btn .left-btn{
+    left: 100px;
+    background-image: url("./images/left-btn.png");  
+}
+.slider-btn .right-btn{
+    right: 100px;
+    background-image: url('./images/right-btn.png');
+}
+/******小圆点order样式*******/
+.slider-order{
+    position: absolute;
+    bottom: 100px;
+    width: 100%;
+    height: 20px;
+    text-align: center;  /****主要针对的行级元素的**/
+    /* margin: 0 auto; */   /*主要针对的是块级元素*/
+}
+.slider-order ul{
+    display: inline-block; /*******不然它的宽度由父级决定的*******/
+}
+.slider-order ul li{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #666;
+    margin-right: 20px;
+}
+.slider-order ul li:nth-of-type(3){
+    margin-right: 0;
+}
+.slider-order ul li.active{
+    background: red;
+}
+/*************************************************/
+
+var ppt = {  // 封闭作用域 不污染全局变量
+    $wrapper: $('.wrapper'),
+    $slider: $('.slider'),
+    len: $('.slider').length,
+    nowIndex: 0,
+    lastIndex: undefined,
+    flag: true,
+    slider_timer: undefined,
+
+    init: function() {
+        if(this.len > 1) {
+            this.createDom(this.len);
+            this.bindEvent();
+            this.slider_auto();
+        }     
+    },
+    createDom: function(len) {
+        var strLi = '';
+        var strBtn = '';
+        for(var i = 0; i < len; i++) {
+            if(i == 0) {
+                strLi += '<li class="active"></li>';
+            }else {
+                strLi += '<li></li>';
+            }
+        }
+        strLi = '<div class="slider-order"><ul>' + strLi + '</ul></div>';
+        strBtn = '<div class="slider-btn">\
+                      <span class="left-btn" ></span>\
+                      <span class="right-btn"></span>\
+                  </div>';
+        this.$wrapper.append(strLi).append(strBtn);
+    },
+
+    bindEvent: function() {
+        var _this =  this;
+        $('.left-btn').add($('.right-btn')).add($('.slider-order li')).on('click', function() {
+            if($(this).attr('class') === 'left-btn') {
+               _this.totalFun('right')
+            }else if($(this).attr('class') == 'right-btn') {
+              _this.totalFun('left');
+            }else {
+                var value = $(this).index();
+                _this.totalFun(value);
+            }
+        });
+
+
+        this.$slider.on('go', function() {
+            $(this).fadeOut(300)
+                   .find($('p')).animate({fontSize: '16px'}).end()
+                   .find($('.image')).animate({width: '0%'});
+        });
+        this.$slider.on('come', function() {
+            $(this).delay(300).fadeIn(300)
+                 .find($('p')).delay().animate({fontSize: '20px'}).end()
+                 .find($('.image')).delay(300).animate({width: '40%'}, function() {
+                     _this.flag = true;
+                 });
+        });
+
+        
+    },
+    getIndex: function (direction) {
+        this.lastIndex = this.nowIndex;
+        if(direction == 'left' || direction == 'right') {
+            if(direction == 'left') {
+                this.nowIndex = this.nowIndex == 0 ? this.len - 1 : this.nowIndex - 1;    // 0  1  2      3 - 1
+            }else {
+                this.nowIndex = this.nowIndex == this.len - 1 ? 0 : this.nowIndex + 1;
+            }
+        }else {
+            this.nowIndex = direction;
+        }
+    },
+    changeOrder: function(index) {
+        $('.active').removeClass('active');
+        $('li').eq(index).addClass('active');
+    },
+    totalFun: function(direction) {
+        if(this.flag) {
+            this.getIndex(direction);
+            
+            if (this.nowIndex != this.lastIndex) {
+                this.flag = false;
+                this.$slider.eq(this.lastIndex).trigger('go');
+                this.$slider.eq(this.nowIndex).trigger('come');
+                this.changeOrder(this.nowIndex);
+                clearTimeout(this.slider_auto);
+                this.slider_auto();
+            }
+        }
+      
+    },
+    slider_auto: function() {
+        var _this = this;
+        clearTimeout(this.slider_timer);
+        this.slider_timer = setTimeout(function() {
+            _this.totalFun('right');
+        }, 3000)// 3秒
+    }
+}
+ppt.init();
+
+// 计时器的this指向window
+// 作业: 写完发邮箱
+// 源码思想很重要 不要浑沦吞枣

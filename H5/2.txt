@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        canvas{
+            border: 1px solid #000;
+            /*background: url(img/111.jpg);*/
+            width: 200px;
+            height: 200px;  
+        }
+    
+    </style>
+</head>
+<body>
+
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+    <img id="myImage" src="./bg.jpg"/>
+    
+    <script type="text/javascript">
+    	
+    	var myCanvas = document.getElementById('myCanvas');
+    	var ctx = myCanvas.getContext('2d');
+    	
+    	
+    	
+    	
+    	// 阴影
+    	// ctx.shadowOffsetX = 10;
+    	// ctx.shadowOffsetY = 10;
+    	// ctx.shadowColor = 'green';
+    	// ctx.fillStyle = 'red';
+    	// ctx.shadowBlur = 10;
+    	// ctx.fillRect(0, 0, 100, 100);
+    	
+
+    	// 文本
+    	// ctx.fillStyle = 'deeppink'; // strokeStyle: 描边  --》 镂空的效果
+    	// ctx.font = '50px sans-serif'; // 字体大小 字体规格
+    	// ctx.fillText('dg', 100, 100); // 起始位置 小圆点的位置默认在100 100(左下方) 调整位置小圆点不变 字相对于小圆点变了
+                                      //     字也跟着走过来了 可以拿小圆点控制字在什么位置上
+    	// strokeStyle ==> strokeText : 描边 镂空的效果
+
+
+    	// 想让文字水平垂直在这canvas中间  如果没有小圆点你得调这个字的位置在哪里  从哪里引入起始点
+    	//     这个时候就考虑到你有可能不知道这个字体的长度是多少 你怎么给她挪 是不是不好挪  还有这个字不断在更添删除
+    	//     这个宽度是不是也不固定 所以你想通过调整它这个位置 调整这两个让它挪到中间来的话不太现实 这个时候怎么办  
+    	//     我们是不是可以调整小圆点的距离 怎么调整这个小圆点 我们把这个小圆点写到哪里 让小圆点挪到最中间最中间的位置上
+    	//     小圆点在250 250的位置上 我让这个文字和这个小圆点的位置是怎么样的 小圆点在这个文字的正中间 这样的话我
+    	//     是不是很好的控制这个字体它在什么位置上了 而且中间比较是我们常要的效果 因为左边的值和右边的值你都不太好控制在多少
+    	// ctx.fillStyle = 'deeppink';
+    	// ctx.font = '50px sans-serif';
+    	// ctx.textBaseline = 'middle';
+    	// ctx.textAlign = 'center';
+    	// ctx.strokeText('dg ds dxb', 250, 250); // 不可以写百分比的   一般设置百分比的时候一般会找自身dom因素的百分之多少多少
+    
+    	// 验证码  为什么想要这样的验证码??  如果我们刷票啊会有这样的验证码  这个验证码的作用就是 区分人和机器用的 因为
+    	//     有的软件能 如果这个不设置图片的话 通过一些代码可以读取到你这个字符串 这个字符串就输入到这里面来了
+    	//     所以一些刷票软件容易做到这一点了 所以为了区分一下这个操作是人操作的还是机器操作的 一般都会把这边做成一个图片
+    	//     图片内的字母和背景融合在一起  然后通过人眼能区分出来  一般代码区分不出来 这个是图片也不好获取图片上的字母
+    	//     除非人眼读出来再输入 这样的话一定程度上区分了人与电脑  这样的验证码一般有后台给我们发过来的 用fillText画到区域当中
+    	//     怎么让他们居中呢  因为大写和小写占的宽度一般不相同的 所以没有办法让他们精确的控制从哪个地方开始画 小圆点写最中间了 
+    	//     字符串水平垂直居中
+    	
+    	
+    	// 验证码源码
+    	
+
+        // 线段
+    	// ctx.moveTo(100, 100);
+    	// ctx.lineTo(200, 100);
+    	// ctx.lineWidth = 30;
+    	// ctx.stroke();
+    	
+    	// ctx.beginPath();
+    	// ctx.moveTo(100, 300);
+    	// ctx.lineTo(200, 300);
+    	// ctx.lineWidth = 30; // 左边长宽度的一半15px  右边也是
+    	// ctx.lineCap = 'square';
+    	// ctx.lineCap = 'round'; // 一般会用到这个效果
+    	// ctx.stroke();
+    	
+    	// 当你鼠标移动过快的时候 你的鼠标来不及触发那个事件 你的鼠标在这慢慢移动触发那个mousemove之间的次数跟你
+    	//     快点移动触发onmousemove次数是不一样的 你的鼠标快速移动的时候可能触发10次mousemove 
+    	//     你慢移动的时候可能触发100次mousemove 所以说在画图的过程中 在刮刮乐的过程中刮快了嗖的一下鼠标移动过来了
+    	//     这块由于触发的mousemove函数没有那么多必定出现很多断点 出现断点的情况我们会用直线把它连起来 然后直线连完后
+    	//     都是刺棱次假的 都是直角的 我们一般会把这个边处理一下 处理圆润一些的
+    	
+    	
+      	// ctx.moveTo(100, 100);
+      	// ctx.lineTo(200, 100);
+      	// ctx.lineTo(50, 130);
+      	// ctx.lineWidth = 30;
+      	// ctx.lineJoin = 'bevel'; // 什么都不设置的默认会有个尖的       当你的尖足够长的话会自动帮你切掉了 转化为bevel
+      	// ctx.lineJoin = 'round';
+      	// ctx.stroke();
+    	
+      	// ctx.moveTo(100, 100);
+        // ctx.lineTo(200, 100);
+        // ctx.lineTo(50, 130);
+        // ctx.lineWidth = 50;
+        // ctx.miterLimit = 10; // 默认情况会给你限制10 不是10px 这块会进行有个换算的 它会把实际这个miterLimit*lineWidth/2 一般超过多少帮你砍掉
+        // ctx.stroke();
+    	
+
+    	// 裁剪
+    	// 你当前画一个区域 并不要画出来你打好这个草稿然后你clip()一下 你当前草稿的图形是什么样子  那么你这个布剪下来就是什么样子 
+        //     剪完之后其他东西都不要了  就留下来你之前设置好的样子 你写了一个圆 写完圆之后呢?? 并没有给它画出来然后clip()一下
+    	//     然后这个画布就把这个圆剪下来了 其他的地方都扔掉了 那就是说如果你还想这个画布上画东西的话只能在这个园的区域内画
+    	//     其他区域你画也画不上了 这就是裁剪的意思
+    	// 你上面画一个形状出来 你这块裁剪只保留了当前你这个形状 其他的图形只能在这个形状里绘制
+    	 
+    	// ctx.save();
+    	// ctx1.beginPath();
+    	// ctx.arc(250, 250, 100, 0, Math.PI*2, 0); // 画这种闭合的图形最好给她闭合一下
+    	// ctx.closePath();
+    	// ctx.clip();
+    	// ctx.fillRect(250, 250, 250, 250);
+    	// ctx.fillRect(0, 0, 100, 100);
+    	// 如果我想恢复到原来的样子怎么办??? 
+    	//     清空裁剪不太可能了 save()可以保存画布的状态 restore可以把栈中画布的状态返回出来 可以在裁剪之前把画布的状态存起来
+        //         裁剪玩释放 做完裁剪想恢复到原来的canvas当中 在它原来的坐标系中接着画
+    	// ctx.restore();
+    	// ctx.fillRect(0, 0, 100, 100);
+    	
+    	
+    	
+    	// 合成像素
+    	// ctx.fillStyle = 'red';
+    	// ctx.fillRect(200, 200, 100, 100);
+    	// ctx.globalCompositeOperation = 'destination-over';
+    	// ctx.globalCompositeOperation = 'destination-out'; // 上面是新像素  下面是旧像素 中间放一个新旧像素的合并方式
+    	// ctx.beginPath();
+    	// ctx.fillStyle = 'green';
+    	// ctx.arc(300, 300, 50, 0, Math.PI*2, 0);
+    	// ctx.fill();
+    	// 为什么圆会盖住方块呢??    因为方块是先画的 园是后画的      
+    	//     谁先画的谁在底下 谁后画的谁在顶上  先画的叫旧像素 后画的我们叫它是新像素
+    	//         默认的情况下有个属性值source-over(旧像素在底下 新像素在顶上)
+    	
+    	
+    	
+    	// 重叠的地方没有了 不是白色是透明色了
+    	// ctx.globalAlpha = '0.5'; // 会作用到下面canvas所有的子路径下
+    	
+    	// ctx.fillStyle = 'red';
+    	// ctx.fillRect(0, 0, 500, 500);
+    	// ctx.globalCompositeOperation = 'destination-out'; 
+    	
+    	// ctx.beginPath();
+    	// ctx.fillStyle = 'green';
+    	// ctx.arc(300, 250, 50, 0, Math.PI*2, 0);
+    	// ctx.fill();
+    	
+    	// ctx.beginPath();
+    	// ctx.fillStyle = 'green';
+    	// ctx.arc(300, 350, 50, 0, Math.PI*2, 0);
+    	// ctx.fill();
+    	
+    	// ctx.clearRect(0, 0, 50, 50); // 擦的只能擦矩形的效果  一般是圆的效果
+    	// 做刮刮乐的效果:  1.把这擦了露出后面的效果了(这个方法很重要 比2重要)   2. clearRect()  擦除画布的 擦的只能擦矩形
+    	
+    	
+    	
+    	// 绘制图片 
+    	//    我想把一个图片画到这个画布当中就用ctx.drawImage();
+    	//    video不是把视频拿过来 是拿vedio的画面  一般在网上浏览网页版的视频的时候 最开始视频还没播放的时候会有个封面
+    	//         可能这个封面写着学习资料几个大字  你点开之后可能真的是学习资料 
+    	
+      	// var myImage = document.getElementById('myImage');
+      	// var oImage = new Image();
+      	// myImage.onload = function() { // 图片加载是异步的过程 等图片加载完画到canvas当中
+      	// 	  ctx.drawImage(myImage, 80, 80, 60, 60, 300, 300, 200, 200);
+        //       var data = myCanvas.toDataURL();
+        //       console.log(data);  // 有可能会卡掉 因为data值很大  
+                                  // 如果想把图片抽取成功的话 
+                                  //     我们要符合同源策略 因为现在想把图片都抽取成base64编码格式的一个信息了
+                                  //     你把它抽成这个编码信息了之后你是想把这个图片所有的信息拿出来了 相当于从人家服务器拿资源了
+                                  //     这个时候必须满足同源策略 不然的话它不会让你把这个信息一点点抽取出来的 所以把它放到服务器里
+                                  //     data这个东西就代表宽500高500的图片信息了
+                                  // 从80 80的位置开始截图 截图宽60高60的区域 把这个区域插在哪里??
+      		                      //     把这个区域插在右下角 从300 300 的区域开始插入放到200 200的区域里
+        //    oImage.src = data;
+        //    document.body.appendChild(oImage); 
+            //  base64有什么好处呢??  减少网络请求的 因为它把这个图片都变成这个编码格式了 这个编码格式都在这里边了
+            //      这个编码显示的就是一张图片的信息 不需要再向服务器请求这个图片的资源了 就是如果你用base64来写图片的话减少网络请求
+            //      每次网络请求其实都比较耗时的 它可能需要建立TCP链接 请求资
+			//      源 再断开的过程 如果网络慢的话可能时间会更长些 
+            //      所以尽量减少网络请求有时候图片就会采取base64这种编码格式的图片 但它有缺点就是你发现这个src未免太长了
+            //      如果说这些图片都不请求了 都给它编码成base64 这个时候你发现这个页面没看着什么别的代码了 看到base64格式这么一大长串的东西了
+            //      它的占的内容篇幅比较长 一般像那么大的图我们不采用base64编码格式图片 一般小图的时候会采用这种base64的 
+            //      你想像一下就是你访问移动端的时候你有时候手机可能没有网络 那没有网络的时候它依然会帮你显示 可能小圈在那转转
+            //      转完之后检测出来你没有网 没有网的时候会给你个小图标外加几个文字提示  这个小图标向服务器请求也是请求不过来的 因为图片会裂开了 
+            //      因为小图标非常小 非常小的图标你就可以把它变成编码64编码格式的图片然后把它放到那里 这个时候那个base64的内容不会很长  
+            //      而且不会占用网络请求 不会请求图片 所以这个时候当你这个离线提示的小图标都可以采用base64的图片
+      	// }
+    	// 为什么图片没有 放到那里??
+    	//     图片加载是异步过程 有可能到这里图片还没加载完成
+    	//         即使变形也在这规定的区域内
+    	// 添加2个的时候代表你画到canvas的什么位置上   添加5个的时候代表你想让这个图片存这个区域的宽和高是多少 
+    	//     添加9个的时候前面4个控制图片的  后面4个控制canvas的
+    	
+    	// 保存到服务器??   把文件/资源放到服务器
+    	// 比如不想把这个图片放到服务器下 因为断线的时候资源就加载不了 这个时候你可以从网上直接转 网上很多在线的网站 
+    	//     你把这个图片一拖入的时候它就把你这个东西转成base64编码格式的字符 你这个粘过来把这个src替换掉 
+    	
+
+    	// canvas中每一个小点都是一个像素 而一个像素又是由四个值表示出来的 分别是rgba四个值表示出来的 所以像我这个
+    	//       宽500高500是500*500*4的像素  因为每一个像素由四个值表示 这个时候可以用getImageData()  
+    	//       把每个像素上的信息全部都表示出来 
+    	// 为什么取这个信息???   对这些信息进行改变 比如会有些滤镜的效果 比如把这个图片取完之后给它进行一个灰色的处理
+    	//     把它变成一个更红一点 更黄一点的等等这些滤镜的效果获取每个像素信息值 把每个像素信息值变红一点 把好色的值给它加一点
+    	//     你想变黄 把黄色的值多加一点 获取到每个信息点 不是每个信息点都是用rgba来表示吗 你处理每个像素上的值 你就可以给它达到滤镜的效果
+      	
+      	// var myImage = document.getElementById('myImage');
+       	// var oImage = new Image();
+       	// myImage.onload = function() {
+       	// 	ctx.drawImage(myImage, 80, 80, 60, 60, 300, 300, 200, 200);
+        //     var data = myCanvas.toDataURL();
+        //     console.log(ctx.getImageData(0, 0, 400, 400)); 
+        //     // data是一个数组 当数组里面的值过多的时候 控制台会帮你分段展示 不然的话它的内容太多了不好看
+        //     //     前四个代表第一个像素 再四个是第二个像素
+    	// }
+    	
+    	// ctx.fillRect(0, 0, 500, 500);
+    	// console.log(ctx.getImageData(0, 0, 500, 500));
+
+		// ctx.createImageData(); // 是创建的意思 创建一个 自己往里添像素信息值 一般我们不会用到它 因为里面的值太多了 因为我们没有这样数据的话
+		//                               根本不知道怎么添画出你想要的图案来 所以一般有大量的数据 这样的函数对它进行处理了 
+		//                               把这些数据放到函数里能画出一幅画来 可控它才用这个东西 不然画好几百万这样的数据 一般太难
+		// ctx.putImageData() 就是把我们获取到的ctx.getImageData()对象放回到canvas里用的 getImageData()取完之后对它进行一个滤镜的处理
+		//                        处理完成之后这个imageData信息值是不是处理之后的信息了 然后你再把ImageData()放回到canvas当中 
+		//                        这时候canvas当中就是你处理之后的imageData值 一般getImageData()和putImageData()一起来用的
+		//                        先获取再改变 改变完再把它放回去
+
+		// 高斯模糊  就是把图片进行模糊的处理但是要把它放到服务器当中 类似马赛克的效果 
+    	
+    	// 抽取的时候必须满足同源策略
+    	// 怎么变成灰色??? 你把那个透明度255变成100 就是灰色的效果 这里它是怎么处理的  它是一横行展示之后再展示第二行再展示第三行...
+    	//     所以会用两个循环 第一个循环代表每一行 第二个循环代表每一列  在每行四个值是一组 四个值是一组 
+		//     用putImageData()把改变好的image对象放回到canvas当中 这个时候图形就变成灰色了 
+    	
+		// 怎么进行高斯模糊处理??
+    	//     首先有这个图片 把图片画到canvas区域当中 只有画到里面了才能用getImageData()方法获取像素信息值 所以用drawImageData把 它画到imageData当中 
+		//     画完之后然后用getoImageData方法每一像素上的每一像素值都取出来 取出来之后不是获取imageData对象  然后把image对象传到高斯函数当中 
+    	//     传进去之后进行一系列的处理 完成之后会把imageData返回出去 返回出去之后用putImageData放到canvas当中 
+		//     想要这个图片也行用tDataUrl抽出来 抽成base64编码格式的图片然后把它放到image图片当中
+    	// 整体思路
+		//     把这个图片用drawImage的方式放到canvas区域当中 然后用getImage()方法把每个像素获取到 然后用高斯函数进行改变 
+    	//     改变之后把getImageData对象返回出去  然后用putImageData()方法放到canvas当中 放到canvas当中可以把它抽成base64编码格式的图片
+    	//     这个时候某个图片想用的话src就可以拿到了base64编码格式的图片了 
+    	//  面试会问高斯函数处理的过程  不会问高斯函数里面是怎么处理的
+    	
+
+    	
+    	// ctx.moveTo(100, 100);
+    	// ctx.lineTo(200, 100);
+    	// ctx.lineTo(200, 200);
+    	// ctx.closePath();
+    	// ctx.stroke();
+    	// console.log(ctx.isPointInPath(180, 120));
+    	// console.log(ctx.isPointInStroke(200, 200));
+    	// 你可以获取这个像素的信息值 可以用getImageData getImageData不一定是整个canvas区域 因为这个区域是我们往里面传的值
+    	//     从哪到哪 可以取一个点 把这个点取完之后可以获取这个点的像素信息值是多少 你看一下这个值是否是透明的
+    	//     如果当前这个值是透明的话 那么不在线上 如果它的颜色跟那个线的颜色是相同的 那就在那个线上了 可以跟那个线上的颜色进行对比
+    	//     如果相同证明在这线上
+    	
+    	
+    	
+    	
+    	// canvas放大图片会有模糊效果的 实际上它是一个位图 位图放大之后会模糊的 这个就是位图像素的特点
+    	//      放大之后会失真 相对应的图形是矢量图形 svg画的就是矢量图形 放大之后不会失真 iphone是视网膜屏 这个是更细腻些
+    	//      更细腻些就会导致如果有些东西不是高清的话就看得有些模糊 这个时候canvas又是个位图 特别容易放大之后失真
+    	//      在像素细腻的iphnoe看着有些模糊 一般我们会怎么处理
+    	// ctx.fillRect(100, 100, 300, 300); // 画一个大的画布放到一个小相框里  这个300 300的值并不是一个绝对的像素值 它只是把它作为一个单位了
+    	                                  //     这个canvas是500单位 500单位 但是这个500 500区域的canvas要放到哪里呢??  要放到200 200区域下
+    	                                  //     所以当前它宽和高参考谁的呢 参考的是500 500的 但是这个500 500的并不代表一个绝对的像素值
+    	                                  //     它要把这个500 500放到200 200的区域当中 如果200 200 没写的话  你写的500就代表500像素
+    	                                  //     但是如果写值得话就以200 200为基准 这个500 500是要塞到200 200的区域当中的
+    	                                  // 这个为什么就做到不模糊的效果 本来那么大的画布把它塞到一点的区域还能失真了吗 看起来非常细腻了
+    	                                  // 把小的画布撑开放到一个大相框里看起来会模糊 一般canvas画画的一般准备大的画布 准备小的相框 这个大画布塞到小相框里
+    	                                  //     解决canvas模糊的问题 这块注意的是它会变形的 比如说画布跟相框不成比例了 画布是1:1的正方形 相框是矩形 
+    	                                  //     这个时候怎么办  这个时候画布会压缩压缩再压缩直到塞进去这个相框为止 所以会出现变形了 尽量让它保持同一比例
+    	
+    	
+    </script>
+    
+</body>
+</html>	
+
+
+
+
+//*************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+    	
+    	#myCanvas{ /* 背景图片动态的生成 图片一般会由后台给你 后台给你每次刷新的时候都是不同图片的地址 */
+    		
+    	}
+    	
+    </style>
+</head>
+<body>
+
+   <canvas id="myCanvas" width="300" height="300"></canvas>
+    
+    <script type="text/javascript">
+    	
+    	var myCanvas = document.getElementById('myCanvas'),
+    	    ctx = myCanvas.getContext('2d'),
+    	    w = myCanvas.width,
+    	    h = myCanvas.height,
+    	    lastPoint = {},
+    	    nowPoint = {};
+    	
+    	
+    	// 怎么把这个图像放到canvas当中 用drawImage行不行  drawImage可以把图片放到canvas当中 但是你是把它画到这个区域当中的
+    	//     属于旧像素 等你一会画一个园往上一覆盖的时候新旧像素合并了 你想想新旧像素一合并的话图片就被擦除掉了 
+    	//     你这个图片相当于画上canvas的 画上的不都是canvas上的像素吗 都可以被擦掉的 所以不能用drawImage的方式
+    	//     要用背景图片的方式引入 背景图片引入的方式是不被擦掉
+    	
+    	function init() {
+//  		ctx.globalAlpha = '0.5';
+    		ctx.fillStyle = '#ccc';
+    		ctx.fillRect(0, 0, w, h);
+    		
+    		ctx.globalCompositeOperation = 'destination-out';   
+    		
+    		var img = new Image(); // 不能直接  因为图片加载时是异步的过程 如果慢的情况下图片没加载过来呢 然后你就刮 后面就什么都没有了 
+    		                       //     这个时候你一定得等图片加载完成之后再把它插入背景图片当中去
+    		img.src = './bg.jpg';
+    		img.onload = function() {
+    			myCanvas.style.background = 'url('+ img.src +')';
+    			myCanvas.addEventListener('mousedown', downFunc, false);
+    		}
+    	}
+    	init();
+    	// 绑定事件 按下拖动才好使 抬起这些事件才会被清空掉
+    	//     按下去不一定立刻抬起
+    	// 当前画一个园 画个圆新旧像素一合并方式就可以抠出这个圆的区域 
+    	function downFunc(e) {
+            lastPoint.x = e.clientX - myCanvas.offsetLeft;
+            lastPoint.y = e.clientY - myCanvas.offsetTop;
+
+    		myCanvas.addEventListener('mousemove', moveFunc, false);
+    		document.addEventListener('mouseup', upFunc, false);
+    	}
+    	function moveFunc(e) {
+    		
+    		nowPoint.x = e.clientX - myCanvas.offsetLeft,
+    		nowPoint.y = e.clientY - myCanvas.offsetTop;
+    		
+    		ctx.beginPath(); // 圆会跟旧像素抠出掉的
+    		ctx.fillStyle = 'red';
+    		ctx.lineWidth = 40;
+    		ctx.lineCap = 'round'; // 这个线由于你这个边是个直角的形状 默认是个直角的形状 把这个边再变一下 直角不好看
+    		ctx.moveTo(lastPoint.x, lastPoint.y);
+    		ctx.lineTo(nowPoint.x, nowPoint.y);
+    		ctx.stroke();
+    		
+    		ctx.arc(nowPoint.x, nowPoint.y, 20, 0, Math.PI*2, 0); // 鼠标的值与园心的坐标有关
+    		ctx.closePath();
+    		ctx.fill();	              
+    		
+    		lastPoint.x = nowPoint.x;
+    		lastPoint.y = nowPoint.y;
+    		
+    	}
+    	function upFunc() {
+    		myCanvas.removeEventListener('mousemove', moveFunc, false);
+    		document.removeEventListener('mouseup', upFunc, false);
+            clearCanvas();
+    	}
+    	
+    	function clearCanvas() { // 大概刮到70%就知道中奖没中奖 到70%自动的帮他们擦掉就行了
+    		                     //     怎么计算canvas的百分之七十 在canvas你计算多少的话只能计算像素
+    		                     //     不像动画 动画的话可以根据left/top的值进行获取 每次刮开一点都是像素
+                                 //     这个时候你可以看你当前这个像素是什么情况了
+    		                     //     你刮开的这个区域是什么颜色了 刮开的这个区域是透明色了 它没有颜色值
+    		                     //     没有刮开的区域有颜色了 灰色效果的话rgba都有值  只要判断一个像素当中一个值就行 前四个代表一个像素
+    		                     //     如果是0的话这个区域被刮开了 每四个循环一次  刮开一个像素总和加1 最后循环遍历后你刮开
+    		                     //     0的总和比是否大于0.7
+    		                     
+    		var d = ctx.getImageData(0, 0, w, h),
+    		    c = 0,
+    		    len = d.data.length;
+    		for(var i = 0; i < len; i+= 4) {
+    			if(d.data[i] === 0) {
+    				c ++;
+    			}	
+    		}
+    		if(c > len/4 * 0.7) {
+    			ctx.clearRect(0, 0, w, h);
+    		}
+    	}
+    	
+    	// 当鼠标快速滑动的时候出现断点了     与拖拽不一样, 你拖拽快有可能鼠标脱离了这个区域导致这个事件执行不上了
+        //     一直在这上面没触发  你没脱离这个区域 没脱离这个区域怎么触发的次数不相同呢?? 拖拽是你这个鼠标不在这个事件上了 
+        //     你压根无法触发这个事件 现在鼠标一直在这个区域内你也一直没有我们想要的效果 你改成document也于事无补 
+        //     无论你绑定在谁身上始终跟不上趟 
+    	//     慢点滑动的时候 无论绑定在谁身上你都跟不上趟   怎么解决这个问题??   解决不了 你没有办法让这个函数能像你慢慢挪动那样
+    	//     时刻的触发它 你鼠标挪动过快了就跟不上趟  那怎么办呢   怎么在视觉效果上更好看些呢 无非是它断了不好看 
+    	//     只要把它断的地方连接上就行  用直线连接就好  有起始点和终点中间用线连接 一般挪过快的时候都是直线的效果
+    	//     
+        // 总结回顾:
+    	//     最开始的情况下写好这个区域 它要有灰色的蒙层以及后面的背景图片 设置好灰色的蒙层就是旧的像素 与背景图片无关 
+    	//     背景图片压根没有在canvas中画出来 所以他根本不算像素 旧的像素就是他 新的像素就是那些圆
+    	//     所以那些旧像素完成之后来设置新旧像素的合并方式来合并好 背景图片引入之后监听mousedown事件就行了 
+    	//     onmousedown里 move up 绑定上  down之后获取一个旧的值 move的时候获取一个新的值 为了防止断点的情况中间用直线把它连接上了
+    	//     
+    	// 项目优化高代表你知识掌握灵活度高 
+    	//
+    	// 把你不知道的js视频看完  最好把不知道的js书看一下
+    	
+    </script>
+    
+</body>
+</html>	  

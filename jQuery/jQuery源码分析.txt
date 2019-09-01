@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="demo">div</div>
+    <script src="./jquery.js"></script>
+    <script>
+        // console.log($('div'));
+        // console.log($('div').html());  // 不是构造函数  执行完return出来一个对象
+
+        // function aa() {}
+        // aa.prototype.age = function() {
+        //     console.log(888);
+        // }
+        // var obj = new aa();
+        // obj.age();
+        // jQuery().html();
+
+
+
+        // (function (global, factory) {
+        //         factory(global);  // this没有写死
+                
+        //     })(this, function(window) {  // 
+        //         window.jQuery = window.$ = jQuery;  
+        //         function jQuery(selector) {// jQuery都是基于原型来编程的  面向对象的
+        //             return new jQuery.prototype.init(selector);  // new --》 作用域独立出来(封闭作用域)
+        //         }
+        //         jQuery.prototype = {
+        //             init: function (selector) { // init这个模块为了找dom结构的
+        //                 //var this = {};  // var this = Object.create(init.prototype);
+        //                 var dom = document.getElementById(selector);
+        //                 this[0] = dom;
+        //                 this[1] = 1;
+        //                 //this.age = 1;
+        //                 console.log(this);
+        //                 return this;
+        //             },
+        //             //age: 0,
+        //             css: function () {
+        //                 console.log('css');
+        //                 return this;
+        //             },
+        //             html: function () {
+        //                 console.log('html');
+        //                 return this;
+        //             }
+        //         }
+        //         jQuery.prototype.init.prototype = jQuery.prototype;
+        //     })
+        //  jQuery('demo').css().html();
+        // 引入过多类库 --》 封闭作用域   (1.命名空间 2.立即执行函数)
+
+
+        // {
+        //     0: div,
+        //     length: 1
+        // }
+
+        // Father.prototype = {
+        //     eat: function() {
+        //         console.log(this);
+        //     }
+        // }
+        // function Father() {}
+        // Father.prototype.eat();
+
+        // (function(global) {
+        //     console.log(global);
+        // }(this))
+
+
+
+//******************************************
+        // $(selector);
+        // 1.$(false/null/undefined);
+
+        // 2.$('<li></li');  $('<li/>s3821');   $('<li>', {html: 123, dg: ds}); // 后面可以传这个对象(如果有这个方法就帮你执行一下这个方法/ 没有就帮这个属性当成dom的属性添加上去)
+       
+        // 3.$('#id');  $('.class'); $('div'); $('ul li');  $('li', 'ul/dom/$()');
+        //   $('li:eq(0)');  $('li:even/odd');
+   
+        // 4.$(dom)
+   
+        // 5.$(function() {})
+   
+        // 6.$($())
+//******************************************************
+      
+        // $(function () {})  // 原理触发如下：
+        // setTimeout(function () {
+        //     $().ready(function (fn) {  // dom文档解析完就触发了,不会立即触发的
+        //         fn();
+        //     })
+        // });  //没写时间相当于给了个0秒(即使你写了0秒也会有一点点延迟的)   
+        // 当引用资源较少的时候 --》 因为一点点延迟导致 --》window.onload先触发的
+       
+
+    //    var reg = /(aa)(bb)/g;
+    //    var str = 'aabbccaabbcc';
+    //    console.log(reg.exec(str));
+    //    console.log(reg.exec(str));
+    //    console.log(reg.exec(str));
+    //    console.log(reg.exec(str));
+    //    console.log(reg.exec(str));
+       
+    //     /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]+))$/
+    //    match = [null, '<li></li>', null];
+    //    match = ['#demo', undefined, 'demo'];
+    //    match = ['  <li>weed', '<li>', undefined];
+    //    match = null;
+
+
+    merge: 合并数组和类数组  把有索引值的合并(后面的合并到前面来并且返回第一个)
+    var obj1 = {0: 'div', 1: 'a', length: 2};
+    var arr = [1, 2, 3];
+    console.log(jQuery.merge(obj1, arr));
+
+    jQuery.parseHTML('<li></li><script></script>', document, true);       
+    jQuery.parseHTML('<li></li><script></script>', document, false);    
+
+    //find在sizzle上定义的
+
+
+    </script>
+</body>
+</html>

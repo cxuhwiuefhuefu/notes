@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        // devicemotion/deviceorientation跟手机息息相关 因为他们需要陀螺仪的支持
+
+        // navigator screen location
+        
+        
+        function suc(pos) {
+            console.log(pos);
+            console.log('success');
+        }
+        function err(error) {
+            console.log(error);
+            console.log('error');
+        }
+        var options = {
+            enableHightAccuracy : true,
+            timeout: 2000
+        }
+        window.navigator.geolocation.getCurrentPosition(suc, err, options); // 成功的回调 失败的回调 一些参数
+
+        // chrome的数据不在国内 所以需要翻墙一下
+
+        // 定位精准度 这个经纬度不是定位到一个点上吗 这个点并不是你坐在的位置的点 而是说你当前这个网络它的路由的位置是哪 网络所在的地理位置
+        //     它也会有个偏差 这个精准度是可以调整的  通过option可以调整  配置精准度是否精准 true/false 默认情况下是false 所以调成true精准度会高些
+        //     但也只是理论上相对而言  为什么是null值??  因为电脑的设备是有限的 我们获取一个速度/海拔等等 这些需要硬件设备支持的 
+        //     我们电脑是没有这个设备的 所以电脑打印不出来这个值 然后这个数据我们是翻墙拿到的 我们可以翻墙去取 
+        //     如果说我不想翻墙的话能不能拿到一些位置数据? 也能 但是拿的不是chrome数据 比如说IE当中 你把这个东西放到IE中打开 
+        //     看看能不能获取到地理位置信息 IE不需要翻墙就可以获取值的 而且他们获取的值还不太一样  由于他们数据库的信息不一样 所以他们的值肯定有偏差的 
+        //     不同浏览器给你返回的数据是不一样的 这个跟各个浏览器厂商有关的 我们翻不了墙的话可以用IE来试 开发习惯用chrome 建议看文档/查资料试着翻墙去查
+        //     因为百度是竞价排名的 好多在我们在输入框输入一些想搜索的关键字对应的信息 其实百度当中并不是会完整的按照爬虫/按照关键字把内容给它爬出来的
+        //     但是你在chrome当中你就精准的搜索对应的关键字那些文章 所以平时大家搜的时候翻墙去搜一些资料
+        	
+        // 1: 用户拒绝
+        // 2: 不翻墙 获取不到数据
+        // 3: 链接超时 默认情况下无限的请求这个数据的 可以通过option设置请求的时间 比如超过8s就不要请求了 因为用户等待你数据的时间8s基本已经是极限了 
+        //        他不愿意花太多的时间等待一个页面的响应 反正在开发中8s是极限 超过8s这个请求断开了
+        //
+        // 比如我三分钟或者五分钟之后我看它在哪里 比如我三分钟五分钟之后再更新地理位置信息就行 在这个时间之内它不会去更新信息 不需要无时无刻的更新信息 
+        //     比如设置500ms 在500ms之内就不会更新地理位置信息 而是始终用原来缓存的地理信息 
+        //
+        // watchPosition跟计时器的做法相同 你设置计时器你还会清除它的
+        //
+        // devicemotion: 当你的设备(电脑除外) 比如手机会有陀螺仪 当你手机疯狂的摇摆的时候 它就能监听的到你手机正在加速还是减速 监听你加速度的变化
+        //                   加速度一旦变化之后就会触发devicemotion事件  所以我们就监听devicemotion 当devicemotion一触发的时候我就让它执行后面的函数
+        //                   告诉你用户运动了
+        // 
+        
+    </script>
+
+</body>
+</html>
+
+
+
+
+//*************************************************************************************************************************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="item"></div>
+    <script>
+
+        window.addEventListener('devicemotion', function(e) {  // 当我设备发生就会执行它 呀就会有内容了
+            console.log(e);
+            item.innerHTML = e.accelerationIncludingGravity.x + '-' + e.accelerationIncludingGravity.y + '-' + e.accelerationIncludingGravity.z;
+        })
+
+        // 为什么值是null-null-null??
+        //     因为什么电脑设备没有devicemotion rotationRate也是null-null-null 因为电脑获取不了
+        // 怎么用手机来测试??(手机测试代码的方法)
+        //     在手机输入这个网址(http://localhost/test/test.html)不好使 因为没有localhost 我就想wampserve这个不是个服务器吗 
+        //     我手机想访问这个电脑的文件夹下的这个文件 我手机怎么访问到我这个电脑的这个文件呢 这个电脑做个服务器肯定会有个地址的
+        //     你要把localhost变成ip地址 你看一下你当前这个电脑不是会连接一个局域网吗 你看你当前这个电脑的局域网是多少 IPV4:10.254.165.252
+        //     你可以把它放到手机里访问这个地址了 http://10.254.165.252/test/test.html 但前提是你手机也要连接该局域网
+        //     也就是你手机和电脑要连接同一网络 只有连接同一网络他们的IPV4地址才是相同的 这样的你才能访问到你电脑的这个文件  或者用草料生成二维码
+        //     用微信扫一扫 要连到同一局域网下才好使
+
+
+        // 微信摇一摇怎么实现这个功能的?? 微信摇一摇在腾讯二面问过 没让手写 说思路  
+        //     你摇一摇会有个弹窗出现   
+        //     先监听一下加速度的变化 当加速度发生变化的时候 就执行这个deviceMotionHeadler 它这块是event事件 event事件会有这个加速度 
+        //     加速度上有x/y/z这三个方向上的加速度 这块获取了getTime() getTime是时间戳 获取时间戳减去last_update last_updata最开始是0 
+        //     它判断是不是大于300 如果说是大于300的话再进行下面的处理 那这块就有个问题了 为什么要判断它是否大于300呢?? 是因为这样 
+        //     当你们测试的时候其实你会发现它获取这个数据特别频繁 就是它触发这个devicemotion事件 哪怕你把手机放到桌子上也会不停的触发这个事件
+        //     而且触发的很快 所以你每次触发一次的时候都执行这个函数 执行一次这个函数你获取这个时间戳每次都会是个新的 都会是个新的时间戳 
+        //     但它可能相差不会很大 每次相差不大的时候你都要获取一下 来判断它摇没要 每次获取一下都会判断它摇没摇 谁摇的频率能这么快啊 对不对 
+        //     手抖也没这么快啊 所以这块它就判断了这个时间 它认为你这个300ms时间足够你做一个摇一摇的动作了 足够要这个摇一摇的动作区分开了
+        //     你不断的去触发 不断的去判断其实很浪费性能的 没有必要 没有人摇一摇摇这么快的 手抖也没这么快 所以这块来个时间判断提高一下性能
+        //     如果上一次的加速度改变和这次的加速度改变它们时间大于300可能你这次开始摇了 那这个时候你摇的话判断一下 你这个摇的话不能轻轻的摇一下
+        //     那你轻轻的这样动一下 它根本不算摇 摇至少得稍微使使劲把 摆动一下你的小臂或者你的小手腕 所以你这块加速度要大于某个值 
+        //     大于某个值才能认为你在摇 所以这块先获取了x/y/z 当前的x/y/z减去上一次的加速度的合力方向 那这个时候你取了一个绝对值比上diffTime 
+        //     diffTime就是中间的时间差 比如你隔了500毫秒才摇的 这个diffTime是500毫秒  把这个上一次和这一次的这个差做完之后除以你这个时间  
+        //     这个时间越小速度越大 然后乘以这个10000 乘以10000无所谓 这个地方乘以10000主要是为了跟这个800相对比  这个是他们测出的格式 
+        //     然后你根据这个格式得到一个值  那这个值然后你跟上面这个800相对比 这个800也是你自己测的 所以说乘以1000也行  乘以1000你这块写80
+        //     经过多次测量认为这个800乘以10000 800这个值是合理的值 所以它这么写的 这个800是测出来的结果
+        //     你这块写1000还写800那你撸起袖子使劲甩手机才能测出你手机的摇一摇 这个就是公式  这个是800测出的值 所以这两个要恰到好处
+        //     不然用户得累死也没发现它在摇 这个是判断  如果它算出你800的值大于 你用户摇了 就给它来个弹窗 弹窗完成之后 这个还在dom元素加点值 摇了
+        //     摇到姑娘 摇到邓哥了 像那个转盘一样  摇一次看你中奖没 这块把它插入到dom元素当中没什么东西了 每次这块都创建一个div
+        //     这块来个字给它插入到dom元素当中 这个时候你把当前这个x/y/z三个方向上的加速度给这个last_x/y/z  这个摇一摇就完事了
+        // 首先进行一个监听 其次 就是判断加速度 ------------------------------------------------
+        // 首先为了节约性能不需要无时无刻进行判断 我们可以给它来个判断时间差  如果这个时间差大于300 那么ok  我们让你判断一下你是否摇了 
+        //     大于300的情况下就对比三个方向上加速度的合力差值 根据这个差值算出来一个值 算出一个值与之前测试好的值进行一个对比 
+        //     对比一下判断一下它是否大于那个值 如果大于那个我们认为用户是摇了 如果小于那个值我们认为用户是手抖 这个时候该向后台发送数据了 
+        //     要一个姑娘 后台给你个姑娘
+        //
+        // deviceorientation监听在方向上的变化  跟前面的使用很相似了 也是要监听一下这个事件
+        //      beta: 手机短的方向 往后就是负值 往前就是正值      gamma: 手机长的方向 拿手机左右换荡
+        //
+        //
+        //
+        // 测试你手机朝那个方向运动的  东南西北不看这个 因为每个手机它陀螺仪出厂设置的方向不太准 尤其是安卓机 尤其不准确
+        // 这块先判断有没有这个事件  如果它有的话它可以监听这个事件 从而执行这个函数  如果没有的话什么你这个浏览器不支持 不支持的话证明可能不是手机了
+        //     有可能是你这个浏览器压根不支持你这个方法  如果说你有这个东西的你也不一定要陀螺仪 这个时候会执行这个函数  执行这个函数的时候首先进行判断 
+        //     判断一下alpha是不是null 是null的话可能是个电脑 不是null的话证明它是手机 判断gamma是否大于0的 这个gamma值不是-90~90
+        //     然后判断向前向后是beta值 beta值-180~180 -180-0向前倾斜 0-180向后倾斜 这块还有个角度 进行判断8个方位 把0-180度拆分了一下 
+        //     拆分一下进行了一个计算  这个计算跟做CSS3的时候  3D旋转方块 从那个方向进入的 怎么计算的 经过一系列的计算会返回唯一的0/1/2/3/4/5..
+        //     这个方向可能不太准确 这个就是监听你手机前后左右倾斜 那你可以拿到这个左右倾斜可以做VR/AR的操作了 比如你手机向前倾斜 
+        //     你可以让它这个某个值 比如你里块显示3D立体的小方块 你是不是让这个小方块它那个角度变一变 或者景深变一变 前后方向的Z轴距离再变一变
+        //     比如你手机向后翻 你感觉你这个小方块离你远了 你让它沿Z轴往里走走 实现3DAR/VR的效果 
+        //
+        //
+        //
+        // 指南针代码------------------------------------
+        // webkitCompassHeading:安卓并没有这个方法 安卓要用的话可能要用alpha 但是手机也有区别 并不是很准 安卓用这个做指南针还是不是很准的
+        //      我现在拿着我这个手机朝各个方向转 当我指向南的时候 这个针就转向这个地方来 当我指向北的时候 这个针就转到这个地方来 当我旋转到一定角度
+        //      这个圈跟着变了 你手机转的时候 这个竖线它是固定不死的 这个转盘可以跟着这个方向旋转 这个转盘我用到CSS3的知识点给它写的 没有用canvas来画
+        //      然后大家看这个转盘怎么实现 是不是跟表盘一样 先看红色的小竖线怎么来写 红色的小竖线很明显应该以中间这块为圆心旋转开的
+        //      旋转开你可以先把所有的小竖线都挪到012这个刻度的位置上 然后沿着顺时针旋转30/60/90.. 这样旋转就给它排开了 每个li都是红色的小竖线
+        //      这个字的话是在当前的li里边 它是会跟着小竖线旋转过来的     指南针是这样的 我们家里挂墙上的表这个6变成9 这个字不是歪的 字都是立的
+        //      这个时候要把1往会转 逆时针旋转  这个时候可以给它包上span 这个时候你要想象怎么把它往回转 转li吗  转li的话你这不是散开白转散了
+        //      这个时候你只想转这个字怎么办呢 你要只想转这个字的话 单独给它来个标签 在字外面给它包了个span标签 这个时候可以旋转span标签
+        //      你可以通过for循环来进行控制  第一个旋转30*0  第二个旋转30*1....   当然都是负值 它是逆时针旋转回去的 这块肯定是个整体 
+        //      因为圆肯定会根据你这个手机指向的方向发生变化的 然后这个粗点的白色线和中间的白色的十字线肯定是不变的 像表盘的这个东西
+        //      除了这个白色的线然后只是小红线跟这几个数字一个在大的ul下面 我旋转旋转这个ul就可以了 然后这块是for循环进行展开的 你不能都写在css样式里 
+        //      那css得写多长  这快move()是调用的时候使的 当你手机发生变化的时候会执行这个 那像这个函数我给它判断的一个角度值 这个东南西北
+        //      这个指向的方向是什么 然后我是不是得让ul进行旋转 ul旋转指向的是move这个函数 ul旋转的好处是你把ul获取到改变它的transform当中的rotaet值就完事了
+        //      比如你获取的角度值是300 你是不是把300往这一表示就可以了 这样的话是不是可以进行旋转 这块让rotate旋转300不就完事了吗 主要设计一下就出来
+        // 总结: 转盘是转的 所以你把转盘放到ul下面 然后你就获取一下这个角度 然后获取这个角度就给ulrotate设置上这个角度 它就可以转过去了 
+        //           当然你不能让它瞬间过去 当然你让它加上一些动画的效果 加上transtion它能过渡这样过去 不能瞬间的非过去  这块进行一个判断
+        //           判断东西南北各个方向 然后在这可以帮它展示出来
+        //
+        //
+        // webkitCompassAccuracy:手机多少有些偏差 而且每个手机的偏差还不太一样
+
+
+    </script>
+
+</body>
+</html>
+
+//***********************************************************************************************************************************************************************
+
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        var standard = 800;
+        var x, y, z;
+        var last_x = 0, last_y = 0, last_z = 0;
+        var last_update = 0;
+        var currentTime;
+        
+        
+        function handler(event) {
+
+            var accelration = event.accelerationIncludingGravity;
+            var getTime = new Date().getTime();
+
+            if((getTime - last_update) > 300) {
+              
+                x = accelration.x;
+                y = accelration.y;
+                z = accelration.z;
+             
+                currentTime = getTime - last_update;
+
+                var speed = Math.abs(x + y + z - last_x - last_y - last_z) / currentTime * 10000;
+             
+                if(speed > standard) {
+                    var div = document.createElement('div');
+                    div.innerHTML = '恭喜你摇到一个美女';
+                    document.body.appendChild(div);
+                    alert('shakeed');
+                }
+
+                last_update = getTime;
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            
+            }
+
+        }
+
+        if(window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', handler, false);
+        }else {
+            alert('你的浏览器不支持摇一摇')
+        }
+
+    </script>
+
+</body>
+</html>
+
+//***********************************************************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="gamma"></div>
+    <div id="alpha"></div>
+    <div id="beta"></div>
+    <script>
+
+        function DeviceOrientationHandler(event) {
+
+            var alpha = event.alpha,
+                beta = event.beta,
+                gamma = event.gamma;
+
+
+            if(alpha != null || beta != null && gamma != null) {
+    
+                var html = "";
+                if(gamma > 0) {
+                    html = "向右倾斜" + gamma;
+                }else {
+                    html = "向左倾斜" + gamma;
+                }
+                document.getElementById('gamma').innerHTML = html;
+    
+                var str = "";
+                if(beta > 0) {
+                    str = "向前倾斜" + beta;
+                }else {
+                    str = "向后倾斜" + beta;
+                }
+                document.getElementById("beta").innerHTML = str;
+                
+                var str1 = "";
+                if(event.alpha > 0) {
+                    str1 = "向右旋转" + alpha;
+                }else {
+                    str1 = "向左旋转" + alpha;
+                }
+                document.getElementById("alpha").innerHTML = str1;
+    
+            }else {
+                document.body.innerHTML = "当前浏览器不支持DeviceOrientation";
+            }
+    
+        }
+
+        if(window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', DeviceOrientationHandler, false);
+        }else {
+            alert("您的浏览器不支持DeviceOrientation");
+        }
+    
+    </script>
+    
+</body>
+</html>	
+
+//***************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        html,
+        body{
+            width: 100%;
+            height: 100%;
+            background: #333;
+        }
+        .wrapper{
+            position: relative;
+            top: 100px;
+            margin: auto;
+            width: 300px;
+            height: 300px;
+            /* border: 1px solid #000; */
+        }
+
+        .pin{
+            position: absolute;
+            left: 50%;
+            top: -50px;
+            margin-left: -2px;
+            width: 4px;
+            height: 50px;
+            background: #fff;
+        }
+
+        .ten{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -100px;
+            margin-top: -100px;
+            width: 200px;
+            height: 200px;
+            /* border: 1px solid #000; */
+        }
+        .ten .l,
+        .ten .h{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+        }
+        .ten .l{
+            width: 2px;
+            height: 200px;
+        }
+        .ten .h{
+            width: 200px;
+            height: 2px;
+        }
+
+        ul{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            /* border: 1px solid orange; */
+            transition: all 10ms linear;
+        }
+        li{
+            position: absolute;
+            left: 50%;
+            margin-left: -1px;
+            width: 2px;
+            height: 25px;
+            background: red;
+            transform-origin: 0 150px;
+        }
+        span{
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -25px;
+            font-size: 20px;
+            color: #fff;    
+        }
+    
+    </style>
+</head>
+<body>
+    
+    <p>方向:<div class="heading"></div></p>
+
+    <div class="wrapper">
+
+        
+        <div class="pin"></div>
+
+        <div class="ten">
+            <div class="l"></div>
+            <div class="h"></div>
+        </div>
+
+        <ul>
+            <li><span>0</span></li>
+            <li><span>330</span></li>
+            <li><span>300</span></li>
+            <li><span>270</span></li>
+            <li><span>240</span></li>
+            <li><span>210</span></li>
+            <li><span>180</span></li>
+            <li><span>150</span></li>
+            <li><span>120</span></li>
+            <li><span>90</span></li>
+            <li><span>60</span></li>
+            <li><span>30</span></li>
+        </ul>
+
+
+    </div>
+
+
+    <script>
+
+        // 画出方向盘刻度
+        function draw() {
+            var oLi = document.getElementsByTagName('li'),
+                len = oLi.length;
+            for(var i = 0; i < len; i++) {
+                oLi[i].style.transform = 'rotateZ('+ 30 * i +'deg)';
+            }    
+
+        }
+        draw();
+
+
+        function move(angle) {
+            var oUl = document.getElementsByTagName('ul')[0];
+            oUl.style.transform = 'rotateZ('+ angle +'deg)';
+        }
+
+        // 监听方向上的变化
+        function deviceorientationHandler(event) {
+
+            var webkitCompassHeading = event.alpha;
+            if(webkitCompassHeading) {
+
+                // 判断屏幕方向
+                var headNum = Math.round((Math.round(webkitCompassHeading / 45) + 7) % 8);
+                var head = "";
+                switch(headNum) {
+                    case 0:
+                        head = '东北';
+                        break;
+                    case 1:
+                        head = '东';
+                        break;
+                    case 2:
+                        head = '东南';
+                        break;
+                    case 3:
+                        head = '南';
+                        break;
+                    case 4:
+                        head = '西南';
+                        break;
+                    case 5:
+                        head = '西';
+                        break;
+                    case 6:
+                        head = '西北';
+                        break;
+                    case 7:
+                        head = '北';
+                }
+
+                document.getElementsByClassName('heading')[0].innerText = head +  Math.round(webkitCompassHeading);
+                move(webkitCompassHeading);
+                
+            }else {
+                document.body.innerHTML = '你的浏览器不支持';
+            }
+
+        }
+        if(window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', deviceorientationHandler, false)
+        }else {
+            alert('你的浏览器不支持')
+        }
+    
+    </script>
+
+
+</body>
+</html>

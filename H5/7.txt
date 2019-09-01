@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        #item{
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .wrapper{
+            width: 300px;
+            height: 300px;
+            border: 2px solid #000;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="item" draggable="true">1</div>
+    <!-- <div id="item" draggable="false">2</div> -->
+
+    <div class="wrapper"></div>
+    
+    <script>
+
+        // FileReader: 读取文件的    WebSocket: 新的协议
+
+        // 我们发现H5的东西都是一块一块的 不像js一样有这样完整的串联性
+        // drag/drop 这个拖拽跟我们之前做的拖拽是不一样 之前我们做这个小方块 我们从这个地方给它拖拽到这个地方 这种是拖拽dom元素的 
+        //     那我们说的这种拖拽类似于什么样子呢 比如说常见的有这样的页面 页面中间它会有一个的区域 这个区域你把你这个图片往里一拖拽
+        //     它就能把这个图片把你变成base64编码格式的或者说转成什么样子 那这种就是用到drag这个拖拽 再一个会看到比如说这个 
+        // 正常如果我们拖拽这个dom元素的话 是不是改变dom元素的left/top值 每次我鼠标移动的时候那么我们就要改变它left/top值 每次移动的时候都要改变
+        //     当我鼠标松开的时候把这个事件都取消掉 然后我们现在说的拖拽是什么样子呢
+        // 如果你想松开的时候让元素过来的话 也可以设置 绑定鼠标的mouseup事件 鼠标松开你把这个元素定位到这就可以了 但一般这块不是用于做拖拽的
+        // 可拖拽元素里面可以进行传值/取值等等一系列操作 像你从桌面上拖一个文件拖拽到这个浏览器里来的时候你就可以读取一下你拖拽进来文件的信息
+
+        
+        var oItem = document.getElementById('item'),
+            oWrapper = document.getElementsByClassName('wrapper')[0];
+        oItem.addEventListener('dragstart', function() {
+            console.log('dragstart');
+        })
+        oItem.addEventListener('dragend', function() {
+            console.log('dragend');
+        })
+
+
+        // 什么叫目标元素??  
+        //     一般我们拖拽它的时候都会往一个地方来拖拽 往什么地方拖拽呢?? 我想把这个被拖拽元素拖拽到这个wrapper区域内来 
+        //         这个wrapper区域就叫做目标元素 我把被拖拽元素往目标元素上拖拽 目标元素上有哪些事件 被拖拽元素进入到目标元素的时候触发dragenter
+        //         就代表被拖拽元素进入 
+
+        oWrapper.addEventListener('dragenter', function() {  // 它判断你进没进来只判断你鼠标当前的位置是否进来了
+               console.log('dragenter');
+        })
+        oWrapper.addEventListener('dragover', function(e) { // 你鼠标不动也是不断的触发的 在这面不断的触发
+            e.preventDefault();
+            console.log('dragover');
+        })
+        oWrapper.addEventListener('drop', function() { // 为什么没有触发?? 如果你想要drop事件触发 必须在dropover里面取消它的默认事件 
+            console.log('drop');
+        })
+
+    </script>
+
+</body>
+</html>
+
+
+//*************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        #item1{
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        #item2{
+            width: 100px;
+            height: 100px;
+            background: green;
+        }
+        .wrapper{
+            width: 300px;
+            height: 300px;
+            border: 2px solid #000;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="item1" draggable="true">1</div>
+    <div id="item2" draggable="true">2</div>
+
+    <div class="wrapper"></div>
+
+    <script>
+
+        // 一般进来的时候希望给你传个值 
+        // 我想完成的操作是 我把1拖到目标区域的时候 1这个dom元素会进入到目标元素里边去 如果2拖拽带这里边的时候 
+        //     2这个dom元素也会到wrapper这个dom元素里边去 它的结构直接进入到里边来了 这个时候我是不是进行操作了 
+        //     把这两个往里拖的时候把dom元素插入到里面去 把鼠标拿过来的时候它会触发drop drop之后把它插入进来 插入那块写到drop里 
+        //     然后你要dropover里边有个preventDefault()  这两个被拖拽元素被拖拽到这里边来的时候是不是都会把它的事件触发
+        //     所以它根本不认识是哪一个被拖拽元素进来的 只要被拖拽元素进来就会触发这个东西 所以它改变不认识是谁进来的 
+        //     那现在我们需要你识别一下是哪个拖拽元素 那现在我们可以往里传值 比如我拖拽1的时候 刚开始被拖拽的时候就往里传进一个值 怎么传值呢?? 
+        //     什么时候把它取出来 是不是要到这里边之后取出来 然后把这个元素插入到wrapper里去 我可以获取出这个id值 把这个dom元素把它插入到wrapper里
+        //     我拖入进来松开的时候 也就是在drop里边取出
+        
+        var oItem1 = document.getElementById('item1'),
+            oItem2 = document.getElementById('item2'),
+            oWrapper = document.getElementsByClassName('wrapper')[0];
+        oItem1.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('data', this.id);
+        })
+        oItem2.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('data', this.id);
+        })
+        oWrapper.addEventListener('dragover', function(e) { 
+            e.preventDefault();
+        })
+        oWrapper.addEventListener('drop', function(e) { 
+            var data = e.dataTransfer.getData('data');
+            console.log(data);	
+            oWrapper.appendChild(document.getElementById(data));
+        })
+
+
+        // 做个小demo: 把1挪动4身上的时候 1就会跑到4前面去了 如果把4挪到3身上的时候 4就会跑到3前面去了 就是说把某个元素拖拽到另一个元素身上
+        //               那么当前这个dom元素结构就会排列在它前面 这是功能1 功能2你把它挪到这里来 可以进行删除 上面可以用来拖拽这排序
+        //               下面可以完成一个删除 这个怎么实现 删除好说 可以通过remove就删除 排序怎么做呢??
+
+    </script>
+
+</body>
+</html>
+	
+//***********************************************************************************************************************************************************************
+
+	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        ul{
+            margin-left: 50px;
+        }
+        li{
+            width: 200px;
+            height: 30px;
+            margin: 10px;
+            background: #ccc;
+            text-align: center;
+            line-height: 30px;
+            font-size: 24px;
+        }
+        .wrapper{
+            width: 300px;
+            height: 300px;
+            border: 2px solid #000;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <ul>
+        <li draggable="true">1</li>
+        <li draggable="true">2</li>
+        <li draggable="true">3</li>
+        <li draggable="true">4</li>
+        <li draggable="true">5</li>
+    </ul>
+    <div class="wrapper"></div>
+    <script>
+
+        // 思考用户怎么完成手动排序的??
+        
+        
+        
+        //  我想完成的操作是我把1拖到目标区域的时候 1这个dom元素会进入到目标元素里边去 如果2拖拽带这里边的时候 2这个dom元素也会到wrapperdom元素里边去
+        //      它的结果直接进入到里边来了 这个时候我是不是进行操作了 把这两个往里拖的时候把dom元素插入到里面去 把鼠标拿过来的时候会触发drop然后把它插入进来
+        //      插入写到drop里 然后你要dropover里边有个preventDefault()  这两个被拖拽元素被拖拽到这里边来的时候是不是都会把它的事件触发 
+        //      所以它根本不认识哪一个被拖拽元素进来的 只要被拖拽元素进来就会触发这个东西 所以它改变不认识是谁进来的 
+        //      那现在我们需要你识别一下是哪个拖拽元素 那现在我们可以往里传值 比如我拖拽1的时候 刚开始拖拽的时候就往里传进一个值 怎么传值呢?? 
+        //      什么时候把它取出来 是不是要到这里边之后取出来 然后把这个元素插入到wrapper里去 我可以获取这个id值 把这个dom元素把它插入到wrapper里
+        //      我拖入进来松开的时候 也就是在drop里边取出 每个li即是拖拽元素也是目标元素 功能怎么来写 我把li往别的身上拖拽的时候可以绑定一个事件 
+        //      绑定通过for循环进行绑定 你把1拖拽到1身上的时候 4是一个目标元素 4怎么知道是1进来还是2进来了还是3进来了 它根本就不知道谁进来 
+        //      所以我们在拖这个被拖拽元素的时候要给它传进去值 不然它根本不知道谁进来了 这样的话拖拽的话先给里面传一个值 
+        //      然后当触发drop的时候可以把值取出 这样的时候我就知道谁拖过来的 我可以根据这个值把它放到4的前面去 所以最开始拖拽的时候往里转一个值
+        //      所以在start绑定事件 给当前拖拽的元素绑定事件 就是给每个li绑定start 传什么值  这个dom元素非常简单 没有什么id值 
+        //      这样的话我是不是可以传索引 可以传第几个li 传i 传完之后当我放到4身上触发drop 但触发drop之前别忘了在dropover取消一下默认事件 
+        //      所以在绑定drop之前先绑定dropover 这个时候li是作为目标元素的
+        //
+        //
+        // 把1/2往4身上拖为什么取的是5?? 这涉及闭包了 因为它进行for循环的时候它循环完成之后我们再操作的 那个时候i已经变成10了  
+        //     这块加个立即执行函数 我们把这个值取到是不是想把这个元素插入到当前元素的前面去啊 这块怎么实现??  insertBefore方法 父元素调用的方法
+        //     是ul调用的方法 第一次1拖拽到4身上的时候就已经改变它的dom结构了 你点2的时候它获取的还是1 它获取的还是1 你想想 oLi[1]在当前这个dom顺序的结构当中
+        //     oLi[1]是谁 oLi[1]是3 就相当于你把3放到4前面去 而并不是你拖拽的那个2到4前面去 现在把2往4上拖 肯定是3跑到4前面去了 
+        //     因为在刚才的dom结构当中3才是oLi[1] 我们需要完成的一步是什么
+        //     因为我们在这立即执行函数是不是把这个i值都在改变dom元素之前这个i值都事先预定好了 该传就传什么该预定好了 
+        //         即使改变dom结构你传的还是依然是最开始之前的那个i值 结果dom元素的顺序已经发生变化 但你传的之前那个i值肯定有问题啊 那现在不能这样写了
+        //         我们希望每次dom发生改变之后完了这个i值是根据当前的这个dom元素的顺序获取到的这个i值 而不是之前那个i值 所以这块不能用闭包来写了
+        //         不能用立即执行函数来写了 用什么方式来写呢 只能每次执行dragstart获取一下这个i值 每次执行它的时候都手动获取一下这个i值
+        //         1拖拽到4身上 再把往身上拖 这回是不是没有问题 因为在你点击2的时候 它是不是执行一下getIndex()这个函数 执行这个函数会感觉当前的这个
+        //         dom元素的顺序重新获取一下i值 然后把这个i值传进去 这个时候你获取的是最新的i值    
+        // 因为你每次把oLi往这区域拖的时候 你刚开始触发那个dragstart的时候已经往里传了一个值 我们现在可以在这获取到可以把它删除了
+        //     
+
+
+        var oLi = document.getElementsByTagName('li'),
+            ul = document.getElementsByTagName('ul')[0],
+            wrapper = document.getElementsByClassName('wrapper')[0],
+            len = oLi.length; // 节约性能
+
+        function bindLiEvent() {
+            for(var i = 0; i < len; i++) {
+                    oLi[i].addEventListener('dragstart', function (e) {
+                        var index = getIndex(this);
+                        e.dataTransfer.setData('data', index);
+                    })
+                    oLi[i].addEventListener('dragover', function (e) {
+                        e.preventDefault();
+                    })
+                    oLi[i].addEventListener('drop', function (e) {
+                        var i = e.dataTransfer.getData('data');
+                        console.log(i);
+                        ul.insertBefore(oLi[i], this);
+                    })
+                  
+            }
+        }
+        function getIndex(dom) { // 用于查找你当前拖拽的这个元素它的索引值
+             for(var i = 0; i < len; i++) {
+                 if(oLi[i] === dom) {
+                     return i;
+                 }
+             }
+        }
+        bindLiEvent();
+        
+        function removeLi() {
+            wrapper.addEventListener('dragover', function(e) {
+                e.preventDefault();
+            })
+            wrapper.addEventListener('drop', function(e) {
+                e.preventDefault();
+                // var index = e.dataTransfer.getData('data');
+                // oLi[index].remove();
+
+                var dt = e.dataTransfer;
+                console.log(dt);
+                var files = dt.files;
+                console.log(files);
+            })
+        }
+        removeLi();
+
+        // 一般是松开进行触发的 在事件会有个方法 我想把一个东西往这进行拖拽 你拖拽往这发现 其实往浏览器里一拖拽它不光拖拽到这个区域里
+        //     你往哪拖拽都会把这个图片打开的 有些浏览器在默认的情况下它会把拖拽到这的文件打开 有的会帮你下载一下 你要把这个默认事件取消一下 
+        //     这个默认事件在哪取消掉呢?? 在drop内取消 
+        //
+        // 你拖拽这个图片到这我当然是想看一下图片的信息 然后拿到信息拿到读取进而上传的过程 怎么看图片的信息 files会显示你当前拖拽过来文件的信息
+        //     修改的时间戳 最后修改的时间 以及当前图片的名称 图片的大小 文件的类型等等一系列的信息 我们拿到这个信息之后会通过文件读取一个API
+        //     读取完成之后才能通过Ajax进行上传 不是直接上传 中间没读取的过程 说这两个东西其实没有什么关联 说关联仅限于此
+        //     拖拽的时候你不实现一个文件上传其实就跟它关联不上 但是你要实现文件上传的话 就他们两个 拖拽实现文件上传 那他们就得一起来用了
+        //     有的时候不需要拖拽实现文件上传 有时候你点击个小按钮会弹出个弹窗 这个弹窗里面会有些文件夹让你选择上传那个 那个是input的标签
+        //     type属性有个file file是选择文件的
+        //
+        // FileReader: 你把一个文件拖拽到这里边来了 你需要对这个文件读取 读取文件每个字节的信息 读取完成之后才能完成上传的过程 
+        // 
+        // 我们不是把文件进行读取吗 读取你要读取这个文件的信息 你有可能传图片 有可能传的是一个dataURL文本 有可能传的是一些数据等等一些信息 
+        //     这个时候读取你作为什么样的格式把这个文件读取为什么样的编码 一般会用到readAsText 将文件读取为文本 读取完文本之后把文本的信息传给后台
+        //     我们完成读取的过程就可以了 因为传给后台需要后台有程序接收的  也就是要有端口/接口 它那个接口可以完成文件的接受
+        //
+        // onloadend/onload onloadend不管成功还是失败 只要读完了就会触发  onload读取完成并且成功之后才能触发 
+        // onabort读取中断触发 比如你上传上传就的上传太慢了 U盘拷还是比较快的 所以你给它点击了一个暂停按钮 这个暂停按钮就会执行这个abort方法
+        //     就会读取中断 读取中断就会触发onabort事件
+        //
+        // 当这个文件读取完成的时候 读取完成之后是取它读取完成的结果 它要把读取完成的结果传给后台 现在读取完成了 读取成文本格式了 
+        //     比如用readAsText()进行读取 读取成一个文本 你是不是要把读取完的结果传给后台 所以读取这个结果 这个结果就是this.result 
+        //     把这个this.result通过Ajax请求还是什么方式传递给后台就可以了
+
+
+    </script>
+
+</body>
+</html>
+
+//***********************************************************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+
+    <script>
+
+        // 结构就是外上边有橘黄色的区域 下边有一个进度条
+        // 读取第0个 如果你传多个的话需要进行for循环 这个包含时间戳/最好修改的时间/文件的大小/文件的类型等等 这些信息在读取的时候要用到的
+        //     然后你把这个值拿过来这块new FileLoader() 这个new FileLoader()不是 因为它是完整的读取文件的功能 所以我在这封装了读取文件的功能
+        //     然后这块就调用了这功能 这块有构造函数来使用的它 这里边是完整的功能  读取完成之后你应该干点什么 你是不是不应该封装到这个函数里边
+        //     有的是希望读取完成之后然后给它弹出个弹窗 那有的就希望直接给它alert 有的是希望console 所以这些回调函数当然是我们用户自己来处理的
+        //     所以这个回调函数不能封装到这里边来 回调函数:event 回调函数是不同作用的 success:是全部读取完成的 progress:是读取中的
+        //     load: 这个是分布读取使用的 因为我们是上传一个文件的时候可能文件很大 如果文件很大的话 你一步到位的上传完成 你先读取 读取完成之后再上传
+        //     有可能文件很大读取过程中就失败了 那你这不白读取了吗 所以它会给它进行个分布读取 然后分布上传 比如你有个100兆 1兆1兆的读取
+        //     然后1兆1兆的上传 读取完1兆上传1兆 这样的话不是更好些 那现在每1兆不是相当于一个小文件了 那你每次读取完这个文件的话 
+        //     读取完1兆的话都会触发这个onload 但100兆都读取完就就会执行success回调函数 所以这块是用户操作的回调函数 我们把这个回调函数也给它传进去
+        //     传到这里边来 我们来看看构造函数里写了什么东西 FileLoader第一个传进来是文件的基本信息 第二个传进来的是回调函数对象 
+        //     然后这个fileReader才是事件对象 来读取文件的那个对象 它把这个获取放到this.reader 因为下面它会用到这里边的方法什么的
+        //     这样的话它在这个函数下用不了它 所以它把这个东西都挂到这个对象上去 因为它等会不是要new一下它吗 new一下它底下不是会隐式的return this
+        //     这个时候它就在this下了 然后当它执行这个方法的时候它就在原型上 原型上执行能执行里边的某些方法 比如说这个属性那个属性的 
+        //     点的方式就可以拿到了 所以它把这些东西都放到this下面取了 这个this对象就会有这些属性 this.load: 读取了多少  
+        //     file.size: e.dataTranfer.files取出来 那里边不是有些基本信息吗 基本信息不是有file.size代表文件大小是多少 这个文件大小是干嘛 
+        //     它要看一下你读取了多少 再对比size大小才知道读取完成啊 然后这块实现分布上传 分布上传1024*1024实际上1兆 它是1兆1兆上传的
+        //     读取文件内容这块 它是怎么读取的 读取的时候有这样一个函数 然后往里边传了一个值 我们想读取的话我们不是想实现一个分布上传吗 那从哪到哪呢
+        //     第一次读取肯定是0-1兆的 0-1兆就作为一个小文件 把这个小文件读取完成之后进行上传 然后读取1-2兆的 最开始传进的实参是什么 0 
+        //     this.file: 文件的信息 它拿到这个文件先判断有没有slice的方法 如果说它有slice方法那么说明支持截取 能截取就能支持分布上传了吗
+        //     如果没有slice方法只能全部读取了 如果它支持分布上传方式的话那么开始用slice方法截取 从0截取到1 不是1兆1兆截取吗 起始0终止不是0+1吗
+        //     所以从这个地方到这个地方截取 blob这个是我们当前要读取的文件 读取怎么读取?? readAsText()把你要读取文件放到这个函数 读取完成之后怎么办呢??
+        //     读取完成不是要把这个值取一下的 这个时候我们想触发事件 这个bindEvent接受回调函数的对象 先触发的是读取过程中 这个读取是读取0-1兆 
+        //     不是截取0-1兆 读取中的时候干点什么?? 当然是进度条了 进度条不是一段一段往前走的 它是匀速往前走的 那就说明读取过程中这个进度条就是不断变化的
+        //     所以在这里边我要改变一下中间dom元素的宽度 这个val的宽度值 是0 那现在loaded是多少 这个loaded怎么取??  就取e.loaded就可以 
+        //     它加载多少在这可以取出来 this.size: 代表文件的总长度 percent: 百分比 这个时候可以对宽度进行改变了 拿到百分比就放到回调函数里 
+        //     this.events: 回调函数对象 回调函数对象用的是progress 除了进度条发生变化 数字也发生变化 改变它的innerText/innerHTML
+        //     把这个百分比拿过来使就可以了 读完就上传 就要fileReader.result这个值 我们把这个值进行上传 得通过Ajax上传 Ajax上传到哪个接口里 
+        //     我们是不是应该由各个用户来使用的 它要执行了这个回调函数 这个回调函数它用的是load 怎么判断当前这个文件读取完??
+        //     就判断当前已经加载的loaded值 然后跟总的长度值进行对比 如果它比它小没读取完继续读取啊 继续再调用这个读取 这块不是依然绑定 就会触发它
+        //     依然触发它 是不是又完成一个过程 它完成这个再通过Ajax向数据库中进行上传 下面再判断是否读取完了 直到完成之后是不是不小于了
+        //     不小于就执行成功的回调函数   当用户点击这个按钮 它就中止了 abort可能reader.abort方法了 完成上传 读1兆上传1兆 然后上传是异步的 
+        //     下面继续判断 判断一下当前的文件是否读取完了 就判断一下你已加载的loaded值跟总的长度值进行相对比 如果比它小没读取完继续读取啊 
+        //     继续调用这个读取 再调用这块不是依然绑定吗 又会触发onprogress 触发完又会触发onload 又完成一个过程 执行完在触发这个 
+        //     再往ajax()数据库那个上传 再判断是否读取完 直到读取完成之后 直到判断读取完成是不是不小于 不小于就执行成功的回调函数 abort: 中止
+        //     当用户点击这个按钮的时候它就中止   它中止的话用的是abort方法
+        //
+        // 首先绑定dropover 绑定一下drop 读取一下文件的基本信息 然后用到它封装好的函数 执行一下 把你这个基本信息和你要用的回调函数给它传进去
+        //     到这里执行this.readBlob() 执行它就开始读取 首先判断一下它支持分布上传吗 如果支持的话就分布上传 如果不支持就执行一边就完事了 如果支持分布上传的话 你截取一下0-1兆
+        //     截取完成之后它是不是还执行一下bindEvent() bindEvent里边绑定了两个事件 一个是onprogress 一个是onload  触发onprogress的时候就改变进度条那个宽度值
+        //     直到读取完成之后会触发onload 这个onload把这个值给Ajax 给那个回调函数 那个回调函数里写了Ajax进行上传 再判断一下是否读取完成了 如果没读取完成继续调用这个读取的方法
+        //     如果读取完成之后那么就执行这个回调函数success
+
+
+        //*************************
+
+        // onchange当你input文件发生变化之后就会触发onchange 触发onchange之后我们代表文件重新更改 重新上传某个东西 你上传某个东西的时候就进行读取
+        //      把这个文件基本信息读取出来 然后呢?  你这个读取因为不是拖拽了 你要是拖拽了可以从e.dataTransfer.file来进行读取 
+        //      那你现在没有拖拽就没有e.dataTransfer 那这个它怎么取的 就取this.file 当input类型是file的时候 那这个时候就是this.files
+        //      你能把这个文件读取出来 也是有一些基本信息 只不过取的方式不相同 一个拖拽的用e.dataTransfer的方式来取 
+        //      一个用this.file的方式来取就可以了 
+
+
+
+        //*****************************
+
+        // 你把图片拖到这里边来 它能把这个图片展示出来 怎么它是不是图片 这里不是可以打印它的类型吗 这个type类型可以判断你传进来的是什么样的格式
+        //     indexOf判断是不是image 有字符串会返回开始从哪开始的索引  没有的话会返回个-1 所以判断不是Image它不是图片文件 所以是false 
+        //     如果是图片文件的话 怎么进行处理的 它创建的createObjectURL创建了一个image 然后还展示图片的名称 还展示了这个图片的大小
+        //     它判断一下图片是否大于500 它规定图片上传不超过500  500太大就不帮你传 你压缩一下再帮你传 然后这个是图片的地址 创建了img
+        //     然后src 然后把这个名称往里一添加 插入到dom元素当中就完事了 forData可以实现上传的方法 建议用H5的新方法 因为H5的方法用的比较多 
+        //     就用刚才我们用的读取上传的形式
+    
+    </script>
+    
+</body>
+</html>
+//************************************************************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        // 它跟HTTP协议是不是完全不相同的两回事呢??  也不是 是不是有什么联系呢?? 有一点点
+        // WebSocket跟HTTP协议不相同的地方就是 还记HTTP协议在进行数据交互的时候是什么样子的吗?? 首先最开始的时候是不是要建立TCP链接
+        //     然后向里边发送请求 然后再拿过来数据 HTTP其实分两个版本 一个是1.0 一个是1.1  HTTP1.1版本默认情况下都是长链接 
+        //     长链接和短链接有什么不同点呢?? 就好比你这里有10张图片 短链接相当于你把图片发送过去 然后它给你个响应 此次链接断开 
+        //     你再发送第二张图片然后响应拿回来了 第二次链接断开 10次就要建立10次TCP链接断开10次TCP链接  长链接：你断开10次 你断开断开累不累
+        //     这个时候它就在想可不可以链接一段时间 等我10张图片发送完成之后再断开 所以就有长链接 它会链接一段时间 10张不用非得链接10次断开10次
+        //     一次性就能完成 第一次链接你可能要给人传一些版本之类的信息 这个时候它告诉你可以链接成功了 你可以发数据了 这个时候你发送数据 
+        //     但你要发送10个就要拿到10个响应才可以 10个发送完这个链接就可以断开了 这个是HTTP传递数据的时候
+        //     这个HTTP协议不管是长链接还是短链接都不能由服务器端主动的向客户端发送消息 我们不是每次得请求才有响应吗
+        //     你什么时候见过服务器主动向你推数据了 有 我用那个网页版的QQ 它主动的把消息推过来了 其实给你推过来消息是因为 有个技术叫Ajax轮巡 
+        //     这个轮巡也分这么几种  第一种它会每隔一段时间由客户端主动的向服务器端频繁的发送请求 它会每隔一段时间去看看有没有数据啊  没有就回来了 
+        //     又去看看啊没有又回来了 这个频繁的去请求数据 你能拿到服务器给你传过来的数据只是因为我们客户端勤劳的结果 再一种是我们请求向服务器去呆着
+        //     没有我就赖着不走 直到你有数据才给你拿回来 当然它有个时间限制的 我就在等等 等到时间超时了 你也没有数据它也会回来的
+        //     所以这块会有个时间限制 一个频繁的来回跑 一个呆着 频繁的来回跑 你要建立连接断开连接也不好啊 你要一直等也不好 毕竟服务器它是有一定容量的
+        //     当这个并发量过多的话 这个服务器肯定不允许的 所以无论是哪种 第二种是很浪费服务器资源 无论是哪种都不是很好 现在有新的协议
+        //     WebStoket可以由服务器端主动的向客户端发送数据 由客户端主动的推数据 这个时候就方便 我在这等着就行了 等着服务器端给我推数据 
+        //
+        // 他们有什么关系
+        // WebSocket要建立链接的时候它也需要TCP完成一个链接 HTTP跟TCP没关系 TCP不属于HTTP协议那块地的 然后当你TCP链接建立完成之后
+        //      第一次跟服务器建立链接是通过TCP协议帮助完成 第一次链接是HTTP协议帮你的 HTTP协议 ------------------------
+        //      TCP协议先建立完成之后第一次链接的时候是HTTP帮助WebSocket协议完成的 HTTP协议发送版本号等等一些信息给服务器端
+        //      服务器端那端验证一下发现OK没问题 这个时候链接才算建立成功 之后WebSocket协议再由客户端向服务器端发送数据或者是
+        //      由服务器端向客户端发送数据 不再需要HTTP协议了 他们两的关系只限于第一次 就是刚建立链接的第一次 之后再链接没关系了
+        //      他们两稍微有点点交集都在第一次上    
+        //
+        // 为什么要传输WebSocket的版本号呢 因为HTTP协议跟WebSocket协议不一样 WebSocket协议你能用必须满足两个条件 第一你浏览器支持WebSocket协议 
+        //     第二次你服务器支持WebSocket协议 但凡有一方不支持这个协议就不会成功/就不会让你进行数据的交互 所以最开始HTTP向那边发送请求 
+        //     发送WebSocket的版本号/字段/主机号/原始地址等等一系列字段给服务器端 然后对方一定是WebSocket服务器 WebSocket才能进行数据交互
+        //     WebSocket接收到服务器发送过来的请求之后 如果说你传过来格式什么的 匹配值都没有问题 本次握手就算建立成功了
+        //     这个时候相应的给你个数据的回复 这个回复也是用HTTP的 不得给它发送个请求给你个响应吗 一个请求必然对应一个响应 所以这个来回都是用的HTTP 
+        //     第一次需要用到HTTP 这个响应用的是HTTP 然后之后你这个时候算是正式成功了 正式成功了之后你这个浏览器端发送任何数据都不需要用这个HTTP协议了....
+        //
+        //
+        // 我们现在要有个服务器才能发送请求 服务器还得有个逻辑 由那个逻辑给你推一个数据 由于我们现在的服务器没有升级到WebSocket服务器
+        //     我们用了一个测试的地址 
+
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+//***********************************************************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        var Socket = new WebSocket('ws://echo.websocket.org'); // ws  安全版本wss 测试接口有后台逻辑 我们实际开发的时候我们是有后台自己逻辑的 
+                                                               //    那个逻辑是什么  你给它发什么 它给你推你什么 你给发送什么 它给你主动推送什么
+        Socket.onopen = function() { // 发送成功会触发onopen
+            Socket.send('hello');
+        }   
+        Socket.onmessage = function(e) {
+            console.log(e);
+            console.log(e.data);  // 这个data值 我们给它传什么 它就给我们传什么 逻辑非常简单  你给它传个hello  它就给你传个hello
+            Socket.close(); // 不close()一直发送
+            Socket.send('hello');
+        }
+        Socket.onclose = function() {
+            console.log('close');
+        }
+
+        // 优点: 
+        //    可以根据结合那个Ajax轮巡的功能来看的话首先不需要频繁的建立TCP请求销毁请求 再一个不需要频繁的创建的话可以减少宽带的占用了
+        //    再一个可以节省服务器的资源 不需要到服务器那边等着 再一个它非常主要的优点 WebSocket可以实现双向通信 可以由服务器主动的向客户端推数据 
+        //    以前不是都是由客户端向服务器请求数据吗 那它现在服务器和客户端都可以主动的推 是个双向通信 
+        
+        // 可能WebSocket现在在公司用的少 先了解一下
+
+    </script>
+
+</body>
+</html>
+
+
+//****************************************************FileReader*********************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        .wrapper{
+            width: 300px;
+            height: 200px;
+            background: orange;
+        }
+        .progress{
+            display: inline-block;      
+            width: 200px;
+            height: 20px;
+            border: 1px solid #000;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .val{
+            width: 0;
+            height: 100%;
+            background: #ccc;
+        }
+        p{
+            display: inline-block;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">把图片拖到这边</div>
+    <div class="progress">
+        <div class="val"></div>
+    </div>
+    <p class="num">0%</p>
+    <button type="button" id="pause">pause</button>
+
+    <script src="./loadFile.js"></script>
+    <script src="./ajax.js"></script>
+    <script>
+
+        var oWrapper = document.getElementsByClassName('wrapper')[0],
+            val = document.getElementsByClassName('val')[0],
+            num = document.getElementsByClassName('num')[0],
+            pause = document.getElementById('pause'),
+            loader;
+
+         oWrapper.addEventListener('dragover', function(e) {
+            e.preventDefault();
+        })
+        oWrapper.addEventListener('drop', function(e) {
+            e.preventDefault();
+
+            var file = e.dataTransfer.files[0];
+            loader = new loaderFile(file, events);
+           
+        })
+
+        // 用户的操作的行为
+        var events = {
+            progress: function(percent) {
+                val.style.width = percent * 2 + 'px';
+                num.innerHTML = percent + '%';
+
+            },
+            load: function(data) {
+                ajax('POST', './upload.php', true, data, cb);
+            },
+            success: function() {
+                console.log('suc');
+            }
+        }
+        function cb() {
+            console.log('suc');
+        }
+
+        pause.onclick = function() {
+            loader.abort();
+        }
+
+    </script>
+
+</body>
+</html>
+
+//**********************************
+
+var loaderFile = function(file, events) {
+
+    this.file = file;
+    this.events = events || {};
+
+    this.total = file.size;
+    this.step = 1024 * 1024;
+    this.reader = new FileReader();
+    this.loaded = 0;
+
+    this.readBlob(0);
+    this.bindEvent();
+}
+
+// 独立功能 模块化  相互依赖
+// drop之后开始读取 读取1M上传1M
+
+loaderFile.prototype = {
+   
+    bindEvent: function() {
+        var _this = this,
+            reader = _this.reader;
+
+        reader.onprogress = function(e) {
+            _this.onProgress(e.loaded);
+        }
+        reader.onload = function() {
+            _this.onLoad();
+        }
+        reader.onabort = function() {
+            _this.onAbort();
+        }
+    },
+    readBlob: function(start) { // 读取文件
+        var file = this.file,
+            blob;  
+        if(file.slice) {
+            blob = file.slice(start, start + this.step);
+        }else {
+            blob = file;
+        }
+        this.reader.readAsText(blob);
+    },
+    onProgress: function(loaded) { // 读取过程中宽度变化 值的变化
+        var percent,
+            handler = this.events.progress;
+        
+        this.loaded += loaded;
+        percent = Math.round(this.loaded / this.total * 100); // 已经加载的 / 总数
+        handler && handler(percent);
+    },
+    onLoad: function() { // 分布上传的功能
+        var handler = this.events.load;
+        
+        handler && handler(this.reader.result);
+        
+        if(this.loaded < this.total) {
+            this.readBlob(this.loaded);
+        }else {
+            this.loaded = this.total;
+            this.events.success && this.events.success();  
+        }
+        
+    },
+    onError: function() {
+        console.log('error');
+    },
+    onAbort: function() {
+        console.log('中止');
+    },
+    abort: function() {
+        var reader = this.reader;
+        
+        if(reader) {
+            reader.abort();
+        }
+    }
+}
+
+//*************************************
+
+function ajax(method, url, flag, data, callback) {
+    var xhr = null;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject('Microsoft-XMLHttp');
+    }
+    method.toUpperCase();
+    if (method === 'GET') {
+        xhr.open(method, url + '?' + data, flag);
+        xhr.send();
+    } else if (method === 'POST') {
+        xhr.open(method, url, flag);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.send(data);
+    }
+    xhr.onreadystatechange = function () { // 知道什么时候回来  异步请求的  // 1-2 2-3 3-4
+        if (xhr.readyState == 4) {
+            if (xhr.status = 200) {
+                callback(xhr.responseText);
+            }
+        }
+    }
+}
+
+

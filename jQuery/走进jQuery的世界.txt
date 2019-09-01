@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        li{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #888;
+            list-style: none;
+            display: inline-block;
+        }
+        .active{
+            background: red;
+        }
+    </style>
+</head>
+<body>
+   <ul>
+      <li class="active aa"></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+   </ul>
+  
+ 
+
+    <script src="./jquery.js"></script>
+    <script>
+        //没有兼容 IE6以前的          1.8版本之前的版本才兼容
+        
+        // var oDiv = document.getElementsByTagName('div');
+        // console.log(oDiv);
+        // for(var i = 0; i < oDiv.length; i++) {
+        //     oDiv[i].style.width = '100px';
+        //     oDiv[i].style.height = '100px';
+        //     oDiv[i].style.background = 'red';
+        // }
+
+        //$('div').css({width: '100px', height: '100px', background: 'red'});
+        //zepto时min版的jqueory  一般用于移动端
+        //jqueory 一般用于PC端
+
+        //http://www.css88.com/jqapi-1.9/
+
+        //$('#demo p')
+        //$('#demo>p')
+
+        // var oDiv = document.getElementsByTagName('div');
+        // console.log(oDiv);
+        // console.log($(oDiv));
+
+        //通过jquery获取的类数组叫做jqueory对象
+
+        //console.log($($('#demo'))); 
+
+        // console.log($(null));
+        // console.log($(undefined));
+
+        // $(function() {
+        //     console.log('邓哥身体好');
+        // })
+
+        //$('p', '#demo').css('color', 'red')
+
+        //$ == jQuery
+
+        //sizzle(号称查找dom元素最快的方式) 其实是用正则进行匹配的         可以网上下载sizzle.js
+
+        // $('ul>li:first').css('color', 'red');
+        // $('ul>li:last').css('color', 'red');
+        // $('ul>li:eq(2)').css('color', 'red');
+        // $('ul>li:odd').css('color', 'red');  // 索引为奇数的
+        // $('ul>li:even').css('color', 'red');  //索引为偶数的
+
+
+        //$('li').filter('.demo').css('color', 'red');
+        // $('li').filter(function(index) {
+        //     return index % 3== 0
+        // }).css('color', 'red')
+        // $('li').not(function(index) {
+        //    return false;//return true;//return index % 3 == 0;
+        // }).css('color', 'red');
+        //$('li').not('.demo').css('color', 'red');
+       
+        //$('li').has('p').css('color', 'red');  //找 有p的li  
+        //$('li').find('p').css('color', 'red');   //有p
+
+        //$('li').eq(1).css('color', 'red');
+        //$('li:eq(1)').css('color', 'red');
+
+        //console.log($('li').eq(2).is('.demo'))
+
+        //$('li').eq(0).css('color', 'red').html('123');
+        
+        // $('li').click(function() {
+        //     console.log('li');
+        // });
+
+        //$('li').css('width', '100px').css('height', '100px');
+        //$('li').css({width:'100px', height: '100px'});
+
+        //$('li').text('123');
+        //$('li').text('<span>span</span>');
+        //$('li').html('<span>span</span>');
+        //传了就是取值 不传就是赋值
+
+       // console.log($('li:last').html());
+       //console.log($('li:last').text());
+
+    //    $('li:last').css('color', 'red').html('123');  //链式操作 如果本身找不到这个方法，会通过原型上找的
+    //    console.log($('li:last').css('color', 'red'));  
+
+    //console.log($('li:last').css('width'));
+
+    // var oLi  = document.getElementById('demo');
+    // oLi.className = 'dg';
+    // oLi.ds = 'dxd';
+    // oLi.setAttribute('ds', 'dxd');
+
+
+   //console.log($('#demo').prop('ds'));
+
+   //prop是实时的状态 attr是根据标签
+
+   //$('li:eq(2)').next().css('color', 'red');
+   //console.log($('li:eq(2)').index());
+
+   // 轮播图
+   $('li').click(function() {
+    //    $('li').css('background', '#888')
+    //    $(this).css('background-color', 'red');
+    //    console.log($(this).index());
+
+    //$('li').removeClass('active');
+    $('.active').removeClass('active');// removeClass()会把这个元素的所有类名删除掉    
+    $(this).addClass('active');
+   })
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

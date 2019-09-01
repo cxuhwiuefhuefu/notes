@@ -1,0 +1,445 @@
+5.parent(); offsetParent(); parents();
+        6.val() length$('.div3').offset().left
+        7.each(); obj.each(function(index, demo) {})
+          end(); 回退操作
+          parents()  查找祖先元素  可以有参数selector
+          closest()  查找最近的祖先节点,可以有参数selector能把自己选中
+          siblings() 当前元素节点的所有兄弟节点
+          preAll()   当前元素上的所有兄弟节点
+          nextAll()  当前元素下的所有兄弟节点
+          preUnit()/nextUnit()  --> 插头去尾选中元素,传jQuery对象或dom
+
+          clone() 克隆节点 参数为true的时候 事件也能克隆
+
+          wrap wrapInner 循环包裹  参数为函数
+          wrapAll 包裹选中的所有元素  会破坏结构
+          unwrap 解除包装  结构化标签不能删除
+
+          A.add(B)  选中元素A和B集中操作
+          $('li').slice(0, 2) 截取 算头不算尾
+          empty();
+          serialize串联表单数据   serializeArray串联数据成数组
+
+          animate() 1.target 2.duritation 3.速度变化方式   4.回调函数
+          stop() 阻止当前运动,继续后续运动  stop(true)阻止后续所有运动
+          stop(true, true) 停止当前所有运动,停在当前目标点
+          stop(false, true)  跳过当前运动并到达目标点   执行后续运动
+          finish()  停止当前运动  并且到达最后运动的目标点
+
+          delay()  延迟 参数 延迟时间
+
+          slideToggle(speed, callback)
+          通过使用滑动效果(高度变化)来切换元素的可见状态。如果被
+          选元素是可见的则隐藏这些元素,如果被选元素是隐藏的,则显示这些元素
+
+          toggleClass('active');
+          对设置或移除被选元素的一个或多个进行切换。检查每个元素
+          中指定的类,如果不存在则添加类,如已设置则删除。slideUp()
+          通过使用滑动的效果,隐藏被选元素,如果元素已显示出来的话
+
+          slideUp(speed, callback)如果元素已经显示出来的话,通常使用滑动效果,隐藏被选元素
+          slideDown()  方法通过使用滑动效果,显示隐藏的被选元素
+
+          triggle 主动触发事件 1.事件类型 2.参数
+
+          triggle触发事件是会事件冒泡  触发li会冒泡到ul
+
+          triggle传递参数triggle('click', data); $('li').onclick('click, fuction(e, data) {})  参数是在事件处理函数的第二个参数
+
+          triggle可以触发自定义事件 eat
+/************************************************************/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <div class="demo">
+            <li>
+                <div class="item">
+                    <p>
+                        <span>span</span>
+                    </p>
+                </div>
+            </li>
+        </div>
+    </ul>
+    <script src="./jquery.js"></script>
+    <script>
+
+    // console.log($('span').parent('ul')); // 直接父元素(离它最近的父元素)    里面可以添一个参数(如果是就返回/不是就返回空) -- 》用于刷选
+    // console.log($('span').offsetParent());  // 返回离它最近的有定位的父级   里面是不可以传参数
+    // console.log($('span').parents('div'));  // 返回所有的父节点    里面可以传参数
+    // console.log($('span').closest('span'));   //  返回最近的元素(从自身开始找的)    一定要传参数
+    
+    
+    
+    </script>
+</body>
+</html>
+
+
+
+
+/********************************************************/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        a{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .wrapper{
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            margin-left: -195px;
+            width: 390px;
+            background: #fff;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            /* display: none; */
+        }
+        .wrapper .titleCont{
+            background: #eee;
+            padding: 10px 0;
+        }
+        .wrapper .titleCont div{
+            display: inline-block;
+        }
+        .wrapper .titleCont #close{
+            float: right;
+            width: 30px;
+        }
+        .wrapper .main .content{
+            margin: 15px;
+        }
+        .wrapper .main .content input{
+            width: 100%;
+            padding: 10px 0;
+            margin-top: 15px;
+        }
+        .wrapper .main .content button{
+            width: 100%;
+            background: deepskyblue;
+            color: #fff;
+            margin-top: 15px;
+            height: 50px; 
+        }
+
+    </style>
+</head>
+<body>
+    <a href="#">登录</a>
+    <!-- <div class="wrapper">
+        <div class="titleCont">
+            <div>登陆百度帐号</div>
+            <button type="" id="close">X</button>
+        </div>
+        <div class="main">
+            <div class="content">
+                <input type="text" name="user" placeholder="手机/邮箱/用户名">
+                <input type="password" placeholder="密码">
+                <button>登录</button>
+            </div>
+        </div>
+    </div> -->
+
+    <script src="./jquery.js"></script>
+    <script>
+        var flag = true;
+        $('a').on('click', function () {
+            if(flag) {
+                flag = false;
+                var str = '<div class="wrapper">\
+        <div class="titleCont">\
+            <div>登陆百度帐号</div>\
+            <button type="" id="close">X</button>\
+        </div>\
+        <div class="main">\
+            <div class="content">\
+                <input type="text" name="user" placeholder="手机/邮箱/用户名">\
+                <input type="password" placeholder="密码">\
+                <button>登录</button>\
+            </div>\
+        </div>\
+    </div>';
+                $('body').append($(str));
+            }
+         
+            $('.wrapper').css('display', 'block');
+
+
+            $('#close').one('click', function () {
+                console.log(111);
+                $('.wrapper').css('display', 'none');
+            })
+    })
+   
+
+
+    </script>
+
+</body>
+</html>
+
+
+/***************************************************************************************/
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    .demo{
+        position: absolute;
+        top: 0;
+    }
+    .item{
+        position: absolute;
+        top: 0;
+    }
+    </style>
+</head>
+<body>
+    <input type="text">
+   
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <span></span>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+     <li>6</li>
+    <p></p>
+    <script src="./jquery.js"></script>
+    <script>
+    
+    // $('input').blur(function() {
+    //     console.log($(this).val());
+    // })
+    // $('input').focus(function() {
+    //     console.log($(this).val());
+    // })
+    // jQuery中的 blur/focus一般不用句柄是的写法
+
+    // $('li').each(function(index, ele) {    //each可以循环遍历对象
+    //    console.log(index);
+    //    console.log(this);  //this/index
+    // })
+
+    // $('li').filter(function(index) {
+    //     console.log(this);
+    // })
+
+    //$('ul').find('li').eq(0).css('color', 'red');
+    //$('li').eq(0).css({'color': 'red'}).end().eq(4).css({'color': 'green'});  preObject == end()
+    // console.log($('li').eq(0).css({'color': 'red'}).prevObject);  //会存的
+    // console.log($('ul')); //没有选哪个 默认会直接从document上找的
+    // console.log($(document));
+
+    //$('li').eq(2).siblings().css({'color': 'red'});
+    // $('li').eq(2).prevAll().css('color', 'red');
+    // $('li').eq(2).nextAll().css('color', 'red');
+
+    // $('li').eq(2).prevUntil($('li').eq(0)).css('color', 'red');
+    // $('li').eq(2).nextUntil($('li').eq(4)).css('color', 'red');
+
+    // $('li:eq(0)').click(function() {
+    //     console.log(888);
+    // })
+    // var a = $('li:eq(0)').clone(true); //这里传个true可以把事件也克隆了
+    // $('ul').append(a);
+
+    // $('li:eq(0)').wrap('<div>');
+    // $('li:eq(0)').wrap('p');
+    // $('li').wrap($('p'));  //给每个li上包围一个p标签
+
+    //$('li:eq(0)').wrapInner('<p>');
+
+    //wrap warpInner里面可以传一个函数
+    // $('li').wrapInner(function(index) {
+    //     if(index == 0) {
+    //         return '<div>';
+    //     }else if(index == 1) {
+    //         return '<p>';
+    //     }else{
+    //         return '<span>';
+    //     }
+    //  })
+
+    //$('li').wrapAll('<div>'); //会把所有的li单独摘出来包到一起 (最先找到的li)
+    //$('li:eq(0)').unwrap().unwrap(); // 像body/head/html这种结构化的标签 是不能解除的
+    //console.log($('li:eq(0)').unwrap());
+    
+    // $('li').eq(0).css('color', 'red').end().eq(4).css({color: 'green'});
+    // $('li').eq(0).add($('li').eq(4)).css({width: '100px', height: '100px', background: 'orange'});   //集中操作
+
+    //$('li').slice(0, 2).css('color', 'red');
+
+    //$('ul').html(123);
+    // $('ul').empty().html(123);
+    //$('ul').html('') //清空
+
+    
+
+    </script>
+</body>
+</html>
+
+/************************************************************************************/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    
+    </style>
+</head>
+<body>
+      <form action="">
+          <input type="text" name="user">
+          <input type="text" name="age">
+          <input type="submit">
+      </form>
+
+
+    <script src="./jquery.js"></script>
+    <script>
+     // 拼接   其实是get请求
+     //form表单的缺点： 会刷新整个页面，导致
+
+    //  $('input:eq(2)').click(function(e) {
+    //      e.preventDefault(); // 取消默认事件
+    //      console.log($('form').serialize()); //传数据主要用这个
+    //      //console.log($('form').serializeArray());  //用点操作取值
+    //  })
+    //  // 可以用ajax把这个传上去
+
+
+    
+    </script>
+</body>
+</html>
+
+/***********************************************************************************************/
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #demo{
+            /* display: none; */
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        #ds{
+            position: absolute;
+            top: 0;
+            left: 300px;
+            width: 100px;
+            height: 100px;
+            background: pink;
+        }
+        #es{
+            position: absolute;
+            top: 300px;
+            left: 300px;
+            background: orange;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+     
+     <div id="ds">ds</div>
+     <div id="es">es</div>
+     <div id="demo">dg</div>
+
+    <script src="./jquery.js"></script>
+    <script src="./jquery.easing.min.js"></script>
+    <script>
+    
+    // var oDiv = document.getElementById('demo');
+    // var timer = setInterval(function() {
+    //     if(oDiv.offsetLeft >= 300) {
+    //         oDiv.style.left ='300px';
+    //         clearInterval(timer);
+    //     }else {
+    //         oDiv.style.left = oDiv.offsetLeft + 10 + 'px';
+    //     }
+    // }, 100)
+
+    // $('#demo').animate({left: 300}, 1000, 'easeInOutBounce', function() {
+    //     $(this).animate({top: 300})
+    // }); //精准  (速率函数)  (默认的)'swing':先慢后快再慢的效果   'linear': 直线运动   引入插件(jquery.easing.js)
+         //  过滤属性  时间(毫秒)  速率  回掉函数
+
+        //  $('#demo').animate({left: 300}, 1000, 'easeInOutBounce').animate({left: 300, top: 300}, 1000, 'linear');
+        //  $(document).click(function() {
+        //     // 一： 是否停止后续所有运动 false: 不停止,继续运动   true： 停止后续所有运动
+        //   //   二： 是否立即到达当前目标点上,  false: 不达到   true: 达到
+        //     $('#demo').stop(true, false);
+        //  })
+        
+       // $('#demo').animate({left: 300}, 1000, 'easeInOutBounce').delay(3000).animate({left: 300, top: 300}, 1000, 'linear');
+
+      //$('#demo').slideUp();
+      //$('#demo').slideDown();
+
+    //   $('#ds').click(function() {
+    //       $('#demo').slideToggle(); // 切换类名
+    //   })
+
+    //$('#demo').fadeIn(3000);//  淡入
+
+    // $('#ds').click(function() {
+    //     $('#demo').fadeToggle();
+    // })
+
+    // $('#demo').on('click', function() {
+    //     console.log(12)
+    // })
+
+     $('#demo').on('click', function (event, a) {
+            $(this).animate({ width: $(this).width() + a });
+        })
+        var timer = setInterval(function () {  //自定义或系统的事件
+            if ($('#demo').width() > 300) {
+                $('#demo').remove();
+                clearInterval(timer);
+            } else {
+                $('#demo').trigger('click', [100]);  //传参必须以数组的形式
+            }
+        }, 1000)
+
+      // 作业： 轮播图
+      
+    </script>
+</body>
+</html>

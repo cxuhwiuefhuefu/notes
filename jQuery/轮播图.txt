@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .wrapper{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 500px;
+            height: 700px; 
+            margin-left: -250px;
+            margin-top: -350px;
+            border: 1px solid #000; 
+            overflow: hidden;
+        }
+        .wrapper .content{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .wrapper .content ul{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2500px;
+            height: 700px;
+        }
+        .wrapper .content ul li{
+            width: 500px;
+            height: 700px;
+            float: left;
+        }
+        .wrapper .content ul li img{
+            width: 100%;
+            height: 100%;
+        }
+        .wrapper .btn{
+            position: absolute;
+            top: 50%;
+            width: 30px;
+            height: 30px;
+            margin-top: -15px;
+            background: #000;
+            opacity: 0.1;
+            text-align: center;
+            line-height: 30px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bolder;
+            color: red; 
+        }
+        .wrapper .leftBtn{
+            left: 15px;
+        }
+        .wrapper .rightBtn{
+            right: 15px;
+        }
+        .wrapper .con{
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        .wrapper .con span{
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+        }
+        .wrapper .con span.active {
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <ul>
+                <li>
+                    <img src="./img/logo1.jpg" alt="">
+                </li>
+                <li>
+                    <img src="./img/logo2.jpg" alt="">
+                </li>
+                <li>
+                    <img src="./img/logo3.jpg" alt="">
+                </li>
+                <li>
+                    <img src="./img/logo4.jpg" alt="">
+                </li>
+                <li>
+                    <img src="./img/logo1.jpg" alt="">
+                </li>
+            </ul>
+        </div>
+        <div class="btn leftBtn">&lt;</div>
+        <div class="btn rightBtn">&gt;</div>
+        <div class="con">
+            <span class="active"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <script src="./jquery.js"></script>
+    <script>
+
+                var index = 0;
+                var flag = true;
+                function move() {
+                    if (flag) {
+                        flag = false;
+                        $('ul').animate({left: parseInt($('ul').css('left')) - 500 }, 1000, 'swing', function () {
+                            clearTimeout(timer);
+                            flag = true;
+                            index ++;
+                            if (index === 4) {
+                                index = 0;
+                            }
+                            if (parseInt($('ul').css('left')) === -2000) {
+                                $('ul').css('left', '0px')
+                            }
+                            $('.active').removeClass('active');
+                            $('span').eq(index).addClass('active');
+                            timer = setTimeout(move, 1000);
+                        })
+                    }
+
+                }
+                var timer = setTimeout(move, 1000);
+
+                $('span').on('click', function () {
+                        if (flag) {
+                            clearTimeout(timer);
+                            flag = false;
+                            index = $(this).index();
+                            $('ul').animate({ left: - index * 500 }, 1000, 'swing', function () {
+                                clearTimeout(timer);
+                                flag = true;
+                                $('.active').removeClass('active');
+                                $('span').eq(index).addClass('active');
+                                timer = setTimeout(move, 1000);
+                            })
+                        }
+                })
+
+                $('.btn').click(function () {
+                        if (flag) {
+                            clearTimeout(timer);
+                            flag = false;
+                            if ($(this).is('.leftBtn')) {
+
+                                if (index === 0) {
+                                    index = 4;
+                                    $('ul').css('left', '-2000px');
+                                }
+                                $('ul').animate({ left: - (index - 1) * 500 }, 500, 'linear', function () {
+                                    clearTimeout(timer);
+                                    flag = true;
+                                    index--;
+                                    $('.active').removeClass('active');
+                                    $('span').eq(index).addClass('active');
+                                    timer = setTimeout(move, 1000);
+                                })
+
+                            }else {
+                                if(index === 4) {
+                                    index = 0;
+                                    $('ul').css('left', '0px');
+                                }
+                                $('ul').animate({ left: - (index + 1) * 500 }, 500, 'linear', function () {
+                                    clearTimeout(timer);
+                                    flag = true;
+                                    index++;
+                                    $('.active').removeClass('active');
+                                    $('span').eq(index).addClass('active');
+                                    timer = setTimeout(move, 1000);
+                                })
+                            }
+                        }
+                })
+
+    </script>
+</body>
+</html>

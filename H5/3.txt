@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        svg{
+            border: 1px solid #000;
+        }
+        line{
+            stroke: red;
+        }
+        rect{
+            fill: transparent;
+            stroke: green;
+            stroke-width: 10px;
+        }
+        circle{
+            fill: orange;
+        }
+        polyline{
+            fill: transparent;
+            stroke: blue;
+        }
+        polygon{
+            fill: transparent;
+            /* fill-opacity: 0.5; */
+            stroke: red;
+            stroke-width: 20;
+            stroke-linejoin: bevel;
+        }
+        /* stroke-linecap: 每条线两端是 这条线/这条路径两端是什么样子 默认情况下是bat 两边是你画多长显示多长 sqire: 多出线宽的一半 
+            round: 把你多长线宽的一半做成圆弧 这是单条线两端是什么效果 */
+            /* stroke-linejoin: 两条线连接中间拐弯的地方想让它实现什么样的效果 默认情况下是miter的效果 */
+    
+    </style>
+</head>
+<body>
+    
+    <svg width="500" height="500">
+        <line x1=100 y1=100 x2=200 y2=100></line>
+        <rect x=200 y=100 width=100 height=100 rx=10 ry=30></rect><!-- rx: 在X轴上的圆角  ry: 在Y轴上的圆角 相当于border-radius 
+                                                                       默认填充成黑色的效果而且默认填充成fill 跟canvas相似 canvas默认的颜色也是黑色
+                                                                       如果不想图形进行填充只想描边来画的时候可以把填充设置个透明色  -->
+        <circle r="50" cx="250" cy="250"></circle>   
+        <ellipse rx="100" ry="50" cx="400" cy="150"></ellipse><!-- rx: 水平方向的半径 ry: 垂直方向上的半径 --> 
+        <polyline points="60 50, 75 35, 100 50, 125 35, 150, 50, 175 35, 190 50"></polyline> <!-- points: 点的集合 默认填充 看看起始点和终点是否闭合了 -->                                                          
+        <!-- <polygon points="60 50, 75 35, 100 50, 125 35, 150, 50, 175 35, 190 50"></polygon> --><!-- 它会把最后一条线进行闭合 -->
+        <polygon points="100 200, 200 100, 300 200"></polygon><!-- 会把最后一条线进行闭合 建议写上逗号 如果图形点过多得话你又没写上逗号 有可能你到后边你都分不清那两是一对了
+                                                                   所以最好在后面加上逗号来区分 上面连接处有个尖 为什么两边的尖没有了 ??
+                                                                   因为它也是会有默认的长度 但是它尖的长度超出某个值的时候默认帮你变成bevel -->
+        <text x="125" y="220">hello,word</text>
+    </svg>
+
+    <script>
+
+        // SVG不算是个新的技术 第一次规定在文档中是03年的事情了 而在03之前已经在使用了 所以它不是什么新的技术 像canvas才是后期之秀
+        // SVG与canvas的区别: 1. canvas也能做图表 canvas相当于大的画布在上面画画 通过的都是js指令来操控画笔的 然后这个canvas做图是通过js控制 
+        //                        而SVG做图是通过一个一个标签来形成的 每条路径都会把它当成一个标签 会有些基础图形的标签 比如直线/园/椭圆
+        //                        矩形会有这样的基本的图形 除此之外还会画些基础的图形 曲线是单独的路径 单独的标签  
+        //                        我们可以通过单独的标签来实现这样的效果 所以说做图表两个都能做 主要看一下你这个图表的应用场景 如果说你这个表格比较多的话
+        //                        建议用canvas来做了 因为SVG是用一个一个的小标签来形成的 图表当中如果内容很多的话有很多个标签 大概页面当中标签过多不是一件好事
+        //                        它会影响页面的解析 
+        //                    2. SVG是矢量图 放大之后不失真 而canvas放大之后会失真的 看你应用的场景 如果你希望这个图形放大之后不失真并且你这个图形它有些动态的效果
+        //                          这些动态的效果可以用SVG来做 当然很多动态效果都是结合CSS3来使用的 canvas也能实现动态效果 canvas可以通过控制js来让它运动
+        //                          当然这两个都能实现动画效果 主要是看这样你是做怎么样的图形 这个图形应用场景是什么样子的 如果图形过大的话就用canvas canvas毕竟
+        //                          是用js控制的 运行速度肯定比你这个用标签来运行的速度好些 
+        //
+        // svg这些标签是要放到大的SVG标签实现
+
+    </script>
+
+</body>
+</html>
+
+//************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        svg{
+            border: 1px solid #000;
+        }
+        path{
+            stroke: deeppink;
+            fill: transparent;
+        }
+    
+    </style>
+</head>
+<body>
+    
+    <svg width="500" height="500">
+        <path d="M 100 100 L 200 100 200 200 300 200 100 100"></path>
+        <path d="m 100 400 h 100 v 100 z"></path>
+       
+        <path d="M 100 100 A 50 100 90 1 1 150 200"></path>
+        <path d="M 100 200 Q 100 100 300 300 T 500 100"></path>
+        <!-- <path d="M 0 200 C 100 100 200 100 300 400 s 500 500 400 0"></path> -->
+    </svg>
+
+
+    <svg width="580" height="400" xmlns="http://www.w3.org/2000/svg">
+        <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+        <defs>
+            <linearGradient y2="0" x2="1" y1="0" x1="0" id="svg_2">
+                <stop offset="0" stop-color="#47e5e5" />
+                <stop offset="1" stop-color="#b81a1a" />
+            </linearGradient>
+        </defs> 
+        <g><!-- g: 包裹的意思 可以给g设置颜色 所有的颜色都会有这个颜色 相当于我们在做标签里的包裹 所有你如果你不做什么集体的效果的话 这个g是不用写的 可以删除 -->
+            <title>background</title><!-- title: 小标题 -->
+            <rect fill="url(#svg_2)" id="canvas_background" height="402" width="582" y="-1" x="-1" />
+            <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+                <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%" />
+            </g>
+        </g>
+        <g>
+            <title>Layer 1</title>
+            <path canvas="url(#svg_2)" canvas-opacity="1" id="svg_1" d="m290,132.13125c37.10657,-87.41626 182.49131,0 -0.00002,112.39233c-182.49132,-112.39233 -37.10655,-199.80859 0.00002,-112.39233z"
+                stroke-width="1.5" stroke="#000" fill="#fff" />
+        </g>
+    </svg>
+
+
+    <svg>
+        <defs>
+            <linearGradient id="bg1" x1="0" y1="0" x2="0" y2="100%">
+                <stop offset="0%" style="stop-color:rgb(255,255,0);" /><!-- 规定哪个点是哪个颜色 -->
+                <stop offset="100%" style="stop-color:rgb(255,0,0);" />
+            </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="500" height="500" style="fill:url(#bg1)" />
+    </svg>
+    
+
+    <!-- 高斯滤镜可以实现模糊的效果 用的少 了解就好 -->
+    <svg>
+        <defs>
+            <filter id="Gaussian_Blur">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="20" />
+            </filter>
+        </defs>
+        <rect x="0" y="0" width="500" height="500" fill=”yellow” style="filter:url(#Gaussian_Blur)" />
+    </svg>
+  
+
+    <svg>
+        <defs>
+            <radialGradient id="bg2" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" style="stop-color:green;" />
+                <stop offset="100%" style="stop-color:red;" />
+            </radialGradient>
+        </defs>
+        <rect x="0" y="0" width="500" height="500" style="fill:url(#bg2)" />
+    </svg>
+    
+
+    <svg>
+        <defs>
+            <filter id="Gaussian_Blur">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="20" />
+            </filter>
+        </defs>
+        <rect x="0" y="0" width="500" height="500" fill=”yellow” style="filter:url(#Gaussian_Blur)" />
+    </svg>
+    
+
+    <script>
+
+        // path元素代表路径 path元素可以帮我们做一条路径 这条路径长什么样子可以由一些指令来决定
+        // M: moveTo   L: lineTo       可以用Path因素替代line因素做出一条简单的直线路径
+        //     这个指令区分大小写 当你大写的时候代表绝对的坐标 当你小写的时候相对的坐标
+        //     H: 水平方向上的指令多少    V: 垂直方向上的指令    大小写可以混合使用, 但要分清楚你是绝对的还是相对的
+        //     Z: 类似canvas当中的closePath 闭合   Z指令不区分大小写
+        //
+        // 圆弧指令(A): 后两点代表的是终点的坐标 绝对还是相对取决于你这个A是大写还是小写 
+        //      什么是终点坐标?? 比如现在我想画一段圆弧 这段圆弧得由两个点来决定起点和终点 再决定中间这段圆弧怎么圆弧过去
+        //          所以最后的参数是终点坐标 A的前面两个决定X轴半径Y轴半径 第三个参数决定这个图形是否旋转 第四个参数决定你代表的是大圆弧还是小圆弧
+        //          第五个参数是你想要顺时针的还是逆时针的 0是逆时针
+        //
+        // T: 二次巴塞尔曲线的延申 以结束点为中心点做出来其中一个控制点得对称点   二次贝塞尔 Q 
+        //    三次贝塞尔 C
+        //
+        // http://editor.method.ac/
+        //
+        // 神马: CSS3 + js
+        //
+        // http://www.w3school.com.cn/svg/svg_filters_intro.asp
+
+    
+    </script>
+
+</body>
+</html>
+
+//****************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        svg{
+            border: 1px solid #000;
+        }
+        path{
+            stroke: deeppink;
+            fill: transparent;
+            stroke-width: 20px;
+            stroke-dasharray: 20px 30px 40px; /* 画20px 空30px    按规律 画 空 */
+            stroke-dashoffset: 10px; /* +:往左缩进一些的值  -:往右缩进一些值 可以实现缩进的效果 可以通过js控制图形动画的效果 */ 
+            animation: move 1s linear infinite;
+        } 
+        @keyframes move{
+            0%{
+                stroke-dashoffset: 10px;
+            }
+            100%{
+                stroke-dashoffset: 500px
+            }
+        }   
+    
+    </style>
+</head>
+<body>
+    
+    <svg width="500" height="500">
+        <path d="M 0 100 L 500 100"></path>
+    </svg>
+    
+</body>
+</html>
+
+//*************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        svg{
+            border: 1px solid #000;
+        }
+        path{
+            stroke: deeppink;
+            fill: transparent;
+            stroke-width: 20px;
+            stroke-dasharray: 500px; /* 画500px 空500px */ 
+            animation: move 1s linear alternate infinite; /* 基数次正向 偶数次反向 */
+        } 
+        @keyframes move{
+            0%{
+                stroke-dashoffset: 10px;
+            }
+            100%{
+                stroke-dashoffset: 500px
+            }
+        }   
+    
+    </style>
+</head>
+<body>
+
+    <svg width=500 height=500>
+        <path d="M 0 100 L 500 100" id="path1">
+    </svg>
+
+    <script>
+
+        console.log(path1.getTotalLength());  // 这个500是单位值
+    
+    </script>
+
+</body>
+</html>
+
+//***************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        svg{
+            border: 1px solid #000;
+        }
+        path{
+            stroke: deeppink;
+            fill: transparent;
+            stroke-width: 20px;
+            stroke-linecap: round;
+            /* stroke-dasharray: 500px; /* 画20px 空30px */
+            stroke-dashoffset: 10px; /* +:往左缩进一些的值  -:往右缩进一些值 可以实现缩进的效果 可以通过js控制图形动画的效果 */ 
+            animation: move 1s linear infinite;
+        } 
+        @keyframes move{
+            0%{
+                stroke-dashoffset: 10px;
+            }
+            100%{
+                stroke-dashoffset: 500px
+            }
+        }   
+    
+    </style>
+</head>
+<body>
+
+    <svg width=500 height=500>
+        <path d="M 100 100 L 200 100" id="path1">
+    </svg>
+
+    <script>
+
+        console.log(path1.getTotalLength()); // 即使两边多出宽一半的长度 但是实际上的长度还是我们所写的长度
+
+        console.log(path1.getPointAtLength(50))  // 返回距离起始点50的坐标
+        // 可能有些浏览器不仅path元素支持 line元素也支持 但严格意义来说 只应该由path元素支持 因为你想圆椭圆矩形都没有起始点 你怎么用这个方法
+        //     怎么找距离起始点多少的那个点 它都没有起始点你怎么找 所以说它规定的时候只规定只支持path元素 但是有些浏览器把line元素也算上了
+        //     直线可以
+    
+    </script>
+
+</body>
+</html>
+
+//*************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        svg{
+            border: 1px solid #000;
+        }
+        path{
+            stroke: deeppink;
+            fill: transparent;
+            stroke-width: 2px;
+            stroke-linecap: round;
+            /* stroke-dasharray: 500px; /* 画20px 空30px */
+            stroke-dashoffset: 10px; /* +:往左缩进一些的值  -:往右缩进一些值 可以实现缩进的效果 可以通过js控制图形动画的效果 */ 
+            animation: move 1s linear infinite;
+        } 
+        @keyframes move{
+            0%{
+                stroke-dashoffset: 10px;
+            }
+            100%{
+                stroke-dashoffset: 500px
+            }
+        }   
+        rect{
+            fill: red;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <svg width=400 height=300 viewBox="0, 0, 40, 30"><!-- 你会发现那个图案没了 但是大小还是那么大 这个40 30干什么用的 它是相对的单位 
+                                                          它告诉你在这个画布大小尺寸是400 300的区域内 实际上它那个单位只有长度40高度30
+                                                          下面的坐标明显超出坐标了  所以缩小10倍 因为当前我们看到的是由宽和高决定的大小尺寸
+                                                          但实际上它的单位是由viewBox单位来决定的 -->
+        <path d="M 10 10 L 20 10" id="path1">
+    </svg>
+
+
+    <svg width=500 height=500 viewBox="0, 0, 40, 30"><!-- 不等比会出现什么效果 在canvas不等比形变了 在SVG当中不会 -->
+        <path d="M 10 10 L 20 10" id="path">
+    </svg>
+
+
+    <svg id="svg" width=500 height=500 viewBox="0, 0, 40, 30"><!-- 当前不等比的话不会缩放 还是那么大 还是按照不形变的比例来进行缩放 默认情况下帮我们居中 
+                                                          当前是高不够 如果宽不够也会帮我们居中 这个值是否居中 向左对齐 向由对齐全部由一个属性值决定的
+                                                          preserveAspectRatio 可以给SVG添加这个属性值 meet: 撑开就行  slice:充满 none: 形变 -->
+        <rect x=0 y=0 width=40 height=30></rect>
+    </svg>
+
+
+    <svg id="svg1" width=500 height=500 viewBox="0, 0, 40, 30">
+        <rect x=0 y=0 width=10 height=10></rect>
+    </svg>
+
+    <script>
+
+        console.log(path1.getTotalLength()); // 即使两边多出宽一半的长度 但是实际上的长度还是我们所写的长度
+
+        console.log(path1.getPointAtLength(50))  // 返回距离起始点50的坐标
+        // 可能有些浏览器不仅path元素支持 line元素也支持 但严格意义来说 只应该由path元素支持 因为你想圆椭圆矩形都没有起始点 你怎么用这个方法
+        //     怎么找距离起始点多少的那个点 它都没有起始点你怎么找 所以说它规定的时候只规定只支持path元素 但是有些浏览器把line元素也算上了
+        //     直线可以
+
+        svg.setAttribute("preserveAspectRatio", "xMinYMin meet");
+
+
+        // slice 比如说不太确定 你这都是充满了还是形变啊 是什么样的效果 
+        svg1.setAttribute("preserveAspectRatio", "none");
+
+
+    </script>
+
+</body>
+</html>
+
+//****************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        svg {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+   
+    <script>
+
+        // 用js生成SVG元素 犹豫SVG元素跟我们html所写的标签略有些不同  SVG它属于xml元素 像创建xml文档的时候它创建方式是不能createElement
+        //     是createElementNS() 然后它接收两个参数 两个参数分别都是字符串  第一个代表当前元素节点规定的一个命名空间的名称 这个命名空间的名称是规定好的
+        //     我们把这个字符串放到这里来就Ok了 然后后面这个是你创建这个节点是什么东西 你想创建svg就写svg  你想创建rect/path你就写个rect/path
+        //     创建完成之后给它添加属性的时候最好setAttribute属性  因为像这些特殊的属性值 因为你通过点的方式或者其他方式设置不上的 最好都有setAttribute的方法来实现
+
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', 500);
+        svg.setAttribute('height', 500);
+        document.body.appendChild(svg);
+
+
+    </script>
+
+</body>
+</html>
+//*************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+       svg{
+           border: 1px solid #000;
+       }
+       path{
+           fill: transparent;
+           stroke-width: 10px;
+           stroke-linecap: round;
+       }
+       #path1{
+           stroke: #ccc;
+       }
+       #path2{
+           stroke: orange;
+           stroke-dasharray: 1000px;
+           stroke-dashoffset: 1000px;   
+       }
+       .active{
+           transition: all 5s linear;
+       }
+    
+    </style>
+</head>
+<body>
+
+    <input type="text" id="btn">
+    <svg width="500" height="500">
+        <path id="path1" d="M 200 300 A 100 100 0 1 1 300 300"></path>
+        <path id="path2" d="M 200 300 A 100 100 0 1 1 300 300"></path>
+    </svg>
+
+    <script>
+
+
+        // 显然是由两个图形拼接起来的 底下是个灰色 底上是个蓝色
+      
+       var len = path2.getTotalLength();
+       btn.onblur = function() {  // 把输入的值变成百分比
+           var value = this.value;
+           var total = len * value / 100;
+        //    path2.className = 'avtive';
+           path2.classList.add('active');
+           path2.style.strokeDashoffset = 1000 - total + 'px';
+       }
+       btn.onfocus = function() {// 原来写50 后来写30当然往回缩 我们希望当获得焦点的时候值立马清空 怎么让它清空 获得焦点再绑定事件
+        //    path2.className = '';
+           path2.classList.remove('active');
+           path2.style.strokeDashoffset = 1000 + 'px';
+       }
+
+       // 当你操作过快的话 在你操作过程中你这个时候突然输入值了 让你动作慢些    希望回去快些
+       //
+       //
+       // 个性签名 神马有多少笔画就生成多少元素 一笔一笔出来 dasharray dashoffset 画多长空多长 一定要获取当前元素总长度是多少
+       //     第二笔你给他延迟 延迟时间是多少 肯定是第一笔画的时间 第一笔的时间是多少?你让它画多长就是多长   100px 100毫秒
+       //
+       // loading图标: animationTransform   from(起始点 从什么地方到什么地方): 旋转角度 中心点   dur: 旋转时间   repeatCount: 旋转次数
+       //        再一个怎么转 你可以把图形画好之后 用CSS3的属性旋转整个SVG  整个SVG沿着Z轴旋转可以实现  现在动画好多用CSS3结合其他东西来实现的
+       // 可以网上去搜小图标去看看
+       //
+       // 上课的demo自己回去实现  网上找一个SVG来实现一下
+   
+    </script>
+
+</body>
+</html>

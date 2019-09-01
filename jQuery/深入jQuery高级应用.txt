@@ -1,0 +1,316 @@
+ // 以$.**  jQuery.**这种方式调用 此方法定义在jQuery函数上面
+
+        // $.type() 判断 参数的数据类型
+        
+        // 原生js判断类型的三种方法
+        // 例如1.arr instanceof Array  2.arr.constructor == Array
+        //     3.Object.prototype.toString.call(arr)
+
+        // 1.2两种有局限性 3比较通用
+
+        // $.trim()  消除空格
+        // $.proxy()改变this指针方向    参数1： function, 参数2： 参数的执行期上下文
+
+        // $.noConflict()防止冲突
+
+        // 在很多javaScript库使用$作为一个函数或变量名, 正如jquery做的一样。
+        // 如果我们需要同时使用jQuery和其他的javaScript库,我们可以使用
+        // $.noConflict把$控制权交给其他库
+
+        // $.parseJSON字符转换为json要求非常严格   外部是单引号  内部属性是双引号  不需要回车符
+
+        // $.makeArray   把类数组转换为数组
+
+
+        // jQuery高级应用
+
+        // $.extend() 插件开展1提供新的jQuery工具方法
+        // $.fn.extend()插件扩展2提供新的jQuery实例方法 记住是实例 不是工具方法
+
+        // 编写方法1：
+        // $.extend({leftTrim: function() {}})
+
+        // 编写方法2：
+        // $.fn.extend({drag: function() {}})
+
+        // var cb = $.Callbacks() 返回回调函数对象
+
+        // cb.add(function aa() {})  cb.add(function bb() {}) 给回调对象添加函数
+
+        // add的添加方式add(aaa, bbb)或add([aaa, bbb])
+
+        // cb.fire()  --> 触发添加的函数  重复fire  也会重复执行
+
+        // 在局部作用域里  用cb.add()函数  也会触发
+
+        // $.Callbacks() --> 四个参数
+        //           once 只执行一次fire()方法
+
+        //           memory记忆
+        //           unique oCB.add(aa, aa, aa);只执行一次aa
+        //           stopOnFalse
+        //                 function bb() {
+        //                     console.log('bb');
+        //                     return false;
+        //                 }       
+        //                 var oCb= $.Callbacks('stopOnFalse');
+
+        // $.Deferred()延迟对象  相当于状态的Callbacks()
+        // 添加函数
+        // done   fail   progress
+        // 触发函数
+        // resolve   reject   notify
+
+        // oDf.resolve()  --> done(function() {})
+        // oDf.reject()  --> fail(function() {})
+        // oDf.notify() --> progress(function() {})
+
+        // done, false  -->once progress
+        // progress -> memory
+
+        // notify进行时的意思 成功失败的结构还没出现  所以此函数 触发后
+        // done和fail还可以触发一个
+
+        // done fail 触发一个之后就不能触发其他的了 --》 最终状态已经告知
+
+        // var dtd = $.Deferred();
+        // function asyncEvent() {
+        //     setInterval(function() {dtd.resolve("ok")}, 2000)
+        //     setInterval(function() {dtd.reject('fail')}, 1000)
+        //     setInterval(function() {dtd.notify()}, 200)
+        // }        
+        // asyncEvent();
+        // dtd.done(function(data) {cosole.log(data);})
+        // .fail(function(data) {console.log(data);})
+        // .progress(function() {console.log(data);})
+
+/****************************************************/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div>div</div>
+    <iframe src="./test2.html"></iframe>
+    <script src="./jquery.js"></script>
+    <script>
+    // $('div').html();   // 选择元素操作的叫做实例方法  
+    
+    // var arr = [1, 2, 3];
+    // console.log($.type(arr));
+    
+    // 当凡是对象 都是属性的集合
+    // 定义在函数上面的叫做工具方法  
+    // 定义在原型上的叫做实例方法
+
+    // function jquery() {}
+    // jQuery.type = function() {
+    //     console.log(999);
+    // }
+    // jQuery.aa = 123;
+    // console.log(jQuery.aa);
+    // jQuery.type();
+
+    // var oIframe = document.getElementsByTagName('iframe')[0];
+    // oIframe.onload = function() {
+    //     var a = oIframe.contentWindow.arr;
+    //     console.log(a.constructor = Array);
+    // }
+
+    // var arr = {};
+    // console.log(Object.prototype.toString.call(arr));
+
+    // var str = '        d  g ';
+    // console.log('|' +$.trim(str)+ '|');  // 用正则匹配的
+
+    // function show(nianji, number) {
+    //     console.log(this);
+    //     console.log(nianji + ' ' + number);
+    // }
+    // var obj = {
+    //     name: 'animate'
+    // }
+    // // var fn = $.proxy(show, obj);  // 会return出来一个新的函数, this指向obj
+    // // fn();
+    // // show();
+    // // $.proxy(show, obj, 1)(2);
+    // // 类似柯里化的思想： 把多个函数变成只传一个的函数 减少一个函数的复用
+    // var fn = $.proxy(show, obj, 14);
+    // fn(1);
+    // fn(2);
+    // 在事件广泛应用
+
+    // $('div').click(function() {
+    //     console.log(this);
+    // })
+    // var obj = {
+    //     init: function() {
+    //         this.bindEvent();
+    //     },
+    //     bindEvent: function() {
+    //         $('div').click($.proxy(this.cb, this, 1, 2));
+    //     },
+    //     cb: function(a, b) {
+    //         console.log(this);
+    //         this.aa();
+    //         console.log(a + ' ' + b);
+    //     },
+    //     aa: function() {
+    //         console.log('dg')
+    //     }
+    // }
+    // obj.init();
+
+    // var wJquery = $.noConflict();
+    // console.log($('div'));
+    // console.log(jQuery('div'));
+
+    // JSON是对象  但是对象的严格标准
+    // var obj = {
+    //     "aa": 123,
+    //     "bb": "dg" 
+    // }
+    // var str = JSON.stringify(obj);
+    // console.log(str);
+    // console.log($.parseJSON(str));
+
+    // var obj = {
+    //     aa: 123,
+    //     bb: 'dg',
+    //     length: 2
+    // }
+    // console.log(obj);
+    // console.log($.makeArray(obj));
+
+    // jQuery中大部分的方法都基于这个方法实现的
+    // $.fn = $.prototype
+    // $.fn.extend({  // 工具方法 函数上定义的
+    //     aa: function() {
+    //         console.log(888);
+    //     },
+    //     leftTrim: function(str) {
+    //         var reg = /^\s+/g;
+    //         return str.replace(reg, '');
+    //     }
+    // })  
+    // $('div').aa();
+    // var str = '   dg';
+    // console.log($.fn.leftTrim(str));
+
+    // var obj1 = {
+    //     person1: {
+    //         name: 'dg',
+    //         age: 55
+    //     },
+    //     number: 1        
+    // }
+    // var obj2 = {
+    //     person2: {
+    //         name: 'cg',
+    //         age: 30
+    //     },
+    //     number: 2
+    // }
+    // var aa = $.fn.extend(true, obj1, obj2);
+    // console.log(obj1);
+    // console.log(aa);
+    // obj2.person2.age = 31;
+    // console.log(obj1);
+
+    // var obj1 = {
+    //     aa: function() {
+
+    //     }
+    // }
+    // $.extend(obj1);  // obj1上的属性合并到$上的
+    // $.extend({aa: function() {}})
+
+    // function fn1() {
+    //     console.log('fn1');
+    // }
+    // function fn2() {
+    //     console.log('fn2');
+    //     return false;
+    // }
+    // function fn3() {
+    //     console.log('fn3');
+    // }
+    // var cb = $.Callbacks('memory once');  // 'once':只fire一次   'unique':只要这个函数是同一回调函数的话就执行一遍     'memory': 即使fire后面添加的函数也能被触发
+    // cb.add(fn1, fn2, fn1);
+    // cb.add(fn1);
+    // cb.fire();
+    // cb.fire();
+    // cb.add(fn3);
+
+    // var dtd = $.Deferred();
+    // function aa() {
+    //     dtd.notify();
+    // }
+    // aa();
+    // dtd
+    // .done(function success() {
+    //     console.log('ok');
+    // })
+    // .fail(function error() {
+    //     console.log('error');
+    // })
+    // .progress(function doing() {
+    //     console.log('doing');
+    // })
+
+    // 模拟网络请求
+    // function aa() {
+    //     var dtd = $.Deferred();
+    //     setInterval(function() {
+    //         dtd.notify();
+    //     }, 500)
+    //     setInterval(function() {
+    //         dtd.reject();
+    //     }, 1000)
+    //     setInterval(function() {
+    //         dtd.resolve();
+    //     }, 2000)
+    //     return dtd.promise(); // 返回的是只读Deferred对象
+    // }
+    // var cb = aa();
+    // // cb.resolve();
+    // cb
+    // .done(function() {
+    //     console.log('ok');
+    // })
+    // .fail(function() {
+    //     console.log('error');
+    // })
+    // .progress(function() {
+    //     console.log('doing');
+    // })
+
+    // function aa() {
+    //     var dtd = $.Deferred();
+    //     dtd.reject();
+    //     return dtd.promise();
+    // }
+    // function bb() {
+    //     var dtd = $.Deferred();
+    //     dtd.notify();
+    //     return dtd.promise();
+    // }
+    // var cb = aa();
+    // var cb2 = bb();
+    // $.when(cb, cb2)   //   也会返回一个Deferred对象   只有两个都是成功的状态才能触发done   但凡有一个不是就触发fail   ajax也是一个Defferd对象(有状态的)
+    // .done(function() {
+    //     console.log('ok');
+    // })
+    // .fail(function() {
+    //     console.log('error');
+    // })
+    // .progress(function() {
+    //     console.log('doing');
+    // })
+
+
+    </script>
+</body>
+</html>

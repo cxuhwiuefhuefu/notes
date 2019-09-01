@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .wrapper{
+            width: 300px;
+            height: 300px;
+            border: 1px solid #000;
+        }
+        .wrapper .btn{
+            text-align: center;
+        }
+        button{
+            width: 50px;
+            height: 50px;
+        }
+        .active{
+            background: green;
+        }
+        .wrapper .content{
+            
+        }
+        .wrapper .content div{
+            width: 300px;
+            height: 250px;
+            background: deeppink;
+            text-align: center;
+            line-height: 250px;
+            display: none;
+        }
+        .wrapper .content .c-active{
+            display: block; 
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="btn">
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+        </div>
+       <div class="content">
+           <div class="c-active">1111</div>
+           <div>2222</div>
+           <div>3333</div>
+       </div>
+    </div>
+    <script src="./jquery.js"></script>
+    <script>
+        $('button').click(function() {
+            $('.active').removeClass('active');
+            $(this).addClass('active');
+            $('.c-active').removeClass('c-active');
+            var index = $(this).index();
+            $('.content div').eq(index).addClass('c-active');
+        })
+
+    </script>
+</body>
+</html>
+
+
+
+/*****************************************************************************************************************************/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+       li{
+           width: 100px;
+           height: 30px;
+           background: #ccc;
+           border-radius: 10px;
+           list-style: none;
+           margin-bottom: 10px; 
+       }
+       .active{
+           background: red;
+       }
+       ul{
+           border: 1px solid #000;
+       }
+    </style>
+</head>
+<body>
+    
+    <ul>
+        <li class="aaa">1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+    <p>pp</p>
+    <script src="./jquery.js"></script>
+    <script>
+       // $('li').addClass('avtive');
+    //    $('li').addClass(function(index) {
+    //        if(index % 3 == 0) {
+    //            return 'aaaa';
+    //        }
+    //    })
+
+    //$('li').eq(0).toggleClass('aaa'); //如果有aaa这个class类名就删除 没有就添加
+    // $('li:eq(0)').click(function() {
+    //     $(this).toggleClass('active')
+    // })
+
+
+
+    //$('li').eq(4).insertBefore($('li').eq(0)).css('color', 'red');
+    //$('li:eq(0)').before($('li:eq(4)')).css('color', 'green');
+
+    //$('p').appendTo('ul').css('color', 'red');
+    //$('ul').append($('p')).css('color', 'orange');  // 与这个类似 appendChild()
+
+    // $('ul').prepend($('p')).css('color', 'orange');
+    </script>
+</body>
+</html>
+
+/***************************************************************************************************************************************/
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+       .wrapper{
+           width: 300px;
+           height: 300px;
+           background: #ccc;
+       }
+       .item1, .item2{
+           width: 100px;
+           height: 100px;
+       }
+       .item1{
+           background: red;
+       }
+       .item2{
+           background: green;
+       }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="item1">div1
+            <a href="#">aaa</a>
+            <p>pppp</p>
+        </div>
+        <div class="item2">div2</div>
+    </div>
+    <p>pp</p>
+    <script src="./jquery.js"></script>
+    <script>
+        // $('.item1').click(function() {
+        //     item1 = $(this).remove();
+        // })
+        // $('.item2').click(function() {
+        //     item2 = $(this).detach();
+        // })
+        // $('p').click(function() {
+        //     $('.wrapper').append(item1).append(item2);
+        // })
+        // remove和detach区别： detach返回时把事件也返回了
+       
+        $('.item1').on('click', 'a', 'a',function(e) {   //可以传对象 数组 字符串(要放在第三个位置上, 如果没有放在第三个位置上会把它理解为事件源对象)
+            console.log(e.data);
+            console.log($(this).html())
+        })
+    </script>
+</body>
+</html>
+
+/**********************************************************************************************************/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+            height: 2000px;
+        }
+       .wrapper{
+           position: absolute;
+           top: 100px;
+           width: 300px;
+           height: 300px;
+           background: #ccc;
+       }
+       .item1, .item2{
+           width: 100px;
+           height: 100px;
+       }
+       .item1{
+           background: red;
+       }
+       .item2{
+           background: green;
+       }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="item1 item">div1
+        </div>
+        <div class="item2 item">div2</div>
+    </div>
+    <p>pp</p>
+    <script src="./jquery.js"></script>
+    <script>
+        
+        // $('.wrapper').on('click', '.item',function(e) {
+        //     console.log($(this).html());
+        // })
+
+        
+        // $('.item').on('click', function() {
+        //     console.log($(this).html());
+        // })
+        // $('<div class="item">div3</div>').appendTo($('.wrapper'))
+        //$('.item').off('click');
+        
+        
+        // $('.wrapper').on('click', '.item', function() {
+        //     console.log($(this).html());
+        // })
+        // $('.wrapper').off();
+
+        // $('.wrapper').on('click', '.item1', function() {
+        //     console.log($(this).html());
+        // })
+        // $('.wrapper').on('click', '.item2', function() {
+        //     console.log($(this).html());
+        // })
+        // $('.wrapper').off('click', '.item1');
+
+        // function a() {
+        //     console.log('a');
+        // }
+        // function b() {
+        //     console.log('b');
+        // }
+        // $('.wrapper').on('click', '.item1', a);
+        // $('.wrapper').on('click', '.item1', b);
+        // $('.wrapper').off('click', '.item1', a);
+
+        function a() {
+            console.log(a);
+        }
+        $('.wrapper').one('click', '.item1', a); //只能绑定一次，省了解绑的过程
+
+        $(window).scroll(function() {
+            console.log($(window).scrollTop());
+            $('.wrapper').css({top: $(window).scrollTop() + 100});
+        })
+    </script>
+</body>
+</html>
+/************************************************************************************************************************/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .wrapper{
+            position: relative;
+            top: 100px;
+            left: 100px;
+        }
+        .item{
+            position: absolute;
+            top: 100px;
+            left: 100px;
+        }
+        /* body{
+            width: 1000px;
+            height: 1000px;;
+        } */
+        /* div{
+            width: 100px;
+            height: 100px;
+            padding: 10px;
+            border: 10px solid #000;
+            margin: 10px;
+            background: red;
+        } */
+
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">wrapper
+        <div class="item">div</div>
+    </div>
+    <input type="text">
+    <!-- <div></div> -->
+    <script src="./jquery.js"></script>
+    <p>pp
+        <a href="www.baidu.com">百度一下邓哥</a>
+    </p>
+
+    <script>
+    
+    // console.log($('div').innerWidth());
+    // console.log($('div').outerWidth());
+    // console.log($('div').outerWidth(true)); // 加上margin的
+    // console.log($('div').width());
+
+    //$('<div>div</div>').appendTo($('body'));
+
+    // $('body').click(function(e) {
+    //     console.log(e.pageY);  //相对于文档
+    //     console.log(e.clientY); //相对于窗口
+    //     console.log(e.screenY); //相对于电脑屏幕
+    // })
+
+    // $('input').keydown(function(e) {
+    //     console.log(e.which);
+    // })
+
+
+    // $('input').mousedown(function(e) {
+    //     console.log(e.which);
+    // })
+
+    // $('input').on('mousedown contextmenu', function(e) {
+    //     e.preventDefault();
+    //     //console.log(e.which);
+    //     console.log(e.button);
+    // })
+
+    // $('a').click(function(e) {
+    //     //e.stopPropagation();
+    //     //e.preventDefault();
+    //     return false;
+    //     console.log('span');
+    // })
+    // $('p').click(function() {
+    //     console.log('p');
+    // })
+
+    //offset相对文档的值 position相对于有定位的父级
+
+    </script>
+</body>
+</html>
+/***************************************************************************************************************/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    .demo{
+        position: absolute;
+        top: 0;
+    }
+    .item{
+        position: absolute;
+        top: 0;
+    }
+    </style>
+</head>
+<body>
+    <ul>
+        <div class="demo">
+            <li>
+                <div class="item">
+                    <p>
+                        <span>span</span>
+                    </p>
+                </div>
+            </li>
+        </div>
+    </ul>
+    <script src="./jquery.js"></script>
+    <script>
+    // console.log($('span').parent('li')); // 括号里如果什么都不添会返回离你最近的直接父元素   里面填的p,判断直接父元素是不是p 如果是就返回  不是就什么都不返回(刷选直接父元素)
+    // console.log($('span').offsetParent()); // 返回离它有定位最近的父级 括号里面是不能传参数的(不关心它的参数的)
+    // console.log($('span').parents('div')); // 返回它所有的父级元素 里面可传(刷选)
+
+    // console.log($('span').closest('div'));  //一定要传参数 查找离他最近的元素
+    // console.log($('span').closest('span')); // 可以把自身刷选出来(它是从自身开始找的)
+
+
+    </script>
+</body>
+</html>
+/********************************************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
