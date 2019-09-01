@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.css">
+    <style>
+
+        body{
+            height: 2000px;
+        }
+        /* .btn-lg{
+            width: 300px;
+        } */
+        img{
+            width: 140px;
+            height: 140px;
+        }
+        .item1{
+            background: deeppink;
+        }
+        .item2{
+            background: orange;
+        }
+        .item3{
+            background: green;
+        }
+
+    </style>
+</head>
+<body>
+
+    <button class="btn btn-default">button</button>
+
+    <h1>邓哥妻妾成群</h1>
+    <h2>成哥帅气逼人</h2>
+    <h3>思彤哥<small>年轻</small><span class="small">有为</span></h3> <!-- small: 有着重强调一下的作用 -->
+    <h4>冰姐集<mark>才华</mark>和<mark>美貌</mark>于一身</h4>
+    <h5>鲁巍鲁大师</h5>
+   
+    <br>
+    <span class="h1">邓哥妻妾成群</span>
+    
+    <br>
+    <br>
+    <p class="lead">北京鄂温克问放开我难道就肯定你打开五零年代那我开了
+        你对我啃啃带我离开门打开了我缅甸老挝面对未来缅甸老挝
+        当你离开我你看到我打开了我呢看来你我的未来克拉克我
+    </p>
+    <p>
+            北京鄂温克问放开我难道就肯定你打开五零年代那我开了
+            你对我啃啃带我离开门打开了我缅甸老挝面对未来缅甸老挝
+            当你离开我你看到我打开了我呢看来你我的未来克拉克我
+    </p>
+
+    原价: <del>999元</del>   现价:99元
+    
+    <br>
+    <br>
+    <p class="text-left">邓哥妻妾成群</p>
+    <p class="text-center">邓哥妻妾成群</p>
+    <p class="text-right">邓哥妻妾成群</p>
+    <p class="text-justify">邓哥妻妾成群</p><!-- 超出容器换行 -->
+    <p class="text-nowrap">邓哥妻妾成群</p><!-- 超出容器不换行 -->
+
+    <br>
+    <p class="text-lowercase">First name</p>
+    <p class="text-uppercase">First name</p>
+    <p class="text-capitalize">First name</p> <!-- 首字母大写 -->   
+
+    <abbr title="attribute">attr</abbr>
+    
+    <br>
+    <br>
+    <ul class="list-inline"> <!-- 1. li变成display: inline-block   2. 小圆点也没有了   思考源码怎么写的??? -->
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+
+    <code>&lt;a&gt;<code> <!-- 标签还有默认样式 -->
+    
+    <br> 
+    <br>
+     <table class="table table-striped table-bordered"> <!-- table-striped在IE8以下是不支持的  源码是基于:nth-child  padding值 -->
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Username</th>
+            </tr>
+        </thead>
+        <!-- 头部的信息 firstName lastName -->
+        <tbody>
+            <tr>
+                <th>1</th>
+                <th>aa</th>
+                <th>bb</th>
+                <th>cc</th>
+            </tr>
+            <tr>
+                <th>2</th>
+                <th>dd</th>
+                <th>ee</th>
+                <th>ff</th>
+            </tr>
+            <tr>
+                <th>1</th>
+                <th>aa</th>
+                <th>bb</th>
+                <th>cc</th>
+            </tr>
+        </tbody>
+        </table>
+
+        <a href="#" class="btn btn-default btn-lg btn-block" disabled="disabled">a</a>
+        <a href="#" class="btn btn-success active">a</a> <!-- 你要是点击颜色就深一下 代表活跃的状态 有个class的伪类active -->
+        <a href="#" class="btn btn-success">a</a>
+        <a href="#" class="btn btn-success btn-sm">a</a>
+        <a href="#" class="btn btn-success btn-xs">a</a>
+
+        <br>
+        <br>
+        <img src="./img/1.jpg" alt="..." class="img-rounded">
+        <img src="./img/2.jpg" alt="..." class="img-circle">
+        <img src="./img/3.jpg" alt="..." class="img-thumbnail">
+
+        <br>
+        <br>
+        <button type="button" class="close"><span>&times;</span></button>
+        
+        <span class="caret"></span>
+        
+        <br>
+        <br>
+        <a href="#" class="btn btn-success btn-xs">a<span class="caret"></span></a>
+                                        <!-- 下拉菜单就是在这基础上进行了一些更改 给它下面写了一组ul li 实现下拉的 -->
+                                        <!-- 组件就是把这些基础样式拼接 拼接 凑凑 就成了组件 把组件拼接就成了页面 -->  
+
+        <br>
+        <br>
+                                <!-- container是根据媒体查询来做的 -->  <!-- 会有默认的margin值  97*12不一定等于1170  --> <!-- 针对不同的分辨率对应不同的class类名 -->                                                                                   
+        <div class="container"> <!-- container-fluid: 为什么撑开了??? 因为这个class类名它会把当前的这个div宽度变成100% 它的父级body body是充满整个屏幕的 所以div充满整个屏幕 -->
+            <div class="row"> <!-- 为什么没有顶到两边?? 因为在中等屏幕尺寸下它会把container大小设置为970px 当前屏幕是1000px多了 两边必然会空出一段距离 -->
+                <div class="col-md-2 col-sm-6 item1">col-md-2</div> <!-- 不好使的时候这个div变成块元素了 -->
+                <div class="col-md-4 col-sm-4 item2">col-md-4</div> <!-- col-sm-5: 超出的元素自动串到下一行去 -->
+                <div class="col-md-6 col-sm-2 item3">col-md-6</div> <!-- 可以在一个标签当中多给它设置不同的class类名 在不同的分辨率下会有不同的样式 -->
+            </div>
+        </div>  
+        
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 col-md-offset-2 item1">.col-md-9 .col-md-push-3</div> <!-- col-md-offset-2: margin-left来写的 并没有脱离文档流 往右一挤后边肯定掉下来了 -->
+                <div class="col-md-3  item2">.col-md-3 .col-md-pull-9</div> 
+            </div>
+        </div>
+
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 col-md-push-3 item1">.col-md-9 .col-md-push-3</div><!-- 脱离文档流不会把后面的窜走了  .col-md-push-3: left -->
+                <div class="col-md-3 col-md-pull-9 item2">.col-md-3 .col-md-pull-9</div> <!-- .col-md-pull-9: right -->
+            </div>
+        </div>
+
+        
+        <br>
+        <form action="" class="form-inline">
+            <!-- form-inline: 变成内联表单 -->
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" placeholder="username">
+            </div>  
+            <div class="form-group">
+                <label for="password">password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password">
+            </div>
+            <div class="input-group">
+                <div class="input-group-addon">$</div><!-- 添加图标 -->
+                <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                <div class="input-group-addon">.00</div>
+            </div>
+            <button class="btn btn-default">submit</button>
+        </form>
+
+
+        <br>
+        <form class="form-horizontal">
+
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Remember me
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Sign in</button>
+              </div>
+            </div>
+          
+        </form>
+
+
+          <br>
+          <select class="form-control">
+            <opti   on>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+    
+        <script>
+
+        // Bootstrap是一个UI类库
+        //    除了UI事件效果之外 还有一些一点点的js功能 除此之外还有些插件
+        // 在新版本(3)之中bootstrap记录很多CSS3的东西 它做了很多媒体查询 能做响应式布局
+        // 为什么说它是CSS/HTML框架呢??   刚刚不是说还有JavaScript 其实它的样式更大于它的功能
+        //       因为它的样式做的非常简洁非常灵活 我们只需按照它的dom结构按照它的CSS文件就可以把这个样式实现出来
+        //       像jQuery jQuery.js主要是功能函数 是js的类库  bootstrap更注重于的是你一个页面的布局 
+        //       所以更强调它是一个HTML/CSS框架  当然它会有简单的CSS操作
+        // 在Bootstrap源码当中 它的CSS样式是用CSS预处理语言less来写的 因为less是需要编译环境的 是需要编译的
+        //     因为less最后也会编译成CSS less除了是预处理语言也是样式表  less你要用它的话不能直接写 不能直接编译 
+        // 特点: 1. 它非常好的能适用于各个屏幕  在屏幕中会用到媒体查询 在Bootstrap中里面就用了很多媒体查询 像栅格系统中就用了媒体查询
+        //       2. 它的javaScript地方是基于jQuery来书写的 所以说它可以支持jQuery的很多插件 我们要用到Bootsrap封装好的js 
+        //          首先要引入一下jQuery 因为它是基于jQuery进行开发的 
+        //
+        //  Bootstrap用了很多CSS3的东西 其实CSS3很多属性只支持到IE8 包括我们那个圆角只支持到IE8 它的甚至包括IE7并不是所有的都支持
+        //  同样一套页面 你大的时候上面排三个按钮 小的时候排两个 再小的时候排一个 同样的一套页面 它能根据屏幕的分辨率灵活的进行缩放
+        //  为什么说less比较好呢??  
+        //       1. 因为less当中可以设变量 比如说你有一个颜色 有宽度什么的 你可以把一些颜色一些宽度这些基础的变量设在最上面 然后下面哪个想用用哪个
+        //          或者说你可以设置一个小三角形 这个小三角哪用你把小三角往哪引入就完事了 而且引的话只引这变量名就可以 而且这个变量你可以自己往里传 
+        //          比如你可以传这小三角的大小 比如你自己定义一个圆/定义一个border 这个border你可以自己往大小 尺寸等样式 
+        //          这些东西都可以定义成变量 哪里用就那里使用 所有说less用起来比较简单
+        //       2. 再有一个less可以进行一个嵌套的操作 比如说你的页面层级很深的话  我们写CSS样式要写一大排   
+        //
+        //
+        // 你有这个CSS样式是因为在CSS文件当中对他进行一个样式的设置 所有说才会有这样的一个样式 你自己写个aabb跟我们平时写button按钮没什么样式
+        // 其实Bootstrap其实就是按照你这个dom结构写东西 按照你这个类名来设置class 然后把你CSS一引入就有这样的样式了
+        //
+        // 拿过来先思考 把整体分块 需要根据你当前的项目进行技术选型 包括项目适用的场景 应用的人群以及流量是多少 是什么类型的 根据项目的特征进行技术选型 
+        //     什么叫技术选型?? 选择一个合适这个项目的技术 比如你拿到这个项目了你是选用agurl 选用Vue 还是选用Reacat  还是说就是一个页面用不着什么框架
+        //                     一个jQeury就可以决定了 如果只是一个简单的H5页面了 不用选框架了 甚至jQuery都不用使了 
+        //     每个框架的侧重点都是不同的 虽然现在框架中有些功能用另外一个框架也能实现 他们的主要侧重点不相同  就像刚才的button按钮a标签能实现 
+        //         input能实现 button也能实现 但最好在用的时候回归它的本意 它设置标签的时候为什么设置a? 既然一模一样的功能为什么设置a
+        //         所以使用的标签的时候尽量回归标签的本意
+        //
+        // 模块化其实是把复杂的功能进行解耦  变成一小个一小个单独的功能函数 这样的话使用起来降低他们的耦合度 也便于我们的开发和维护 以及代码更新迭代了
+        //     你维护起来比较简单 哪个函数不要 哪个函数需要更新了 只要更新那一个函数就行了 不然的话你没有解耦 整个函数都交织在一起的话
+        //     那你千丝万缕的 不太好处理了 所以说我们这个时候要开始对他进行模块化 其实模块化也是开发分而治之的思想 
+        //
+        // 模块化和主件化区别: 1. 模块化是指把复杂的一些功能进行解耦 只要指js的一些代码功能进行解耦 
+        //                   2. 主件化其实是对这些UI拆分 比如说你这个页面有头部 有中间的这块内容 还有下面展示的 或者还有foot的内容 
+        //                      这样一个页面的话你可以把它给拆了 拆成一个一个的小组件 比如上面的导航组件 下面的轮播图组件 再往下可能有foot组件
+        //                      可以把它当成一个一个小组件来做 如果说你当前做了某个官方网站 官方网站当中一般头和尾都是长的差不多的 
+        //                      你把这些组件都写好之后在其他文件当中也用到这个头和尾的时候把这个组件拿过来用 可以减少一些代码量
+        //                      其实主件化的开发可以理解成一个组装车的过程 不会因为一个出现什么问题/一个模块出现什么问题影响整个项目的进度 
+        //                      坏哪改哪就可以了   所以模块化主件化是非常有必要的
+        //
+        // 学习的最快的方式: 学习最快的方式可能前期需要借助视频来学习  后期你要学习一些新的技术没有那么多视频来给你学习的 你需要看的就是官方文档
+        //                  看一些资料进行学习
+        //
+        // p标签默认都是左对齐
+        // 正常表格就是会有这个table效果 只不过在这个table效果之上对添加了样式功能 看起来比我们用的table稍微正常好看些 可控
+        //
+        // 默认的margin值所以会导致它乘于12不一定等于它
+    
+    </script>
+    
+</body>
+</html>
