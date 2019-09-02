@@ -1,0 +1,189 @@
+import { request } from "http";
+
+// function *test() {
+//     yield 'a';
+//     console.log('1');
+//     yield 'b';
+//     console.log('2');
+//     yield 'c';
+//     console.log('3');
+//     return 'd';
+// }
+// let oG = test();
+// console.log(oG.next()); // 执行完返回一个{value: , done}
+// console.log(oG.next()); 
+// console.log(oG.next()); 
+// console.log(oG.next()); 
+// console.log(oG.next()); 
+
+
+// function *test() {
+//     let value1 = yield 'a'; // 执行完yeild 'a' 就不执行赋值操作了   
+//                             //    这个不是把'a'赋值给value1 value1不是取决于yeild产出的值是啥 而是取决于你这次.next传入的值是什么 
+//     console.log(value1);
+//     let value2 = yield 'b';
+//     console.log(value2);
+//     let value3 = yield 'c';
+//     console.log(value3);
+//     return 'd';
+// }
+// let oG = test();
+// console.log(oG.next()); // 执行完返回一个{value: , done}
+// // console.log(oG.next()); 
+// // console.log(oG.next()); 
+// // console.log(oG.next()); 
+// // console.log(oG.next());
+// // 这块是蛇形的执行方式
+// console.log(oG.next()); 
+// console.log(oG.next(1)); 
+// console.log(oG.next(2)); 
+// console.log(oG.next(3));
+    
+
+
+
+//------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+// Genarator改写-1
+// iterator函数的目的 执行完返回可以迭代的对象   
+// let obj = {
+//     0: 'a',
+//     1: 'b',
+//     2: 'c',
+//     length: 3,
+//     [Symbol.iterator]: function *() {
+//         let curIndex = 0;
+//         while(curIndex != this.length) {
+//             yield this[curIndex];
+//             curIndex ++;
+//         }
+//     }
+// }
+// console.log([...obj]);
+// for(let p of obj) {
+//     console.log(p);
+// }    
+
+
+
+
+// 解决回调地狱的问题 写的不够优雅    这个要在node.js环境下去跑
+// let fs = require('fs');
+// function readFile(path) {
+//     return new Promise((res, rej) => {
+//         fs.readFile(path, 'utf-8', (err, data) => {
+//             if(data) {
+//                 res(data);
+//             }else {
+//                 rej(err);
+//             }
+//         });
+//     });
+// };
+// readFile('./data/number.txt').then((val) => {
+//     // console.log(val);
+//     return readFile(val);
+// }).then((val) => {
+//     return readFile(val);
+// }).then((val) => {
+//     console.log(val);
+// })
+
+
+// 通过Generator改写这样的写法
+// let fs = require('fs');
+// function readFile(path) {
+//     return new Promise((res, rej) => {
+//         fs.readFile(path, 'utf-8', (err, data) => {
+//             if(data) {
+//                 res(data);
+//             }else {
+//                 rej(err);
+//             }
+//         });
+//     });
+// };
+// // Generator函数
+// function *read() {
+//     let val1 = yield readFile('./data/number.txt');
+//     let val2 = yield readFile(val1);
+//     let val3 = yield readFile(val2);
+//     return val3;
+// }
+// let oG = read();
+// let {value, done} = oG.next(); // 解构赋值
+// value.then((val) => {
+//     let {value, done} = oG.next(val);
+//     value.then((val) => {
+//         let {value, done} = oG.next(val);
+//         value.then((val) => {
+//             console.log(val);
+//         });
+//     })
+// })
+
+
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+
+
+// Generator改写-2
+// 层层调用
+// 每层差不多
+// 递归优化
+// let fs = require('fs');
+// function readFile(path) {
+//     return new Promise((res, rej) => {
+//         fs.readFile(path, 'utf-8', (err, data) => {
+//             if(data) {
+//                 res(data);
+//             }else {
+//                 rej(err);
+//             }
+//         });
+//     });
+// };
+// // Generator函数
+// function *read() {
+//     let val1 = yield readFile('./data/number.txt');
+//     let val2 = yield readFile(val1);
+//     let val3 = yield readFile(val2);
+//     return val3;
+// }
+// function Co(oIt) { // 接受一个迭代对象   这个其实是一个库
+//     return new Promise((res, rej) => {
+//         let next = (data) => {
+//             let {value, done} = oIt.next(data);
+//             if(done) { // 递归出口
+//                 res(value);
+//             }else {
+//                 value.then((val) => {
+//                     next(val);
+//                 }, rej);
+//             }
+            
+//         }
+//         next();
+//     });
+// }
+// Co(read()).then((val) => {
+//     console.log(11, val);
+// }, () => {
+// })
+
+
+// TJ express koa node
+// let co = require('co');
+// co(read()).then((val) => {
+//     console.log(val);
+// })
+
+// 通过Co配合生成器解决回调地狱的问题 并不是代表所有的问题都可以通过它来解决的
+
+
+

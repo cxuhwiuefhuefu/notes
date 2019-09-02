@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        
+        // async+await
+        // 
+
+        // 异步编程会出现的问题
+        // 1. 回调地狱
+        // 2. try catch
+        // 3. 同步并发异步的结果
+
+        // function readFile(path) {
+        //     return new Promise(res, rej) => {
+        //         fs.readFile(path, 'utf-8', (err, data) => {
+        //             if(err) {
+        //                 rej(err);
+        //             }else {
+        //                 res(data);
+        //             }
+        //         })
+        //     }
+        // };
+        // readFile('./data/number.txt').then((val) => {
+        //     return readFile(val);
+        // }, () => {}).then((val) => {
+        //     return readFile(val);
+        // }).then((val) => {
+        //     console.log(val);
+        // });
+
+        // 这样能解决层层回调的事 但是你会发现要写很多个回调函数 一堆.then不够优雅
+        // 有没有写法写起来像同步很优雅 最后也是通过异步的方式来搞定的层层回调的结果
+
+
+
+        // async function read(url) {
+        //     let val1 = await readFile(url); // readFile执行完它是返回promise对象的  它执行完把最后的结果给val1
+        //     let va2 = await readFile(val1);
+        //     let val3 = await readFile(val2);
+        //     return val3;
+        // }
+        // read('./data/number.txt').then((val) => {// 返回的是promise对象 需要通过.then的方式来监测你是否读取成功了 
+        //     console.log(val);
+        // }); 
+        // 这样可读性好很多 比generator生成器加递归好很多
+        // 它是一个语法糖 底层的实现是拿generator的函数配合CO递归的思想和promise来实现的
+        // 它解决了回调地狱的事
+        // try catch只能去捕获同步操作的异常 异步的话没办法了 这块可以通过try的方式捕获异步的异常
+
+        // async function read(url) {
+        //     try {
+        //         let val1 = await readFile(url); // readFile执行完它是返回promise对象的  它执行完把最后的结果给val1
+        //         let va2 = await readFile(val1);
+        //         let val3 = await readFile(val2);
+        //         return val3;
+        //     }catch(e) {
+        //         console.log(77, e);
+        //     }   
+        // }
+        // read('./data/number.txt').then((val) => {// 返回的是promise对象 需要通过.then的方式来监测你是否读取成功了 
+        //     console.log(val);
+        // }); 
+        // async和await这样的异步操作也能让这个try catch捕获到
+
+
+
+
+        // 通过async和await去解决异步的问题 它代码量比之前少一些 可读性比之前高 写起来像同步了 通过它来异步的问题更优雅一些
+        // 之前通过解决同步并发异步的结果是用Promise.all()去解决的 首先Promise.all()使用的时候需要传递多个promise对象 
+        // Promise.all([readFile('./data/number1.txt'), readFile('./data/number1.txt'), readFile('./data/number1.txt')]).then((val) => {
+        //     console.log(val);
+        // }, (reason) => {
+        //     console.log(reason);
+        // })   
+        // 全部成功才成功 一个失败全失败
+        
+        
+        
+        // 需求: 失败的不管 成功的处理 可以通过async+await来实现
+        async function read1() {
+            let val1 = null;
+            try{
+                val1 = await readFile('./data/number1.txt');
+                console.log(val1);
+            }catch(e) {
+                console.log(e);
+            }
+        };
+        async function read2() {
+            let val2 = null;
+            try{
+                val2 = await readFile('./data/number2.txt');
+                console.log(val2);
+            }catch(e) {
+                console.log(e, 2);
+            }
+        };
+        async function read3() {
+            let val3 = null;
+            try{
+                val3 = await readFile('./data/number3.txt');
+                console.log(val3);
+            }catch(e) {
+                console.log(e, 3);
+            }
+        };
+        // 如何并发的去执行它 
+        function raedAll(...args) {
+            args.forEach((ele) => {
+                ele();
+            })
+        }
+        raedAll(read1, read2, read3);
+       
+    
+    </script>
+
+</body>
+</html>

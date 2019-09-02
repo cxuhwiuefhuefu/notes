@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        
+        // 了解Iterator
+
+        // Iterator的思想取自于我们的迭代模式的
+
+        // let arr = [1, 2, 3];
+        // for
+        // Array.prototype.forEach  这这个就是我们所说的迭代器 它就是用迭代模式的思想做出的函数 本质是内部迭代器
+        // jQuery.each不仅能迭代数组 而且能迭代对象 比forEach功能强大
+    
+        
+
+
+        // 外部迭代器
+        // let arr = [1, 2, 3];
+        // function OuterIterator(o) {
+        //     let curIndex = 0;
+        //     let next = () => {
+        //         return {
+        //             value: o[curIndex],
+        //             done: o.length == ++curIndex
+        //         }
+        //     }
+        //     return {
+        //         next
+        //     }
+        // }
+        // let oIt = OuterIterator(arr); // 这个函数执行完返回迭代对象 这个对象调用next 每次调用完它返回一个对象 {value: ,done: }
+        // 每次执行next方法 都会返回一个对象 {value: '', done: ''} value是当前拿出来的布尔值  done是布尔值 告诉外界用户你有没有迭代完
+        //     有没有迭代到最后
+        // oIt.next(); 
+        // oIt.next();
+        // oIt.next();
+        
+
+        // [] forEach 
+        // {} for in
+        // jQuery.each()只能迭代数组和对象 Iterator还能迭代set map
+            
+
+
+
+        // console.log([...new Set([1, 2, 3])]);
+        // console.log(...new Map([['name', 'hh'], ['age', 18]]));    
+        // Set和Map原型上都有Symbol.iterator这个的迭代接口
+        // ES6引入这个Iterator是了这些数据有统一的便利或者进行for of ... Array.from等操作 方便我们写代码的时候不用大范围的重构
+    
+    
+    
+    
+        //-----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+        // Symbol
+
+        // let os = Symbol('abc');
+        // console.log(typeof os);
+        // console.log(os);
+
+        // let os2 = Symbol({
+        //     name: 'hh'
+        // })
+        // console.log(os2); // 找原型上Object.prototype.toString()方法
+
+        // let os2 = Symbol({
+        //     name: 'hh',
+        //     toString: function() {
+        //         return 'hehe'
+        //     }
+        // })
+        // console.log(os2); // 重写toString方法
+
+        // let os1 = Symbol('abc');
+        // let os2 = Symbol('abc');
+        // console.log(os1 == os2); // 具有唯一性的 
+
+        // let prop = 'name';
+        // let obj = {
+        //     [prop]: 'hh'
+        // }
+        // console.log(obj);
+
+        // let os2 = Symbol('abc');
+        // let obj = {
+        //     [os2]: 'hh'
+        // }
+        // console.log(obj);
+        // console.log(obj[os2]); // 取值的话不能点点的方式来取 只能中括号的形式来取
+
+        // let os = Symbol('abc');
+        // let os2 = Symbol('abc');
+        // let obj = {
+        //     [os2]: '呵呵',
+        //     [os]: '哈哈'
+        // }
+        // console.log(obj);
+        // console.log(obj[os]);
+        // console.log(obj[os2]);
+
+        // console.log(Symbol.iterator); 
+        // console.log(Symbol('Symbol.iterator'));
+
+        // arr set map arguments nodelist都有这个属性Symbol.iterator 这个属性等于iterator迭代函数
+
+
+
+
+        //---------------------------------------------------------------------------------------------------------------------------
+
+
+
+        // Iterator接口
+        // let obj = {
+        //     0: 'a',
+        //     1: 'b',
+        //     2: 'c',
+        //     length: 3
+        // }
+        // console.log([...obj]); // 报错 这个对象不能被迭代 因为它没有Symbol.iterator这个属性 
+       
+        // let arr = [1, 2];
+        // console.log([...arr]);
+
+        // 把不可迭代的数据变成可迭代的数据 
+        // let obj = {
+        //     0: 'a',
+        //     1: 'b',
+        //     2: 'c',
+        //     length: 3,
+        //     [Symbol.iterator]: function() {
+        //         let curIndex = 0;
+        //         let next = () => {
+        //             return {
+        //                 value: this[curIndex],
+        //                 done: this.length == ++curIndex
+        //             }
+        //         }
+        //         return {
+        //             next
+        //         }
+        //     }
+        // }
+        // console.log([...obj]);
+        // for(let p of obj) {
+        //     console.log(p);
+        // }
+
+        // Generator要去生成一个迭代对象 为什么能生成迭代对象呢 就是根据Symbol.iterator
+
+    </script>
+
+</body>
+</html>

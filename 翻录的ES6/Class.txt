@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+   <script>
+       
+        // 私属性 公有属性(原型属性) 静态属性(函数属性) 
+        //   class Plane {
+        //       // ES7
+        //       //   static alive = 10;
+        //       static alive() {
+        //           return true;
+        //       }
+
+        //       constructor(name) {
+        //           this.name = name || '普通飞机';
+        //           this.blood = 100;
+        //       }
+        //       fly() {
+        //           console.log('fly');
+        //       }
+            
+        //       // ES7的写法
+        //       // name = 10; 这个在ES6去执行会报错的    它在ES7中是私有属性 不是原型上的属性 
+        //   };
+        //   var oP = new Plane();
+        //   console.log(oP);
+        //   oP.fly();
+        //   console.log(Plane.alive());
+
+        // 本质上还是函数 
+        // class是语法糖 意思它没有去改变原有的本质 它原有的本质还是我们ES5中的函数 只不过你这样写起来更方便 更简洁 更易懂 更高效一些
+        // 无法在原型上添加普通的属性 
+        // 可以定义静态属性 static  不支持非方法的静态属性  在ES7中是支持这样写的 静态方法定义完并不是在私有属性给它添加的 也不是在原型上添加的 
+        //     定义之后成为Plane上的方法
+
+
+
+
+        
+        // class Plane {
+        //     static alive() {
+        //         return true;
+        //     }
+        //     constructor(name) {
+        //         this.name = name || '普通飞机';
+        //         this.blood = 100;
+        //         return{
+        //             son: 'xixi'
+        //         }
+        //     }
+        //     fly() {
+        //         console.log('fly');
+        //     }
+        // };
+        // class AttackPlane extends Plane{
+        //     constructor(name) {
+        //         super(name); // 私有属性继承
+        //         this.logo = 'duyi';
+        //     }
+        //     dan() {
+        //         console.log('bububu');
+        //     }
+        // }
+        // var oAp = new AttackPlane('攻击机');
+        // console.log(oAp);
+
+        // 继承的话这样来写它主要还是去继承原型属性和静态属性 这种私有顺序怎么继承呢 construtor里的第一行写super()
+        // 静态方法继承过来也是在函数名上 而不是在你原型上的 
+
+
+
+        // 总结
+        // 1. 必须用new的方式来执行 
+        // 2. 通过class来定义这种类 它的原型属性不能枚举 静态属性也是不能枚举的
+        // 3. 静态属性要放到真正的函数上来 而非原型 
+
+
+
+
+
+        // -------------------------------------------------------------------------------------------------------------------
+        // 用ES5模拟实现ES6的Class
+
+
+        function _classCallCheck(_this, _constructor) {
+            if(!(_this instanceof _constructor)) {
+                throw "TypeError: Class constructor aa cannot be invoked without 'new'";
+            }
+        }    
+
+        // function Plane() {
+        //     // this
+        //     _classCallCheck(this, Plane);
+        //     // 把私有属性 公有属性 静态顺序给它赋上去了
+        // }
+
+        // 处理公有属性和静态属性 
+        function _defineProperties(target, props) {
+            // 可以实现 Object.defineProperty 可以把这个属性给到一个对象身上 并且设置它可枚举的可读可写
+            props.forEach(function(ele) {
+                // ele..key ele.value
+                Object.defineProperty(target, ele.key, {
+                    value: ele.value,
+                    writable: true,
+                    configurable: true
+                })
+            })
+        }
+        function _createClass (_constructor, _prototypeProperties, _staicProperties) {
+            // 如果有这个值就赋值给原型上
+            if(_prototypeProperties) {
+                _defineProperties(_constructor.prototype, _prototypeProperties);
+            }
+            //如果有这个值就把静态属性给它身上
+            if(_staicProperties) {
+                _defineProperties(_constructor, _staicProperties);
+            }
+        }
+
+        var Plane = (function() {
+            function Plane(name) {
+                // 判断是否以new的方式来执行 
+                _classCallCheck(this, Plane);
+                
+                // 私有属性
+                this.name = name || '普通飞机';
+                this.blood = 100;
+            }
+
+            // 第一个参数Plane原型上应该添加什么属性  第二个参数控制它身上应该添加什么静态属性
+            _createClass(Plane, [
+                {
+                    key: 'fly',
+                    value: function() {
+                        console.log('fly');
+                    }
+                }
+            ], [
+                {
+                    key: 'value',
+                    value: function() {
+                        return true;
+                    }
+                }
+            ]) 
+            return Plane;
+        })();
+
+        var oP = new Plane('普通飞机');
+        // console.log(oP);
+        // Plane();
+
+
+        function _inherit(sub, sup) {
+            Object.setPrototypeOf(sub.prototype, sup.prototype);
+        }
+
+        var AttackPlane = (function(Plane) {
+
+            // 这样原型就实现了比较好的继承
+            _inherit(AttackPlane, Plane);
+
+            function AttackPlane() {
+                _classCallCheck(this, Plane);
+                
+                // 私有属性继承
+                var _this = this;
+                var that = Plane.call(_this, name); 
+                if(typeof that == 'object') {
+                    _this = that;
+                }
+
+                _this.logo = 'duyi';
+                return _this;
+            };
+            _createClass(AttackPlane, [
+                {
+                    key: 'dan',
+                    value: function() {
+                        console.log('biubiubiu');
+                    }
+                }
+            ], [
+                {
+                    key: 'value',
+                    value: function() {
+                        return true;
+                    }
+                }
+            ]) 
+            return AttackPlane;
+        })(Plane);
+        var oAp = new AttackPlane();
+        console.log(oAp);
+
+
+        // 如果父类构造函数有返回值 这个返回值如果是对象的情况下的话 如果你子类去继承它的话再去继承这个子类  
+
+
+
+
+        // ------------------------------------------------------------------------------------------------------------------
+
+         // 有一种方法是面向对象的编程方法 原来的程序都是面向过程的 很机械  
+        // 编程形式的区别    (从逻辑上分)
+        //     1. 面向过程(机械 逻辑化思维把步骤控制分为第一步干嘛 第二步干嘛)  C
+        //                                                                             javaScript(半面向对象半面向过程 现在回归面向过程)
+        //     2. 面向对象(依靠谁的关系去解决什么问题)                       java
+
+        // typeof 
+
+   
+   
+   
+   </script>
+    
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        
+        // Object.defineProperty
+
+        
+
+        // vue双向数据绑定 数据劫持
+
+        // 可以用它定义一个对象的属性 
+
+        // 不可写的
+        // Function.prototype = {
+        //     name: 'test'
+        // }
+        // console.log(Function.prototype.name);
+
+        // 不可配置的 不可以被删除的
+        // var a = 10;
+        // console.log(window.a);
+        // delete window.a;
+        // console.log(window.a);
+
+        // Object.prototype不可被枚举的
+        // var obj = {
+        //     name: 'hehe',
+        //     age: 20,
+        //     __proto__: {
+        //         sex: 'male',
+        //         __proto__: {
+        //             lastName: 'haha'
+        //         }
+        //     }
+        // }
+        // for(var prop in obj) {
+        //     console.log(prop);
+        // }
+
+
+        // 这些特点是由Object.definedProperty来做的
+        // var obj = {};
+        // Object.defineProperty(obj, 'name', {
+        //     value: 'hehe'
+        // })
+        // obj.name = 10;
+        // console.log(obj.name);
+        // for(var prop in obj){
+        //     console.log(prop);
+        // }
+        // delete obj.name;
+        // console.log(obj.name);
+        // 默认是false 只可读
+
+
+        // var obj = {};
+        // Object.defineProperty(obj, 'name', {
+        //     value: 'hehe',
+        //     writable: false,
+        //     configurable: true,
+        //     enumerable: true
+        // })
+        // obj.name = 10;
+        // console.log(obj.name);
+        // for(var prop in obj){
+        //     console.log(prop);
+        // }
+        // delete obj.name;
+        // console.log(obj.name);
+
+
+        // value/writeable不能和get/set设置在一起    
+        // var obj = {};
+        // var tempValue = '';
+        // Object.defineProperty(obj, 'name', {
+        //     configurable: true,
+        //     enumerable: true,
+        //     get: function() {
+        //         // return 'hehe'
+        //         return tempValue;
+        //     },
+        //     set: function(newValue) {
+        //         tempValue = newValue;
+        //     }
+        // })
+        // console.log(obj.name);
+        // obj.name = 10;
+        // console.log(obj.name);
+        // 装饰器很多点是应用它的 
+    
+
+        // var obj = { // 天生可读可写可配置
+        //     name: 'a'
+        // };
+        // var tempValue = '';
+        // Object.defineProperty(obj, 'name', { // 不可写
+        //     value: 'hehe',
+        //     writable: false
+        // })
+        // // 可读可配置
+        // delete obj.name;
+        // console.log(obj.name);
+        
+
+        // var obj = {
+        //     tempValue: 'hehe',
+        //     get name() {
+        //         // return 'hehe';
+        //         return this.tempValue;
+        //     },
+        //     set name(newValue) {
+        //         this.tempValue = newValue;
+        //     }
+        // }
+        // console.log(obj.name);
+
+        // Object.defineProperty
+    
+    </script>
+
+</body>
+</html>

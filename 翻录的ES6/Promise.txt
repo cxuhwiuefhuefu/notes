@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <script src="./proxy.js"></script>
+   
+ <script>
+
+        // setTimeout(function(){ // 宏任务 4
+        //     console.log('定时器开始啦') 
+        // });
+        // new Promise(function(resolve){ // 直接执行 1
+        //     console.log('马上执行for循环啦'); 
+        //     for(var i = 0; i < 10000; i++){
+        //         i == 99 && resolve();
+        //     }
+        // }).then(function(){ // 微任务 3
+        //     console.log('执行then函数啦') 
+        // });
+        // console.log('代码执行结束'); // 直接执行 2
+
+
+    </script>
+    <script>
+
+
+        // executor 同步执行 
+        // res rej
+        // Pending(等待的状态) 触发Fulfilled(成功) Rejected(失败) 这两个状态有一个被触发了 
+        //    再也不能去切换了 
+        // let oP = new MyPromise( (res, rej) => {
+        //     res(0);
+            
+        //     // throw new Error(); // 假如这报错了 下面的那个哥们来接盘
+        // });
+        // oP.then((val) => {
+        //     console.log(val);
+        // }, (reason) => {
+        //     console.log(reason);
+
+        //     // 它来接盘
+        // })
+
+
+
+
+        // let oP = new MyPromise( (res, rej) => {
+        //     res(0);
+        //     rej(1)
+        //     throw new Error('duyi');
+            
+        //     // 这里做异步操作如何去写这个then 
+        // });
+        // oP.then((val) => {
+        //     console.log(val, 'ok');
+        // }, (reason) => {
+        //     console.log(reason, 'no');
+        // })
+        // 但是promise里面要做是异步的事情
+
+
+
+        
+        //-------------------------------------------------------------------
+        // 异步操作
+        // 以前是先去执行状态直接变 然后再去注册的时候 在注册中直接判断完直接执行这个回调就可以了
+        // 现在不一样 你要去先注册 然后再改变这个状态 此时再用这种方式就不能感知这种状态的变化 
+        //     可以用一个数组先存起来 你去注册一个函数的时候 我先不去执行 我先去存储 
+        //     真正用到你的时候我再去执行 
+        // let oP = new MyPromise((res, rej) => {
+        //     // 异步操作
+        //     setTimeout(() => {
+        //         res(0);
+        //         // rej(0);
+        //     }, 1000)
+        // })
+        // oP.then((val) => {
+        //     console.log(val, 'ok');
+        // }, (reason) => {
+        //     console.log(reason, 'no');
+        // })
+
+
+
+        
+        //------------------------------------------------------------------------
+        // 链式操作 处理链式操作的同时也处理返回值 返回值有普通的值和promise对象 
+        //     先处理返回普通值的情况
+        // then方法执行完会返回新的Promsie对象 如果使用原生Promise对象的话 
+        //     一个.then完事之后它会返回一个promise对象 
+        //     当它返回一个promise对象以后的话才可能再去.then 否则没有办法再去.then
+        // promsie规范也说了 当你去.then的时候它返回这个promise对象并不是这个oP 而是一个新的 
+        //     在后面实现要注意这个点了 你不能把oP当作返回值去返回出去 而是要去创建一个新的       
+        // let oP = new MyPromise((res, rej) => {
+        //     // 异步操作
+        //     setTimeout(() => {
+        //         res(0);
+        //         // rej(0);
+        //     }, 1000)
+        // })
+        // 你要知道一点无论是成功的回调还是失败的回调 它只要执行完里面没有所谓的错误
+        //     你只是返回一个普通的值 只要你返回一个非的promise对象 
+        //     下一个你.then注册函数的时候请问谁执行 一定是成功的它来执行 
+        //     在这块为了能让后面这个成功函数执行 所以你把第一个.then公性代码全部写在里面
+        //     我拿到onFulfilled执行函数的结果我去触发这个myPromsie 也就是下一个myPromise的成功状态 
+        //     下一个它.then注册的函数就执行了
+        // oP.then((val) => {
+        //     console.log(val, 'ok');
+
+        //     // 甚至你还可能在这抛出一个错误 
+
+        //     return 1;
+        // }, (reason) => {
+        //     console.log(reason, 'no');
+        //     return 2;
+        // }).then((val) => {
+        //     console.log(val, 'ok2');
+        // }, (reason) => {
+        //     console.log(reason, 'no2');
+        // })
+        // 现在你通过一个then注册的函数来执行的话 并且你执行完以后你会发现你可以链式操作 
+        //     无论前面注册的.then的函数是成功还是失败执行 只要你返回一个普通值 
+        //     那这个普通值都会当作这个参数传递给下一个这样成功的函数来执行
+        //     现在基本的链式操作已经完成搞定了  
+        // 现在有可能返回一个promise对象 甚至你还可能在这抛出一个错误
+        //     我们要对这种情况都做一个处理 而且也要对函数异步执行也要做处理
+        
+        
+
+        
+        // ------------------------------------------------------------------
+        // 上面说了then如何实现链式操作的以及处理这样的普通的返回值
+        // 通过then来注册这个回调函数的时候它在真正执行的时候并不是以同步的方式来执行 
+        //     是以异步的方式来执行的 模拟一下异步的方式来执行 用setTimeout来模拟一下这样的实现
+        //     在每个真正执行的回调加上这一层 在真正执行的时候是以异步的方式来执行
+        // 异步执行 
+        // let oP = new MyPromise((res, rej) => { // 直接执行
+        //     console.log(0);
+        //     res(1);
+        // });
+        // oP.then((val) => { // 微任务
+        //     console.log(val, 'ok');
+        // }, (reason) => {
+        //     console.log(reason, 'no');
+        // })
+        // console.log(2); // 直接执行
+        // 输出0 2 1
+        // 异步的问题基本解决了
+        
+        
+
+
+        // 如果在then中抛出一个错误无论是成功的函数还是失败的函数中抛出错误 
+        //     在下一个.then里面注册失败的函数一定能捕获到这个错误
+        // 在原生的promise可以捕获到错误 在自己的promise怎么实现 
+        //     每次你在真正执行这里面代码的时候 我可以通过try的方式来捕获你
+        // let oP = new MyPromise((res, rej) => {
+        //     console.log(0);
+        //     throw new Error('duyi');
+        //     res(1);
+        // });
+        // oP.then((val) => {
+        //     console.log(val, 'ok');
+        // }, (reason) => {
+        //     console.log(reason, 'no');
+        // }).then(() => {}, (reason) => {
+        //     console.log(reason);
+        // })
+        // console.log(2);
+        // 解决 异步执行 抛出错误
+        // 下面解决空then
+
+
+
+
+        // 空then 
+        // 我可能没有传参数 证明我失败和成功的回调都是null 什么都不传会有什么效果呢
+        // let oP = new MyPromise((res, rej) => {
+        //     res(1);
+        // });
+        // oP.then((val) => {
+        //     console.log(val, 'ok');
+        //     // throw new Error('duyi'); // 如果在这抛出一个错误 会直接透过空then
+        //     return 1;
+        // }, (reason) => {
+        //     console.log(reason, 'no');
+        // }).then((val) => { // 相当于空then的操作
+        //     return val;
+        // }, (reason) => {
+        //     throw new Error(reason); // 把错误的原因当作参数往里一传
+        // }).then((val) => {
+        //     console.log(val, '空then after');
+        // }, (reason) => {
+        //     console.log(reason, '空then after');
+        // })
+        // console.log(2);
+        
+        
+        // let oP = new MyPromise((res, rej) => {
+        //     res(1);
+        // });
+        // oP.then((val) => {
+        //     console.log(val, 'ok');
+        //     // throw new Error('duyi'); // 如果在这抛出一个错误 会直接透过空then
+        //     return 1;
+        // }, (reason) => {
+        //     console.log(reason, 'no');
+        // }).then().then((val) => {
+        //     console.log(val, '空then after');
+        // }, (reason) => {
+        //     console.log(reason, '空then after');
+        // })
+        // console.log(2);
+        // 空then怎么处理 一开始我就去做一个判断
+        // 它会忽略空的then去执行它 
+        // 如果抛出错误 then里面没有失败的回调会忽略它跳过它 
+        //     执行下一个then里面的失败的回调
+        
+    
+
+
+        // -----------------------------------------------    
+        // 如果你的返回值是一个Promise对象的话如何来处理
+        // let oP = new MyPromise((res, rej) => {
+        //     res(1);
+        // });
+        // oP.then((val) => {
+        //     console.log(val, 'ok');
+        //     return new MyPromise((res, rej) => { // 这个promise对象的触发决定后的then成功和失败回调的执行
+        //         // rej(0); // 当它触发rej 下一个.then触发失败的回调
+        //         res(0);
+        //     });
+        // }, (reason) => {
+        //     console.log(reason, 'no');
+        // }).then((val) => { // 你通过.then来给它注册成功和失败的回调其实并不是直接给 "return new myPromise" 注册成功和失败 而是"return new myPromise"外面的.then 因为这个.then执行完有一定的返回值 这个返回值是nextPromise 也就是你在后面.then依旧是给nextPromise注册成功和失败的回调 而不是给它"return new myPromise" 那为什么最后rej(0)触发还没影响到nextPromise所注册的函数呢?
+        //     console.log(val, 'ok 空then after');
+        // }, (reason) => {
+        //     console.log(reason, '空then after');
+        // })
+        // 输出 1'ok'   0 '空then after'
+
+
+
+
+        //--------------------------------------    
+        // promise静态方法 Promise.race
+        // Promise.all
+        // function test(delay, x) {
+        //     return new MyPromise(function(res, rej) {
+        //         setTimeout(function() {
+        //             rej('no:' + x);
+        //         }, delay);
+        //     })
+        // }
+        // test(2000, 'a').then((val) => {
+        //     console.log(val);
+        // }, (reason) => {
+        //     console.log(reason);
+        // })
+
+
+
+
+        // 只要有一个对象进入Fulfilled或者Rejected状态
+        // 就会继续进行后面的处理(看哪一个更快)
+        // promise里面放一个数组 数组中可以放多个promise对象 
+        //     谁先状态发生改变相应的触发后面成功或失败的回调函数 
+        //     它讲究谁先更快的改变就去处理谁
+        // function test(delay, x) {
+        //     return new MyPromise(function(res, rej) {
+        //         setTimeout(function() {
+        //             rej('no:' + x);
+        //         }, delay);
+        //     })
+        // }
+        // MyPromise.race( [test(200, 'a'), test(300, 'b'), test(100, 'c')] ).then(function(val) {
+        //     console.log(val);
+        // }, function(reason) {
+        //     console.log(reason);
+        // })
+    
+    
+    
+    
+    
+    </script>
+    
+</body>
+</html>
+
+
+
+//*******************************************************************************************************************************************************************************************************
+
+
+// executor 同步执行
+// res rej
+// pending 触发Fuilfilled Rejected
+
+
+function MyPromise(executor) { // 这个函数同步执行的 
+    var self = this;
+    self.status = 'pending';
+   
+    // oP.then这种方式就拿不到了你传的形参 让形参变成Promise对象自己的值
+    //    这样在其他其他地方就可以用到它了 
+    self.resolveValue = null;
+    self.rejectReason = null;
+    
+
+    // 回调数组 你先去注册一个函数我不执行 然后到你真正res的时候我再执行 
+    self.ResolveCallBackList = []; // 存储注册成功的函数
+    self.RejectCallBackList = []; // 存储注册失败的函数
+
+
+    function resolve(value) {
+        if(self.status === 'pending') { // 只有处于等待的状态你才能去改变你这样的状态 如果你是Fulfilled或者是Reject状态是不能再进行状态切换的
+            self.status = 'Fulfilled';
+
+            // 赋值 方便后续传递
+            self.resolveValue = value;
+
+            // 真正触发的时候把数组里面的东西拿出来
+            self.ResolveCallBackList.forEach(function(ele) {
+                ele();
+            });
+        }
+    }
+
+    function reject(reason) {
+        if(self.status === 'pending') {
+            self.status = 'Rejected';
+
+            self.rejectReason = reason;
+   
+            self.RejectCallbackList.forEach(function(ele) {
+                ele();
+            })
+        }
+    }
+
+    // 捕获同步代码是否出现异常 如果出现异常的话 可以通过catch的方式来捕获到 
+    //     捕获到的话rejct来执行 把捕获到的信息往外一传
+    // 首先它同步执行的时候你会感知到它是否抛出的错误了 如果真的抛出错误的情况的话 
+    //     相应的去执行这个reject
+    try { 
+        executor(resolve, reject);
+    }catch(e) {
+        // console.log(e);
+        reject(e);
+    }
+
+    // executor(resolve, reject);
+}
+
+
+
+
+// 现在的返回值不单是普通的返回值 只是做一个普通的处理
+//   有可能是promise对象 
+// 这个函数做统一的处理
+function ResolutionReturnPromise(nextPromise, returnValue, res, rej) { // returnValue: 当前上一个then执行的返回值
+    if(returnValue instanceof MyPromise) {
+        // Promise对象
+        returnValue.then(function(val) { // 也就是在这块的话给你注册成功和失败的回调的话 
+                                         //     外部使用的话一定会触发到你 触发到你 比如说 
+                                         //     你就注册成功和失败的回调我去通过.then在下面注册成功和失败的回调相应的执行
+            res(val);
+        }, function(reason) {
+            rej(reason);
+        });
+    }else {
+        res(returnValue);
+    }
+}
+
+
+
+
+// 这个then方法第一个版本首先让这个Promise对象执行这个方法 这个方法是原型身上上的
+//     因为每个Promise对象都能使用这个方法 就让它是原型身上的 
+MyPromise.prototype.then = function(onFulfilled, onRejected) {
+    
+    // 空then处理的判断 处理方案 
+    // 透视的本质不是忽视 而是你交给我的东西 我完全不去修改 原封不动的传递给下一位 这就是你填一个空then它内部是这么做的 
+    if(!onFulfilled) {
+        onFulfilled = function(val) {
+            return val;
+        }
+    }
+    if(!onRejected) {
+        onRejected = function(reason) {
+            throw new Error(reason); // 你这个错误抛到我这里来我再给你下一个去吧 这个透彻的本质并不是忽视 而是你交给我的东西我不去修改 原封不动的传递给下面  这是你添加一个空then内部是这样来做的 
+        }
+    }
+
+
+    var self = this;
+
+    
+    
+    
+    // 也就是我要去创建一个新的Promsie 在里面也要写一个执行的函数 最后也要返回它
+    var nextPromise = new MyPromise(function(res, rej) {    
+
+        
+        // 把外面的代码往里面放的话首先你不耽误第一个then的功能 因为你第一个then在执行的时候
+        //     new Promise的时候 这里面的代码也是同步执行的  
+        //     所以你写里面和写外面对第一个then来执行这里面的功能来讲的话没有任何干扰的 
+        //     为什么写在这里面呢 有一个好处 比如可以在这拿到你这个返回值 拿到返回值可以做另外一件事情了
+
+        // 实现最简单的then方法应用了 
+        // 但是promise里面要做是异步的事情 这个代码无法完成 
+        //     如果做一个异步的事情去触发一个状态的话 怎么让它执行
+        // 这个很好解决同步的问题
+        // if(self.status === 'Fulfilled') {
+        //     var nextResolveValue = onFulfilled(self.resolveValue);
+
+        //     // 那到返回值可以做这个事情
+        //     res(nextResolveValue);
+        // }
+        // if(self.status === 'Rejected') {
+        //     var nextRejectValue = onRejected(self.rejectReason);
+        //     res(nextRejectValue);
+        // }
+        
+        // 异步判断
+        // if(self.status === 'pending') {
+        //     // 自己有个判断才相应的push ... 自己写
+        //     self.ResolveCallBackList.push(function() {
+        //         // onFulfilled(self.resolveValue);
+
+        //         var nextResolveValue = onFulfilled(self.resolveValue);
+
+        //         // 那到返回值可以做这个事情
+        //         res(nextResolveValue);
+        //     });
+        //     self.RejectCallbackList.push(function() {
+        //         // onRejected(self.rejectReason);
+
+        //         var nextRejectValue = onRejected(self.rejectReason);
+        //         res(nextRejectValue);
+        //     })
+        // } 
+        //--------------------------------------------------
+
+
+
+
+        // then有其他特点
+        // if(self.status === 'Fulfilled') {
+        //     // 现在没有去搞微任务的权限 可以通过setTimeout来模拟这样的实现  
+        //     //     我在每个真正执行回调的地方都加上这么一层 那么它在真正执行的时候就是以异步的方式来实现
+        //     // 当然你也写一个函数来真正做异步实现的事情 对实现它讲的话没有太大的必要性
+        //     // 可以写一个函数 可以接受参数 往里一传 传完之后就让函数真正异步执行
+        //     setTimeout(function() {
+        //         var nextResolveValue = onFulfilled(self.resolveValue);
+        //         // 那到返回值可以做这个事情
+        //         res(nextResolveValue);
+        //     }, 0);   
+        // }
+        // if(self.status === 'Rejected') {
+        //     setTimeout(function() {
+        //         var nextRejectValue = onRejected(self.rejectReason);
+        //         res(nextRejectValue);
+        //     }, 0)
+        // }
+        
+        // // 异步判断
+        // if(self.status === 'pending') {
+        //     // 自己有个判断才相应的push ... 自己写
+        //     self.ResolveCallBackList.push(function() {
+        //         setTimeout(function() {
+        //             // onFulfilled(self.resolveValue);
+        //             var nextResolveValue = onFulfilled(self.resolveValue);
+
+        //             // 那到返回值可以做这个事情
+        //              res(nextResolveValue);
+        //         }, 0)
+        //     });
+        //     self.RejectCallbackList.push(function() {
+        //         setTimeout(function() {
+        //             // onRejected(self.rejectReason);
+        //             var nextRejectValue = onRejected(self.rejectReason);
+                
+        //             res(nextRejectValue);
+        //         }, 0)
+               
+        //     })
+        // } 
+
+
+
+
+        // then中捕获错误
+        // if(self.status === 'Fulfilled') {
+        //     // 现在没有去搞微任务的权限 可以通过setTimeout来模拟这样的实现  
+        //     //     我在每个真正执行回调的地方都加上这么一层 那么它在真正执行的时候就是以异步的方式来实现
+        //     // 当然你也写一个函数来真正做异步实现的事情 对实现它讲的话没有太大的必要性
+        //     // 可以写一个函数 可以接受参数 往里一传 传完之后就让函数真正异步执行
+        //     setTimeout(function() {
+        //         try { // 执行完你这有抛出错误才能捕获到
+        //             var nextResolveValue = onFulfilled(self.resolveValue);
+        //             // 那到返回值可以做这个事情
+        //             res(nextResolveValue);
+        //         }catch(e) {
+        //             // 捕获完执行rej 触发下一个then失败的回调
+        //             rej(e);
+        //         }
+               
+        //     }, 0);   
+        // }
+        // if(self.status === 'Rejected') {
+        //     setTimeout(function() {
+        //         try {
+        //             // 现在的返回值只是普通的返回值 只做普通的处理
+        //             var nextRejectValue = onRejected(self.rejectReason);
+        //             res(nextRejectValue);
+        //         }catch(e) {
+        //             rej(e);
+        //         }
+                
+        //     }, 0)
+        // }
+        
+        // // 异步判断
+        // if(self.status === 'pending') {
+        //     // 自己有个判断才相应的push ... 自己写
+        //     self.ResolveCallBackList.push(function() {
+        //         setTimeout(function() {
+        //             try {
+        //                 // onFulfilled(self.resolveValue);
+        //                 var nextResolveValue = onFulfilled(self.resolveValue);
+        //                 // 那到返回值可以做这个事情
+        //                 res(nextResolveValue);
+        //             }catch(e) {
+        //                 rej(e);
+        //             }  
+        //         }, 0)
+                
+                
+        //     });
+        //     self.RejectCallbackList.push(function() {
+        //         setTimeout(function() {
+        //             try{
+        //                 // onRejected(self.rejectReason);
+        //                 var nextRejectValue = onRejected(self.rejectReason);
+        //                 res(nextRejectValue);
+        //             }catch(e) {
+        //                 rej(e);
+        //             }
+        //         }, 0);
+                
+        //     })
+        // } 
+       
+
+
+
+        // --------------------------------------------------
+        // 返回值是promsie对象的处理方式
+        if(self.status === 'Fulfilled') {
+
+            setTimeout(function() {  
+                try{
+                    // var nextResolveValue = onFulfilled(self.resolveValue);
+                    // res(nextResolveValue);
+
+                    var nextResolveValue = onFulfilled(self.resolveValue);
+                    ResolutionReturnPromise(nextPromise, nextResolveValue, res, rej); // 如果是同步的代码 你这个nextPromise传不到 因为nextPromise只有new MyPromise执行完才好使 只不过我现在不是同步代码 我这个是异步的代码 异步代码只有new MyPromise同步执行完把这个值返回给你nextPromise 然后它有值然后再去执行ResolutionReturnPromise
+                    // 它在执行前要得到nextResolveValue的返回值 这个函数能统一的处理你这个回调函数的返回值 也就是你所有的返回值都是我来处理了
+                }catch(e) {
+                    rej(e);
+                }
+            }, 0);
+        }
+        if(self.status === 'Rejected') {
+            setTimeout(function() {
+                try{
+                    // var nextRejectValue = onRejected(self.rejectReason);
+                    // res(nextRejectValue);
+
+                    var nextRejectValue = onRejected(self.rejectReason);
+                    ResolutionReturnPromise(nextPromise, nextRejectValue, res, rej);
+                }catch(e) {
+                    rej(e);
+                }
+            }, 0)
+        }
+    
+    
+        // 异步判断  无论是异步的事情还是同步的事情它都能解决
+        if(self.status === 'pending') {
+            self.ResolveCallBackList.push(function() {
+                setTimeout(function() {
+                    try {
+                        // var nextResolveValue = onFulfilled(self.resolveValue);
+                        // res(nextResolveValue);
+
+                        var nextResolveValue = onFulfilled(self.resolveValue);
+                        ResolutionRetrunPromise(nextPromise, nextResolveValue, res, rej);
+                    }catch(e) {
+                        res(e);
+                    } 
+                }, 0)
+                
+            });
+            self.RejectCallbackList.push(function() {   
+                setTimeout(function() {
+                  try {
+                        // var nextRejectValue = onRejected(self.rejectReason);
+                        // res(nextRejectValue);
+
+                        var nextRejectValue = onRejected(self.rejectReason);
+                        ResolutionReturnPromise(nextPromise, nextRejectValue, res, rej);
+                    }catch(e) {
+                        rej(e);
+                    }  
+                }, 0);
+                
+            })
+        }
+
+    });
+
+
+
+
+    // // 实现最简单的then方法应用了 
+    // // 但是promise里面要做是异步的事情 这个代码无法完成 
+    // //     如果做一个异步的事情去触发一个状态的话 怎么让它执行
+    // // 这个很好解决同步的问题
+    // if(self.status === 'Fulfilled') {
+    //     onFulfilled(self.resolveValue);
+    // }
+    // if(self.status === 'Rejected') {
+    //     onRejected(self.rejectReason);
+    // }
+
+
+    // // 异步判断
+    // if(self.status === 'pending') {
+    //     // 自己有个判断才相应的push ... 自己写
+    //     self.ResolveCallBackList.push(function() {
+    //         onFulfilled(self.resolveValue);
+    //     });
+    //     self.RejectCallbackList.push(function() {
+    //         onRejected(self.rejectReason);
+    //     })
+    // }
+
+
+    return nextPromise;
+};
+
+
+// 但是我们要清楚我们Promise里面要做的是异步的事情 如果去做异步的事情去触发一个状态的话 怎么让它执行
+// 异步操作
+
+
+
+// 链式操作 处理一下返回值 返回值也有很多中 普通值和Promise对象
+
+
+
+
+MyPromise.race = function(promiseArr) {
+    return new MyPromise(function(resolve, reject) {
+        promiseArr.forEach(function(promise, index) { // 循环每个promise对象 给它注册一个成功和失败的回调函数 成功和失败的回调执行的是"new MyPromise"里面的resolve和reject 只要它状态改变了 再去触发状态不会变了
+            promise.then(resolve, reject);
+        })
+    })
+}
+
+
+
+
+
+
+//--------------------------------------------------   按自己理解自己写的 --------------------------------------------------------------------------------------------------------------------------------
+
+
+function MyPromise(executor) {
+
+    var self = this;
+
+    // 为了存储传入的参数方便后续使用 把它绑定到MyPromise身上
+    self.resolveValue = null;
+    self.rejectReason = null;   
+
+    // 为了存储状态值方便后续使用 把它绑定到MyPromise身上
+    self.state = 'pending';
+
+    // 分别存储执行成功的或失败的回调函数
+    self.resolveCallbackList = [];
+    self.rejectCallbackList = [];
+
+    
+    function resolve(value) { // 注册执行成功的函数
+        // 状态一旦改变无法再次改变了
+        if(self.state === 'pending') {
+            // 状态改变
+            self.state = 'resolved';
+            // 存储传入的参数值 方便后续调用
+            self.resolveValue = value;
+
+
+            // 执行异步的时候存储在数组里的回调函数
+            self.resolveCallbackList.forEach(function(ele) {
+                ele();
+            })
+        }
+    }
+    function reject(reason) { // 注册执行失败的函数
+        if(self.state === 'pending') {
+            self.state = 'rejected';
+            self.rejectReason = reason;
+
+            self.rejectCallbackList.forEach(function(ele) {
+                ele();
+            })
+        }
+    }
+    
+
+
+    // 捕获在这执行的时候抛出错误 捕获到的话执行失败的回调
+    try{
+        executor(resolve, reject);
+    }catch(e) {
+        reject(e);
+    }
+    
+}
+
+
+// 处理执行函数then之后返回的值
+function ResolutionReturnPromise(nextPromise, returnValue, res, rej) { // 执行完then后返回的promise对象 执行完then后的返回值 执行成功的回调函数 执行失败的回调函数
+    
+    if(returnValue instanceof MyPromise) {
+        // 返回值是promise对象      
+        
+        returnValue.then(function(val) {
+            res(val);
+        }, function(reason) {
+            rej(reason);
+        })
+    }else {
+        // 如果返回值是普通值的话 无论之前是执行res/rej 都一律执行成功的回调函数
+        
+        res(returnValue);
+    }
+
+}
+
+
+// then是绑定在原型上的 因为谁都可以使用它
+MyPromise.prototype.then = function(onFulfilled, onRejected) { // then注册的成功或失败的回调函数
+
+    // 如果出现空then的情况 一律把上次的返回值再次返回 当作下一个then注册的函数的参数
+    if(!onFulfilled) {
+        onFulfilled = function(val) {
+            return val;
+        }
+    }
+    if(!onRejected) {
+        onRejected = function(reason) {
+            throw new Error(reason);
+        }
+    }
+
+
+
+
+    var self = this;
+
+    // 每次then之后都会返回一个promise对象 所以后续才会继续调用.then方法
+    var nextPromise = new MyPromise(function(res, rej) { // 执行成功的回调 执行失败的回调
+        
+        // 存储执行完then注册的函数后的返回值 下一次要传入的参数
+        var nextResolveValue = null;
+        var nextRejectValue = null;
+
+        // 同步状态改变才执行注册函数
+        if(self.state === 'resolved') {
+            // promise.then注册的函数时候以异步的方式执行 可以用setTimeout来模拟
+            setTimeout(function() {
+
+                // 用try/catch在执行then函数时捕获到错误
+                try{
+                    nextResolveValue = onFulfilled(self.resolveValue); 
+    
+                    // 处理返回值的promise对象 执行then函数之后的返回值 成功的回调函数 失败的回调函数
+                    ResolutionReturnPromise(nextPromise, nextResolveValue, res, rej);
+                }catch(e) {
+                    rej(e);
+                }
+                
+            }, 0)        
+        }
+        if(self.state === 'rejected') {
+            setTimeout(function() {
+                try{
+                    nextRejectValue = onRejected(self.rejectReason);
+               
+                    ResolutionReturnPromise(nextPromise, nextRejectValue, res, rej);
+                }catch(e) {
+                    rej(e);
+                }
+            }, 0)
+        }
+
+        // 异步的时候处理方式 把注册的函数放到数组里存储
+        if(self.state === 'pending') {
+            self.resolveCallbackList.push(function() {
+                setTimeout(function() {
+                    try{
+                        nextResolveValue = onFulfilled(self.resolveValue);
+
+                        ResolutionReturnPromise(nextPromise, nextResolveValue, res, rej);
+                    }catch(e) {
+                        rej(e);
+                    }
+                }, 0)
+            })
+            self.rejectCallbackList.push(function() {
+                setTimeout(function() {
+                    try{
+                        nextRejectValue = onRejected(self.rejectReason);
+
+                        ResolutionReturnPromise(nextPromise, nextRejectValue, res, rej);
+                    }catch(e) {
+                        rej(e);
+                    }
+                   
+                }, 0)                
+            })
+
+        }
+
+    })
+
+    return nextPromise;
+}
+
+
+// 看谁最快就先处理谁
+MyPromise.race = function(promiseArr) {
+    return new MyPromise(function(resolve, reject) {
+        promiseArr.forEach(function(MyPromise, index) {
+            MyPromise.then(resolve, reject);
+        })
+    })
+}
+
+
