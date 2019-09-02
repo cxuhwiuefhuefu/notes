@@ -1,0 +1,88 @@
+body, ul, li, p{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+body{
+    background: #333;
+}
+
+.wrapper{
+    width: 360px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 4px;
+    /* border: 1px solid #fff; */
+}
+
+.title{
+    position: relative;
+    border-bottom: 1px solid #333;
+    padding: 15px 40px; /* 这样设置的原因是我想把小人给它设置一个定位 小人要靠左 这个是不是要靠右 */
+    color: #333;
+    font-weight: 700;
+}
+.title i{
+    position: absolute;
+    font-size: 18px; /* 如果我引入一个图标 想把它的颜色变成其他的颜色 怎么办 我可以直接改变一下color值 
+                        感觉和设置字体没有任何区别 如果我想把图标变大一点的话用什么属性设置呢 
+                        可以用font-size来设置 */
+    /* color: red;  */
+    color: #333; 
+}
+.title i:nth-child(1) {
+    left: 15px;
+}
+.title i:nth-child(2) {
+    right: 15px;
+    transition: all 0.3s ease;
+}
+
+/* 二级菜单 */
+.list{
+    display: none;
+}
+.list li{
+    border-bottom: 1px solid #888;
+}
+.list li a{
+    display: block; /* 变成块级就可以充满父级的宽度和高度了 它的高度直接把li的高度撑开了 */
+    padding: 10px 40px;    
+    color: #eee;
+    background: #333;
+}
+
+/*  
+   为了使文字居中 给它周围加上了padding 为什么加padding它会在中间呢 因为padding我 
+*/
+
+.active .title{
+    color: orange;
+}
+.active .title i{
+    color: orange;
+}
+/* 当有这个class类名的时候 就向下旋转180度 */
+.active .title i:nth-child(2) {
+    transform: rotate(180deg);
+    /* transition: all 0.3s ease; */ /* 为什么缩回没有旋转 为什么点开的时候有旋转 缩回没有过渡属性 想也没有active都有这个属性 */
+}
+
+
+
+/* http://www.runoob.com/cssref/css-selectors.html */
+/*
+   p:first-of-type    选择每个p元素是其父级的第一个p元素
+   p:last-of-type     选择每个p元素是其父级的最后一个p元素
+   p:only-of-type     选择每个p元素是其父级的唯一p元素  
+   p:only-child       选择每个p元素是其父级的唯一子元素
+   p:nth-child(2)     选择每个p元素是其父级的第二个子元素
+   p:nth-last-child(2) 选择每个p元素是其父级的第二个子元素 从最后一个子项计数
+   p:nth-of-type(2)    选择每个p元素是其父级的第二个p元素
+   p:nth-of-last-type(2) 选择每个p元素是其父级的第二个p元素 从最后一个子项计数
+   p:last-child         选择每个p元素是其父级的最后一个子级
+   :not(p)              选择每个并非p元素的元素
+*/

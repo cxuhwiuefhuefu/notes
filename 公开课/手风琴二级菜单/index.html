@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>手风琴二级菜单</title>
+    <link rel="stylesheet" href="./css/font_1021189_j9mrenvjq2/iconfont.css">
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+
+    <ul class="wrapper">
+       
+
+        <li class="item">
+            <p class="title">
+                <i class="iconfont icon-user"></i>
+                个人主页
+                <i class="iconfont icon-jiantouxiangxia"></i>
+            </p>
+            <ul class="list">
+                <li><a href="#">css3仿写时钟动画</a></li>
+                <li><a href="#">手风琴二级菜单</a></li>
+            </ul>
+        </li>
+        
+        <li class="item">
+            <p class="title">
+                <i class="iconfont icon-icon-test"></i>
+                组织管理
+                <i class="iconfont icon-jiantouxiangxia"></i>
+            </p>
+            <ul class="list">
+                <li><a href="#">VIP01</a></li>
+                <li><a href="#">VIP02</a></li>
+                <li><a href="#">VIP03</a></li>
+            </ul>
+        </li>
+        
+        <li class="item">
+            <p class="title">
+                <i class="iconfont icon-shezhi"></i>
+                设置
+                <i class="iconfont icon-jiantouxiangxia"></i>
+            </p>
+            <ul class="list">
+                <li><a href="#">用户名</a></li>
+                <li><a href="#">头像管理</a></li>
+                <li><a href="#">上传管理</a></li>
+            </ul>
+        </li>
+
+        
+    </ul>
+    
+    <script>
+
+        // 二级下拉菜单 我们管它叫手风琴 可以来回拉升的 可以展开二级菜单的 可以展开多个二级菜单 怎么展开多个二级菜单 需要往里传个参数 true
+        //     两个菜单都可以展开 如果改成false 只允许一个展开一个菜单 这是一个二级菜单 二级菜单可以往里面传参  
+        //     这个参数值允许你有一个菜单展开或者是多个菜单展开 用到事件委托了
+        //
+        //  
+        // 它是一个二级菜单 它的结构是什么样子的 如果没有里面的二级菜单 只有外部的一级菜单的话 那这个结构我要怎么来做 是不是要拿一个大的容器包裹一下
+        //    上面有三条 三条就由三个li来做 每个里面有什么呢 有这样的图标 有这样的文字 还有右边有个小图标 那这个图标怎么来的呢 图标怎么处理
+        //    在这里找图标 https://www.iconfont.cn/  选喜欢的图标 点击下载代码 解压后 用的是iconfont.css 三个html文件是三种引入方式
+        //    先把iconfont.css文件引入 把xxx变成用户 这个结构当中是不是有三个li 怎么变颜色 每个li里面还装了不同的东西 每个li里面要装这样的容器
+        //    这个容器包含三个内容  还有下面的东西 下面的东西是什么 下面的东西又相对于一个大的ul ul里面分别装了两三个li p标签写完 
+        //    点击之后还有一个ul没写呢
+        //
+        //
+        // 结构一样 每个菜单是一个li 每个li当中白色点击的地方 我用一个p标签表示的 然后下面这个又是一个ul ul包含三个li li的宽度和wrapper宽度一样的 
+        //    它的高度是由内容撑开的 高度不用写 高度不用写 写里面p标签的样式 默认情况下这里面是隐藏掉的 我们最开始的时候可以把这些ul 
+        //    先把这个二级菜单都给它隐藏掉 个人主页是垂直居中在整个p标签中间的位置上的 怎么让它垂直居中呢 有两种方式 第一个你可以给p标签设置一个高度
+        //    然后line-height 还有一种方式是 我可以直接给p标签加上一个padding
+     
+    </script>
+
+    <script src="./js/jQuery.js"></script>
+    <script src="./js/accordion.js"></script>
+    <script src="./js/index.js"></script>
+
+</body>
+</html>

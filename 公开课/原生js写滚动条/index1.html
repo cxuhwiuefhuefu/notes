@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        div{
+            width: 10em;
+        }
+        div::after{
+            content: "";
+            width: 10px;
+            height: 10px;
+            background-color: green;
+            display: inline-block;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div style=" height: 100px; background-color: red;"></div>
+
+    <script>
+
+        // 脚本化CSS
+
+        // 读写元素CSS属性
+        //     dom.style.prop
+        //        可读写行间样式 没有兼容性问题 碰到float这样的关键字属性前面应该加css
+        //        eg: float --> cssFloat
+        //     复合属性必须拆解 组合单词变成小驼峰式写法
+        //         写入的值必须是字符串格式
+
+        // dom是不能操作CSS但可以间接操作CSS
+        // 是对象就可以存储它的属性
+        // 改变行间样式间接改变CSS
+        // 遇到复合单词变小驼峰式的 碰到关键字
+        // 除了 .style再也没有任何方法能写入值了
+
+        // 查询计算样式
+        //     window.getComputedStyle(ele, null);   // 可获取不可写入  类数组
+        //     计算样式只读
+        //     返回的计算样式都是绝对值, 没有相对单位
+        //      IE8及IE8以下不兼容         
+
+        // 获取当前元素所展示一切的CSS的显示值
+        // 伪元素样式表可获取但写不进去
+
+        // 查询样式
+        //     ele.currentStyle
+        //     计算样式只读
+        //     返回的计算样式的值不是经过转换的绝对值
+        //     IE独有的属性
+        // 封装兼容性方法getStyle(obj, prop)
+        
+        // 获取的是原封不动的值 它获取的是这些元素最终展示出来的值 获取的是权重最高的属性
+
+        // function getStyle(elem, prop) {
+        //     if(window.getComputedStyle) {
+        //         return window.getComputedStyle(elem, null)[prop];
+        //     }else {
+        //         return elem.currentStyle[prop];
+        //     }
+        // }
+
+        // 把一个元素里的伪类元素宽度的值拿出来进行计算赋值到另一个元素里去
+        // 伪元素的display默认为inline
+        // 怎么改变伪元素
+        // 但凡是要改变状态 提前把状态预先编辑好 通过权重的覆盖    
+
+        // var div = document.getElementsByTagName('div')[0];
+        // console.log(window.getComputedStyle(div, 'after').width);
+    
+    </script>
+    
+</body>
+</html>

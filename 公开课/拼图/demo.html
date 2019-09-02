@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title> 
+    <link rel="stylesheet" href="./demo.css">
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="start">开始</div>
+        <div class="right">
+            <div class="imgArea"></div>
+        </div>
+    </div>
+    
+    <script>
+        
+        // 拼图小游戏
+        // 点击开始 拖动拼图 可以根据当前点击开始之后把当前的顺序打乱了 打乱完之后你可以进行拖动每小块挪到这样的正确位置 开始复原
+        //     复原就是恢复正确的顺序 再开始就进入游戏的状态 
+        // jQuery
+        // 结构只有两部分 一部分是我当前的html部分 html里面的button以及我下面放的整个图片的区域
+        // 每个拼图代表一个碎片
+        // 这个是游戏展示的区域 点击开始之后它就打乱了  打乱之后可以进行拖动 拖动完之后 游戏完成有个成功的判断
+        //     然后你点击复原你可以重新显示出来 
+        // 为什么有数据层
+        // 业务层可以整体控制这样的交互部分了
+        // 引入图片的形式可能是标签引入 img标签 通过元素背景图片把图片展示出来 进到页面看到这个样子要通过js来实现了
+        //     是直接把图片引入到这个这张图片里面来吗 然后再它分割成小格 有什么办法把图片变成9张小格 9个图片碎片 写9个div 
+        //     如果我每个div里面都引入一张背景图片 然后我再通过 我可以在结构里面生成9个div css里面控制这九张图片的背景图片以及backgroundposition
+        //     是不是会非常多相似重复的代码 所以把html把css挪到js里面来实现了
+        // 把生成这个div以及这样的背景图片的展示放到这个init里面 初始化 init里面调用一个函数打碎这个图片 它通过两个for循环实现9个div
+        //     为什么实现9个div要通过两个for循环 因为它是一个三行三列的
+    
+    </script>
+
+    <script src="./jquery.js"></script>
+    <script src="./demo.js"></script>
+
+</body>
+</html>

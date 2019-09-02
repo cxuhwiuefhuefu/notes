@@ -1,0 +1,67 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background: url(../img/3.jpg) no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    /* 为什么背景图片是这个样子的 因为图片的影响 */
+}
+/*
+    background-size属性 
+        length: 设置背景图片的宽度和高度 第一个值设置宽度 第二个值设置的高度 如果只给出一个值 第二个是设置为auto(自动)
+        percentage: 将计算相对于背景定位区域的百分比 第一个值设置宽度  第二个值设置的高度 如果只给出一个值 
+                        第二个是设置为'auto(自动)'
+        cover: 此时会保持图像的纵横比并将图像缩放成将完全覆盖背景定位区域的最小大小
+        contain: 此时会保持图像的纵横比并将图像缩放成将适合背景定位区域的最大大小
+*/
+
+
+.top{
+    width: 400px;
+    height: 100px;
+    margin: 60px auto;
+    color: #fff;
+    font-size: 30px;
+    font-family: "华文行楷";
+}
+
+
+.box{
+    width: 310px;
+    height: 310px;
+    margin: auto;
+    perspective: 800px; /* 景深 这个主要定义3D元素的距离视图的距离 也就是你所看到的那个位置的距离 这个属性只对3D效果有影响 */
+}
+.box .pic{
+    position: relative;
+    transform-style: preserve-3d; /* 3d环境   flat: 表示s所有子元素在2D平面呈现  preserve-3d: 表示所有元素在3D空间中呈现  */
+    animation: play 10s linear infinite; /* 动画名称 执行时间 匀速 无限执行 */
+}
+.box ul li{
+    list-style: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* float: left; */ /* 因为父元素有固定的宽度 我们给它写了固定的宽度 因为想要让它旋转的过程当中就面向我们正面的这个图片的宽度正好等于父元素的宽度
+                          所以我需要用地位来给它把所有的图片地位到同一个位置 这样在之后我才能3D的效果把进行成为一个3D的一个圆环去旋转 */
+    /* 这个位置我想让所有的图片都处于同一个位置 为什么用position 为什么不用float呢 但是在我们这个效果当中如果我们给它浮动了 就不是这个样子了 */
+}
+@keyframes play{ /* 创建动画 将CSS的样式变化为另一种样式 通过from和to的方式等价于0%和100% */
+    from{
+        transform: rotateY(0deg)  /* 要让这个图片从外向内的旋转 */
+    }
+    to{
+        transform: rotateY(360deg);
+    }
+}
+
+
+#text{
+    width: 500px;
+    height: 200px;
+    color: #6fade1;
+    font-size: 24px;
+    margin: 0 auto;
+}

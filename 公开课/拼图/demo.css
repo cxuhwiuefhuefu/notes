@@ -1,0 +1,46 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.wrapper{
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+    position: relative; /* 里面子集直接有absolute的话 我就让它根据wrapper定位 */
+    border: 1px solid black;
+}
+.start{
+    width: 80px;
+    height: 40px;
+    border: 1px solid black;
+    margin: 10px auto;
+    text-align: center;
+    line-height: 40px;
+}
+.right{
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    /* border: 1px solid black; */
+}
+.imgArea{ /* 宽高沾满父级 */
+    width: 300px;
+    height: 300px;
+    position: relative;
+}
+/* position会脱离文档流 当它脱离文档流的话 */
+.imgArea .imgCell{
+    /* 宽度高度在js给它赋值上去 */
+    position: absolute; /* absolute会脱离文档流 所有会跑到一个位置里来 我想让它分散开怎么做 通过left/top值给它定位 */ 
+    border-radius: 4px;
+    /* border: 1px solid black; */
+    box-shadow: 0 0 8px #fff;
+    background: url('./lyf.jpg');   
+}
+
+

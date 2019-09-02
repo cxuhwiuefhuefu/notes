@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+
+
+    <div class="top">
+        <marquee behavior="alternate">时光不老， 我们不散</marquee>
+          <!-- 这个是个双标签 这个文字开始从右侧向左侧一点一点的滚动 这个标签主要的作用就是需要插入一段文字 
+               可以使这个文字的属性/marquee标签的属性来控制当前的这个文本达到容器边缘的所发生的这个状态 也就是这个文字滚动到文字的边缘
+               它的父元素也好body也好 边缘之后它达到另一种状态 这个标签现在已经被废弃掉了 但是它在有的情况下也是可以使用的 为了这个效果的关系
+                我们不用js给它实现 这个标签有个behavior的属性 它呢 有个可选值就是来控制它这个滚动的方式 默认是scroll  从右侧滚动到左侧 
+                滚动到边缘的时候文字逐渐逐渐的消失 然后整个消失完毕之后再从右侧逐渐出来 但是我需要的效果是让它接触到边缘之后弹回来往右侧滚动 
+                到达右侧之后弹回来又往左侧滚动 所以设置值为alternate loop是循环滚动次数 如果你不指定的话 它的值为-1 也就是连续滚动 
+                这个标签为什么给废弃了 因为微软它是在IE8的时候放弃了这个标签
+             
+                移动方向 参数一: direction 取值有left/right/up/down  
+                移动方式 参数二: behavior 取值有scroll(循环移动) slide(只移动一个回合) alternate(来回移动)
+                循环次数 参数三: loop
+                运动速度 参数四: scrollamount 取值为正 数值越大 速度越大
+                延时     参数五: scrolldelay 取值为正
+                底色     参数六: bgcolor 
+          -->
+    </div>
+
+    <div class="box">
+        <div class="pic">
+            <ul>
+                <li><img src="./img/MNK.png" alt=""></li>
+                <li><img src="./img/2.png" alt=""></li>
+                <li><img src="./img/3.png" alt=""></li>
+                <li><img src="./img/4.png" alt=""></li>
+                <li><img src="./img/5.png" alt=""></li>
+                <li><img src="./img/6.png" alt=""></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="text">
+            <!-- 饭我可以帮你打，事我可以帮你办，座我可以帮你占，课我可以帮你上，
+            零食我可以帮你买，作业我可以帮你做，但是“喜欢你”三个字，我希望你亲自说。
+            情人节快乐! -->
+    </div>
+
+    <embed src="./庾澄庆 - 情非得已.mp3" hidden="true" type="" loop="true"> 
+        <!-- embed必须放src loop可以写可以不写 为什么不用audio 它里面接的路径是一个绝对的路径 而且它的获取方式都是通过json 
+             后台的方式去获取的 因为我们所需要的音乐不同 -->
+
+    <script>
+        
+        // 这个页面是如何去做呢 我们看一下它的架构图 首先我们视觉上所看到的这个东西都是展现层 它有上面的标题 还有中间轮播的图片 还有下面的文字
+        //     文字它是一点一点一个一个的往里渐入的  然后整个页面当中还有雪花的飘落 这是一个展现层 什么是交互层 交互层我希望我的标题是来回的动
+        //     我希望我的这个图片是有旋转的 我希望我这个文字是一个一个出现的 我的雪花不是用图片 我是用代码给它生成的 然后生成一个飘落的 
+        //     这是我们现在理解的架构 至于通信层是什么
+
+    </script>
+
+    <script src="./js/jQuery.js"></script>
+    <script src="./js/index.js"></script>
+    
+</body>
+</html>

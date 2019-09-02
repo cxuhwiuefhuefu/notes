@@ -1,0 +1,61 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.container{
+    position: relative;
+    width: 380px;
+    height: 400px;  
+    font-size: 24px;
+    margin: 50px auto;
+    border: 1px solid black;
+    overflow: hidden;
+}
+.contents{
+    /* float: left; */ /* 这样根据它的父级 下面他的子级一左一右就能撑开    */
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 350px;
+    /* 高我不给它了 我要让它的内容给它撑开 */
+    background: #ccc;
+}
+ul{
+    /* float: right; */
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 28px;
+    height: 398px;
+    border: 1px solid #999;
+}
+.ico{
+    width: 28px;
+    height: 28px;
+    border: 1px solid red;
+    cursor: pointer;
+}
+.ico img{
+    width: 100%;
+    height: 100%;
+}
+.scroll{
+    position: relative;
+    height: 342px;
+    width: 100%;
+}
+/* 这个bar为什么没有 但我写了之后还是不能让它有 一会它的高度以它的比例去给它撑开 
+   稍后js来控制我们的bar */
+.bar{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0;
+    background: black;
+    cursor: pointer;
+}
+
+/* 为什么不用定位 现在就用定位了 为什么用定位呢 因为要让它动起来 */
+/* 一会要用比例来算出我整个高度 */
