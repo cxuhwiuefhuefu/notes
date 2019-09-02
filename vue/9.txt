@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+        <div id="app">
+           123
+        </div>   
+            
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <script>
+
+           new Vue({
+               el: "#app",
+               //    template: "<div>{{ name }}</div>",
+               //    template: "<div>{{ name }}</div><div>1234</div>",
+               template: "<div>{{ name }}<div>1234</div></div>",
+               data: {
+                   name: "航"
+               }
+           })
+
+
+           // 用当前的vue实例去控制当前的html 那这段html代码叫做html模板 因为我们可以在里面写一些语法 那vue语法可以在里面进行编译渲染
+           //     最后渲染成我们真实的DOM节点 最后我给它展示出来 除了html模板之外还有定义模板的方式 一个tempate 一个是render
+
+           // 怎么定义template模板 模板是我们可以很直观看到它就是html代码 所以我们在里面用字符串的形式去写html代码 我们当前的tamplate模板会覆盖当前的DOM节点
+           //     它是不是要渲染到这个DOM节点上 它会覆盖这个DOM节点 第一点是它会把你所有控制的这段代码覆盖了 第二点在template模板里面必须有个根节点
+           //     什么叫根元素 就是你要把所有的元素包裹在一个元素里面 这就是template的基础使用方法
+           //
+           // 组件化开发 组件化开发的好处主要有两点 1. 这个代码可以复用 2. 降低代码的耦合性 定位bug快速 耦合性减低 维护性更高 我们代码写起来更加便捷
+
+        </script>
+           
+
+</body>
+</html>
+
+//*********************************************************************************************************************************
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+        <div id="app">
+           <!-- <div class="test"></div>
+           <div class="test"></div>
+           <div class="test"></div>
+           <div class="test"></div>
+           <div class="test"></div>
+           <div class="test"></div>
+           <div class="test"></div>
+           <div class="test"></div>
+           <div class="test"></div>
+           <div class="test"></div> -->
+
+           <my-component></my-component>
+           <my-component></my-component>
+           <my-component></my-component>
+           <my-component></my-component>
+           <my-hang></my-hang>
+        </div>   
+        <my-component></my-component>
+        <div id="app2">
+
+        </div> 
+        
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <script>
+
+           Vue.component('my-component', {
+               template: "<div>{{ name }}</div>",
+               //    data: {
+               //        name: "hang"
+               //    }
+               data: function() {
+                   return {
+                       name: "呵呵"
+                   }
+                }
+           }) 
+           new Vue({
+               //  el: ".test",
+               //  template: "<div>{{ name }}<div>1234</div></div>",
+               
+               el: "#app",
+               data: {
+                   name: "航"
+               },
+               components: {
+                   "my-hang": {
+                       template: "<div>123</div>",
+                   }
+               }
+           })
+           new Vue({
+               el: "#app2",
+               template: "<my-component></my-component>"
+            // template: "<my-hang></my-hang>"
+           })
+
+           // 为什么只渲染出一份 这就是我们Vue实例的一个特点 如果你去控制一段代码的话 它只会控制它第一个找到的div 剩下它就不管了 
+
+           // 怎么去写一个组件 第一个参数是你这个组件叫什么名字 第二个参数是传一个对象 对象就是我们当前这个组件的配置项 组件配置项其实和我们vue实例这个字段是差不多的
+           //     还有一些小小区别 
+
+           // 这个叫全局组件 因为它在任意的vue实例下都可以去使用的 首先它必须在vue实例的模板当中 写在#app外面不好使 因为当前在vue我们不是我们控制的模板
+           //     全局组件可以在任意的vue实例控制的模板下使用
+
+           // template模板也是我们vue实例所控制的模板 也可以在这里面去使用一下 因为tempalte模板也是vue实例的模板 我们任意vue实例模板都可以使用
+           //    这就是全局组件 还有一种定义方式叫做局部组件 
+
+           // 什么叫做局部组件 假如我想写一个组件在#app这个实例里面好使 也就是在这个vue实例所控制的模板中才能去使用 componnet可以很多组件
+           //      它也是一个对象 对象是键值对的形式  属性名就是你当前这个组件叫做什么名字
+
+           // 我们组件的配置项里面可以写我们vue实例的这些data字段还有一些其他字段 在这里data字段是有区别的 data必须写成一个数 如果你写成一个对象的话
+           //     它就会出现一个错误 为什么data要写成一个函数 不能直接去写成一个对象 如果写成一个对象 对象是一个引用值 你是不是把 内存地址给了这个data
+           //     那如果创建多个组件的话 那我们多个组件渲染的时候全部渲染同一套数据 因为在这里面是一个内存地址 它指向的是同一个空间 如果把name改成其他的名字
+           //     剩下组件的name也改变了 因为它们都是同一个对象 那如果data写成一个函数的话 是不是每次组件去创建的话是不是都要执行这个函数 每个函数它都会返回新的对象
+           //     我第一个组件和第二组件的对象不一样 它都是一个新的对象 如果我第一个组件里面name的值改变了不影响第二个组件name的值
+
+           // 模拟data是一个对象会发生什么事情 如果我们当前data是一个对象的话 是不是所有的组件都用同一套数据
+
+           
+        </script>
+           
+
+</body>
+</html>
+
+
+//***********************************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+        <div id="app">
+           <my-component></my-component>
+           <my-component></my-component>
+           <my-component></my-component>
+           <my-component></my-component>
+           <my-hang></my-hang>
+        </div>   
+        <my-component></my-component>
+         
+        
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <script>
+
+           let data = {
+               count: 0
+           } 
+           Vue.component('my-component', {
+               template: "<div @click = 'count++'>{{ count }}</div>",
+                //    data: function() {
+                //        return data
+                //     }
+                data: function() {
+                    return {
+                        count: 0
+                    }
+                }
+           }) 
+           new Vue({
+               el: "#app",
+               data: {
+                   name: "航"
+               },
+               components: {
+                    //    "my-hang": {
+                    //        template: "<div>123</div>",
+                    //    }
+                    "myHang": {
+                        template: "<div>123</div>",
+                    }
+               }
+           })
+
+           // 为什么点击所有的组件都+1了 因为它们用的是同一套数据 data这个对象只要有一个发生改变的话都会进行一个改变
+           
+           // 每次都返回一个新的对象 第一个组件和第二个组件没有关系 每个组件它都有独立的作用域 它都有独立的空间
+
+           // 命名规范 命名都是你以   自己的名字 + "-" + 组件的名字  这样命名的 为什么这样命名呢 第一点 如果你去引用别人的组件的话 假如它写和你差不多的功能
+           //     可能你们两个的组件的名字是一样 那你们的组件会进行覆盖  如果你在前面加上你的名字的话 基本上不会有重复的情况产生了 第二点是我们html进行更新的话
+           //     如果更新alter这个组件 是不是你这个组件和原生组件冲突了 所以你也不能直接命名成直接组件的名字 前面你要加一个"-" 因为我们html命名一定不会命名成我们现在这种形式的 
+
+           // 那我们在这里要注意的是 在局部定义的话 因为我们在里面加"-" 要写成字符串或者驼峰式 用的时候还是一样的用法 
+
+
+           // template模板 组件化的思想  定义全局组件 定义局部组件 知道data的特殊语法和特殊规则
+
+           
+        </script>
+           
+
+</body>
+</html>

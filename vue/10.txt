@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        
+     
+    
+    </style>
+</head>
+<body>
+    
+        <div id="app">
+          
+        </div>   
+            
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <script>
+
+            // Vue.component("my-com", {
+            //     template: "<div>{{ name }}</div>",
+            //     data() {
+            //         return {
+            //             name: 'hang'
+            //         }
+            //     }
+            // })
+            
+            // var app = {
+            //     template: "<div>{{ name }}</div>",
+            //     data() {
+            //         return {
+            //             name: 'hang'
+            //         }
+            //     }
+            // }
+
+            var app = {
+                render: function(createElement) {
+                    return createElement('div', ['hang', '666666'])
+                },
+                data() {
+                    return {
+                        name: 'hang'
+                    }
+                }
+            }
+
+
+            new Vue({
+                el: "#app",
+                render: function(createElement) {
+                    // return createElement('div', ["hi", createElement('p', ["航哥"])]);
+                    return createElement(app);
+                }
+            })
+
+            // 开服务器的好处是我们通过http协议去访问我们的当前的页面 
+
+            // render这个函数vue会直接给我们注入一个参数 createElement这个函数应该传一个字符串或者一个对象 传你要创建什么样的DOM节点 不管是什么模板我们最终都会渲染成html模板
+            //       如果我们没写模板 它会直接渲染成真实的html 所以你得告诉它你想渲染什么样的html 第二个参数是对我们的div进行一些配置 第二个参数可以忽略
+            //       第三个参数是数组  数组里面写什么 div是父元素 它里面可以包裹很多子元素 它跟tampalte这个特性是一样的 它会覆盖当前的DOM节点
+            //       感觉没有我html模板和tamplate模板方便了 因为我们html模板和tamplate模板最终会编译成这样的形式 不管你在这里面写了什么html 最终都会编译成这样的形式
+            //       这样写我们的组件的话效率会更高 这个是render函数的基础用法 这是第一种用法 还有第二种用法 createElement里面传一个对象 这个对象是什么
+            //       这个对象就是我们组件的配置项 组件怎么定义 第一个参数是组件的名字 第二个参数是组件的配置项 w我们在createElement里面传的第一个参数就可以是组件的配置项
+            //       我们要的是组件的配置项 把前面的删掉 它直接把我们当前这个组件给它渲染出来 渲染到我们当前的控制的DOM节点上 并且给它覆盖掉了  
+            //       这是我们createElement第二种用法 第二种用法是直接渲染一个组件 但是在渲染组件的过程中它也需要编译的过程 因为我们组件用到template模板
+            //       如果我们想把组件给它渲染出来的话 是不是还有经历刚才这几步  (模板 =》 编译 =》 ast =》 数据 =》 render函数 ) 也可以在组件的定义的时候直接写render函数
+            //       这个肯定比我们render渲染快 它直接就写成render函数 但是你写起来也很麻烦了
+
+
+            // 下节课学组件和组件之间是如何传值的 这个组件是一个封闭的作用域 这个组件里的数据是无法传到server.vue这个组件里去的
+            //     同理server.vue这个组件无法传到app.vue里去 
+
+        </script>
+           
+
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+        <div id="app">
+            <!-- <button v-on:click = "increase">点击我</button> -->
+            <button v-on:click = "increase(10, $event)">点击我</button>
+            <button v-on:click = "count++">点击我</button>
+    
+
+            <!-- <p>{{count}}</p> -->
+            <p>{{count > 5 ? "大于5" : "小于5"}}</p>
+
+    
+            <!-- <p v-on:mousemove = "updateXy">输出当前鼠标的x和y的值 {{x}} / {{y}} <span v-on:mousemove = "stop">我不想获取x和y的值了</span></p> -->
+            <p v-on:mousemove = "updateXy">输出当前鼠标的x和y的值 {{x}} / {{y}} <span v-on:mousemove.stop.prevent = "">我不想获取x和y的值了</span></p>
+    
+            <a href="https://www.baidu.com/" v-on:click.prevent>百度</a>
+    
+            <!-- <input type="text" v-on:keyup = "input"> -->
+            <!-- <input type="text" v-on:keyup.enter = "input"> -->
+            <input type="text" v-on:keyup.space.enter.13 = "input">
+        </div>
+            
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <script>
+            
+            new Vue({
+                el: "#app",
+                data: {
+                    count: 0,
+                    x: 0,
+                    y: 0
+                },
+                methods: {
+                    increase: function (step, e) { // 事件对象传到第二个参数
+                        // this.count ++;
+
+                        this.count += step;
+                        console.log(e);
+                    },
+                    updateXy: function (e) {
+                        this.x = e.clientX;
+                        this.y = e.clientY;
+                    },
+                    // stop: function(e) {
+                    //     e.stopPropagation();
+                    // },
+                    input: function (e) {
+                        // alert('input');
+
+                        alert(e.which);
+                    }
+                }
+            })
+            
+        
+        </script>
+           
+                
+                
+        
+               
+        
+    <script>
+        
+        // vue双向数据绑定 计算属性以及数据监听
+
+        // HTML模板有两个基础语法 一个是双大括号 你可以传一些数据 还有一个是v-这种指令 双括号里面传一个函数传一个数据还可以传一个JS表达式
+        //     其实V-这种指令后面也可以传一些JS表达式
+
+        // HTML模板很重要 因为我们去写一个VUE项目的话 每天都会跟HTML模板打交道
+    
+    
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+//*************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+        <div id="app">
+            <!-- <input type="text" v-bind:value = "value" v-on:input = "input"> -->
+            <input type="text" v-model = "value">
+
+            <p>{{ value }}</p>
+        </div>   
+            
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <script>
+
+            new Vue({
+                el: "#app",
+                data: {
+                    value: "航"
+                },
+                // methods: {
+                //     input: function(e) {
+                //         this.value = e.target.value;
+                //     }
+                // }
+            })  
+            
+            // 有个需求 
+            //     1. input框初始化的值为我们vue的值
+            //     2. 上面输入的和下面输出的值是一样的
+
+
+            // v-bind这个指令只能有一个单向的数据流  
+
+            // v-model首先初始化我当前的input框的value的值 反过来我们用户去输入一些东西的话是不是会改变value这个属性  一改变从而也会改变value这个值
+            //    value这个数据改变的话是不是会改变p标签里面渲染的数据 这就是我们vue的双向数据绑定 就是说我们vue既有单向的数据绑定 也有双向数据绑定
+
+        </script>
+           
+
+</body>
+</html>
+
+
+//*****************************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+        <div id="app">
+            <button v-on:click = "increase">加1</button>
+            <button v-on:click = "de">减1</button>
+            <button v-on:click = "count2++" :title = "count">count2加1</button>
+            <p>{{ count }}</p>
+            <p>{{ count2 }}</p>
+            <!-- <p>{{ result }}</p> -->
+            <p>{{ result() }} | {{ output }} | {{ output2 }}</p>
+            
+        </div>   
+            
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <script>
+
+            new Vue({
+                el: "#app",
+                data: {
+                    count: 0,
+                    // result: "",
+                    count2: 0,
+                    output2: ""
+                },
+                computed: {
+                    output: function() {
+                        console.log('output');
+                        return this.count > 5 ? "大于5" : "小于5"; 
+                    }
+                },
+                watch: {
+                    count: function(val) {
+                        // console.log(val);
+
+                        this.output2 = val > 5 ? "大于5" : "小于5";
+                        
+                        var vm = this;
+                        window.setTimeout(function() {
+                            vm.count = 0;
+                        }, 2000)
+                    }
+                },
+                methods: {
+                    result: function() {
+                        console.log("result");
+                        return this.count > 5 ? "大于5" : "小于5";
+                    },
+                    increase: function() {
+                        this.count ++;
+                        // this.result = this.count > 5 ? "大于5" : "小于5";
+                    },
+                    de: function() {
+                        this.count --;
+                        // this.result = this.count > 5 ? "大于5" : "小于5";
+                    }
+                }
+            })  
+            
+           // 同一个逻辑写两遍 怎么进行代码的复用 但是用函数去获取相应的值是有一定问题的 
+           //     count值发生改变 result这个函数就会重新执行一遍 为什么count2改变result这个函数会执行呢？？？？？ 其实这个就是函数的特性了 
+           //     在这里它不会去分析它当前这个函数跟count数据有关或者跟count没关 所以当我们去更新我们页面的话不管用什么方式去更新我们这个页面
+           //     它为了保证我们result这个函数是最新的 是不出错的 它都会重新去执行一下 重新渲染一下 这个是函数的特性 但是在这里给我们造成困扰
+           //     这是很耗费性能的一件事 可以用计算属性来解决  
+           // 
+           //
+           // 计算属性 跟method和data一样可以传到vue实例里面的 它这个字段是computed 也是一个对象 ouput这个函数和result这个函数不一样
+           //     它们有两点不同 第一点是它的写法用法不同 什么是用发不同呢 我们用函数去渲染的时候 是不是写一个函数执行的模式
+           //     但是如果你把一个函数写一个计算属性里 和data里面的用法一样的 不用写成函数执行的模式 这是第一点区别 写法的区别 第二点是执行的区别  
+           //     为什么会打印output 因为output跟我们这个数据值是相关的 点击第三个按钮它只会执行result这个函数 因为它不会去分析里面代码 
+           //     不知道跟count相关或者跟count2不相关 所以任何页面去更新的话都会执行这个这个函数 但是我们计算属性 它会分析里面的代码 
+           //     知道我们当前这个计算属性跟count数据相关 所以当count2发生改变的话 这个output这个函数不会执行 我们count这个值发生变化的话才会去执行
+           //     这个是函数和计算属性的第二点区别 
+           //
+           //
+           // 计算属性使用的场景是一般用来监听一个数据的 当这个数据发生变化的时候就会进行相应的操作 但是函数不一样 
+           //     当函数去渲染一个数据的时候是不是当任意一个dom节点发生变化 这个函数都会重新执行 
+           //     那它就会用到当一个逻辑操作需要我们在任意dom节点都要去执行的话 我们可以用函数执行的方式 
+           //
+           //
+           // watch是vue提供监听数据的第二种方式 watch跟我们data method都是传给我们vue的一个字段 所以我们可以直接去写这个字段 既然是对象 
+           //     要写成键值对的形式 属性名写你要监听哪个数据 后面要写一个函数 当我们count这个数据发生变化的话就会执行相应的函数 
+           //     相应的操作并且把count的最新值传到我们函数第一个参数里面
+
+
+           // watch和computed都是用来监听我们的数据的 它们两个有什么区别 主要有两个区别 第一个区别 我们计算属性一般都会有一个返回值 都会有一个return值 
+           //    但是我们watch不需要有一个返回值 你直接写一些逻辑操作就可以了 第二个区别 我们计算属性里面的东西是一个同步的代码 什么是同步的代码
+           //    当我们count一发生变化的话 它就执行当前的操作并且把返回值给output 但是我们watch里面可以写一个异步的操作 这个是watch最重要的特性
+           //    它可以在里面写异步的逻辑操作 如果你想监听一个数据 当这个数据发生变化的话 你就去向后台进行一个请求 那你可以用watch 不可以用computed
+           //    因为在里面都是同步的代码
+
+
+           //    v-on指令简写 @
+           //    v-bind:简写 :
+
+
+           // 怎么使用双数据的绑定 怎么计算属性 怎么用watch监听我们的数据
+
+
+        </script>
+           
+
+</body>
+</html>

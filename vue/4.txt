@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="app">
+        <!-- <button v-on:click = "increase">点击我</button> -->
+        <button v-on:click = "increase(10, $event)">点击我</button>
+
+        <p>{{count}}</p>
+
+        <!-- <p v-on:mousemove = "updateXy">输出当前鼠标的x和y的值 {{x}} / {{y}} <span v-on:mousemove = "stop">我不想获取x和y的值了</span></p> -->
+        <p v-on:mousemove = "updateXy">输出当前鼠标的x和y的值 {{x}} / {{y}} <span v-on:mousemove.stop.prevent = "">我不想获取x和y的值了</span></p>
+
+        <a href="https://www.baidu.com/" v-on:click.prevent>百度</a>
+
+        <!-- <input type="text" v-on:keyup = "input"> -->
+        <!-- <input type="text" v-on:keyup.enter = "input"> -->
+        <input type="text" v-on:keyup.space.enter.13 = "input">
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+
+    <script>
+        
+        new Vue({
+            el: "#app",
+            data: {
+                count: 0,
+                x: 0,
+                y: 0
+            },
+            methods: {
+                increase: function(step, e) { // 事件对象传到第二个参数
+                    // this.count ++;
+
+                    this.count += step;
+                    console.log(e);
+                },
+                updateXy: function(e) {
+                    this.x = e.clientX;
+                    this.y = e.clientY;
+                },
+                // stop: function(e) {
+                //     e.stopPropagation();
+                // },
+                input: function(e) {
+                    // alert('input');
+
+                    alert(e.which);
+                }
+            }
+        })
+
+        // 点击按钮让count ++
+
+        // 有个需求 在这个函数去传一个自己的参数 如果我们传10就+10 传20就+20  如果写成函数执行的模式 如果对象也好也是需要我们手动去输入的 
+        //     我们要在这里输入一个特殊的变量 我们vue把事件对象存储到$event里面了 必须写上$event里面才会传到第二个参数里去
+        
+        // 怎么传自定义的参数和事件对象
+
+        // 事件修饰符可以让我们快速的去阻止冒泡 阻止默认事件这种行为 在我们日常开发是非常有用的 
+
+        // 阻止事件的默认行为 v-on:click.prevent = ""
+
+        // 按键修饰符
+
+    </script>
+
+</body>
+</html>

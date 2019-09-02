@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="app">
+        <!-- <p>{{ sayName() }}</p> -->
+        <!-- <p>{{name + '123'}}<a v-bind:href="link">百度</a></p> -->
+
+        <h1 v-once>{{ name }}</h1>
+         <p>{{sayName()}}<a v-bind:href="link">百度</a></p>
+         <h1 v-once>{{ name }}</h1>
+
+         <p v-html="html">{{html}}</p>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+
+    <script>
+        
+        new Vue({
+            el: '#app',
+            data: {
+                name: '呵呵',
+                link: 'https://www.baidu.com',
+                html: '<a href="https://www.baidu.com">baidu</a>'
+            },
+            methods: {
+                sayName: function() {
+                    // return "哈哈"
+
+                    this.name = '航';
+                    return this.name;
+                }
+            }
+        })
+
+        // 我们vue实例控制这个html代码的时候到底发生了什么 其实它会把我这段html代码当作html模板进行渲染 分析 最后生成一个html
+        //     我们当前自己写的html和最终渲染给浏览器看的html是两个html 这又是vue为我们做的一些事情 首先它会分析我们当前这个html模板 
+        //     然后它发现html模板有它认识的一些模板  双括号这种语法  vue这些指令等 它识别这种语法之后会按照语法做一些事情
+        //     像双括号这些语法它会去加载data里面name这个变量 像vue-这种指令它会给当前的dom节点去绑定一个事件 最终会生成渲染好的html
+        //     渲染好的html才是最终给浏览器看到的html 这就是vue实例为我们做的一些操作 它会渲染一下我们写的html代码 把它当作一个html模板
+
+
+        // 它可以三目运算符这种表达式  但是它不可以写if/for那种复杂的js代码
+
+        // vue不会分析字符串里面的语法 我们要借助指令 改变href这个属性
+
+        // v-bind:可以给我们属性传一个参数 可以通过冒号的方式传参数 在里面绑定link这个数据 其实也可以绑定一个函数 也可以写一个简单的js表达式
+
+        // 我们想要h1只是第一次初始化的值 而不会随着我们name的值改变而改变
+
+        // 我们html渲染还是从上往下去渲染的
+
+        // 我们vue默认的行为 它只会把数据当作字符串输出 而不会把它的一个dom结点给你分析出来 其实这个默认行为是非常好的默认行为 
+        //     这个默认行为可以避免很多的脚本攻击 如果你很确保你当前的数据很安全的话 可以把它当作一个html去渲染
+        //     这个可以让你把一个数据当作dom节点去分析 而不是当作一个字符串 不推荐使用v-html 因为它会导致很多安全性的问题
+        //     所以不到万不得已的时候不要去使用它 
+
+    </script>
+
+</body>
+</html>

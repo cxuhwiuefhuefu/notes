@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+        
+
+        <div id="app">
+            <input type="text" v-on:input = "changeName">
+            <h1>{{name}}</h1>
+        </div>
+    
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script>
+            
+            new Vue({ // 这个vue实例可以控制我们html代码
+                el: '#app',
+                data: {
+                    name: "呵呵"
+                },
+                methods: {
+                    changeName: function(event) {
+                        this.name = event.target.value;
+                    }
+                }
+            }); 
+
+            // 我们new一个vue实例的时候 底层有很多很多大量代码的操作 
+            //     其中一个操作就是把data上面所有的数据和method上所有的方法全部都挂载到vue这个对象去了
+
+            // 第一个是vue的双大括 第二个是vue的指令
+
+        </script>
+
+</body>
+</html>

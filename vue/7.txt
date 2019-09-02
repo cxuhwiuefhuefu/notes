@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        
+     
+    
+    </style>
+</head>
+<body>
+    
+        <div id="app">
+            <p v-if = "items > 10">有库存{{ items }}</p>
+            <p v-else-if = "items <= 10 && items >= 1">快买啊 快没货啦</p>
+            <p v-else>对不起 没有货了</p>
+
+            <!-- <p v-if = "show">我是第一个p</p>
+            <p v-if = "show">我是第二个p</p> -->
+
+            <!-- <div v-if = "show">
+                <p>我是第一个p</p>
+                <p>我是第二个p</p>
+            </div> -->
+
+            <template v-if = "show">
+                <p>我是第一个p</p>
+                <p>我是第二个p</p>
+            </template>
+
+            <button @click = "show = !show">点击显示隐藏</button>
+            <p v-show = "show">我用show显示的</p>
+        </div>   
+            
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <script>
+
+            new Vue({
+                el: "#app",
+               
+                data: {
+                    items: 0,
+                    show: true
+                },
+               
+            })
+           
+
+          // 条件渲染和列表渲染
+
+          // 条件语句渲染 v-if  v-else-if v-else
+
+          // 现在让dom节点隐藏的话 可以通过CSS属性 display: none 第二点可以通过DOM节点干掉 不显示 v-if就是把不显示的DOM节点干掉 没有多余的DOM节点
+
+          // 我们想用同一个数据去渲染不同的p标签 最好的方式给一个嵌套 写一个v-if  但这样你多加一个DOM节点 虽然你什么都没有 但现在我容器也不想要
+          //     用template嵌套  既想让一个容器包裹我们的标签 并且这个容器最后不显示在我们的DOM节点
+
+
+          // v-show和v-if很相似的 它也可以让一个DOM节点显示或隐藏
+
+          // v-show和v-if的隐藏方式不一样 v-show隐藏不是把DOM节点干掉了 它只是有一个属性display:none 如果你想让一个DOM节点隐藏还能出现的话你就用v-show
+          //     如果你想让一个DOM直接被干掉的话你就用v-if 看需求来定  一般使用v-if 因为它比较灵活
+
+          // 列表渲染 如果你写一个html不能把页面写死了 因为有的数据是从后台传送给我们的
+
+        </script>
+           
+
+</body>
+</html>
+
+
+//*********************************************************************************************
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        
+     
+    
+    </style>
+</head>
+<body>
+    
+        <div id="app">
+          <ul>
+              <!-- <li v-for = "item in movies">{{ item }}</li> -->
+              <!-- <li v-for = "(item, index) in movies">{{ item.movie }} | {{ item.rate }} | {{ index }}</li>    -->
+              <li v-for = "(item, i) in movies" @click = "changeMovie(i)">{{ item.movie }} | {{ item.rate }} | {{ i }}</li>   
+          </ul>
+
+          <button @click = "add">新增一个电影</button>
+
+           <!-- <p v-for = "(value, prop, index) in person">{{ value }} | {{ prop }} | {{ index }}</p>  -->
+           <template v-for = "(value, prop, index) in person">{{ value }} | {{ prop }} | {{ index }}</template>
+
+           <p v-for = "num in 10">{{ num }}</p>
+
+           <p v-for = "num in 'William'">{{ num }}</p>
+
+           <template v-for = "item in arr">
+               <p>{{ item }}</p>
+               <input type="text" :key = "item">
+           </template>
+           <button @click = "reverse">倒置</button>
+        </div>   
+            
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <script>
+
+            new Vue({
+                el: "#app",
+               
+                data: {
+                    // movies: ["我不是药神", "中洛斯基", "小偷家族", "呵呵"],
+
+                    movies: [{
+                            movie: "我不是药神",
+                            rate: 9.0
+                        },
+                        {
+                            movie: "中洛斯基",
+                            rate: 7.0
+                        },
+                        {
+                            movie: "小偷家族",
+                            rate: 4.0
+                        },
+                        {
+                            movie: "呵呵",
+                            rate: 2.0
+                        },
+                    ],
+                    person: {
+                        name: "航",
+                        age: "18",
+                        sex: "男"
+                    },
+                    arr: [1, 2, 3]
+                },
+                methods: {
+                    changeMovie: function(index) {
+                        // console.log(index);
+                        // this.movies[index] = {
+                        //     movie: "西红柿首付",
+                        //     rate: '8.8'
+                        // }
+                        // console.log(this.movies);
+
+                        let arr = this.movies.concat();
+                        arr[index] = {
+                            movie: "西红柿首付",
+                            rate: '8.8'
+                        }
+                        this.movies = arr;
+                    },
+                    add: function() {
+                        this.movies.push({
+                            movie: "西红柿首付",
+                            rate: '8.8'
+                        })
+                    },
+                    reverse: function() {
+                        this.arr.reverse();
+                    }
+                },
+               
+            })
+
+            // 命名movie不能和data里面的数据重复
+            //
+            // 但是有的时候我们的v-for去渲染一个数组的时候 数组的一个元素不是一个单纯的字符串 后台有时候会给我一个对象 如果是对象的话
+            //     我们可以用点操作符来获取对象一个属性 我们不仅可以获取当前数组的元素 还有数组当前元素的索引
+            //     
+            // 怎么循环一个对象 这个变量代表我每次循环对象的属性值 还可以写很多的变量 第二变量代表的是我们每次循环当前属性的属性名
+            //     第三个变量是当前循环的索引       属性值 属性名 索引
+
+            // v-for还可以循环一个数字 还可以循环一个字符串
+            
+            // template这个标签包裹一些元素 但是template这个标签最终不会渲染到DOM节点中去 v-for在这里面也可以使用template这个标签的 它不会渲染到DOM节点中去
+            //     它就是一个容器而已
+
+            // 为什么它没有渲染我们的页面  我们是直接去改变数组的数据 如果你在vue当中这么做的话 改变当前数组的元素的话是无法检测到的 我们相当于这个数组没有变化
+            //      数组没有变化 我们整个DOM节点是不会刷新的 为什么我们当前数组变化它没有被检测到呢 数组是一个引用值 相当于把内存地址放到这里了 
+            //      如果我们去改变数组里面的元素的话 当前整个数组的内存地址是一样的 新数组和旧数组的内存是一样的 没有变化当前当前DOM节点就没有刷新了 
+            //      如果我们想改变数组里面的元素怎么办呢 我们可以给它一个新数组 新数组是新的内存地址 我们把新的内存地址赋值给我们这个变量的话
+            //      它一检测新数组和旧数组的内存地址是不是发生改变了 它就会检测到当前数据发生改变了 数据发生改变我们DOM节点被刷新了
+            //      我们直接去改变数组里面的元素的话是无法被检测到的
+
+            // 为什么push可以增加到里面去 这是push这个方法是数组原型链上的方法 但是这里vue把数组的方法重写了 重写的push方法可以检测到元素的改变
+            //     检测到数据改变就会重新渲染到DOM节点中去了 其实它还重写了其他方法 还有pop reverse等 可以直接改变数组的元素 可以被检测到
+            //    
+            // 为什么input框没有重新渲染呢 这里就是它的渲染机制的问题 我们写的这个input是一个模板 它需要渲染3份 那它是不是没有告诉它这三个input不一样啊
+            //     那它就会相当于渲染三个一模一样的input框 识别的时候它会发现三个input是一模一样的 假如导致的话 这个input和这个input进行倒置
+            //     但是它在这里把它想象成一模一样的input框了 没有进行替换 因为这是一件浪费资源的事情 它会改变我们当前的DOM节点 所以没有进行替换
+            //     这就是我们渲染的机制 如果你需要让它替换的话 给它一个key属性 每个input给它独一无二的key 那它就识别成它们是不同的input框
+
+            // 如果在一些情况下您需要你的DOM节点需要被vue识别成不同的DOM节点 因为我们模板渲染出来都是一模一样的 如果想让它识别成不同的话 就给key这个属性
+            //    一般都最好给它设置上 不然容易出现一些莫名其妙的bug
+
+            // 条件渲染 v-if v-show
+            // 列表渲染 v-for 可以循环一个数组 一个对象 一个字符串 一个数字  
+            // 列表渲染注意的四个点 : 1.template是一个容器 可以在v-if里面去使用 2. 不能直接数组里面的数据
+            //                   3. 我们可以有一些重写的方法 push/reverse方法 它可以检测到我们数组里面的数据发生改变了 
+            //                   4. key这个值可以告诉我们当前这个模板input的每个渲染的都是不一样的
+            //
+        
+        </script>
+           
+
+</body>
+</html>

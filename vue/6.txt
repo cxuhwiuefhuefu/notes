@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        
+        .shape{
+            width: 100px;
+            height: 100px;
+            background-color: gray;
+            display: inline-block;
+            margin: 10px;
+        }
+        .circle{
+            border-radius: 50%; 
+        }
+        .blue{
+            background-color: blue;
+        }
+        .red{
+            background-color: red;
+        }
+    
+    </style>
+</head>
+<body>
+    
+        <div id="app">
+            <!-- <div class="shape" @click = "isCircle = !isCircle" :class = "{ circle: isCircle, blue: isCircle }"></div> -->
+            <!-- <div class="shape" @click = "isCircle = !isCircle" :class = "divClass"></div> -->
+            <!-- <div class="shape" @click = "isCircle = !isCircle" :class = "color"></div> -->
+            <div class="shape" @click = "isCircle = !isCircle" :class = "[color, {circle: isCircle}]"></div>
+            
+            <p>{{ isCircle }}</p>
+            <input type="text" v-model = "color">
+        </div>   
+            
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <script>
+
+            new Vue({
+                el: "#app",
+               
+                data: {
+                    isCircle: false,
+                    color: "blue"
+                },
+                computed: {
+                    divClass: function() {
+                        return {
+                            circle: this.isCircle,
+                            blue: !this.isCircle
+                        }
+                    }
+                },
+               
+            })
+           
+
+            // 我们知道怎么绑定数据 怎么绑定事件 可以通过watch和计算属性可以监听我们的数据 这节课学习如何通过操作html模板让我们的样式发生改变的 
+            //     第一种方式可以动态去改变class class增加输出改变可以导致页面的样式发生改变 第二种方式可以去动态的操作style 
+
+            // v-bind去绑定一个属性的时候一般都把一个数据直接渲染到里面 但是vue把我们v-bind:class和v-bind:style进行一个特殊的处理
+            //     在这里面可以写一个对象 对象可以写成键值对的形式 属性名写上这个类 后面写一个  怎么通过一个数据绑定相应的类 让它是否隐藏
+            //     可以绑定多个类 这个代码是个对象 这个对象你写10个类的话你要写10个键值对 这样导致我们html模板可读性很差
+            //     一般我们都是把数据定义在我们的js里面 不能在data里面获取data原数据 其实在这里面 vue在底层去绑定的时候 我们当前data没有isCircle这个数据
+            //     还没绑定上呢 所以说你获取不到 那你怎么办 可以用计算属性
+
+            // 1. v-bind:class可以让我们的类显示或隐藏 有的时候想让类改变一下类名
+            // 2. 我们可以给它直接绑定一个数据 这个数据就是一个类名 它发生变化了我们类名发生变化 可能有时候我们既想让一个类显示或隐藏又想绑定一个数据让它的类型发生改变
+            //        在这里可以把这两种模式融合去写 这里面写一个数组 第一个是color 可以通过color来改变类名 第二个我们可以写一个对象 
+            //        对象里面可以控制一个类的显示或隐藏
+
+            // 以上是通过v-bind改变一个类的时候的用法 接下来看看怎么动态操作style让我们的页面发生改变的 
+
+        </script>
+           
+
+</body>
+</html>
+
+
+//*********************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        
+        .shape{
+            width: 100px;
+            height: 100px;
+            background-color: gray;
+            display: inline-block;
+            margin: 10px;
+        }
+        .circle{
+            border-radius: 50%; 
+        }
+        .blue{
+            background-color: blue;
+        }
+        .red{
+            background-color: red;
+        }
+    
+    </style>
+</head>
+<body>
+    
+        <div id="app">
+            <!-- <div class="shape" :style = "{ backgroundColor: color, width: width + 'px' }"></div> -->
+            <!-- <div class="shape" :style = "divStyle"></div> -->
+            <div class="shape" :style = "[divStyle, {height: height + 'px'}]"></div> 
+
+            <input type="text" v-model = "color">
+            <input type="text" v-model = "width">
+            <input type="text" v-model = "height">
+        </div>   
+            
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <script>
+
+            new Vue({
+                el: "#app",
+               
+                data: {
+                    isCircle: false,
+                    color: "blue",
+                    width: 200,
+                    height: 100 
+                },
+                computed: {
+                    divClass: function() {
+                        return {
+                            circle: this.isCircle,
+                            blue: !this.isCircle
+                        }
+                    },
+                    divStyle: function() {
+                        return {
+                            backgroundColor: this.color,
+                            width: this.width + 'px'
+                        }
+                    }
+                },
+               
+            })
+           
+
+            // background在这里面不能这么写 因为在这里面是对象的属性 对象的属性如果你写"-"是违法的数据名 第一种方式是"background-color"
+            //     或者backgroundColor  那我们可以通过改变color这个数据改变color这个值了
+
+            // 你会发现当前我们这么去写一个对象跟我们刚才去写一个class是一样的道理 它在这里面的代码也冗余了 可读性也不是很高 也可以写一个计算属性
+
+        </script>
+           
+
+</body>
+</html>
