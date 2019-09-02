@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+        // 条件语句补充  初始引用值  typeof  类型转换
+
+        // 作业
+        // 1. 计算2的N次阶乘 N可输入 N为自然数
+        // 2. 计算N的阶乘 N可输入
+        // 3. 著名的斐波那契额数列
+        //        1 1 2 3 5 8
+        // 4. 编写一程序 输出一个三位数的正整数
+        //        输出时反向输出 如456 输出654
+        // 5. 输入a b c三个数  打印出最大
+        // 6. 打印出100以内的质数   
+
+        // var n = parseInt(window.prompt('input'));
+        // var mul = 1;
+        // for(var i = 0; i < n; i++) {
+        //     mul *= 2;
+        // }
+        // document.write(mul);
+
+        // var n = parseInt(window.prompt('input'));
+        // var mul = 1;
+        // for(var i = 1; i <= n; i++) {
+        //     mul *= i;
+        // }
+        // document.write(mul);
+
+        // var a = parseInt(window.prompt('input'));
+        // var b = parseInt(window.prompt('input'));
+        // var c = parseInt(window.prompt('input'));
+        // if(a > b) {
+        //     if(a > c) {
+        //         document.write(a);
+        //     }else {
+        //         document.write(c);
+        //     }
+        // }else {
+        //     if(b > c) {
+        //         document.write(b);
+        //     }else {
+        //         document.write(c);
+        //     }
+        // }
+
+        // 人是四维生物
+        // 你的判断是基于过去的信息
+        // 导演 克里斯托佛 诺兰
+        // 一个物体下一刻的运动轨迹受上一刻的作用  
+        // 二分心智
+
+        // 找规律  循环重复的放在for循环
+
+        // var n = parseInt(window.prompt('input'));
+        // var first = 1,
+        //     second = 1,
+        //     third;
+        // if(n > 2) {
+        //     for(var i = 0; i < n - 2; i++)
+        //     {
+        //         third = first + second;
+        //         first = second;
+        //         second = third;
+        //     }
+        //     document.write(third);
+        // }else {
+        //     document.write(1);
+        // }    
+
+        // var count = 0;
+        // for(var i = 1; i < 100; i++) {
+        //     for(var j = 1; j <= i; j++) {
+        //         if(i % j == 0) {
+        //             count ++;
+        //         }
+        //     }
+        //     if(count == 2) {
+        //         document.write(i + ' ');
+        //     }
+        //     count = 0;
+        // }
+
+        // 100
+        // 10 * 10
+        // 5 * 20
+        // 2 * 50
+        // 1 * 100
+
+        // 9 
+        // 1 * 9
+        // 3 * 3
+        // 9 * 1
+
+        // 7
+        // 1 * 7
+        // 7 * 1
+
+        // var count = 0; 
+        // for(var i = 2; i < 100; i++) {
+        //     for(var j = 1; j <= Math.sqrt(i); j++) {
+        //         if(i % j == 0) {
+        //             count ++;
+        //         }   
+        //     } 
+        //     if(count == 1) {
+        //         document.write(i + ' ');
+        //     }
+        //     count = 0;
+        // }
+
+        // var n = parseInt(window.prompt('input'));
+        // var mul = '';
+        // for(var i = 0; i < 3; i++) {
+        //     mul += n % 10;
+        //     n = n - n % 10;
+        //     n /= 10;
+        // }
+        // console.log(mul);
+
+        //******************************************************************************************
+
+        // 条件语句补充
+        //    switch case
+        //    break
+        //    continue
+
+        // 当判断一个精确的数时 --> switch case
+       
+        // var n = 'a';
+        // switch(n) {
+        //     case 'a':   // 弱语言里随意 不要类型都一样
+        //         console.log('a');
+        //         break;
+        //     case 2:
+        //         console.log('b');
+        //         break;
+        //     case true: 
+        //         console.log('c');
+        //         break;      
+        // }
+
+        // var date = window.prompt('input');
+        // switch(date) {
+        //     case 'monday':
+        //     case 'tuseday':
+        //     case 'wednesday':
+        //     case 'thursday':
+        //     case 'friday':
+        //         console.log('working');
+        //         break;
+        //     case '周六':
+        //     case '周日':
+        //         console.log('relaxing'); 
+        //         break;    
+        // }
+        
+        // break必须放在循环里面
+        // 在有些循环里 你不太好把控循环的圈数 然后你又想让它到特定的条件停止 break是最好的选择
+
+        // var i = 0;
+        // while(1) {
+        //     i ++;
+        //     console.log(i);
+        //     if(i > 100) {
+        //         break;
+        //     }
+        // }
+
+        // var i = 0;
+        // var sum = 0;
+        // for(var i = 0; i < 100; i++) {
+        //     sum += i;
+        //     document.write(i + ' ');
+        //     if(sum > 100) {
+        //         break;
+        //     }
+        // }
+
+        // for(var i = 0; i < 100; i++) {
+        //     if(i % 7 == 0 || i % 10 == 7) {
+        //         continue; // 中止本次循环 进行下次循环
+        //     }
+        //     document.write(i + ' ');
+        // }
+
+        // 初识引用值
+        //     数组
+        //     对象
+
+        // var arr = [3, 4, 345, undefined, 'dw'];
+        // // document.write(arr[0] + ' ');
+        // // arr[0] = 1;
+        // // document.write(arr[0] + ' ');
+        // // document.write(arr.length);
+        // for(var i = 0; i < arr.length; i++) {
+        //     arr[i] += 1;  // arr[i] = 1;
+        // document.write(arr[i] + ' ');
+        // }
+
+        // 属性名可加可不加字符串
+        // 对象的本质是为了存储数据的
+
+        // var deng = {
+        //     lastName: 'Deng',
+        //     age: 40,
+        //     sex: undefined,
+        //     wife: 'xiaoliu'
+        // }
+        // console.log(deng.lastName);
+        // deng.lastName = 'old Deng';
+        // console.log(deng.lastName);
+
+        // 有一种方法是面向对象的编程方法 原来的程序都是面向过程的 很机械  
+
+        // 编程形式的区别    (从逻辑上分)
+        //     1. 面向过程(机械 逻辑化思维把步骤控制分为第一步干嘛 第二步干嘛)  C
+        //                                                                             javaScript(半面向对象半面向过程 现在回归面向过程)
+        //     2. 面向对象(依靠谁的关系去解决什么问题)                       java
+
+        // typeof 
+        // 六种数据类型
+        // number string boolean      undefined    object(泛泛的引用值)                    function
+        //               true/false   undefined    {}/null(历史遗留的问题 给空对象占位的)    function() {}
+
+
+        // var num = null;
+        // console.log(typeof(num));
+        // console.log(typeof num);
+
+        // 类型转换
+        // 1. 显示类型转换
+        //        Number(mix)
+        //        parseInt(string, radix)
+        //        parseFloat(string)
+        //        toString(radix)
+        //        String(mix)
+        //        Boolean()
+
+        // Number() 把括号里面的东西转化为数字  undefined不能转化为数字 
+        // 不管能不能转化为数字,但都是数字类型的
+        // 看起来不是数字不能转化为数字   --> NaN
+        // typeof(null); ---> object
+        // typeof(a);  --> undefined
+    
+        // var num = Number(false);  // undefined ==> NaN
+        // console.log(typeof(num) + ':' + num);
+
+        // parseInt(); 从数字类看到非数字截至 后面砍断 把前面的东西给你返回  
+        // var num = parseInt('100px');  
+        // console.log(typeof(num) + ':' + num);
+
+        // 把目标进制当作基底转化为10进制
+        // var num = parseInt(10, 16);   // radix 2-36 0
+        // console.log(num);
+
+        // String(); 任何东西都能转化为字符串类型的
+        // var num = String(true);
+        // console.log(typeof(num) + ':' + num);
+
+        // Boolean: 试图把里面的东西转化为布尔值类型的
+        // var num = Boolean(true);
+        // console.log(typeof(num) + ':' + num);
+
+        // undefined和null不能用toString()方法,因为它没有原型
+        // var demo = 123;
+        // var num = demo.toString();
+        // console.log(typeof(demo) + ':' + demo);
+
+        // 以10进制为基地转化为目标进制
+        // var num = demo.toString(8);
+        // console.log(typeof(num) + ':' + num);
+
+        // 2 --> 10 -- > 16
+        // var num = 1000;
+        // var test = parseInt(num, 2);
+        // document.write(test.toString(16))
+
+        // 类型转换
+        //     isNaN()  -->  Number()
+        //     ++ /--     +/-(一元正负)
+        //     +
+        //     * / %    --> Number()
+        //     && || !(先Boolean再取反)
+        //     < >  <=  >=  (字符串比字符串比的ascill码 数字和字符串的数字比则Number())
+        //     == !=
+
+        // document.write(isNaN(undefined));
+        // Number()
+
+        // var a = 'abc';
+        // a ++;   // 还没进行运算就先Number()
+
+        // var a = +'abc';  // Number()
+        // console.log(a + ':' + typeof(a));
+
+        // var a = 'a' + 1;
+        // console.log(a + ':' + typeof(a));
+
+        // var a = 'a' * 1;
+        // console.log(a + ':' + typeof(a));
+
+        // 2 > 1 > 3
+        // 2 > 1 < 1
+        // 100 > 10 > 0
+         
+        // 唯一一个自己不等于自己的就是非数
+        // undefined == null;
+        // NaN == NaN; // flase
+        
+        // + 左右只要有一个是字符串的就调用String()转化为字符串类型
+
+        // 不发生类型转换
+        //     ===  !==
+
+        // === 绝对等于
+        // NaN === NaN;   // false
+
+        // typeof返回的类型是string  当且仅当未定义不报错
+        // typeof(typeof(a))
+
+        // 作业   // typeof      string number boolean object function undefined  
+        // alert(typeof(a));  // undefined
+        // alert(typeof(undefined));  // undefined
+        // alert(typeof(NaN));  //    (number)    -----    typeof(NaN)  --> 'number'
+        // alert(typeof(null));   // object
+        // alert(typeof(NaN));    // undefined(number)
+        // var a = '123abc';
+        // alert(typeof(+a));      //  NaN(number)
+        // alert(typeof(!!a));     // true(boolean)
+        // alert(typeof(a + ''));    // string
+        // alert(1 == '1');      // true
+        // alert(NaN == NaN);    // false
+        // alert(NaN == undefined);   // false
+        // alert('11' + 11);      // 1111
+        // alert(1 === '1');        // false
+        // alert(parseInt('123abc'));   //  123
+        // var num = 123123.345789;
+        // alert(num.toFixed(3));   // 123123.346
+        // typeof(typeof(a));       // string
+
+    </script>
+    
+</body>
+</html>

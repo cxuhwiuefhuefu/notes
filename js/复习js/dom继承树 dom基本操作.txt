@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        // dom继承树 dom基本操作
+
+        // dom结构树 -- 表继承关系
+        // Node  --->  Document       --->  HTMLDocument --> document
+        //       --->  CharacterData  --->  Text
+        //                            --->  Comment
+        //       --->  Element        --->  HTMLElement  ---> HTMLHeaderElement (Header标签)
+        //                                               ---> HTMLBodyElement
+        //                                               ---> HTMLTitleElement
+        //                                               ---> HTMLParagraphElement
+        //                                               ---> HTMLInputElement
+        //                                               ---> HTMLTableElement
+        //                                               ---> ...etc.
+        //       --->  Attr
+        
+        // XMLDocument.prototype = {
+        //     __proto__: Document.prototype
+        // }
+
+        // 不兼容(IE9以下不兼容)
+        //           IE6  IE8
+
+        // document --> HTMLDocument.prototype --> Document.prototype
+
+        // 继承的原则: 就近继承
+        // 所以构造函数产生的对象都会继承这个原型的属性和方法
+
+        // HTMLElement.prototype.abc = 'demo';
+        // var body = document.getElementsByTagName('body')[0];
+        // var head = document.getElementsByTagName('head')[0];
+
+        // document代表文档
+        // Document 构造函数(这个构造函数有些特殊 你不能new它 是系统留给自己new的)
+
+        // DOM基本操作
+        // 1. getElementById定义在Document.prototype上, 即Element节点上不能使用
+        // 2. getElementsByName方法定义在HTMLDocument.prototype上, 即非html中的document以外不能使用(xml document, Element)
+        // 3. getElementByTagName()方法定义在Document.prototype和Element.prototype上
+        // 4. HTMLDocument.prototype定义了一些常用的属性, body,head分别指代HTML文档的<body><head>标签
+        // 5. Document.prototype上定义了DocumentElement属性, 指代文档的根元素, 在HTML文档中, 它总是指代<html>元素
+        // 6. getElementByClassName, querySelectorAll, querySelector在Document, Element类中均有定义
+
+    </script>
+
+</body>
+</html>
+
+//*************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div>
+        <span></span>
+    </div>
+    <span></span>
+
+    <script>
+
+        // 企业开发常用, 先选择父级, 再选择子级来定位元素, 这么选方便
+
+        // var div = document.getElementsByTagName('div')[0];
+        // var span = div.getElementsByTagName('span')[0];
+        
+        // *: 通过通配符选择器也是一种标签选择器, 它选的是所有的html标签
+        // var div = document.getElementsByTagName('*')[0];
+
+        // document.documentElement
+        // document.body
+        // document.head
+
+
+        // 课堂练习
+        // 1. 遍历元素节点树, 要求不能用children属性(在原型链上编程)
+        // 2. 封装函数, 返回元素e的第几层祖先元素
+        // 3. 封装函数, 返回元素e的第几个兄弟节点, n为正,返回后面的兄弟节点, n为负, 返回前面的兄弟节点, n为0, 返回自己
+        // 4. 编辑函数, 封装children功能, 解决以前部分浏览器的兼容性问题
+        // 5. 自己封装hasChildren()方法, 不可用children属性
+    
+    </script>
+
+</body>
+</html>
+
+//********************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div>
+        <p></p>
+        <span>
+            <strong><p></p></strong>
+            <b></b>
+        </span>
+    </div>
+
+    <script>
+
+        // 深度优先原则 
+        // 1. 查找 打印出来 childNodes
+        // 2. 递归 把里面的层级结构打印出来 
+
+        var div = document.getElementsByTagName('div')[0];
+        function reLen(node) {
+                var child = node.childNodes,
+                    len = child.length,
+                    count = 0;
+                for (var i = 0; i < len; i++) {
+                    if (child[i].nodeType == 1) {
+                        count++;
+                    }
+                }
+                return count;
+            }
+        function getChildren(node) {
+                var child = node.childNodes,
+                    len = child.length;
+                for (var i = 0; i < len; i++) {
+                    if (child[i].nodeType == 1) {
+                        if (reLen(child[i]) > 0) {
+                            console.log(child[i].nodeName);
+                            getChildren(child[i]);
+                        } else {
+                            console.log(child[i].nodeName)
+                        }
+                    }
+                }
+            }
+    
+    </script>
+    
+</body>
+</html>
+
+//**************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div>
+        <strong>
+            <span>
+                <i></i>
+            </span>
+        </strong>
+    </div>
+
+    <script>
+        
+        function reParent(elem, n) {
+            while(elem && n) {
+                elem = elem.parentElement;
+                n --;
+            }
+            return elem;
+        }
+        var i = document.getElementsByTagName('i')[0];
+
+    </script>
+
+</body>
+</html>
+
+//****************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div>
+        <section></section>
+        <span>
+            <strong></strong>
+        </span>
+    </div>
+
+    <script>
+
+        Element.prototype.myChildren = function() {
+            var arr = [];
+            var child = this.childNodes;
+            var len = child.length;
+            for(var i = 0; i < len; i++) {
+                if(child[i].nodeType == 1) {
+                    arr.push(child[i]);  // return true;
+                }
+            }
+            return arr;  // return false;
+        }
+        var div = document.getElementsByTagName('div')[0];
+    
+    </script>
+
+</body>
+</html>
+
+//**********************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div>
+        <span></span>
+        <p></p>
+        <strong></strong>
+        <!-- This is comment -->
+        <i></i>
+        <address></address>
+    </div>
+
+    <script>
+
+        // 兼容IE9以下
+        // 如果for循环执行体里面是空的话, 直接去掉加上分号就行了   for循环/if不用写执行体, 加分号就行
+
+        function reSibling(e, n) {
+           while(e && n) {
+               if(n > 0) {
+                   if(e.nextElementSibling) {
+                        e = e.nextElementSibling;
+                   }else {
+                       for(e = e.nextSibling; e && e.nodeType != 1; e = e.nextSibling);
+                   }
+                   n --;
+               }else {
+                   if(e.previousElementSibling) {
+                       e = e.previousElementSibling;
+                   }else {
+                       for(e = e.previousSibling; e && e.nodeType != 1; e = e.previousSibling);
+                   }              
+                   n ++;
+               }
+           }
+           return e;
+        }
+        var span = document.getElementsByTagName('span')[0];
+    
+    </script>
+
+</body>
+</html>
+
+//************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+        // 增
+        //   document.createElement();
+        //   document.createTextNode();
+        //   document.createComment();
+        //   document.createDocumentFragment();
+        // 插
+        //   PARENTNODE.appendChild();     // 剪切操作(把一个页面已有的appendChild另一个部分)
+        //   PARENTNODE.insertBefore(a, b);
+        // 删
+        //   parent.removeChild();         // 父级调用 其实剪切出来的
+        //   child.remove();               // 非剪切 直接消失    es5.0新方法 
+        // 替换
+        //    parent.replace(new, origin);
+
+        // Element节点的有些属性
+        //          innerHTML     //  能执行 += 都是可赋可取值 可写可读      能改变一个元素HTML里面的内容
+        //          innerText(火狐浏览器不兼容)/ textContent(老版本IE不好使)
+        // Element节点的一些方法
+        //          ele.setAttribute();
+        //          ele.getAttribute();   
+
+        // 属性和特性的区别
+        // 行间属性可以设置系统没有的
+    
+    </script>
+    
+</body>
+</html>
+
+//**********************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div>
+        <a href="#" data-log="0">hehe</a>
+    </div>
+
+    <script>
+
+        // data-log: 打点的意思
+        // 在公司开发的时候 我们要统计每个可点击的区域用户点击率是多少 这么统计点击率?? 当你去点击一个区域的时候 这个区域代表这个元素上面会有一个唯一的标识 我们管它叫data-log 你点击
+        //     这个元素的时候 我们程序会索取这个唯一标识 把它放到服务器 然后服务器来统计它接收了多少个0 多少个1 多少个2... 来代表你当前区域被点击多少次
+        //     然而data-log是人工定义的属性 它没有任何意思 这个属性只是为了存储这唯一标识的数据 123467
+
+        var a = document.getElementsByTagName('a')[0];
+        a.onclick = function() {
+            console.log(this.getAttribute('data-log'));
+        }
+        var div = document.getElementsByTagName('div')[0];
+        div.setAttribute('id', 'demo');
+
+    </script>
+    
+</body>
+</html>
+
+//********************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div></div>
+    <span></span>
+    <i></i>
+
+    <script>
+
+        var all = document.getElementsByTagName('*');
+        for(var i = 0; i < all.length; i++) {
+            all[i].setAttribute('this-name', all[i].nodeName);
+        }
+    
+    </script>
+
+</body>
+</html>
+
+//********************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+        // 请编写一段JavaScript脚本生成下面这段DOM结构。要求: 使用标准的DOM方法或属性
+        // <div class="example">
+        //    <p class="slogan">姬成, 长的还可以</p>
+        //    <strong>邓哥, amazing</strong>
+        // </div> 
+        // 提示 dom.className可以写成class
+
+
+        var div = document.createElement('div');
+        var p = document.createElement('p');
+        var strong = document.createElement('strong');
+        var text1 = document.createTextNode('姬成, 长的还可以');
+        var text2 = document.createTextNode('邓哥, amazing');    
+        div.appendChild(p);
+        div.appendChild(strong);
+        p.appendChild(text1);
+        strong.appendChild(text2);
+        document.body.appendChild(div);
+
+        // 或者用innerHTML
+
+
+        // 课后作业
+        // 1. 封装函数insertAfter(); 功能类似insertBefore();
+        //       提示: 可忽略老版本浏览器, 直接在Element.prototype上编程
+        // 2. 将目标节点内部的节点顺序逆序
+        //       eg: <div><a></a><em></em></div>
+        //           <div><em></em><a></a></div>
+    
+    </script>
+    
+</body>
+</html>

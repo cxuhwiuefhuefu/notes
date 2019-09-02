@@ -1,0 +1,86 @@
+// mysql函数有非常多的函数
+//
+// select 字段列表 | 表达式 | 函数
+//
+// 函数名(参数)
+// use aa;
+//
+//
+// 数学函数
+// select pi() from emp; // 要圆周率整个所有的数据都给我打印出来
+// select distinct pi() from emp; // 把重复的去掉
+// 因为圆周率函数跟我这张表没有任何关系 所以说在这查询过程中是不需要传入任何的参数
+// select * from emp;   
+// insert into emp(empno, ename, sal, comm) values(777, 'TOM', 2346.45, 234.34);
+// select * from emp;
+// select floor(sal) from emp where empno = 7777;
+// select ceiling(comm) from emp where empno = 7777;    
+// select floor(sal) from emp where empno = 7934;
+// select ceiling(sal) from emp where empno = 7934; // 要注意我从函数做完运算之后 它查询处理的结果它已经发生变化了 数据库内部的数据并没有发生变化
+                                                    //     只不过是你查询的结果发生了变化 一个是floor 一个是ceiling 一个是要截取掉小数部分 
+                                                    //     一个是只要你小数部分不为0我就+1
+// 
+// select round(sal, 1) from emp where empno = 7777; 
+// select sal from emp where empno = 7777; // 你会发现以小数点后一位进行四舍五入
+// select round(comm, 1) from emp where empno = 7777; 
+// select comm from emp where empno = 7777; 
+//
+// 截取 --- 不进行任何四舍五入 一刀砍断 
+// select truncate(comm, 1) from emp where empno = 7777; // 只保留到小数点后的一位      
+// select truncate(comm, 0) from emp where empno = 7777; // 只保留到小数点后的零位
+// select truncate(comm, -1) from emp where empno = 7777; // 当我输入-1的时候它会把我个位数的负一数变成了零
+// select truncate(comm, -2) from emp where empno = 7777; // 当我输入-2的时候它会把我个位数和整位数变成了零
+// select round(comm, -1) from emp where empno = 7777; // 它是把它变成零了吗 并不是 它也是进行四舍五入的操作把它舍掉了
+//
+//
+//
+// 聚合函数 也被称之为分组函数 
+//     如果我们没有进行分组操作的话 可以相当于把一整张表看成一组
+// select avg(sal) from emp; // 工资平均值  
+// select count(comm) from emp; // 把这一列中值不为空的给你找出来 0.00的值并不是空 它有值 只不过它的值是0
+// select count(empno) from emp; // 看看公司有多少名员工
+// 有些情况下你并不能保证你的字段百分比不存在空的  select count(*) from emp; // 一般可以通过它查一下公司有多少人数
+// select min(sal) from emp;  // 查一下最小值 
+// select max(sal) from emp; // 工资最大值
+// select sum(sal) from emp; // 工资支出一共多少
+// 平均值 条数 最小值 最大值 总和
+//
+//
+//
+// 字符串函数
+// select ename, sal from emp;
+// select concat(ename, '的工资是', sal) from emp; // 谁谁的工资是多少 我需要把我对应的名字和我对应的工资拼到一个对应的大长字符串里面 
+                                                 //     将里面参数的字符串连接成一个整个的 我这个表头并不能明确的表示是什么东西
+                                                 //     它只不过是我这个对应的函数给做到了表头 这个情况下这个报表做出来给你看
+                                                 //     看不清 蒙蔽了 可以不可以把这个表头做一个替换呢 
+                                                 //     只要在你的字段或者是你的表达式或者是你的函数后面 接空格写上你另一个你想要的表头
+// select concat(ename, '的工资是', sal) '工资详情列表' from emp; // '工资详情列表' 这个叫做别名 你起别名的时候可以直接起英文 
+                                                                // 因为中文存在一系列的问题
+// select concat(ename, '的工资是', sal) saltable from emp; // 这个我写成英文 你会发现它是我对应起的一个名字 但是没有用任何的引号引进来
+                                                           //     但是它也是对应的字符串     
+                                                           //     别名   1. 直接写   2. 写引号里面(中文 中间有空格 有关键字)
+                                                           // 任何一个列或者是一个表达式或者说是一个函数都可以起别名
+// 去掉字符串开头的空格
+// select * from emp;
+// update emp set ename = '  tom '   where empno = 7777;
+// select * from emp;
+// 去掉字符串开头的空格
+// select ltrim(ename) from emp where empno = 7777;
+// select ename from emp where empno = 7777;    
+// select rtrim(ename) from emp where empno = 7777;
+// 查看字符串的长度
+// select length(rtrim(ename)) from emp where empno = 7777;
+// select length(ename) from emp where empno = 77777; // 说明我的有空格也是给它去掉的 因为我去之前和去之后我整个的ename获得长度的结果是一样的
+// 两边空格都去掉
+// select trim(ename) from emp where empno = 7777; // 如何验证 通过长度去验证
+// select substring(ename, 1, 1) from emp; 
+// select substring(ename, 1) from emp; // 后面的长度不写可以代表截取到结尾
+//  
+//
+//
+// 日期函数
+// select year(hiredate) from emp; // 只把年给它取出来了
+// select day(hiredate) from emp; // 把日趋取出来了
+// select month(hiredate) from emp; // 把月份取取出来了
+// 因为我这里的数据类型是date类型 这里面的时分秒都是0 你取出来都是0
+// 注意 你的hour minute second 当你的这个类型是time类型 它才有对应的意义 因为你的时候才有一个具体的值 而我是time类型的话 我的时间没值的 只有年月日

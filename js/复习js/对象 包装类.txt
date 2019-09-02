@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+    //    对象 包装类
+
+    //    对象
+    //    1. 用所学的知识,描述一下你心目中的对象
+    //    2. 属性的增 删 改 查
+    //    3. 对象的创建方法
+    //           字面量
+    //           构造函数
+    //               1) 系统自带的  new Object(); new Array(); new Boolean(); new Date();
+    //               2) 自定义
+    //           Object.create(原型)方法
+
+    //    对象是一种基础的变量类型
+    //    控制台相对于在script标签最下面进行操作
+
+    //    var mrDeng = {
+    //        name: 'MrDeng',
+    //        age: 40,
+    //        sex: 'male',
+    //        health: 100,
+    //        smoke: function() {
+    //            console.log('i am smoking! cool!!!');
+    //            this.health ++;
+    //        },
+    //        drink: function() {
+    //            console.log('i am drinking! ');
+    //            this.health --;
+    //        }
+    //    }
+    //    mrDeng.wife = 'xiaoliu';  // 增
+    //    mrDeng.sex = 'female';    // 改
+    //    delete mrDeng.sex;        // 删
+
+    // 当一个变量没有声明就使用会报错的,当一个对象的属性没有,你访问的话会返回undefined,不会报错的
+
+    // var deng = {
+    //     prepareWife: 'xiaowang',
+    //     name: 'laodeng',
+    //     sex: 'male',
+    //     gf: 'xiaoliu',
+    //     wife: '',
+    //     divorce: function() {
+    //         delete this.wife;
+    //         this.gf = this.prepareWife;
+    //     },
+    //     getMarried: function() {
+    //         this.wife = this.gf;
+    //     },
+    //     changePrepareWife: function(someone) {
+    //         this.prepareWife = someone;
+    //     }
+    // }
+
+    // 对象的创建方法
+    // 1. var obj = {}; // plainObject 对象字面量/对象直接量
+    // 2. 构造函数
+    //        1) 系统自带的构造函数 new Object()/Array()/Number()
+    //        2) 自定义
+    
+    // 构造函数的基本定义: 可批量的生产对象,生产出的对象一样彼此独立
+    // var obj = {}; var obj = new Object();  没区别
+    // 单双引号没区别 最好单引号好配合php
+    
+    // javascript与其他语言的区别
+    //      JavaScript的语言的对象是所有语言中最灵活的 最自然的  java/c++ 要一个类  同样一个模板,生产的对象是死的,不能多加技能,属性
+    //            JavaScript是灵活的可后天的添加属性 和 方法
+
+    // 函数与构造函数的区别
+    //     1) 构造函数需要new
+    //     2) 构造函数的命名规则: 大驼峰式,每个单词的首字母大写   TheFirstName(大驼峰式)   theFirstName(小驼峰式)
+
+    // function Car(name) {
+    //     this.name = name;
+    //     this.height = '1400';
+    //     this.lang = '4900';
+    //     this.weight = 100;
+    //     this.health = 100;
+    //     this.run = function() {
+    //         this.health --;
+    //     }
+    // }
+    // var car = new Car('red');
+    // var car1 = new Car('green');
+
+    // function Student(name, age, sex) {
+    //     this.name = name;
+    //     this.age = age;
+    //     this.sex = sex;
+    //     this.grade = 2017;
+    // }
+    // var student = new Student('zhangsan', 18, 'male');
+
+    // *****************************************************************************************************8
+
+    // 构造函数的内部原理
+    // 1. 在函数体最前面隐式的加上this = {};
+    // 2. 执行this.xxx = xxx;
+    // 3. 隐式的返回this;
+
+    // function Person(name, height) {
+    //     this.name = name;
+    //     this.height = height;
+    //     this.say = function() {
+    //         console.log(this.say);
+    //     }
+    // }
+    // console.log(new Person('xiaowang', 18).name);
+
+    // // 模拟构造函数的构造方法
+    // function Person(name, height) {
+    //     var that ={};
+    //     that.name = name;
+    //     that.height = height;
+    //     return that;
+    // }
+    // var person = Person('xiaowang', 180);
+    // var person1 = Person('xiapzhang', 175);
+
+    // // 一定要返回数组/对象,如果是原始值的话会自动忽略掉,强制返回对象
+    // function Person(name, height) {
+    //     this.name = name;
+    //     this.height = height;
+    //     this.say = function() {
+    //         console.log(this.say);
+    //     }
+    //     return {}; // return 123;
+    // }
+    // var person = new Person('xiaowang', 180);
+    // var person1 = new Person('xiaowang', 175);
+
+    // 包装类
+    // new String();
+    // new Boolean();
+    // new Number();
+
+    // undefined和null不能有属性 都不能设置为属性名
+    // 原始值不能有属性和方法 只有对象才能有属性和方法, 对象包括对象自己 function 数组
+    // 数字都是原始值吗？？   只有原始值数字才是原始值   数字,字符串分两种 原始值 包装类
+
+    // 包装类的数字还能参与运算,乘完回归到原始值的数字
+    // 数字的对象能参与运算,参与完变成数字,能当对象能用使用
+    // var num = new Number(123);
+    // // num * 2 = 246(原始值)
+    // var str = new String('abc');
+    // var bol = new Boolean(true);
+
+    // // 包装类
+    // var num = 4;
+    // num.len = 3;
+    // // new Number(4).len = 3; delete  隐式转换
+    // // new Number(4).len;
+    // console.log(num.len);
+
+    // var sum = [1, 2, 3];
+    // sum.length = 2;
+    // console.log(sum);
+
+    // var str ='abcd';
+    // str.length = 2;
+    // // new String(str).length = 2; delete
+    // // new String(str).length
+    // console.log(str.length);
+    // console.log(str);
+
+    // var str = 'abc';
+    // str += 1;
+    // var test = typeof(str);
+    // if(test.length == 6) {
+    //     test.sign = 'typeof的返回结果可能是String';
+    //     // new String(str).sign = 'typeof的返回结果可能是String'; delete
+    // }
+    // // new String(test).sign;
+    // console.log(test.sign);
+
+    // // 2. 分析下面的JavaScript的代码
+    // function employee(name, code) {
+    //     this.name = 'WangLi';
+    //     this.code = 'AOO1'
+    // }
+    // var newemp = new employee('zhangming', 'AOO2');
+    // document.write('雇员姓名:' + newemp.name + '<br>');
+    // document.write('雇员代号:' + newemp.code + '<br>');
+
+    // function Person(name, age, sex) {
+    //     var a = 0;
+    //     this.name = name;
+    //     this.age = age;
+    //     this.sex = sex;
+    //     function sss() {
+    //         a++;
+    //         document.write(a);
+    //     }
+    //     this.say = sss;
+    // }
+    // var oPerson = new Person();
+    // oPerson.say();
+    // oPerson.say();
+    // var oPerson1 = new Person();
+    // oPerson1.say();
+
+    // var x = 1, y = z = 0;
+    // function add(n) {
+    //     return n = n + 1;  // 先计算表达式再return 
+    // }
+    // y = add(x);
+    // function add(n) {       
+    //     return n = n + 3;    // 函数提升 预编译
+    // }
+    // z = add(x);
+    // // x y z
+
+    // // 下面代码中console.log的结果是[1, 2, 3, 4, 5]的选项是
+    // // A
+    // function foo(x) {
+    //     console.log(arguments);
+    //     return x;
+    // }
+    // foo(1, 2, 3, 4, 5);
+    // // B
+    // function foo(x) {
+    //     console.log(arguments);
+    //     return x;
+    // }(1, 2, 3, 4, 5)
+    // // C
+    // (function foo(x) {
+    //     console.log(arguments);
+    //     return x;
+    // }(1, 2, 3, 4, 5))
+    // // D
+    // function foo() {
+    //     bar.apply(null, arguments);
+    // }
+    // function bar() {
+    //     console.log(arguments);
+    // }
+    // foo(1, 2, 3, 4, 5);
+
+    // 有一个容器,宽400px,高100px,单行文本,字体大小14px,水平垂直居中
+    //     我是一行文本,需要水平和垂直居中
+    // 万一是元素呢 怎么水平垂直居中？？？
+
+    // // 请问以下表达式的结果是什么？
+    // parseInt(3, 8);
+    // parseInt(3, 2);
+    // parseInt(3, 0);
+    // // A. 3 3 3
+    // // B. 3 3 NaN
+    // // C. 3 NaN NaN
+    // // 4. other
+
+    // // 以下哪些是JavaScript语言typeof可能返回的结果
+    // A. String
+    // B. array
+    // C. object
+    // D. null
+    // number string boolean undefined null object function
+
+    // call apply的作用和区别
+
+    // // 看下面alter的结果是什么？
+    // function b(x, y, a) {
+    //     arguments[2] = 10;
+    //     alert(a)
+    // }
+    // b(1, 2, 3);
+    // // 如果函数体改成下面,结果又会是什么？
+    // a = 10;
+    // alert(arguments[2]);
+    // // 形参实参形成映射的关系 你动我动 我动你动
+
+    // 作业
+    // 8. 写一个方法, 求一个字符串的字节长度。(字符串有一个方法charCodeAt();一个中文占两个字节,一个英文占一个字节)
+    //    定义和用法
+    //        charCodeAt()方法可返回指定位置的字符的Unicode编码。这个返回值0-65535之间的整数。(当返回值是<=255时,为英文,当返回值>255为中文)
+    //    语法
+    //        stringObject.charCodeAt(index);
+    //    eg:
+    //        var str = "Hello world!";
+    //        document.write(str.charCodeAt(1))
+
+    // 求字节 跟中文沾边的子或字符都占两个 英文占一个 空格占一个
+
+    // var str = 'abc邓';
+    // function bytesLength(str) {
+    //     // var count = str.length;
+    //     // for(var i = 0; i < str.length; i++) {
+    //     //     if(str.charCodeAt(i) > 255) {
+    //     //         count ++;
+    //     //     }
+    //     // }
+    //     var count = 0;
+    //     for(var i = 0; i < str.length; i++) {
+    //         if(str.charCodeAt(i) > 255) {
+    //             count += 2;
+    //         }else {
+    //             count ++;
+    //         }
+    //     }
+    //     return count;
+    // }
+
+    
+    </script>
+</body>
+</html>

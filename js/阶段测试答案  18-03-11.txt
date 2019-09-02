@@ -1,0 +1,265 @@
+1.
+  1) span i
+  2) p div 
+  3) display
+2.
+  1)html里面写
+  2)外部css文件引入
+  3)内部创建style标签
+3.
+  结构 行为 样式 相分离
+4.
+  #{
+    padding: 0;
+    margin:0 10px;
+  }
+  #content{
+    background: #ffffff;
+  }
+  #content div{
+    font-size: 14px;
+    text-aligin: center;
+    color: #e9e9e9;
+  }
+ 
+  #nav{
+    background: #e0e0e0;  
+  }
+
+5.8px
+6.300px 10px 40px
+7.
+  <div class='left' style='width: auto; float: left;'></div>
+  <div class= 'right' style='width: 200px; float:left'></div>
+8.{
+    left: 50%;
+    top: 50%;
+    margin-left: -150px;
+    margin-top: -250px;
+  }
+9.已经画了
+10. post get
+11. list-style: none;  向左靠近 
+12.number string boolean function undefined object
+13.arr.split('');
+14 <！-- -->  /**/   //
+15.{  
+   var div = document.createElement(div);
+   var p = document.createElement(p);
+   var text = document.createTextNode('姬成,你最帅!');
+   div.body.appendChild('div');
+   div.appendChild('div');
+   p.appendChild('text');
+}
+16.function addElement(type, fn) {
+ if(obj.addElementListener) {
+   obj.addElementListener(type, fn, false);  
+}else{
+   obj.attchElement(type, fn);
+ }              
+}
+17.改变this指向 传参列表不同
+18.
+19.Element.prototype = function(arr) {
+       var newArr = [];
+       var obj = {}:
+       for(var prop in arr) {
+            if(!obj[arr[prop]]) {
+                 newArr.push(this[prop]);
+                 obj[this[prop]]  = 'abc';
+             } 
+       }
+       return newArr;        
+}
+20.
+  ul.addElementListener('click', function() {
+     console.log(this.target.nodeText);  
+  }, false)
+21.
+  1)prevent Defalut
+    cancel bubble
+  2)return false
+22.
+   可以操作浏览器的对象
+23.
+24.
+   1)0 5 0
+   2)5 undefined 5
+25.var reg = /(\w)+/g;
+   str.replace(reg, '$1');
+26.var reg = /(?=(\B)(\w{3})+$)/
+   str.replace(reg, '.');
+27.string
+   undefined
+   undefined //
+   object
+   //
+   number
+   boolean   
+   undefied //
+   true
+   false
+   false
+   1111
+   false
+   123
+   123123.346
+28.
+   var date = new Date();
+   console.log(date);
+29.
+   宽 px是绝对 em是相对
+30.200px
+31.
+   new 
+32.
+   var inherit = (function() {
+         var F = function() {};
+         return function(target, option) {
+            target.prototype = new F();
+            F.prototype = option.prototype;
+            target.prototype.constructor = target;
+            targer.prototye.uber = option;
+            return target;
+         }   
+   }())
+33.Object.prototype.deepClone = function(obj) {
+       var newObj = {};
+       var toStr = Object.prototype.toString;
+       var arr = '[Array object]';
+       if(obj) {
+         for(var prop in obj) {
+            if(typeof(obj[prop]) == 'object') {
+                if(toStr.call(obj[prop]) == arr) {
+                    this[prop] = [];
+                }else{
+                    this[prop] = {};
+                }
+                newObj[prop] = deepClone(obj[prop]);
+            }else{
+                newOobj[prop] = obj[prop];
+            }
+         }  
+       }
+       return newObj;
+}  
+34.
+   1.找变量声明和形参
+   2.值赋undefined
+   3.形参和实参相统一， 函数名赋给函数体
+35. 单线程  可以跨平台 
+36. Chrome webkit/blink
+    firfox 
+    Safari  webkit
+    opera  
+37.1.创建文档，解析HTML元素和文本，添加到Element元素和文本中,这时的readyState = 'loading'
+   2.遇到css的link引入方式,单线程，异步解析css文档
+   3.遇到img标签,先正常解析dom结构，再异步加载
+   4.遇到没有defere async的js,阻塞文档，要等它解析并加载完，
+   5.遇到属性为defere，单线程，异步加载，加载完就执行，(不能使用document.write)
+   6.文档解析完，这时的readyState = 'interactive'
+   7.这时js属性为async的js开始执行(不能使用document.write)
+   8.当js文件和css解析完，会触发一个DOMContent事件,标志这脚步同步执行阶段到事件驱动阶段
+   9.文档加载完，这时readyState = 'complete';
+38.1.defere异步加载(仅IE能用)
+   2.async异步加载,不能写js里面()
+   3.创建一个script标签,外部引入
+39. 1
+    -3
+40.var oUl = document.getElementByTagName('ul')[0];
+   var len = oUl.length;
+   for(var i = 0; i <len; i++) {
+      (function(i){
+           oUl[i].addEventListener = function() {
+               console.log(i);
+           }
+      }(i))  
+   }
+41.var str = 'aannsiwn';
+   function findFirst(str) {
+       var arr = str.split('');
+       
+   }
+42. 
+    222
+    111
+    222
+    333
+43.你成哥很帅
+   包装类
+   首先(new String(str)).length = 3   delete new String(str)
+44. var obj = {};
+    var obj = new Object();
+    var obj = Object.create(原型);
+    自定义
+45. 模块化开发 用闭包 
+46.  for(var prop in obj) {
+        if(obj.hasOwnProperty) {
+           console.log(obj[prop]);
+        }
+     }
+47.arr.sort(function(a, b) {
+      return a - b;   
+   })      
+48.
+   不能使用(argument.callee fn.caller) 
+   使用一个变量要var
+   函数里预编译时this指向null/undefined     
+49.
+   document.getElementsByTagName();   // IE9以下不兼容
+   document.getElementsByClassName(); // IE9以下不兼容
+   document.getElementById();         // IE9以下不兼容
+   document.querySelectorAll();       // 不是实时的
+   document.querySelector();          // 不是实时的
+50.
+   
+51.
+    onlick = onmousedown + onmouseup
+    用botton的值
+52.
+    JSON.stringify();
+    JSON.parse();
+53.
+    alter()提示用户
+54.
+   js写呗
+   window.scroll = function() {
+       div.style.top = window.
+   }   
+55.
+   display: inline;
+56.
+   importer
+57.
+   block   //转化为块级元素
+   inline   //转化为行级元素
+   inline-block//转化为同时具备行级元素和块级元素的特点
+   none    // 就是没有
+58.<input type='text' onblur>    
+59.
+   1
+   映射关系，你动我就动
+60.
+   var reg = /-(\w)/g;
+   str.replace(reg, fun($, $1){
+     return $1.toUpperCase();
+   })   
+61.
+    var reg = /(\w){4}(\w){4}/g;
+    str.replace(reg, '$2$2$2$2$1$1$1$1')
+62
+  
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+

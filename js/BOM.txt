@@ -1,0 +1,32 @@
+   //  alert('邓哥帅')
+    
+    // var value = confirm('你真的忍心离开我吗');
+    // if(value) {
+    //    close();
+    // }else {
+    //     alert('你还是爱我的');
+    // }
+   
+
+var aa = window.open('','','width=200,height=200px')
+
+aa.moveBy(50,50)
+
+
+window.open('./index','','width=100,height=100px')
+window.open('https://www.baidu.com','','width=100,height=100px')
+
+window.open('https://www.baidu.com','',)
+
+
+var bb = window.open('https://www.baidu.com','aa',)
+bb.close()
+
+
+var dg = window.open('','','width=100,height=100')
+dg.moveTo(200,200)prompt('请输入玩家个数')
+
+
+
+var a = 123
+window.self.a

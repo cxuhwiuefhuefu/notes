@@ -1,0 +1,35 @@
+// MySQL查询语句
+//
+// select * from 表名;  功能: 查询出该表名下的所有数据
+//
+// 连接查询语句的格式 
+//
+// select [字段列表, 表达式, 函数] from 表名;       最简单的查询语句方式
+// 创建emp dept salgrade 三张表
+//
+// select * from emp;  // *: 代表所有的字段  我把这张下的所有信息给我展示出来 以前查询要把所有的字段都查询出来 现在我查询的过程只想查工资是多少
+// select sal from emp; // 这个将所有的工资都展示出来 我还想看到这些工资都属于谁怎么办呢 增加一个名称字段
+// select ename, sal from emp;
+// 
+// 字段列表如何展示呢    select 字段列表[字段1， 字段2， 字段n] from 表名;
+// 当我们需要将表中的所有字段数据都查询出来的时候 那么这个时候只需要将字段列表替换成*即可
+// select hiredate from emp;
+// select ename, hiredate from emp;
+//
+//
+// select 表达式[算术表达式] from 表名;    在计算机这个行业里头 我们数据库里边表达式其实就是我们的算术运算
+// select ename, sal * 12 from emp;
+// select ename, sal - 100 from emp;
+// select ename, sal + 100 from emp;
+// select ename, sal / 100 from emp;
+// select ename, sal % 100 from emp;
+// 
+//
+//
+// 函数
+//
+//
+//
+// select deptno from emp; // 能不能把重复的数据给它过滤掉 能不能把重复的给我去掉
+// select distinct deptno from emp;
+// select deptno from dept;

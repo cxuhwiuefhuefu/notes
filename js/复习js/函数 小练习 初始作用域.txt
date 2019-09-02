@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        // 函数 小练习 初始作用域
+
+        // toFixed: 科学计数法  保留有效数字  四舍五入
+        // var num = 123.64372;
+        // console.log(num.toFixed(3));
+
+        // 定义
+        //     函数定义
+        //     函数表达式
+        // 组成形式
+        //     函数名称
+        //     参数
+        //        形参
+        //        实参
+        //     返回值
+
+        // 数学里的函数表达式代表公式 代表关系 叫做关系的集合 把这些抽象出来 叫做一系列功能的集合/组合 一系列功能的通式
+        // 函数和变量其实没有太大的区别 函数是另一种类型的变量
+        // 函数和数组 对象差不多 都是引用值 它的栈内存里面存的是地址
+        // test也是一个变量 只不过它的声明形式不用var test里面存的是函数体 变量也有栈内存和堆内存 栈内存存的是地址 堆内存存的是内容
+
+        // 讲究 --》 高内聚 弱偶合  ==》   把相同功能的代码放到一个黑匣子,每次使用调用这个黑匣子就好了
+        // 偶合 --》 重复
+
+        // function test() {
+        //     console.log('a');
+        //     console.log('b');
+        //     console.log('c');
+        // }
+        // test();
+
+        // 多个单词命名: 第一个单词首字母小写 往后的单词的首字母大写 符合小驼峰式原则
+
+        // 函数声明
+        // function theFirstName() {
+        //     .......   
+        // }
+        // document.write(theFirstName);
+
+        // 语言的区别: 弱类型/解释性语言永远不输出地址 它有地址 它输出的地址指向房间  它和C语言C++不一样 C语言C++打印指针输出房间的地址
+
+        // 1. 命名函数表达式
+        // var test = function abc() {  // 表达式忽视函数名
+        //     document.write('a');
+        // }
+        // test.name
+
+        // 2.匿名函数表达式 --- 函数表达式
+        // var demo = function() {
+        //     document.write('b');
+        // }
+        // demo.name
+
+        // 命名函数表达式和匿名函数表达式的区别 ： test.name    demo.name
+        // 函数声明和函数表达式的区别: 预编译
+        
+        // function sum(a, b) {  // 形式参数 -- 形参
+        //     // var a;
+        //     // var b;
+        //     if(a > b) {
+        //         document.write(a - b);
+        //     }else if(a < b) {
+        //         document.write(a + b);
+        //     }else {
+        //         document.write(10);
+        //     }
+        // }
+        // sum(1, 2);  // 实际参数 -- 实参
+        
+        // 区别: 与Java相比 不定参 形参比实参多  实参比形参多 不报错
+
+        // 在每个函数里面都有一个系统创建好的arguments 类似数组 实参列表
+        // function sum(a, b, c, d) {   // sum.length: 形参长度
+        //     if(sum.length > arguments.length) {
+        //         console.log('形参多');
+        //     }else if(sum.length < arguments.length) {
+        //         console.log('实参多')
+        //     }else {
+        //         console.log('相等');
+        //     }
+        // }
+        // sum(11, undefined, 3, 'abc');  // 传什么都可以
+
+        // 不定参的好处   
+        // function sum() {
+        //     var result = 0;
+        //     for(var i = 0; i < arguments.length; i++) {
+        //         result += arguments[i];
+        //     }
+        //     document.write(result);
+        // }
+        // sum(1, 2, 3, 4, 5);
+
+        // 映射规则 你动我就动 我动你就动
+        // function sum(a, b) {
+        //     a = 2;
+        //     arguments[0] = 2;
+        //     document.write(a);
+        // }
+        // sum(1, 2);
+
+        // 形参比实参多 不对应实参 不映射 
+        // function sum(a, b) {
+        //     b = 2;
+        //     document.write(arguments[1]);  // undefined
+        // }
+        // sum(1);
+
+        // function myNumber(target) {
+        //     return + target;
+        // }
+        // var num = myNumber('123');
+        // console.log(typeof(num) + ' ' + num);
+
+        // return  1. 终止函数     2. 返回值
+
+        // 没写return隐式在逻辑的最后加上return终止函数
+
+        // typeof的两种写法
+        // 1. typeof(123)  
+        // 2. typeof 123
+
+        //*************************************************************************************
+
+        // 课堂小练习
+        // 1. 写一个函数, 功能是告知你所选的小动物的叫声
+        // 2. 写一个函数, 实现加法计数器
+        // 3. 定义一组函数, 输入数字, 逆转并输出汉字形式
+        // 4. 写一个函数, 实现n的阶乘
+        // 5. 写一个函数, 实现斐波那契数列
+
+        // 函数定义功能
+
+        // function scream(animal) {
+        //     switch(animal) {
+        //         case 'dog': 
+        //             document.write('wang');
+        //             return;   // break;
+        //         case 'cat':
+        //             document.write('miao !!!');
+        //             return;     
+        //         case 'fish':
+        //             document.write('o~o~o');
+        //             return;    
+        //     }
+        // }
+        // scream('fish')
+
+        // 字符串形式的数字
+        // var str = '123';
+        // str.charAt(0);
+        
+        // 如果是一个单独的功能, 函数的意思是抽象的功能, 就把这个功能抽象出来
+        
+        // function reverse() {
+        //     var num = window.prompt('input');
+        //     var str = '';
+        //     for(var i = num.length - 1; i >= 0; i--) {
+        //         str += transfer(num[i]);  // 先执行完函数再连接,因为js是单线程      字符串是基于数组
+        //     }                             // + 有字符串连接的功能
+        //     document.write(str);
+        // }
+        // function transfer(target) {
+        //     switch(target) {
+        //         case '1':
+        //             return '一';
+        //         case '2':
+        //             return '二';      
+        //         case '3':
+        //             return '三';
+        //     }
+        // }
+        // reverse();
+
+        // 1. 找规律    2. 找出口
+        // function jc(n) {
+        //     if(n == 1) {
+        //         return 1;
+        //     }
+        //     return n * jc(n - 1);
+        // }
+
+        // 作用域初探
+        // 作用域定义: 变量(变量作用于又称上下文)和函数生效(能被访问)的区域
+        // 全局 局部变量
+        // 作用域的访问顺序
+
+        // 在全局定义的变量为全局变量 在函数里定义的变量为局部变量
+        
+        // 1. 最里面的可以访问外面的 外面的不能访问里面的
+        // 2. 两个彼此独立的房间不能互相访问
+
+        // var a = 123;
+        // function test() {
+        //     var b = 123;
+        //     function demo() {
+        //         var c = 123;
+        //         document.write(b);
+        //         document.write(a);
+        //     }
+        //     demo();
+        //     document.write(c);
+        // }
+        // test();
+
+        // var global = 100;
+        // function test() {
+        //     var a = 123;
+        // }
+        // function demo() {
+        //     var b = 234;
+        // }
+        
+
+        // 挑战型作业
+        // 题目
+        // 要求输入一串低于10位的数字 输出这串数字的中文大写
+        // eg: input: 10000    output: 壹万
+        // eg: input: 1001010  ouput: 壹佰万壹仟零壹拾   
+
+        // 银行家算法
+
+        // 10000   一万
+        // 10001   一万零一
+        // 10010   一万零一十
+        // 10100   一万零一百
+        // 11000   一万一
+        // 101000  十万一千元
+
+        // 千分位一旦有值不用读零
+
+
+    </script>
+</body>
+</html>

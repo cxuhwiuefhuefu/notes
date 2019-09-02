@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .content{
+            width: 400px;
+            height: 100px;
+            border: 1px solid #000000;
+            line-height: 100px;
+            text-align: center;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div class="content">我是一行文本,需要水平和垂直居中</div>
+    <script>
+        // 预编译
+        // 1.创建AO对象
+        // 2.找形参和变量声明,将变量声明和形参名作为AO属性名,值为undefined
+        // 3.将实参和形参统一
+        // 4.在函数体里面找函数声明,值赋予函数体
+
+        // var x = 1, y = z = 0;
+        // function add(n) {
+        //     return n = n + 1;
+        // }
+        // y = add(x);
+        // function add(n) {
+        //     return n = n + 3;
+        // }
+        // z = add(x);
+
+    //    //下面代码中console.log的结果是[1,2,3,4,5]的选项是
+    //    // A
+    //       function foo(x) {
+    //           console.log(arguments);
+    //           return x;
+    //       }
+    //       foo(1, 2, 3, 4, 5);
+    //     // B
+    //       function foo(x) {
+    //           console.log(arguments);
+    //           return x;
+    //       }(1, 2, 3, 4, 5);
+    //     // C
+    //       (function foo(x) {
+    //           console.log(arguments);
+    //           return x;
+    //       })(1, 2, 3, 4, 5);
+    //     // D
+    //       function foo() {
+    //           bar.apply(null, arguments);
+    //       }  
+    //       function bar() {
+    //           console.log(arguments);
+    //       }
+    //       foo(1, 2, 3, 4, 5);
+
+    // 有一个容器,宽400px, 高100px, 单行文本,字体大小14px,水平谁知居中
+
+    // // 请问以下表达式的结果是什么？
+    // parseInt(3, 8);
+    // parseInt(3, 2);
+    // parseInt(3, 0);
+    // A. 3, 3, 3
+    // B. 3, 3, NaN
+    // C. 3, NaN, NaN
+    // 4. other   
+
+    // 以下的哪写是javascript语言typeof可能返回的结果
+    // A. string
+    // B. array
+    // C. object
+    // D. null
+
+    // javascript语言typeof可能返回的结果
+    // Number String Boolean undefined Object(null) function
+
+    // call和apply的作用及区别？
+    // call和apply改变this指向, 传参列表不同
+
+    // 看看下面的结果是什么？
+    // function b(x, y, a) {
+    //     arguments[2] = 10;
+    //     alert(a);
+    // }
+    // b(1, 2, 3);
+    // 如果函数体改成下面,结果又会是什么？
+    // a = 10;
+    // alert(arguments[2]);
+    // 形参和实参形成映射的关系 (你动我动 我动你动)
+
+    // // 逗号操作符 
+    // var num = (1, 2);
+    // var num = 1, 2; // 会报错的
+    // // 想要逗号操作符,写一个等式必须写个括号括起来
+    // // 一个括号里只能写一个函数,否则不符合语法
+
+    // var f = (
+    //     function f() {
+    //         return "1";
+    //     },
+    //     function g() {
+    //         return 2;
+    //     }
+    // )();
+    // typeof f;
+    
+    // var x = 1;
+    // if(function f() {}) {
+    //     x += typeof f;
+    // }
+    // console.log(x);
+    // 括号把里面的东西转化为表达式, 表达式会自动忽略函数名
+
+    // 以下表达式为true
+    // A. undefined == null
+    // B. undefined === null
+    // C. isNaN('100')
+    // D. parseInt("1a") == 1
+
+    // // 模拟isNaN
+    // function myIsNaN(num) {
+    //     var ret = Number(num);
+    //     ret += '';
+    //     if(ret == 'NaN') {
+    //         return true;
+    //     }else {
+    //         return false;
+    //     }
+    // }
+
+    // {} == {}
+    // 引用值比的是地址,房间
+
+    // this
+    // 1.函数预编译过程的this --> window
+    // 2.全局作用域里的this --> window
+    // 3.call和apply可以改变函数运行时this指向
+    // 4.obj.func();func()里面的this指向obj
+
+    // function test(c) {
+    //     // var this = Object.create(test.prototype);
+    //     // var this = {
+    //         // __proto__: test.prototype
+    //     //}
+    //     var a = 123;
+    //     function b() {}
+    // }
+    // test(1);
+    // new test();
+    // AO{
+    //     this: window,
+    //     arguments: [1],
+    //     c: 1,
+    //     a: undefined,
+    //     b: function() {}
+    // }
+
+    // var obj = {
+    //     a: function() {
+    //         console.log(this.name);
+    //     },
+    //     name: 'abc'
+    // }
+    // obj.a();
+    // 同样走预编译,走完this就变成调用者
+    // 谁调用了this，这个this就指向谁,没调用this指向window
+
+    // function test() {
+    //     console.log(window);
+    //     console.log(this);
+    // }
+    // test();
+    // 没调用 空执行 预编译
+
+   //*****************************************************************************************************************8
+
+
+//    var name = '222';
+//    var a = {
+//        name: '111',
+//        say: function() {
+//            console.log(this.name);
+//        }
+//    }
+//    var fun = a.say;
+//    fun(); 
+//    a.say();
+//    var b = {
+//        name: '333',
+//        say: function(fun) {
+//            fun();
+//        }
+//    }
+//    b.say(a.say);  
+//    b.say = a.say;  
+//    b.say();  
+        
+        // arguments
+        //      arguments.callee --> 指向的是函数的引用
+        //      arguments.caller --> 指向的是函数被调用时的环境
+
+        // function test() {
+        //     console.log(arguments.callee);
+        //     console.log(arguments.callee == test);
+        // }
+        // test();
+
+        // var num = (function (n) {
+        //     if(n == 1) {
+        //         return 1;
+        //     }else {
+        //         return n * arguments.callee(n - 1);
+        //     }
+        // }(100))
+
+        // function test() {
+        //     console.log(arguments.callee);
+        //     function demo() {
+        //         console.log(arguments.callee);
+        //     }
+        //     demo();
+        // }
+        // test();
+        // // 在哪个函数里面的arguments.callee,就指向哪个函数
+
+        // function test() {
+        //     demo();
+        // }
+        // function demo() {
+        //     console.log(demo.caller);
+        // }
+        // test();
+
+        // // 1.请阅读以下代码,写出以下程序的执行结果
+        // var foo = '123';
+        // function print() {
+        //     var foo = '456';
+        //     this.foo = '789';
+        //     console.log(foo);
+        // }
+        // print();
+
+        // var foo = 123;
+        // function print() {
+        //     // var this = {
+        //     //     __proto__: print.prototype
+        //     // }
+        //     this.foo = 234; 
+        //     console.log(foo);
+        //     // return this;
+        // }
+        // print();
+        // new print();
+
+        // // 1.运行test()和 new test()的结果分别是什么？
+        // var a = 5;
+        // function test() {
+        //     a = 0; 
+        //     alert(a);
+        //     alert(this.a);
+        //     var a;
+        //     alert(a);
+        // }
+        // // 访问一个对象里面没有的属性,打印出undefined
+
+        // // 2.请阅读以下代码,写出以下程序运行的执行结果
+        // function print() {
+        //     console.log(foo);
+        //     var foo = 2;
+        //     console.log(foo);
+        //     console.log(hello);
+        // }
+        // print();
+
+        // // 3.请阅读以下代码,写出以下程序的执行结果
+        // function print() {
+        //     var test;
+        //     test();
+        //     function test() {
+        //         console.log(1);
+        //     }
+        // }
+        // print();
+
+        // //4.
+        // function print() {
+        //     var x = 1;
+        //     if(x == '1') console.log('one!');
+        //     if(x === '1') console.log('TWO!');
+        // }
+        // print();
+        
+        // // 5.
+        // function print() {
+        //     var marty = {
+        //         name: 'marty',
+        //         printName: function() { console.log(this.name) }
+        //     }
+        //     var test1 = { name: 'test1' }
+        //     var test2 = { name: 'test2' }
+        //     var test3 = { name: 'test3' }
+        //     test3.printName = marty.printName;
+        //     var printName2 = marty.printName.bind( { name: 123 } );
+
+        //     marty.printName.call(test1);
+        //     marty.printName.apply(test2);
+        //     marty.printName();
+        //     printName2();
+        //     test3.printName();
+        // }
+        // print(); 
+
+        // // 6.
+        // var bar = { a: '002' };
+        // function print() {
+        //     bar.a = 'a';
+        //     Object.prototype.b = 'b';
+        //     return function inner() {
+        //         console.log(bar.a);
+        //         console.log(bar.b);
+        //     }
+        // }
+        // print()();
+
+        // // 浅层克隆
+        // var obj = {
+        //     name: 'abc',
+        //     age: 123,   
+        //     sex: 'female',
+        //     card: ['visa', 'unionpay']    
+        // }
+        // var obj1;
+        // function clone(origin, targte) {
+        //     var target = target || {};
+        //     for(var prop in origin) {
+        //         target[prop] = origin[prop];
+        //     }
+        //     return target;
+        // }
+        // clone(obj, obj1);
+
+        
+    
+    </script>
+</body>
+</html>

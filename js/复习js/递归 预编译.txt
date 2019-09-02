@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        // 递归 预编译
+
+        // 定义一个函数 一个叫函数声明 一个叫函数表达式
+        // 什么才能简称为函数表达式呢? 匿名函数表达式才能简称为函数表达式
+
+        // return 把函数中止并且返回一个值
+        // 定义在全局的变量叫做全局变量, 定义在全局的函数叫做全局函数, 则局部的变量和函数亦然
+
+        // 1. 找规律    2. 找出口(拿已知条件当出口)
+        // 递归的好处: 能让代码变的更加简洁
+        // 递归的速度最慢,特别复杂的程序不能用递归
+        // 先执行一定被最后执行完的
+        // 空间复杂度特别高
+        
+        // function mul(n) {
+        //     if(n == 1 || n == 0) {
+        //         return 1;
+        //     }
+        //     return n * mul(n - 1);
+        // }
+        // var num = mul(3);
+        // console.log(num);
+
+        // function fb(n) {
+        //     if(n == 1 || n == 2) {
+        //         return 1;
+        //     }
+        //     return fb(n - 1) + fb(n - 2);
+        // }
+        // var num = fb(4);
+        // console.log(num);
+
+        // 作用域初探
+        // 作用域的定义: 变量(变量作用于又称上下文)和函数生效(能被访问)的区域
+        // 全局丶局部变量
+        // 作用域的访问顺序
+
+        // js运行三部曲
+        //   语法分析 (通篇扫描)
+        //   预编译   (1.函数声明整体提升  2.变量 声明提升) --> 提升到逻辑的最前面
+        //   解释执行  js: 1.单线程 2.解释性语言--翻译一行解释一行           
+
+        // 变量没经声明就使用 --》 报错
+
+        // 互相嵌套的函数,里层的函数可以访问外层的东西,外层的函数不能访问里层的东西,越往里的权限越大
+
+        // 预编译前奏
+        //     1.imply global暗示全局变量: 即任何变量,如果变量未经声明就赋值,此变量为全局所有
+        //       eg: a = 123;
+        //       eg: var a = b = 123;
+        //     2.一切声明的全局变量全是window的属性
+        //       eg: var a = 123; ==> window.a = 123;
+
+        // // window就是全局的域
+        // // 赋值是自右向左的
+        // function test() {
+        //     var a = b = 123;  // 连续赋值 
+        // }
+        // test();
+        
+
+        // 预编译四部曲
+        //     1.创建AO对象
+        //     2.找形参和变量声明, 将变量和形参名作为AO属性名,值为undefined
+        //     3.将实参和形参统一
+        //     4.在函数体里找函数声明,值赋予函数体
+
+        // 只能函数声明提升,函数表达式不能提升
+        // 预编译不只发生在函数里,还发生在全局
+
+        // function fn(a) {
+        //     console.log(a);
+        //     var a = 123;
+        //     console.log(a);
+        //     function a() {}
+        //     console.log(a);
+        //     var b = function() {}
+        //     console.log(b);
+        //     function d() {}
+        // }
+        // fn(1);
+        //  1.创建AO对象 (Ativeation Object) (执行期上下文)
+        //  2.AO{
+        //      a: function() {}
+        //      b: undefined,
+        //      d: function() {}
+        //  }  
+
+        // function test(a, b) {
+        //     console.log(a);
+        //     c = 0;
+        //     var c;
+        //     a = 3;
+        //     b = 2;
+        //     console.log(b);
+        //     function b() {}
+        //     function d(){}
+        //     console.log(d);
+        // }
+        // test(1);
+
+        // function test(a, b) {
+        //     console.log(a);
+        //     console.log(b);
+        //     var b = 234;
+        //     a = 123;
+        //     console.log(a);
+        //     function a() {}
+        //     var a;
+        //     b = 234;
+        //     var b = function() {}
+        //     console.log(b);
+        // }
+        // test(1);
+
+        // window 就是全局
+        // var a = 123;
+        // console.log(a); --> console.log(window.a);
+
+        // var a = 123;
+        // function a() {}
+        // console.log(a);
+        // console.log(window.a);
+        // 1.生成一个GO对象   Global Objct
+        // GO{
+        //    a: 123;
+        //}
+
+        // 先生成GO再生成AO
+
+        // console.log(test);
+        // function test(test) {
+        //     console.log(test);
+        //     var test = 234;
+        //     console.log(test);
+        //     function test() {}
+        // }
+        // test();
+        // var test = 123;
+        
+        // 我自己有就用自己的 没有就往上找
+
+        // global = 100;
+        // function fn() {
+        //     console.log(global);
+        //     global = 200;
+        //     console.log(global);
+        //     var global = 300;
+        // }
+        // fn();
+        // var global;
+
+        // function test() {
+        //     console.log(b);
+        //     if(a) {
+        //         var b = 100;
+        //     }
+        //     console.log(b);
+        //     c = 234;
+        //     console.log(c);
+        // }
+        // var a;
+        // test();
+        // a = 10;
+        // console.log(c);
+        
+        // 1.
+        // function bar() {
+        //     return foo;
+        //     foo = 100;
+        //     function foo() {}
+        //     var foo = 11; 
+        // }
+        // console.log(bar());
+        
+        // 2.
+        // console.log(bar());
+        // function bar() {
+        //     foo = 10;
+        //     function foo() {}
+        //     var foo = 11;
+        //     return foo;
+        // }
+
+        // ******/************************************************************************************
+        
+        // if里面不能声明function
+        // a = 100;
+        // function demo(e) {
+        //     function e() {}
+        //     arguments[0] = 2;
+        //     console.log(e); // 2
+        //     if(a) {
+        //         var b = 123;
+        //         function c() {}
+        //     }
+        //     var c;
+        //     a = 10;
+        //     var a;
+        //     console.log(b); // undefined
+        //     f = 123;
+        //     console.log(c);  // undefined(function() {})
+        //     console.log(a);  // 10
+        // }
+        // var a;
+        // demo(1);
+        // console.log(a); // 100
+        // console.log(f); // 123
+
+        // GO{
+        //     a: undefined,
+        //     f: 123
+        // }
+        // AO{
+        //     e: 2,
+        //     c: undefined(function () {}),
+        //     a: 10,
+        //     b: undefined
+        // }
+
+        // var str = false + 1;
+        // console.log(str);
+        // var demo = false == 1;
+        // console.log(demo);
+        // if(typeof(a) && - true + (+undefined) + '') {
+        //     console.log('基础扎实');
+        // }
+        // if(11 + '11' * 2 == 33) {
+        //     console.log('基础扎实');
+        // }
+        // !!' ' + !!'' - !!false || console.log('你要觉得能打印, 你就是猪');
+
+        // displsy: block inline-block inline none
+
+        // 只有一种情况用未定义的变量不报错的就是typeof
+
+        // 凡是这种数字符号, 隐式类型转换的趋势一般是数字, 转换不了一般是NaN,但还是数字类型的
+
+        // typeof(null) --> Object
+
+        //  && --> 左右隐式Boolean()转换
+
+        // var a = 1 || 2;
+        // (window.foo || window.foo = 'bar'); --> 报错
+        // 或运算符的优先级比等号运算符的优先级高
+
+        // (window.foo || (window.foo = 'bar'));
+        // 先括号赋值
+
+    </script>
+</body>
+</html>

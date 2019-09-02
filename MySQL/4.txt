@@ -1,0 +1,27 @@
+// 能不能对表的结构进行修改 修改过程包含什么呢
+//     增加字段
+//     alter table 表名 add 字段名 字段类型;
+//     
+//     修改字段
+//     alter table 表名 modify 字段名称 字段类型;
+//
+//     删除字段 
+//     alter table 表名 drop 字段名称;
+//
+// 我们在创建一个表的时候需要的不光是这个字段的名字 还需要字段的类型 同样你去增加字段的时候不光知道字段的名字 也要知道字段的类型
+// alter table book(表的名称) add  count int;
+//    alter table book:对这个表进行字段修改 add count int: 对这个表增加字段 
+// desc book; 
+//
+//
+// 怎么修改字段的类型 我们在book里面的价格是double类型 在book整个价格改成对应的整数类型 今后没有 小数类型 修改字段的整个语句的格式是什么样的呢  
+//     他和我们增加有异曲同工之妙  
+//     alter table book modify price int;  desc book;
+//
+//
+// 删除字段 alter table book drop count;   把库存删掉     desc book;
+//
+//
+//
+//
+// 下节对表内的数据进行操作

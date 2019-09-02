@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+        // 比较符 逻辑运算符 
+
+        // 运算操作符 
+        //     "+"
+        //        1. 数学运算 字符串链接
+        //        2. 任何数据类型加字符串都等于字符串
+        //     "-" "*" "/" "%" "=" "()"
+        //     优先级"="最弱   "()"优先级较高
+        //     "++" "--" "+=" "-=" "/=" "*=" "%="
+
+        // NaN: Not a Number
+        // a++: 先执行语句再++
+
+        // var a = 10;
+        // document.write(a ++);
+        // document.write(a);
+
+        // var a = 10;
+        // document.write(++ a);
+        // document.write(a);
+
+        // 运算自左向右的
+        
+        // var a = 1 + 1 + 'a' + 1;
+        // document.write(a);
+
+        // var a = 1 + 'a' + 1 + 1;
+        // document.write(a);
+
+        // var num = 1 / 0;
+        // var num = 0 / 0;
+        // var num = -1 / 0;
+        // document.write(num);
+
+        // var a = 1;
+        // var b = a++ + 1;
+        // document.write(a);
+        // document.write(b);
+
+        // var a = 1;
+        // var b = ++a + 1;
+        // document.write(a);
+        // document.write(b);
+
+        // --a 先运算 是老大哥
+
+        // var a = 1; 
+        // var b = --a + --a;
+        // document.write(b);
+
+        // var a = 1;
+        // a = a + 10; //  ===  a += 10;
+
+        //**********************************************************************************************
+
+        // 1. 写出打印结果
+        // var a = (10 * 3 - 4 / 2 + 1) % 2, 
+        //     b = 3;
+        // b %= a + 3; 
+        // document.write(a ++);
+        // document.write("<br>");
+        // document.write(--b);
+
+        // 抽象规律来应用规律
+
+        // 2. var a = 123; var b = 234; 请交换a b的值
+
+        // var a = 123;
+        // var b = 234;
+        // var c;
+        // c = a;
+        // a = b;
+        // b = c;
+        // document.write(a + ' ' + b);
+
+        // var a = 123;
+        // var b = 234;
+        // a = a + b;
+        // b = a - b;
+        // a = a - b;
+        // document.write(a + ' ' + b);
+
+        // 比较运算符
+        //     ">" "<" "==" ">=" "<=" "!="
+        //     比较结果为boolean值
+        // 逻辑运算符
+        //     "&&" "||" "!"
+        //     运算结果为真实的值
+        // 被认为是false的值
+        //     undefined null NaN "" 0 false         
+
+        // 字符串比较的是ascii码 由七位二进制的数能表示  128位十进制的数(0~127)
+        // A~z: 32位
+        // A:65 a:97
+        // ascii分为ascii1(七位二进制的数) ascii2(八位二进制的数)(0~255)  
+
+        // var a = 1 < 2;
+        // var a = "10" > "8";
+        // var a = "a" > "b";
+        // document.write(a);
+
+        // && 碰假就停
+        // || 碰镇就停
+        // 但凡是运算是求结果的
+        // true false 是比较运算符的结果
+        // 赋值符号的运算优先级最低
+
+        // = 叫赋值
+        // == 判断相等(存在隐式类型的转换)
+        // === 判断绝对相等(不存在隐式类型的转换)
+
+        // &&: 先看第一表达式转换成布尔值的结果 如果结果为真 那么它会看第二表达式转换为布尔值的结果 然后如果只有两个表达式
+        //     的话 只看到第二表达式就可以返回该表达式的值
+
+        // var a = NaN == NaN;
+        // var a = Infinity == Infinity;
+        // document.write(a);
+
+        // &&有中断的作用 如果前面有0就不看后面的了
+        // 当作判断语句来用 如果 那么  不关注返回值
+
+        // 2 > 1 && document.write('成哥很帅');
+
+        // var data = ....; // data: 后端给我们传的数据
+        // data && 执行一个语句 会用到data
+        // data && fn(data)  // 有保障 断路语句的应用
+
+        // div.onclick = function(e) {
+        //     var e = || window.event;
+        // }
+
+        // var a = !123;  // 先转化为布尔值再取反
+        // document.write(a);
+
+        // var num = 0 || false;
+        // document.write(num);
+
+        // 二进制  同或
+        //    01
+        //    11
+        //    01
+        // var num = 1 & 3;
+        // document.write(num);
+
+        // 条件语句
+        //     if, if else if
+        //        if  <---->  && 转换
+        //     for 
+        //        while, do while
+
+        // 条件有互斥性
+        // 条件有交叉点不能用 if else
+
+        // var score = parseInt(window.prompt('input'));
+        // if(score > 90 && score <= 100) {
+        //     document.write('alibaba');
+        // } else if(score > 80 && score <= 90) {
+        //     document.write('tencent');
+        // } else if(score > 70 && score <= 80) {
+        //     document.write('baidu');
+        // } else if(score > 60 && score <= 70) {
+        //     document.write('mogujie');
+        // } else if(score < 60){
+        //     document.write('oh my good!! you dotta be kidding me');
+        // } else {
+        //     document.write('erroe');
+        // }
+
+        // if(1 > 2) {
+        //     document.write('a');
+        // }
+        // 1 > 2 && document.write('a');  // 常用于条件判断
+
+        //    (1)        (2)     (3)
+        // for(var i = 0; i < 10; i++) {
+        //     document.write('a' + ' ');
+        // }
+        // 1. var i = 0;
+        // 2. if(i < 10) {
+        //        document.write('a');
+        //    }
+        // 3. i ++; --> i = 1;
+
+        // 先执行(1)
+        // 判断(2)  执行语句
+        // 执行(3)
+        // 判断(2)  执行语句
+        // 执行(3)
+        // 判断(2)  执行语句
+        // 执行(3)
+        // 判断(2)  执行语句
+        // 执行(3)
+        // ......
+        // 当判断有一次不成立的时候 立马停止
+
+        // var i = 0;
+        // for(; i < 10; ) {
+        //     document.write('a' + ' ');
+        //     i++;
+        // }
+
+        // var i = 1;
+        // var count = 0;
+        // for(; i;) {
+        //     document.write('a' + ' ');
+        //     count ++;
+        //     if(count == 10) {
+        //         i = 0;
+        //     }
+        // }
+
+        // var i = 1;
+        // for(; i;) {
+        //     document.write('a' + ' ');
+        //     i++;
+        //     if(i == 11) {
+        //         i = 0;
+        //     }
+        // }
+
+        // for(var i = 0; i < 100; i++) {
+        //     if(i % 3 == 0 || i % 5 == 0 || i % 7 == 0) {
+        //         document.write(i + ' ');
+        //     }
+        // }
+
+        // var i = 100;
+        // for(; i--; ) {
+        //     document.write(i + ' ');
+        // }   
+        // Bloolea(i);
+        // i --;
+        // document.write(i);
+
+        // var i = 0;
+        // while(i < 10) {  // 是for循环的简化版
+        //     document.write(i + ' ');
+        //     i ++;
+        // }
+
+        // var i = 0;
+        // while(i < 100) {
+        //     if(i % 7 == 0 || i % 10 == 7)  {
+        //         document.write(i + ' ');
+        //     }
+        //     i ++;
+        // }
+        
+        // 怎样都要打印一次 
+        // var i = 0;
+        // do{
+        //     document.write('a' + ' ');
+        //     i ++;
+        // }while(i > 10)
+
+        // 编程在于找寻找规律  找到规律抽象成公式才能写出来 
+    
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+// 聚合函数 分组函数
+//
+// 别名 可以给字段 表达式 函数 表起别名 
+//     如何起别名
+// select ename from emp;
+// select ename name from emp; // 在你的字段后直接跟空格然后加上你对应的别名 你的看别名会成为你查询结果表头字段的字段名
+// select ename, sal from emp;                        // 多个字段取别名
+// select ename name, sal s from emp;
+// 给表达式起别名
+// select ename, sal * 12 from emp; 
+// select ename, sal * 12 totalSal from emp;
+// 给函数起别名
+// select avg(sal) from emp;
+// select avg(sal) avg_sal from emp; // 起英文别名直接去写
+// select avg(sal) '平均工资' from emp; // 起中文别名 一定要用引号把它引上
+// select avg(sal) avg sal from emp; // 起英文别名 avg
+// select avg(sal) 'avg sal' from emp;
+// select avg(sal) 'from' from emp;
+// 给表起别名 直接在表后面加上对应的别名就行了      采用多张查询的时候 给表起别名的意义就大了
+// select avg(sal) 'from' from emp e;
+// select avg(sal) as 'from' from emp e; // as相当于起别名的关键字 可以省略
+//
+//
+//
+//
+// select avg(sal) from emp;
+// 需求: 要查出每个部门的平均工资
+//     正常思维: 1. 按照部门进行分组   2. 按照每个组算平均工资
+// 在MySQL如何进行分组的操作呢
+// select avg(sal) from emp; // 其实按照整个公司进  行分组 把整个公司当成一组 这个时候我按照部门负责
+// select avg(sal) from emp group by deptno; // 以前查询只有一个结果 现在变成四个 因为现在有四个部门组
+// delete from emp where empno = 7777; // 删除记录
+// select avg(sal) from emp group by deptno; // 并不清楚都属于哪个部门  
+// select avg(sal) avg_sal, deptno from emp group by deptno; // 对应部门的平均工资 部门号   这就是数据库的分组     
+// select sum(sal) tatal_sal, deptno from emp group by deptno; // 部门的工资总和
+// 注意: 在我们分组过程当中 我任何的一个的分组函数都可以使用 分组函数一共有五个 平均 总和 每一个部门的最大值
+// select max(sal), deptno from emp group by deptno; // 部门工资最大值        
+// select min(sal), deptno from emp group by deptno; // 部门工资最小值
+// select count(*) 'count', deptno from emp group by deptno; // 各部门的人数
+//
+//
+//
+//
+// 这个时候我们发现分组和分组函数共同使用的过程可以查询到每一个组单独的情况 要注意的一点是
+// select max(sal) from emp; // 查询整个工资工资最大的人   现在我想知道的是工资为5千的人他叫什么 我也可以进行一个分组操作 把每一个人进行一个分组
+// select max(sal), ename from emp;
+// select ename, sal from emp; // 结果是错误的 注意 这个语句在MySQL里边它的语法是允许你去写的 但正常这钟语句在orcla里边它是会出错的 
+//                                    在这种情况下它相当于把整个公司做了分组
+// select max(sal), ename, deptno from emp group by deptno; // 求每一组工资最大值的人都是谁 这是错误的 出错的原因是什么
+// 《如果使用分组函数 那么不在分组中的字段必须存在于group by后》      sal是在分组函数里头的 不在分组函数中的字段必须处于在group by后面 
+//     ename不在group by后面的 因为我是按部门进行分的组 这个时候你一定要注意的 你的ename既然不在group by后面 你出现在前面的位置就会出现错误
+// select max(sal), ename, deptno from emp group by deptno, ename; // 也就是你想分组的时候要以她两(deptno和ename)为一组 这个时候我一查询
+                                                                   //     14条记录全出来了 因为这是一组 这又是一组 这两个的组合结果并不相同 
+                                                                   //     所以它会把每个人都给查出来 如果我想查这个部门工资最大的姓名叫什么
+                                                                   //     通过分组我们是查不了 我需要通过子查询把它查出来      
+//
+//                                                               
+// select max(sal), ename from emp; 
+// select max(sal) from emp;
+// select ename from emp;
+// select max(sal) from emp;它返回的结果仅仅只有一条 select ename from emp;它会把所有的结果都返回 它返回这两个结果要做一对一对应关系 但是对应不上
+//     一条是无法和14条对应上的 在MySQL里边 它会把这14条的第一条取出来跟你的五千做对应 其实这样是不对的 在Oracle里边 这种语句只要你写就会直接报错
+//     所以这种情况它是并不能进行查询的 但是你注意了 如果你要进行分组了 比如按ename进行分组了
+//  select max(sal) from emp group by ename; // 你会发现这种情况下是不是也把14条记录都拿出来 我这14条记录可以和后面14记录一一对应了 
+                                             //     所以这种查询就没有任何问题了 只要你放在group by后面
+//
+//
+//
+//
+// 在我们分组函数里边 我们先补充一个关键字 having
+// select avg(sal), deptno from emp group by deptno; // 查询对应的平均工资和部门编号
+// 我想查询出平均工资大于两千的部门都有哪些
+// select avg(sal) avg_sal, deptno from emp group by deptno where avg_sal > 2000; // 按照我们以前的方式查询的过程当中 后面可以做一个刷选条件
+                  //     但是我们现在拿where去做筛选条件的时候发现出现了一个对应的错误 出现错误的原因是from是emp这张表
+                  //     但emp这张表里头并没有avg_sal这一个字段 所以说会出现对应的错误 那这个时候当我们进行分组查询的时候 
+                  //     在分组之后我们要做筛选推荐的时候你一定要注意 使用的关键字叫做having
+// select avg(sal) avg_sal, deptno from emp group by deptno having avg_sal > 2000; // having是什么意思
+                  // 当它把整个的表格进行一个分组查询之后会生成一个新的结果 这个avg_sal是我们新结果里面的字段 所以说你在使用的过程当中
+                  // 如果你使用where它会去你的emp这张表里查字段 emp表里头并没有avg_sal这个字段 而我们的having会上新的里面去查 
+                  // 这个时候有了这个字段就可以进行查询的操作了
+
+
+
+
+//   查询整个工资工资最大的人   现在我想知道的是工资为5千的人他叫什么 我也可以进行一个分组操作 把每一个人进行一个分组 ？？
+//   查询部门工资最大的人的姓名 ？？

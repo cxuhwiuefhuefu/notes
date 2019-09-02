@@ -1,0 +1,1238 @@
+javascript
+
+liveScript
+
+
+
+shell(用户操作的部分)     内核
+浏览器帧频 16毫秒
+V8(C++写)
+
+
+
+编译 c c++
+C -->  .obj
+优点：快
+不足：移植性不好(不能跨平台) 
+
+(oak).java -- javac --> 编译 --> .class --> jvm -- 解释编译
+
+解释 javascript php
+翻译一行解释一行
+优点：跨平台
+缺点：稍微慢
+
+
+
+javascript引xing 单线程
+
+
+
+ECMAscript
+
+DOM
+
+BOM
+
+
+
+											
+主流浏览器
+IE              trident
+Chrome          webkit/blink
+firefox         Gecko
+Opera           presto
+Safari          webkit
+
+
+结构 行为 样式 相分离
+html js   css
+
+编程语言  变量  数据  函数  进行运算
+
+IE       trident
+Chrome   webkit/blink
+firefox  Gecko
+Opera    presto
+Safari   webkit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(1) c    拆分步骤
+
+(2) javascript java 
+
+
+
+
+
+
+//    (function (){}()); W3C建议第一种
+//    (function (){})();
+//    只有表达式才能被执行符号执行
+//    能被执行符号执行的表达式会自动忽略函数名字
+
+ 
+//  对象的创建方法
+//  1.var obj = {} plainObjec  对象字面量/对象直接量
+//  2.构造函数
+//      1) 系统自带的构造函数 new Object() Array() Number()
+//      2) 自定义
+//          大驼峰
+
+
+
+
+       // Person.prototype -- 原型
+       // Person.prototype = {} 是祖先
+    //   Person.prototype.name = "jch";
+    //    function Person() {
+    //     //    var this = {
+    //     //        __proto__ : Person.prototype = {}
+
+    //     //    }
+
+    //   }
+        
+   //a.sayName()
+   //sayName里面的this指向是,谁调用的这个方法,this就是指向谁
+
+    //  var obj = {
+    //      name : 'sunny',
+    //      age : 123
+    //  }
+    //  var obj1 = Object.create(obj);
+   
+     
+
+
+
+      //  Object.prototype.toString
+      //  Number.prototype.toString
+      //  Array.prototype.toString
+      //  Boolean.prototype.toString
+      //  String.prototype.toString
+
+            // Number.prototype.toString = function() {
+            //     return('老邓身体好');
+            // }
+
+    
+       //  function test() {
+
+       //  }
+       //  test() --> test.call();
+   
+        
+    //    call 需要把实参按照形参的个数传进去
+    //                                            作用:改变this指向  区别:传参列表不同
+    //    apply 需要传一个arguments
+//       function Wheel(wheelSize, style) {
+//                this.style = style;
+//                this.wheelSize = wheelSize;            
+//       }
+//       function Sit(c, sitColor) {
+//               this.c = c;
+//               this.sitColor = sitColor;
+
+//       }
+//       function Model(height, width, len) {
+//           this.height = height;
+//           this.width = width;
+//           this.len = len;
+
+//       }
+//       function Car(wheelSize, style, c, sitColor, height, width, len) {
+//           Wheel.apply(this, [wheelSize, style]);
+//           Sit.call(this, c, sitColor);
+//           Model.call(this, height, width, len);
+//       }
+//       var car = new Car(100,  '花里胡哨', '真皮', 'red', 1800, 1900, 4900);
+  
+     
+
+//  //  D
+//    function foo() {
+//        bar.apply(null, arguments);
+//    }
+//    function bar(x) {
+//        console.log(arguments);
+//    }
+//    foo(1, 2, 3, 4, 5);
+
+
+                 //继承发展史
+    //   (1)
+    //   Grand.prototype.lastName = 'ji';
+    //   function Grand() {
+
+    //   }
+    //   var grand = new Grand();
+      
+    //   Father.prototype = grand;
+    //   function Father() {
+    //         this.name = 'hehe'
+    //   }
+    //   var father = new Father();
+      
+    //   Son.prototype = father;
+    //   function Son() {
+
+    //   }
+    //   var son = new Son();
+     
+    
+        // (2) 只能借用人家的方法，不能借用人家的原型   每次都要多走一个函数，浪费效率      A囊括B
+        // function Person(name, age, sex) {
+        //     this.name = name;
+        //     this.age = age;
+        //     this.sex = sex;
+
+        // }
+        // function Student(name, age, sex, grade) {
+        //     Person.call(this, name, age, sex)      -->形参变实参
+            
+        // }
+        // var student = new Student();
+       
+
+        //(3)  地址共享 多个构造函数共用一个祖先
+        // Father.prototype.lastName = 'Deng';
+        // function Father() {
+
+        // }
+        // function Son() {
+
+        // }
+        // Son.prototype = Father.prototype
+        // var son = new Son();
+        // var father = new Father();
+        
+
+        //   (3)
+        // Father.prototype.lastName = 'Deng';
+        // function Father() {
+              
+        // }
+        // function Son() {
+        //     // var this = {
+        //     //     __proto__ : Son.prototype = {}
+        //     // }
+
+        // }
+        // function inherit(Target, Origin) {
+             
+        //     Target.prototype = Origin.prototype;
+            
+        // }
+        // inherit(Son, Father);
+        //  var son = new Son();
+        // Son.prototype.sex = 'male';
+        // var father = new Father();
+
+
+        //(4)  圣杯模式
+        function inherit(Target, Origin) {
+            function F() {};
+            F.prototype = Origin.prototype;      //   no reverse
+            Target.prototype = new F();           //  no reverse
+            Target.prototype.constructor = Target;
+            Target.prototype.uber = Origin.prototype;
+        }
+        Father.prototype.lastName = 'Deng';
+        function Father() {
+
+        }
+        function Son() {
+
+        }
+        inherit(Son, Father);
+        var son = new Son();
+        var father = new Father();        
+    //  son.__proto__ --> new F().__proto__ --> Father.prototype
+  
+
+
+
+    
+        // YUI3   -->  Jueogery       建议写这个
+        // var inherit = (function() {
+        //     var F = function() {};
+        //     return function(Target, Origin) {
+        //         F.prototype = Origin.prototype;
+        //         Target.prototype = new F();
+        //         Target.prototype.constructor = Target;
+        //         Target.prototype.uber = Origin.prototype;
+        //     }
+        // }())  
+
+
+
+
+    //      闭包的私有化       
+    //    function Deng(name, wife) {
+    //     // var this = {}       
+    //        var prepareWife = 'xiaozhang';
+    //        this.name = name;
+    //        this.wife = wife;w
+    //        this.divorce = function() {
+    //            this.wife = prepareWife;
+    //        }
+    //        this.changPrepareWife = function(target) {
+    //            prepareWife = target
+    //        }
+    //        this.sayPrapareWife = function() {
+    //            console.log(prepareWife);
+    //        }
+    //     // return this
+    //     }
+    //    var deng = new Deng('deng', 'xiaoliu');
+
+
+
+
+
+    
+    //      闭包的私有化       
+    //    function Deng(name, wife) {
+    //     // var this = {}       
+    //        var prepareWife = 'xiaozhang';
+    //        this.name = name;
+    //        this.wife = wife;w
+    //        this.divorce = function() {
+    //            this.wife = prepareWife;
+    //        }
+    //        this.changPrepareWife = function(target) {
+    //            prepareWife = target
+    //        }
+    //        this.sayPrapareWife = function() {
+    //            console.log(prepareWife);
+    //        }
+    //     // return this
+    //     }
+    //    var deng = new Deng('deng', 'xiaoliu');
+
+
+     // 命名空间  -->  防止命名冲突
+    //     var org = {
+    //         deparment1 : [
+    //             jicheng : {
+    //                   name : 'abc',
+    //                   age : 123
+    //             },
+    //             xuming : {
+    //             }
+    //         ]
+    //         deparment2 : {
+    //             zhangshan : {
+    //             },
+    //             lisi : {
+    //             }
+    //         }
+    //     }
+    //  // org.deparment1.jicheng.name
+    // var jicheng = org.deparment1.jicheng;
+    // jicheng.name
+    //  闭包解决命名空间的问题
+    //    var name = 'bcd';
+    //    var init = (function () {
+    //        var name = 'abc';
+    //        function callName() {
+    //            console.log(name);
+    //        }
+    //        return function() {
+    //            callName();           //   留接口   -->  不污染全局变量
+    //        }
+    //    }())
+    //   var initDeng = (function (){
+    //       var name = 123;
+    //       function callName() {
+    //           console.log(name);
+    //       }
+    //       return function() {
+    //           callName();
+    //       }
+    //   }())
+
+
+
+
+//     // 模仿jquery的连续调用
+//   var deng = {
+//       somke : function() {
+//           console.log('Smoking,...xuan cool!');
+//       //  return undefined;     没有return, 就隐式return undefined 
+//           return this;
+//       },
+//       drink : function() {
+//           console.log('drinking,..., ye cool!');
+//           return this;
+//       },
+//       perm : function() {
+//           console.log('perm,...,cool!');
+//           return this;
+//         }
+//   }
+//   deng.somke().drink();
+
+
+
+    //属性的拼接
+//    var deng = {
+//       wife1 : {name : 'xioaoliu'},
+//       wife2 : {name : 'xiaozhang'},
+//       wife3 : {name : 'xiaomeng'},
+//       wife4 : {name : 'xiaowang'},
+//       sayWife : function(num) {
+//             return this['wife' + num]        //属性名的拼接   
+//       }
+//     }
+
+  // obj.name  --->  obj['name']   后者灵活 ,字符串可以拼接
+
+
+
+
+       //   遍历对象
+       
+    //    var obj = {
+    //        name : '13',
+    //        age : 123,
+    //        sex : 'male',
+    //        height : 180,
+    //        weight : 75
+    //    }
+    //    for(var prop in obj) {
+    //       // console.log(obj.prop);       // --> obj['prop']
+    //        console.log(obj[prop] + ":" + typeof(obj[prop]));
+              if(obj.hasOwnProperty(prop)) {
+                console.log(obj[prop]);
+            }
+    //     }
+
+    //  var obj1 = {
+    //      a : 123,
+    //      b : 234,
+    //      c : 345
+    //  }    
+    //  for(var key in obj1) {
+    //      obj1.prop ++;
+    //  }
+
+
+    // instanceof
+    
+    //  A对象  是不是 B构造函数构造出来的
+    //  看A 对象的原型链上 有没有 B的原型 
+    // function Person() {
+
+    // }  
+    // var person = new Person();
+   
+    
+    // var obj = {
+    //     name : 'fue',
+    //     __proto__ : {age : 123}
+    // }
+    
+    // Object.prototype.toString = function() {
+    //     // 识别 this
+    //     // 返回相应的结果
+    // }
+
+
+
+
+
+               // this 指向 
+    //  var foo = '123';
+    //  function print() {
+    //      var foo = '456';
+    //      this.foo = '789';
+    //      console.log(foo);
+    //  }
+    //  print();
+   
+    //  function test(c) {
+    //     // (1) var this = Object.create(test.prototype);
+    //     //    {
+    //     // (1)     __proto__ : test.prototype
+    //     //    }
+    //      var a = 123;
+    //      functionj b() {}
+    //  }
+    //  AO{
+    //      c : 1,
+    //      arguments : [1],
+    //      this : window,
+    //      a : undefined,
+    //      b : function b() {}
+    //  }
+    //  test(1);
+    //  new test();
+
+//    function test() {
+//        console.log(window);
+//    }
+//    test();
+   
+    //  var obj = {
+    //      a : function() {
+    //          console.log(this.name);
+    //      }
+    //      name : 'abc';
+    //  }
+    //  obj.a();
+
+    //  var name = '222';
+    //  var a = {
+    //      name : '111',
+    //      say : function() {
+    //          console.log(this.name);
+    //      }
+    //  }
+    //  var fun = a.say;
+    //  fun();        // '222'
+    //  a.say();      // '111'
+    //  var b = {
+    //      name : '333',
+    //      say : function (fun) {
+    //          fun();   
+    //      }
+    //  }
+    //  b.say(a.say);    // '222'
+    //  b.say = a.say;
+    //  b.say();        //'333'
+    
+    // var a = {
+    //     say : function () {
+    //         console.log('a');
+    //     }
+    // }
+    // var b = {
+    //     test : function () {
+    //         a.say();
+    //     }
+    // }
+
+
+
+
+  //    callee
+    //  function test() {
+    //      console.log(arguments.callee == test);
+    //  }
+    //  test();
+
+//    var num = (function (n) {           
+//     if(n == 1) {
+//         return 1;
+//     }
+//     return n * arguments.callee(n - 1)
+//    }(10))
+     
+      
+    //   function test() {
+    //       console.log(test);
+    //       function demo() {
+    //           console.log(arguments.callee);
+    //       }
+    //       demo();
+    //   }
+    //   test();
+
+
+
+
+
+     // caller
+   
+    // function test() {
+    //     demo();
+    // }
+    // function demo() {
+    //     console.log(demo.caller)
+    // }
+    // test();
+
+
+
+
+         // 练习
+//    var foo ='123';
+//    function print() {
+//        var foo = '456';
+//        this.foo = '789';
+//        console.log(foo);
+//    }
+    
+    //   var foo = 123;
+    //   function print() {
+    //     //   var this = Object.create(print.prototype);
+    //     //   var this = {
+    //     //       __proto__ : print.prototype
+    //     //   }
+    //       this.foo = 234;
+    //       console.log(foo);
+    //   }
+    //   print();
+    //   new print();
+
+    //     var a = 5;
+    //     function test() {
+    //         // var this = Object.create(test.prototype);
+    //         // var this = {
+    //         //     __proto : test.prototype
+    //         // }
+    //         a = 0;
+    //         alert(a);       //  0  0
+    //         alert(this.a);  //  5  undefined
+    //         var a ;
+    //         alert(a);       //  0  0
+    //     }
+    //     test();
+    //   var num = new test();
+
+        // function print() {
+        //     console.log(foo);
+        //     var foo = 2;
+        //     console.log(foo);
+        //     console.log(hello);
+        // }
+        // print();
+
+    // function print() {
+    //     var test;
+    //     test();
+    //     function test() {
+    //         console.log(1);
+    //     }
+    // }
+    // print();
+   
+    // function print() {
+    //     var x = 1;
+    //     if(x == '1') {
+    //         console.log('One!');
+    //     }
+    //     if(x === '1') {
+    //         console.log('Two!');
+    //     }
+    // }
+    // print();
+    
+    // function print() {
+    //     var marty = {
+    //         name : 'marty',
+    //         printName : function() {
+    //             console.log(this.name); 
+    //         }
+    //     }
+    //     var test1 = {
+    //         name : 'test1'
+    //     };
+    //     var test2 = {
+    //         name : 'test2'
+    //     };
+    //     var test3 = {
+    //         name : 'test3'
+    //     }
+    //     test3.printName = marty.printName;
+    //     var printName2 = marty.printName.bind({name : 123});
+      
+    //     marty.printName.call(test1);   // 'test1'
+    //     marty.printName.apply(test2);  // 'test2'
+    //     marty.printName();             // 'marty'
+    //     printName2();
+    //     test3.printName();            // 'test3'
+    // }
+    // print();
+
+    // var bar = {
+    //     a : '002'
+    // }
+    // function print() {
+    //     bar.a = 'a';
+    //     Object.prototype.b = 'b';
+    //     return function inner() {
+    //            console.log(bar.a)   //  'a'
+    //            console.log(bar.b);  //  'b'
+    //     }
+    // }
+    // print()();
+
+
+
+
+
+
+    // 浅层克隆
+//   var obj = {
+//       name : 'abc',
+//       age : 123,
+//       sex : 'female',
+//       say : function () {
+//           grade = '12'
+//       }
+//   }
+//   var obj1 = {};
+//   function clone(origin, target) {
+//       var target = target || {};
+//       for(var prop in origin) {
+//           target[prop] = origin[prop];
+//       }
+//       return target
+//   }
+//   clone(obj, obj1);
+
+ 
+    //  var arr = [1, 2, 3];
+    //  for(var prop in arr) {
+    //      console.log(arr[prop]);
+    //  }
+    
+    //深度克隆
+//   遍历对象  for(var prop = obj)
+//   1.判断是不是原始值 type() object
+//   2.判断是数组还是对象 instanceof toString constructor
+//   3.建立相应的数组或对象
+//   递归
+//    var obj = {
+//        name : 'abc',
+//        age : 123,
+//        card : ['visa', 'master'],
+//        wife : {
+//            name : 'bcd',
+//            son : {
+//                name : 'aaa'
+//            }
+//        }
+//    }
+//     function deepClone(origin, target) {
+//          var target = target || {},
+//          toStr = Object.prototype.toString,
+//          arrStr = "[object Array]";     
+//          for(var prop in origin) {
+//              if(origin.hasOwnProperty(prop)) {
+//                 if(origin[prop] !== "null" && typeof(origin[prop]) 
+//                 == 'object') {
+//                  if(toStr.call(origin[prop]) == arrStr){
+//                      target[prop] = [];
+//                  }else{
+//                      target[prop] = {};
+//                  }
+//                  deepClone(origin[prop], target[prop]);
+//              }else{
+//                  target[prop] = origin[prop];
+//              }
+//          }
+//     }
+//      return target;
+//  }  
+//  var obj1 = deepClone(obj, obj1);    
+
+
+
+         
+         	// 三目运算
+    //  条件判断 ？ 是 ： 否 并且会返回值
+    //  var num = 1 > 0 ? 2 + 2 : 1 + 1;
+    //  var num = 1 > 0 ? ('10' > 9 ? 1 : 0) : 2
+
+
+
+  //   var arr = [1,,];
+    //   var arr1 = new Array(10);
+    //   var arr = [];
+    //   es3.0  es5.0  es6.0
+    //   ECMAScript DOM BOM
+    
+    // 模拟Array.push方法
+    // var arr = [1, 2]; 
+    // Array.prototype.push = function() {
+    //    for(var i = 0; i < arguments.length; i ++) {
+    //        this[this.length] = arguments[i];
+    //    }
+    //    return this.length;
+    // }
+   
+     
+
+    //   splice = function(pos) {
+    //       pos += pos ? 0 : this.length;
+    //   }
+
+
+
+
+
+
+//    1.必须写俩形参
+//    2.看返回值  1) 当返回值为负数时, 那么前面的数放在前面
+//               2) 为正数, 那么后面的数在前
+//               3) 为0, 不动
+
+//    var arr = [1, 2, 3, 4, 5, 6];
+//     arr.sort(function() {
+//         return Math.random() - 0.5;
+//     })
+    
+    //  var cheng = {
+    //      name : 'cheng',
+    //      age : 18,
+    //      sex : 'male',
+    //      face : 'handsome'
+    //  }
+    //  var deng = {
+    //      name : 'deng',
+    //      age : 40,
+    //      dex : undefined,
+    //      face : 'amazing'
+    //  }
+    //  var zhang = {
+    //      name : 'zhang',
+    //      age : 20,
+    //      sex : 'male'
+    //  }
+    //  var arr = [cheng, deng, zhang];
+    //  arr.sort(function (a, b) {
+    //      return a.age - b.age;
+    //  })
+  
+    //  var arr = ['sxq', 'qwdwqefdwef', 'dew'];
+    //  arr.sort(function(a, b) {
+    //      return a.length - b.length;
+    //  })
+     
+
+
+    // function reBytes (str) {
+    //     var num = str.length;
+    //     for(var i = 0; i < arr.length; i ++) {
+    //         if(str.charCodeAt(i) > 255) {
+    //             num ++;
+    //         }
+    //     }
+    //     return num;
+    // }
+    // var arr = ['aaaa', '获得uncwehnfihewhgfverhwoingrjkendvnnnnnnnnn哦 ',    '香脆文化hnuiwehfuewh'];
+    // arr.sort(function (a, b) {
+    //     return reBytes(a) - reBytes(b);
+    // })
+
+    // slice(从该位开始截取， 截取到该位)
+   //  var arr = [1, 2, 3];
+    // var newArr = arr.slice()    
+    // var str = arr.join('-');
+  
+    //  var str = 'alibaba';
+    //  var str1 = 'baidu';
+    //  var str2 = 'tencent';
+    //  var str3 = 'toutiao';
+    //  var str4 = 'wangyi';
+    //  var str5 = 'nv';
+    //  var strFinal = '';
+
+    //  var arr = [str, str1, str2, str3, str4, str5];
+    //  console.log(arr.join());
+
+
+                    
+               // 类数组
+ //  function test() {
+    //      console.log(arguments);
+         
+    //  }
+    //  test(1, 2, 3, 4);
+
+    //  var obj = {
+    //      '0' : 'a',
+    //      '1' : 'b',
+    //      '2' : 'c',
+    //      'length' : 3,
+    //      'push' : Array.prototype.push,
+    //      'splice' : Array.prototype.splice
+    //  }
+
+     //属性为索引(数字)属性,　必须有length属性， 最好加上push
+     // 好处
+    //  Array.prototype.push = function(target) {
+    //      this[this.length] == target;
+    //      this.length ++;
+    //  }
+      
+    //   var obj = {
+    //       '2' : 'a',
+    //       '3' : 'b',
+    //       'length' : 2,
+    //       'push' : Array.prototype.push
+    //   }
+    //   obj.push('c');
+    //   obj.push('d');
+  
+    //  var obj = {
+    //      '0' : 'a',
+    //      '1' : 'b',
+    //      '2' : 'c',
+    //      name : 'abc',
+    //      age : 123,
+    //      length : 3,
+    //      push : Array.prototype.push,
+    //      splice : Array.prototype.splice
+
+    //  }
+       
+       function type(num) {
+           var toStr = Object.prototype.toString;
+          if(typeof(num) == 'object') {
+                num = toStr.call(num);
+                return num;
+          }else {
+              return typeof(num);
+          }
+       }
+
+
+
+  //返回类型 
+    //   function type(target) {
+    //       var ret = typeof(target);
+    //       var template = {
+    //           '[object Array]' : 'array',
+    //           '[object Object]' : 'object',
+    //           '[object Number]' : 'number - object',
+    //           '[object Boolean]' : 'boolean - object',
+    //           '[object String]' : 'string - object'
+    //       }
+    //       if(target === null) {
+    //           return null;
+    //       }else if(ret == 'object') {
+    //           var str = Object.prototype.toString.call(target);
+    //           return template[str];
+    //       }else {
+    //           return ret;
+    //       }
+    //   }
+
+
+    //    数组去重
+    //    var arr1 = [1, 2, 3, 1, 1, 2, 3];
+    //     Array.prototype.unique = function() {
+    //         var arr = [],
+    //             obj = {},
+    //             len = this.length;
+    //         for(var i = 0; i < len; i ++) {
+    //             if(!obj[this[i]]) {
+    //                 obj[this[i]] = 'abc';
+    //                 arr.push(this[i]);
+    //             }
+    //         }
+    //         return arr;
+    //     }
+
+
+
+
+
+                 //复习
+    //    Person.prototype.lastName = 'deng';
+    //    function Person() {
+    //     //    var this = {
+    //     //        __proto__ : Person.prototype
+    //     //    }
+
+    //    }
+    //    var person = new Person();
+  
+    //   var demo = {
+    //       lastName : 'deng'
+    //   }
+    //   var obj = Object.create(demo.__proto__, );
+     
+    //  一旦经历了var 的操作, 所得出的属性, window, 这种属性叫不可配置的属性
+    //  不可配置的属性 delete不掉
+    //  var num = 123;
+    //  1.预编译 this --> window
+    //  2.谁调用的 this 指向谁
+    //  3.call apply
+    //  4.全局 this --> window 
+
+    //     function test() {
+    // //      AO{
+    // //          arguments : {}, //类数组
+    // //          this : window,
+    // //          num
+
+    // //      }
+    //      console.log(this);
+    //  }
+    //  test(); // ===test.call()
+    //  test.call({name : 'abc'});
+
+
+    //  var name = 'window';
+    //  var obj = {
+    //      name : 'obj',
+    //      say : function() {
+    //          console.log(this.name)
+    //      }
+    //  }
+    //  obj.say()
+    //  obj.say.call(window);
+    //  var fun = obj.say;
+    //  fun();
+    //  fun.call(obj);
+
+
+    //  function Person(name , age) {
+    //      this.name = name;
+    //      this.age = age;
+    //  }
+    //  function Student(name, age, sex) {
+    //  //  var this = Object.create(Student.prototype);
+    //      this.sex = sex;
+    //      Person.call(this, name , age);
+    //      console.log(this);
+    //  // return this    
+    //  }
+    //  var student = new Student('hang', 12, 'female');
+  
+    // var obj = {};
+    // function a() {
+    //     var aa = 123;
+    //     function b() {
+    //         console.log(aa);
+    //     }
+    //  //  b();
+    //   return b;
+    //   //  obj.fun = b;
+    // }
+    // a()();
+   
+//     function Person() {
+//    //   var this = {}
+//         this.name = 'abc';
+//         this.age = 123;
+//    //   return this;
+
+//     }
+//     var person = new Person();
+
+    //   var obj = function Person(name) {
+    //     // var this = {}
+    //        var money = 100;
+    //        this.name = name;
+    //        this.makeMoney = function() {
+    //            money ++;
+    //        }
+    //        this.offer = function() {
+    //            money --;
+    //        }
+    //        return this;
+    //    }
+    //   var person = new Person();
+
+    //    var obj = {
+    //        master : ['1', '2'],
+    //        name : 'abc',
+    //        son : {
+    //            name : 123,
+    //            baby {
+    //                age : 1
+    //            }
+    //        }
+    //    };
+    //    var obj1 = {};
+    //    function deepClone(Origin, Target) {
+    //        var toStr = Object.prototype.toString;
+    //        for(var prop in Origin) {
+    //            if(typeof(Origin[prop]) == 'object') {
+    //                if(toStr.call(Target) == '[object Array]') {
+    //                    Target = [];
+    //                }else {
+    //                    Target = {};
+    //                }
+    //                deepClone(Origin[prop], Target[prop]);
+    //            }else {
+    //                Target[prop] = Origin[prop];
+    //            }
+    //        }
+    //        return Target;
+    //    }
+     
+    //  var arr = [1, 2, 3];
+    //  for(var prop in arr) {
+    //      console.log(arr[prop]);
+    //  }
+    
+    // function test(a) {
+    //     var a = 123;
+    //     function a() {}
+    // }
+    // test(1);
+    // AO{
+    //     a : function a() {},
+    //     b : undefined
+    // }
+
+    // function Person(name, age, sex) {
+    //     var a = 0;
+    //     this.name = name;
+    //     this.age = age;
+    //     this.sex = sex;
+    //     function sss() {
+    //         a ++;
+    //         document.write(a);
+    //     }
+    //     this.say = sss;
+    // }
+    // var oPerson = new Person();
+    // oPerson.say();   //  1
+    // oPerson.say();   //  2
+    // var oPerson1 = new Person();
+    // oPerson1.say();  //  1
+
+    //  (function (x) {
+    //       delete x;
+    //       return x;
+    //   })(1);
+
+    // function test() {
+    //    console.log(typeof(arguments));
+    // }    
+    // test();
+  
+    //   var h = function a() {
+    //       return 23;
+    //   }
+    //   console.log(typeof a());
+
+    // function reDate(day) {
+    //     var arr = ['Monday', 'Tuseday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    //     if(arr[day - '1'] === undefined) {
+    //         return 'error';
+    //     }else{
+    //         return arr[day - 1];
+    //     }
+    // }
+
+//    原始值(栈数据)  String Boolean Number undefined null
+//    引用值(堆数据） Array Object function
+
+
+
+
+
+  //  //字符串去重
+    //  var str = 'aaaabbbbbcccc';
+    // function quchong(target) {
+    //     var obj = {},
+    //         str1 = '';
+    //     for(var i = 0; i < target.length; i ++) {
+    //         if(!obj[target[i]]) {
+    //             obj[target[i]] = 'abc';
+    //             str1 += target[i];
+    //         }
+    //        // console.log(target[i]);
+    //     }
+    //    return str1;
+    // }
+
+   
+
+ // try{
+    //     console.log('a');
+    //     console.log(b);
+    //     console.log('c');
+    // }catch(e) {
+    //     alert(e.name + " : " + e.massage);
+
+    // }
+    // console.log('d');
+     
+     // 基于的es3.0 + es5.0的新增方法 使用的 (冲突部分使用es3.0)
+    //    es3.0 和 es5.0  产生冲突的部分
+
+    //    es5.0严格模式 那么es3.0和es5.0产生冲突的部分就是使用es5.0
+    //    否则使用es3.0
+     
+    // "use strict" // 写在页面逻辑的最顶端 或 局部函数的最顶端
+
+     // 不可以使用arguments.callee caller
+
+    //  function test() {
+    //     //  "use strict"
+    //      console.log(arguments.callee);
+    //  }
+    //  test();
+    
+    // var obj = {
+    //     name : 'obj'
+    // }
+    // var name = 'window';
+    // function test() {
+    //     var name = 'scope';
+    //     var age = 123;
+    //     with(obj) {
+    //         console.log(name);
+    //         console.log(age);
+    //     }
+    // }
+    // test();
+   
+    //          //真正命名空间的用法
+    // var org = {
+    //     dp1 : {
+    //         jc : {
+    //             name : 'abc',
+    //             age : 123
+    //         },
+    //         deng : {
+    //             name : 'xiaodeng',
+    //             age : 234
+    //         }
+    //     },
+    //     dp2 : {
+
+    //     }
+    // }
+    //  with(org.dp1.jc) {
+    //      console.log(name);
+    //  }
+    //  with(org.dp1.deng) {
+    //      console.log(name);
+    //  }
+ 
+   //  "use strict"
+    // //  with(document) {
+    // //      write('a');
+    // //  }
+    //  function test() {
+    //      console.log(test.caller);
+    //  }
+    //  function demo() {
+    //      test();
+    //  }
+    //  demo();
+
+  // var a = b = 3;
+//    function Test() {
+//        console.log(this);
+//    }
+//    Test();
+//    new Test();
+//    Test.call(123);
+

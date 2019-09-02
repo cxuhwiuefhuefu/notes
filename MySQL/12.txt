@@ -1,0 +1,49 @@
+// 子查询
+//     就是一个查询的结果可以作为另一个查询的数据源或者条件
+//
+// 如何查询工资最大的人的姓名
+// select * from emp;
+// 工资 姓名 通过简单的查询没办法把工资最大的值和某一个人的姓名对应一一匹配上 它匹配的过程是出现错误的 那通过这张我们能得到的是各自的最大值
+// select max(sal) from emp;
+// 我工资的最大值可以将工资的最大值作为一个筛选条件 这样我就能查询出来 其实我在查询的过程当中我想查询的是它的名字和它的工资 从emp这张表
+//     但是我是有条件的 条件是它的工资要等于我整张表中工资的最大值  这个时候你要注意 我一定要sql语句执行完成之后赋值给对应的这个sal 
+//     那你要给它加上小括号 如果不加上小括号 这个sal相当于等于select 这样会出问题  
+// select ename, sal from emp where sal = (select max(sal) from emp); // 这种情况下我们就可以把工资最大的人的姓名给它查询出来
+//
+//
+//
+//
+// 1. 子查询情况 
+//        将查询结果作为另一个查询的条件
+// 能否给我查出公司中都有哪些人是经理人 就是哪些人底下管着人的
+//     看哪些人的empno出现在mgr字段中
+// select mgr from emp;
+// select distinct mgr from emp;
+// select distinct mgr from emp where mgr is not null;
+// select ename, empno from emp where empno in(select distinct mgr from emp where mgr is not null);
+// 以上两种情况都是将我们整个查询的结果作为另一个查询的条件 作为条件的时候   等值比较  in  其他大于等于....都可以
+//
+//
+//
+//
+// 2. 作为另一个查询到的数据源
+// 能否给我查询平均工资最大的部门是哪个 没有平均工资 有部门 第一件事每个部门的平均工资你都给它查出来
+// select * from emp;
+// select avg(sal), deptno from emp group by deptno;
+// select max(avg(sal)), deptno from emp group by deptno; // 主函数是不可以进行嵌套的 也就是说avg(sal)带max是不可以的
+// select avg(sal), deptno from emp group by deptno;你看这结果看像不像一张表 那我这结果能不能作为一张表存在呢 我从这里查最大工资可以吗 这个时候我们要注意
+//    我想从这张表里头再去查出对应的最大工资 那你要注意 这avg(sal)是不是啥 是字段吧  那如果作为字段的话我max再把把它括号上 这还相当于一个主函数的嵌套
+//    我想避免这个函数的嵌套我可以怎么样 可以起个别名叫avg_sal 这是一张新表了 那我能不能从这里头把最大工资查出来呢
+// select max(avg_sal) from (select avg(sal) avg_sal, deptno from emp group by deptno); // 报了一个错 这张表叫做临时表 
+                                                                                        //     临时表你再作为另一个查询的数据源的时候
+                                                                                        //     在这里有个规定 必须得给它起别名
+// select max(avg_sal) from (select avg(sal) avg_sal, deptno from emp group by deptno) avg_table; // 这个时候我们是不是把对应的数据查询出来了
+// select min(avg_sal) from (select avg(sal) avg_sal, deptno from emp group by deptno) avg_table; //   做个简短的更改 最小平均值的部门号还是10
+                                                                                                  //   上面的结果的确没问题 碰巧对了而已
+                                                                                                  //   还是我们原来的问题 你如果使用了主函数
+                                                                                                  //   不在主函数中的字段必须在后面分组 
+                                                                                                  //   每个部门又分组每个部门又一样了
+                                                                                                  //   怎么办呢 这个时候    
+
+// 2. 我们查询结果作为另一个查询的数据源 当成一张表 当成表的过程中 必须起别名                                                                                                 // select avg_sal, deptno from (select avg(sal), deptno from emp group by deptno) e where avg_sal =
+// (select max(avg_sal) from (select avg(sal) avg_sal, deptno from emp group by deptno) avg_table); 

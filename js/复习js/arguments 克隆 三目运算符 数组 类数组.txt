@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script>
+		// arguments, 克隆
+		// 克隆
+		//    浅层克隆
+		//    深层克隆 --》 作业
+
+		// // for in: 对象能遍历属性, 数组也能
+		// var arr = [1, 2, 3];
+		// for(var prop in arr) {
+		// 	console.log(arr[prop]);
+		// }
+
+
+		// 遍历对象 for(var prop in obj) --> 遍历对象/数组
+		// 1. 判断是不是原始值 typeof() object
+		// 2. 判断是数组还是对象 instanceof constructor toString
+		// 3. 建立相应的数组或对象
+		// 递归
+        // var obj = {
+		// 	name: 'abc',
+		// 	age: 123,
+		// 	card: ['visa', 'master'],
+		// 	wife: {
+		// 		name: {},
+		// 		son: {
+		// 			name: 'aaa'
+		// 		}
+		// 	}
+		// }
+		// var obj = {
+		// 	son: 12,
+		// 	name: ''
+		// };
+		// var obj1;
+		// function deepClone(origin, target) {
+		// 	var target = target || {},
+		// 	    toStr = Object.prototype.toString,
+		// 		arrStr = '[object Array]';
+		// 	for(var prop in origin) {
+		// 		if(origin.hasOwnProperty(prop)) {  // 避免拷贝原型上的属性
+		// 			if(origin[prop] !== 'null' && typeof(origin[prop]) == 'object') { // ？？？？？？？？？？？
+		// 				if(toStr.call(origin[prop]) == arrStr) {
+		// 					target[prop] = [];
+		// 				}else {
+		// 					target[prop] = {};
+		// 				}
+		// 				// target[prop] = (toStr.call(origin[prop] == arrStr)) ? [] : {};  // 加括号稳妥些
+		// 				deepClone(origin[prop], target[prop]);
+		// 			}else {
+		// 				target[prop] = origin[prop]
+		// 			}
+		// 		}
+		// 	}   
+		// 	return target; // 没传target要把target return出去  ？？？？？？？？？？？？？？？？？？？？//
+		// }
+		// var obj1 = deepClone(obj, obj1);
+
+		// 对象判断 ？ 是 ： 否 并且会返回值
+		// 比if高端： 还能把表达式的结果返回
+
+		// var num = 1 > 0 ? 2 + 2 : 1 + 1;
+		// var num = 1 > 0 ? ("10" > 9 ? 1 : 0) : 2;		
+		// var num = 1 > 0 ? ("10" > "9" ? 1: 0) : 2;
+
+		// ***********************************************************************************************
+
+		// 三目运算符
+
+		// 数组
+		// 数组的定义
+		//     new Array(length/content);
+		//	   字面量   var arr = [];  数组所有方法的都来源自Array.prototype
+		// 数组的读与写
+		// arr[num] // 不可以溢出读, 结果undefined
+		// arr[num] = xxx; // 可以溢出写    var arr = [1, 2,,,,,3, 4];   稀松数组(并不是每位都有值的)
+
+		// var arr = [1, 2,,,3, 4];
+		// var arr = new Array(1, 3, 4, 5);
+		// var arr = new Array(10.2); --> 报错,它认为是10.2的长度
+		// var arr1 = [10.2]; 
+
+		// new Array 和 字面量的唯一差别
+		// var arr = new Array(10); --> 长度为10的稀松数组,把10当成长度,而不是值
+		// var arr1 = [10];
+
+		// 批量生产才写构造函数
+
+		// 数组报错除非你引用它没有的方法,否则几乎报不了错误的(数组是基于对象的,访问对象没有的属性,结果是undefined,执行没有的方法才报错)
+
+		// 数组常用的方法
+		//     改变原数组
+		//         push prop shift unshift sort reverse
+		//         splice
+		//     不可改变原数组
+		//         concat join -->split toString sclice
+
+		// var arr = [];
+		// Array.prototype.push = function() {
+		// 	return 'hh';
+		// }
+
+		// 模拟Array.prototype.push方法
+		// var arr = [1, 2, 3];
+		// Array.prototype.push = function() {
+		// 	for(var i = 0; i <arguments.length;  i++) {
+		// 		this[this.length] = arguments[i];  // 数组push一位, 数组的length自动 +1
+		// 	}
+		// 	return this.length;   
+		// }
+
+
+		// var arr = [1, 2, 3];
+		// arr.pop();  // 把数组的最后一位剪切
+		// var num = arr.pop(); 
+		// arr.unshift(4, 5);  // 数组的第一位加 +       原理： 数组拼接  push方法
+		// arr.shift();  // 数组的第一位 -1
+		// arr.reverse(); // 逆转
+		// arr.splice(3, 0, 4);
+		// arr.splice(从第几位开始, 截取多少的长度, 在切口处添加新的数据);
+		
+		// var arr = [1, 2, 3, 5];   splice的好处: 1.截取完的片段返回 2.改变原数组
+		// arr.splice(3, 0, 4);
+		// arr.splice(-1, 1);
+		// Array.prototype.splice = function(pos) {/////////////////////////
+		// 	pos += pos >= 0 ? 0 : this.length;
+		// 	// pos >= 0 || pos< this.length  // 如果数值越界了,它会加个判断
+		// }
+
+		// sort排序是按ASCII码排序的,把这些当成字符编码的顺序排序
+		// 1.必须写俩参数
+		// 2.看返回值    1)当返回值为负数的时候,那么前面的数在前面
+		//              2)为返回值为正数的时候,那么后面的数在前
+		// 		        3)当返回值为0的时候,不动   
+		// var arr = [1, 13, 5, 4, 9];
+		// arr.sort(function (a, b) {  // 系统帮我们调用的
+		// 	// if(a - b) {
+		// 	// 	return a - b;
+		// 	// }else {
+		// 	// 	return a - b;
+		// 	// }
+		// 	// return a - b;   // 升序
+		// 	// return b - a;   // 降序
+		// });
+
+		// //给一个有序的数组乱序
+		// var arr = [1, 2, 3, 4, 5];
+		// var i = 0;
+		// arr.sort(function (a, b) {
+		// 	return Math.random() - 0.5;
+		// })
+
+		// var cheng = {
+		// 	name: 'cheng',
+		// 	age: 18,
+		// 	sex: 'male',
+		// 	face: 'handsome'
+		// }
+		// var deng = {
+		// 	name: 'deng',
+		// 	age: 40,
+		// 	sex: undefined,
+		// 	face: 'amazing'			
+		// }
+		// var zhang = {
+		// 	name: 'zhang',
+		// 	age: 20,
+		// 	sex: 'male'
+		// }
+		// var arr = [cheng, deng, zhang];
+		// arr.sort(function(a, b) {
+		// 	return a.age - b.age;
+		// })
+
+	
+		// function reBytes(str) {
+		// 	var count = str.length;
+		// 	for(var i = 0; i < str.length; i++) {
+		// 		if(str.charCodeAt(i) > 255) {
+		// 			count ++;
+		// 		}
+		// 	}
+		// 	return count;
+		// }
+		// var arr = ['ac', 'ewd', 'd', 'dweu炫舞吧', 'dwnj'];
+		// arr.sort(function(a, b) {
+		// 	return reBytes(a) - reBytes(b);
+		// })
+
+		// var arr = [1, 2, 3];
+		// var arr1 = [4, 5, 6];
+		// var newArr = arr.concat(arr1);
+		// arr.toString();  // 把数组变成字符串
+		// arr.slice(1, 2); // slice(从该为开始截取, 截取到该位)
+		// var newArr = arr.slice(1);  // 从第几位就开始截取完
+		// var newArr = arr.slice(-1);	
+		// arr.join('-'); // 参数必须是符串形式的 数字也行,数字也是原始值的,最好字符串的形式   返回以-形式连接的字符串
+
+		// 把类数组转化为数组  用slice空截
+
+		// // split和joint互逆
+		// var arr = [1, 2, 3, 4, 5, 6];
+		// var str = arr.join('-');
+		// str.split('-'); // 字符串转化为数组
+
+		// 给你50个公司的名称 把50个公司的名称拼接到一起
+		// var str = 'alibaba';
+		// var str1 = 'baidu';
+		// var str2 = 'tencent';
+		// var str3 = 'wangyi';
+		// var str4 = 'toutiao';
+		// var arr = [str, str1, str2, str3, str4];
+		// // 1. 栈内存的规则：先进后出  字符串放在栈内存里存储的  字符串的连接是一种栈内存的连接,效率低
+		// var strFinal = '';
+		// for(var i = 0; i < arr.length; i++) {
+		// 	  strFinal += arr[i];
+		// }
+		// 2.  数组是散列的存储结构,是堆内存  数组的join方法是通过散列的算法的找它的,效率高
+		// var newStr = arr.join('');  // 什么都不传默认是逗号来连接的的
+		
+		// ****************************************************************************************************************
+
+		// 数组, 类数组
+
+		// 类数组
+		// 1. 可以利用属性名模拟数组的特性
+		// 2. 可以动态的增长length属性
+		// 3. 如果强行让类数组调用push方法,则会根据
+		//    length属性值的位置进行属性的扩充
+
+		// // arguments: 实参列表 类数组
+		// function test() {
+		// 	console.log(arguments);  
+		// 	// arguments.push(3);
+		// }
+		// test(1, 2, 3, 4, 5, 6);
+
+		// var obj = {
+		// 	"0": "a",
+		// 	"1": "b",
+		// 	"2": "c",
+		// 	"length": 3,
+		// 	"push": Array.prototype.push,
+		// 	"splice": Array.prototype.splice	
+		// }
+
+		// 索引要为索引(数字)属性,必须有length属性,最好加上push方法
+
+		// // push内部原理
+		// Array.prototype.push = function(target) { // 假如只push一位
+		// 	this[this.length] = target;
+		// 	this.length ++;
+		// }
+
+		// // 阿里巴巴试题 --> 思考执行后obj变成什么样
+		// var obj = {
+		// 	"2": "a",
+		// 	"3": "b",
+		// 	"length": 2,
+		// 	"push": Array.prototype.push
+		// }
+		// obj.push('c');
+		// obj.push('d');
+
+        // 类数组的好处: 具备数组和对象的两种特性,存储数据更强大些
+		// 类数组的缺点: 并不是所有的数组的方法都能用,除非你给它添加
+		// var obj = {
+		// 	"0": "a",
+		// 	"1": "b",
+		// 	"name": "abc",
+		// 	"age": 123,
+		// 	"length": 2,
+		// 	"push": Array.prototype.push,
+		// 	"splice": Array.prototype.splice
+		// }
+
+		// 作业
+		// 1.封装typeof
+		// typeof([]) -- array
+		// typeof({}) -- object
+		// typeof(function) -- object
+		// typeof(new Number()) -- number Object
+		// typeof(123) -- number
+		// 2.数组去重
+		//   要求在原型链上编程
+		//   Array.prototype.unique = function() {}
+	
+	
+	</script>
+</body>
+</html>

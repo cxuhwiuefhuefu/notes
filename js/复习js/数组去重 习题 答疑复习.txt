@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        // 数组去重 习题 答疑复习
+        // (工具方法 -- 工具库)
+
+        // 1. 分两类 原始值 引用值
+        // 2. 区分引用值
+        // function type(target) {
+        //     var ret = typeof(target);
+        //     var template = {
+        //         '[object Array]': 'array',
+        //         '[object Object]': 'object',
+        //         '[object Number]': 'number - object',
+        //         '[object Boolean]': 'boolean - object',
+        //         '[object String]': 'string - object'
+        //     }
+        //     if(target == null) {
+        //         return 'null';
+        //     }else if(ret == 'object'){
+        //         var str = Object.prototype.toString.call(target);
+        //         return template[str];
+        //     }else {
+        //         return ret;
+        //     }
+        // }
+
+        // // 原理: 利用对象的特性,同一属性名不可能出现两次
+        // // hash方式：通过数组的属性值添加到对象的属性名
+        // // 每次都执行this.length,每次都要运算,效率低,所以把this.length的值取到一个变量里去
+        // var arr = [1, 1, 1, 1, 2, 2, 2, 3, 3];
+        // Array.prototype.unique = function() {
+        //     var obj = {},
+        //         arr = [],
+        //         len = this.length;
+        //     for(var i = 0; i < len; i++) {
+        //         if(!obj[this[i]]) {
+        //             obj[this[i]] = 'abc';  // 不能是=this[i] 万一数组去重0
+        //             arr.push(this[i]);
+        //         }
+        //     }     
+        //     return arr;
+        // }
+
+        //*************************************************************************************************************
+
+        // 原始值没有属性和方法,引用值有对象和方法
+
+        // // 包装类
+        // // 当原始值调用属性,它会对应的看原始值是什么类型,如果原始值是string,会new String()
+        // var str = 'abc';
+        // // new String(str).length
+        // console.log(str.length);
+        // console.log(new String(str).length);
+
+        // var num = 123;
+        // num.abc = 'abc';
+        // // new Number(num).abc = 'abc'; --> delete
+        // //
+        // // new Number(num).abc
+        // console.log(num.abc);
+
+        // 原型是基于构造函数的
+        // 任何函数包括构造函数都有一个属性prototype
+        // prototype是这个构造函数构造出来对象的共有祖先
+        // Person.prototype.lastName = 'deng';
+        // function Person() {
+        //     // var this = {
+        //     //     __proto__: Person.prototype;
+        //     // }
+        //     //return this;
+        // }
+        // var person = new Person();
+        // console.log(person.lastName);
+
+        // // 一旦经历了var的操作,所得出的属性, window,这个属性叫做不可配置属性
+        // // 不可配置属性  delete不掉
+        // var obj = {};
+        // obj.name = 'abc';  // 可delete
+        // var num = 123; // 不可delete
+        // window.num = 123; // 可delete
+
+        // // Object.create();  还可以传第二个参数：属性的特性
+        // // 每个属性有四大特性,其中一大特性: 不可配置属性和可配置属性
+        // // Object.create(prototype, definedProperty);
+        // var demo = {
+        //     lastName: 'deng'
+        // }
+        // var obj = Object.create(demo);
+        // obj = {
+        //     __proto__: demo
+        // }
+
+        // 1. 预编译 this --> window
+        // 2. 谁调用的this 指向谁
+        // 3. call apply
+        // 4. 全局的this --> window
+
+        // function test() {
+        //     console.log(this);
+        //     var num = 123;
+        //     function a() {}
+        // }
+        // test();  //隐式的转化为--> test.call();
+        // test.call({name: 'deng'});
+        // // test(); -- AO{
+        // //                 arguments: {},  // 实参列表 类数组
+        // //                 this: window,
+        // //                 num: undefined,
+        // //                 a: function() {}
+        // //            }
+
+        // var name = 'window';
+        // var obj = {
+        //     name: 'obj',
+        //     say: function() {
+        //         console.log(this.name);
+        //     }
+        // }
+        // obj.say();
+        // obj.say.call(window);
+        // var fun = obj.say;
+        // fun();
+
+        // // call apply最重要的问题是解决的是函数借用的问题
+        // function Person(name, age) {
+        //     this.name = name;
+        //     this.age = age;
+        // }
+        // function Student(name, age, sex) {
+        //     Person.call(this, name, age);
+        //     this.sex = sex;
+        // }
+        // var student= new Student('cheng', 18, 'male');
+
+        // // new一个函数也有预编译 只不过多了new的时候发生的过程
+        // // 构造函数批量生产对象
+        // var obj = {};
+        // function a() {
+        //     var aa = 123;
+        //     function b() {
+        //         console.log(aa);
+        //     }
+        //     obj.fun = b;  // return b;
+        // } 
+        // // a()();
+        // a();
+        // obj.fun();
+
+        // // 闭包私有化 
+        // // 私有化变量当中转变量
+        // function Person(name) {
+        //     // var this = {
+        //     //     __proto__: Person.prototype;
+        //     // }
+        //     var money = 100;
+        //     this.name = name;
+        //     this.makeMoney = function() {
+        //         money ++;
+        //         console.log(money);
+        //     }
+        //     this.offer = function() {
+        //         money --;
+        //         console.log(money);
+        //     }
+        //     // return this;
+        // }
+        // var oPerson = new Person();
+
+        // var inherit = (function() {
+        //     function F() {}
+        //     return function(Target, Origin) {
+        //         F.prototype = Origin.prototype;
+        //         Target.prototype = new F();
+        //         Target.prototype.constructor = Target;//   new F();
+        //         Target.prototype.uber = Origin.prototype; 
+        //     }
+        // } ())
+
+        // 引用值的隐式类型转化不要考虑
+        // [] == [] --> false
+
+        // undefined 和null 就是不能和数值进行比较, 没有隐式类型转化
+
+        // function Person(name, age, sex) {
+        //     var a = 0;
+        //     this.name = name;
+        //     this.age = age;
+        //     this.sex = sex;
+        //     function sss() {
+        //         a ++;
+        //         document.write(a);
+        //     }
+        //     this.say = sss;
+        // }
+        // var oPerson = new Person();
+        // oPerson.say();
+        // oPerson.say();
+        // var oPerson1 = new Person();
+        // oPerson1.say()
+
+        // (function(x) {
+        //     // 形参x = var x;
+        //     delete x;
+        //     return x;
+        // }(1))
+
+        // (function() {
+        //     return typeof arguments;
+        // })()
+
+        // var h = function a() {
+        //    return 23;
+        // };
+        // typeof a();
+        // // error: a is not defined
+
+        // 12.尝试着优化以下的代码,试代码看起来更优雅
+        // function getDay(day) {
+        //     switch(day) {
+        //         case 1:
+        //             document.write('Monday');
+        //             break;
+        //         case 2:
+        //             document.write('Tuseday');
+        //             break;
+        //         case 3:
+        //             document.write('Wednesday');
+        //             break;
+        //         case 4:
+        //             document.write('Thursday');
+        //             break;
+        //         case 5:
+        //             document.write('Friday');
+        //             break;
+        //         case 6:
+        //             document.write('Saturday');
+        //             break;
+        //         case 7:
+        //             document.write('Sunday');
+        //             break;
+        //         default: 
+        //             document.write('Error');  
+        //     }
+        // }
+        // 用数组 类数组
+        // function getDay(day) {
+        //     var temp =  ['Monday', 'Tuseday', 'Wednesday', 'Saturday', 'Friday', 'Saturday', 'Sunday'];
+        //     var ret = temp[day - 1];
+        //     if(ret) {
+        //         return ret;
+        //     }else {
+        //         return 'Error';
+        //     }
+        // }
+
+        // 作业
+        // 1. 一个字符串[a - Z]组成,请找出该字符串第一个只出现一次的字母
+        // 2. 字符串去重
+
+        // 看一下的视频的作业
+        // 1.简单画图描述css和模型
+        // 2. 在页面中增加了一个div(宽度400px,高度400px, 背景颜色蓝,边框颜色红色),该div要求在页面中居中显示
+        // 3. HTML布局实现： 头和尾固定, 中间自适应(头尾指左右)
+        // 4. 在页面中增加一个div
+        // 5. 写一个javascript函数,将以下字符串中'ABC'替换成字符串'Batman','ABC is an great man, which means ABC is great';
+        // 6. 写一个函数,查找var a = 'aaabbbddbbbbccc'连续出现次数最多的字符,将这个字符和它出现的次数打印出来的
+        // 7. 选择你熟悉的一种一种方式实现javascript对象额继承
+        // 8. 编写一段ajax代码,向服务器发送'Hell word'
+        // 9. 实现String类型的trim方法(删除头尾空的串)
+        // 10. 实现Object类型的clone()方法 -- 深度克隆
+        // 11. 什么是观察者模式,用任意语言实现观察者模式
+
+        // 1. http请求中,get请求中和post请求有什么重要区别
+        // 2. css中的选择器有哪些
+        // 3. JavaScript有哪些数据类型
+        // 4. 什么是rem布局 
+
+        // typeof可能返回的数据类型
+        // object function number string boolean undefined
+
+        // javascript中有哪些数据类型
+        // 
+        //
+        // 请面试官看一下我的github作品        
+
+
+    
+    </script>
+</body>
+</html>

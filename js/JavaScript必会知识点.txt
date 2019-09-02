@@ -1,0 +1,280 @@
+             1.
+怪异模式和标准模式的区别
+                       1)盒模型的解析不同
+                       2)怪异模式下的margin : 0 auto 不可以居中
+                       3)怪异模式下行级元素可以设置宽高
+
+
+            2.
+ <label for="demo">username</label>
+     <input id="demo" type="text">
+
+var oInput = document.getElementById('demo'),
+  olable = document.getElementsByTagName('label')[0];
+    oInput.onclick = function() {
+        console.log('input');
+    }
+    olable.onclick = function() {
+        console.log('label');
+    }
+
+
+
+
+  <input type="text" id="demo" ds= 'dg'>
+//   var oInput = document.getElementsByTagName('input')[0];
+//   oInput.className = 'dg';
+//   oInput.name = 'dg';
+//   oInput.setAttribute('ds', 'dg')  
+//   console.log(oInput.id);
+//   console.log(oInput.getAttribute('ds'));
+//  //  如果是先天的属性(特性)，可以用点的方式获取;   (属性)不是的话就dom元素就不与HTML元素形成一一映射的关系，只能用getAttribute获取 setAttribute设置
+//  //  属性包含特性
+
+
+
+
+         3.
+ //  图片加载是异步
+
+  // 图片预加载(图片加载完再插入页面中)
+  <img src="" alt="">  
+  var oImg = new Image();
+  oImg.src = '';
+  oImg.onload = function() {
+       document.body.appendChild(oImg);
+  } 
+ 
+   
+
+
+   // 图片懒加载(需要才加载,不需要不要加载) 
+<button>getImage</button>
+//   var oBtn = document.getElementsByTagName('button')[0];
+//   oBtn.onclick = function() {
+//       var oImg = new Image();
+//       oImg.src = '';
+//       document.body.appendChild(oImg);
+//   }
+
+
+
+
+
+//    //淘宝的功能(懒加载外加预加载)
+<button>getImage</button>
+//   var oBtn = document.getElementsByTagName('button')[0];
+//   oBtn.onclick = function() {
+//       var oImg = new Image();
+//       oImg.src = '';
+//       oImg.onload = function() {
+//           document.body.appendChild(oImg);
+//       }
+      
+//   }
+
+
+
+
+          6.
+    //[0,1)
+ // console.log(Math.random());
+
+//   var arr = ['a', 'b', 'c', 'd', 'e'];
+//   var str = '';
+//   for(var i = 0; i < arr.length; i++) {
+//       str += arr[Math.floor(Math.random() * 5)];
+//   }
+//   console.log(str);
+
+  // 求[2, 5)
+  
+  // 求期间 :   乘以差值 + 最小值
+
+
+   //抽奖功能
+//   var num = Math.random() * 100;
+//   if(num < 0.0001) {
+//       console.log('一等奖');
+//   }else if(num < 0.001) {
+//       console.log('二等奖');
+//   }else if(num < 0.1) {
+//       console.log('三等奖');
+//   }else{
+//       console.log('邓哥一枚');
+//   }
+
+
+
+                    
+       
+                 7.
+　// 文档碎片(对dom集中操作,理论上会提高一个页面的性能,不占用dom结构)
+  // 不在页面中渲染就不消耗性能
+var oUl = document.getElementsByTagName('ul')[0];
+var ofrag = document.createDocumentFragment();
+// for(var i = 0; i < 10000; i ++) {
+    
+//     var oLi = document.createElement('li');
+//     oLi.innerHTML = i;
+//     ofrag.appendChild(oLi);
+
+// }
+//    oUl.appendChild(ofrag);
+
+var str = '';
+for(var i = 0; i < 10000; i ++) {
+    str += '<li>' + i + '</li>'
+}
+oUl.innerHTML = str;
+
+
+
+   
+
+        
+           8.
+
+   //  内容分发网络(缓存服务器)
+   //  解决速度和浏览器问题,实现缓存
+//    1.解决雍塞过程
+//    2.减少网络请求
+
+
+
+
+    
+
+          9.
+ 
+   //数组遍历
+//   var arr = ['a', 'b', 'c'];
+//   arr.forEach(function(ele, index) {
+//       console.log(ele);
+//       console.log(index);
+//   }) 
+
+
+
+ //splice原理
+//   Array.prototype.splice = function(a, b) {
+//       var newArr = [];
+//       for(var i = a; i < b; i ++) {
+//           newArr.push(this[i]);
+//       }
+//       return newArr;
+//   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

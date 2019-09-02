@@ -1,0 +1,31 @@
+// 当我们用字段或者是表达式from一张表的时候 我们会将表中所有的记录都查询出来 这种情况下如果我这张表里头记录的数量是非常非常多的 
+//     比如我这张表里头一万条记录 每次我都全部查询出 这样对我的数据库系统使用消耗也是非常非常大的 
+//
+// where + 表达式(条件表达式)            条件表达式有几种表现形式: 等值比较 大于 小于 大于等于 小于等于 不等于
+// select * from emp where deptno = 10;
+// select * from emp where ename = 'clark';
+// select * from emp where hiredate = '1981-6-9';  // 日期类型是以字符串类型插入的  
+// select * from emp where hiredate = '1981/6/9'; 
+// select * from emp where sal > 1600;
+// select * from emp where sal < 1600;
+// select * from emp where sal >= 1600;
+// select * from emp where sal <= 1600;
+// select * from emp where sal <> 1600; 
+//
+//
+// 多个条件查询   并且 and     或者 or     in 代表在这个取值中只要有一个匹配    not in 不在这个范围区间之内的     between and
+//
+// select * from emp where sal > 1600 and sal <= 3000;
+// select * from emp where sal > 1600 and sal <= 3000 and deptno = 10;
+// select * from emp where sal > 3000 or sal < 1000;
+// select * from emp where sal = 800 or sal = 950 or sal = 1600;
+// select * from emp where sal in (800, 950, 1600);
+// select * from emp where sal not in (800, 950, 1600);
+// select * from emp where sal between 1600 and 3000;
+// select * from emp where sal >= 1600 and sal <= 3000;
+// select * from emp where comm = null;
+// 空永远不等于空  null和null做等值判断时结果永远是假的
+// select * from emp where comm is null;
+// 判断一个字段的数值是否是null需要用到关键字 is
+// select * from emp where comm is not null;    
+// 判断一个字段的数值不为null需要用到关键字 is not

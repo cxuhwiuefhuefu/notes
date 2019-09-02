@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            var div = document.getElementsByTagName('div');
+            console.log(div);
+        })
+    // 更美观  合理
+    </script>
+</head>
+<body>
+    <div></div>
+    <script>
+        
+        // json异步加载 时间线
+        // json
+        //     JSON是一种传输数据的格式(以对象为样板,本质上就
+        //         是对象,但用途有区别,对象就是本地用的,json是用来传输的)
+        //     JSON.parse();  string --> json
+        //     JSON.stringify();  json --> string
+
+        // var obj = {
+        //     "name": "abc",
+        //     "age": 123
+        // }
+        // var str = JSON.stringify(obj); // 能把对象转化为字符串
+        // JSON格式属性名必须双引号
+        // 以前XML传输的
+        // JSON就是静态类语言类似 Math   不用构造,本身就是构造函数
+
+        // 异步加载js
+        // js加载的缺点： 加载工具方法没必要阻塞文档,过多的js加载会影响页面的效率,一旦网上不好,那么整个页面将等待
+        //               js加载而不进行后续渲染等工作
+        // 有些工具方法需要按需,加载用到在加载,不用就不加载            
+
+        // domTree按dom节点的顺序绘制的  原则：深度优先原则
+        // domTree节点的解析： 我认识你谁就行了,没必要等待它加载完   
+        // domTree解析完就是domTree生成了,不代表dom加载完毕了
+        // <img src="xxx>   异步加载的
+        // domTree + cssTree = renderTree
+        // reflow(重排)  dom节点的删除/添加
+        // (浪费效率高)   dom节点的宽高变化/位置变化/display none --> block
+        // repaint(重绘)  dom节点的背景图片/背景颜色/字体颜色
+        // (浪费效率低)              
+        // dom节点的优化： 尽量减少dom的添加/减少
+
+        // javaScript异步加载的三种方法
+        // 1.defere异步加载,但要等到dom文档全部解析完才会被执行的。只有IE能用. 里面可以写代码
+        // 2.async异步加载,加载完就执行,async只能异步加载外部脚本,不能把js写script标签里 IE9以上
+        // 3.创建script, 插入DOM中,加载完就callback(既能异步加载/也能按需加载)
+
+        // var script = document.createElement('script');
+        // script.type = "text/javaScript";
+        // script.src = "./test1.js";  // 代码异步加载  灯塔模式  img.src预加载  
+        // document.head.appendChild(script);// 二次加载拿缓存   
+        // // tets();                         // 加载要发个请求
+        // setTimeout(function() {             // 执行非常快   以微妙计算的
+        //     test();
+        // }, 1000);
+
+        // function loadScript(url, callback) {
+        //     var script = document.createElement('script');
+        //     script.type = "text/javaScript";
+            
+        //     if(script.readState) {
+        //         if(script.onreadystatechange == 'complete' || script.onreadystatechange == 'loaded') {
+        //             // callback();
+        //             // eval(callback)
+        //             tools[callback]();
+        //         }
+        //     }else {
+        //         script.onload = function() {
+        //             // callback();
+        //             // eval(callback);
+        //             tools[callback]();
+        //         }
+        //     }
+        //     script.src = url;
+        //     document.head.appendChild(script);
+        // }
+        // // loadScript("./test1.js", function() {
+        // //     test();
+        // // });
+        // // loadScript("./test1.js", "test()")
+        // loadScript("./test1.js", "test");
+    // 只加载工具库  不需要用到这个方法
+    // 按需加载(控制加载完并执行)
+
+
+    // js时间线
+    // 1.创建Document对象,开始解析web页面。解析HTML元素和
+    //   他们的文本内容后添加Element对象和Text节点到文档中。
+    //   这个阶段的document.readyState = 'loading';
+    // 2.遇到link外部的css,创建线程加载,并继续解析文档  
+    // 3.遇到script外部的js,并且没有设置async,defere,浏览
+    //   器加载,并阻塞,等待js加载完成并执行该脚本,然后继续
+    //   解析文档
+    // 4.遇到script外部的js,并且设置async,defere,浏览器创建线
+    //   程加载,并继续解析文档。对于async属性的脚本,脚本加载完
+    //   成后立即执行。(异步禁止使用document.write())
+    // 5.遇到img等,先正常解析dom结构,然后浏览器异步加载
+    //   src,并继续解析文档。
+    // 6.当文档解析完成后,document.readyState = 'interactive'   // domTree刚建立
+    // 7.文档解析完成后,所以设置有defere的脚本会按照顺序执行
+    //   (注意于async的不同,但同样禁止使用document.write())
+    // 8.document对象触发DOMContentLoaded事件,这也标志着程序
+    //   执行从同步脚本执行阶段,转化为事件驱动阶段         // 可以监听用户的输入事件/监听事件
+    // 9.当所以的async的脚本加载完成并执行后,img等加载完成后
+    //   document.readyState = 'complete',window对象触发Load事件
+    // 10.从此,以异步响应方式处理用户输入,网络事件等    
+    // 分三步
+    // 1.创建Document对象
+    // 2.解析文档
+    // 3.文档加载完并执行完
+
+    // window.onload = function() {
+    //     document.write('a');
+    // }                
+    // 会清除之前的文档流,连script都清除,只剩下自己了
+    // 文档： 只写在HTML的叫做文档
+    // 文档解析完 --》 domTree刚建立完
+
+    // console.log(document.readyState);
+    // document.onreadystatechange = function() {   // 回调函数： 当满足一定条件才被执行的函数
+    //     console.log(document.readyState);   // readyState --> 状态码(也就属性)
+    // }
+    // window.onload = function() {         // 就IE没有load事件      
+    //     console.log(document.readyState);
+    // }
+    // document.addEventListener('DOMContentLoaded', function() {  //只能这么绑定   //效率高  最好不要用window.loaded事件
+    //     console.log(document.readyState);
+    // })
+    // $(document).ready(function() {})  // 底层原理是DOMContentLoaded事件和document.readyState变成interactive    与window.onload的区别：一个快一个慢
+
+    // js 放在下面最快   意味dom都处理完了,
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,610 @@
+    <!-- div.demo#only*3 -->
+    <!-- div>p -->
+    <!-- div>p[style= 'backgroung-color:red;width:100px'] -->
+    <!-- div>p[style= 'backgroung-color:red;width:100px;' -->
+    <!-- 插件  emmet Jsprettify      emmet 教程 -->
+    <!-- 工具包  package-control -->
+    <!-- div(p^span) -->
+    <!-- div>(p^span.demo#only{123}) -->
+    <!-- ul>li{$2}*10 -->
+    
+
+
+    // var div = document.getElementById('only');
+    // var div = document.getElementsByTagName('div')[0];     
+    // var div = document.getElementsByClassName('demo')[0];
+    // var div = document.getElementsByName('fruit')[0];
+    // var div = document.getElementsByTagName('div');
+    // var p = document.getElementsByTagName('p')[0];
+
+    //  var　strong = document.querySelector('div > span strong.demo')
+    //  var strong1 = document.querySelectorAll('div > span strong.demo');   缺点 ： 不是实时的
+   
+    //    var div = document.querySelectorAll('div');
+    //    // var div = document.getElementsByTagName('div');
+    //     var demo = document.getElementsByClassName('demo')[0];
+    //     var newDiv = document.createElement('div');
+    //     document.body.appendChild(newDiv);
+
+
+     var div = document.getElementsByTagName('div')[0];
+    // function retElementChild(node) {
+    //     var arr = {
+    //         'length' : '0',
+    //         push : Array.prototype.push,
+    //         splice : Array.prototype.splice
+    //     },
+    //     child = node.childNodes,
+    //     len = child.length;
+    //     for(var i = 0; i < len; i ++) {
+    //         if(child[i].nodeType === 1) {
+    //             arr.push(child[i]);
+    //         }
+    //     }
+    //     return arr;
+    // }
+    // console.log(retElementChild(div));
+
+ 
+
+
+
+ // document --> HTMLDocument --> Document --> Node 
+    
+    // HTMLBodyElement.prototype.abc = 'demo';
+    // var body = document.getElementsByTagName('body')[0];
+    // var head = document.getElementsByTagName('head')[0];
+     
+    //  var div = document.getElementsByTagName('div')[0];
+    //  var span = div.getElementsByTagName('span')[0];
+
+    // document.documentElement --> html
+   
+               // 练习
+
+    //2.
+    // function retParent(elem, n) {
+    //     while(n && elem) {
+    //         elem = elem.parentElement;
+    //         n --;
+    //     }
+    //     return elem;
+    // }
+    // var i = document.getElementsByTagName('i')[0];
+
+   //4.
+//    Element.prototype.myChildern = function() {
+//        var child = this.childNodes;
+//        var len = child.length;
+//        var arr = [];
+//        for(var i = 0; i < len; i ++) {
+//            if(child[i].nodeType === 1) {
+//                arr.push(child[i]);
+//            }
+//        }
+//        return arr;
+//    }
+//    var div = document.getElementsByTagName('div')[0];
+ 
+//    4.
+//    function retSibling(e, n) {
+//        while(n && e) {
+//            if(n > 0) {
+//                if(e.nextElementSibling) {
+//                    e = e.nextElementSibling;
+//                }else{
+//                    for(e = e.nextSibling; e && e.nodeType != 1; e = e.nextSibling);
+//                }
+//            }else{
+//                if(e.previousElementSibling) {
+//                    e = e.previousElementSibling;
+//                }else {
+//                    for(e = e.previousSibling; e && e.nodeType != 1; e = e.previousSibling);
+//                }
+//                n ++;
+//            }
+//        }
+//        return e;
+//    }
+//    var strong = document.getElementsByTagName('strong')[0];
+   
+   //   var div = document.createElement('div'); 创建元素节点
+   //   var text = document.createTextNode('邓哥帅');
+   //   var comment = document.createComment('this is comment');
+   
+//    var div = document.getElementsByTagName('div')[0];
+//    var text = document.createTextNode('邓宝宝');
+//    div.appendChild(text);
+//    var span = document.createElement('span');
+//    div.appendChild(span);
+//    var text1 = document.createTextNode('demo');
+//    span.appendChild(text1);
+//    span.appendChild(text);
+
+//   var div = document.getElementsByTagName('div')[0];
+//   var span = document.getElementsByTagName('span')[0];
+//   var strong = document.createElement('strong');
+//   div.insertBefore(strong, span);
+//   var i = document.createElement('i');
+//   div.insertBefore(i, strong);
+//   var p = document.createElement('p');
+//  var a = document.getElementsByTagName('a')[0];
+//  a.onclick = function() {
+//      console.log(this.getAttribute('data-log'))
+//  }
+
+//    var all = document.getElementsByTagName('*');
+//    for(var i = 0; i < all.length; i ++) {
+//        all[i].setAttribute('this-name', all[i].nodeName);
+//    }
+
+             //课堂练习
+//     var div = document.createElement('div');
+//     var p = document.createElement('p');
+//     var text = document.createTextNode('陈明航， 你最帅！')
+//     document.body.appendChild(div);
+//     div.appendChild(p);
+//     p.appendChild(text);
+//    div.setAttribute('class', 'examole');
+//    p.setAttribute('class', 'slogan');
+
+    // 1.
+    //    Element.prototype.insertAfter = function(taregtNode, afterNode) {
+    //        var beforNode = afterNode.nextElementSibling;
+    //        if(beforNode == null) {
+    //            this.appendChild(taregtNode);
+    //        }else{
+    //            this.insertBefore(taregtNode, beforNode);
+    //        }
+    //    } 
+    //    var div = document.getElementsByTagName('div')[0];
+    //    var span = document.getElementsByTagName('span')[0];
+    //    var b = document.getElementsByTagName('b')[0];
+    //    var p = document.createElement('p');
+
+    //    2.
+    //   Element.prototype.reverse = function() {
+    //       for(var i = this.children.length - 1; i >= 0; i--) {
+    //           this.appendChild(this.children[i]);
+    //       }
+    //   }
+    //   var div = document.getElementsByTagName('div')[0];
+
+
+
+
+
+ // 日期对象， 是对象提供好的
+
+    // // 时间戳
+    // var firstTime = new Date().getTime();
+    
+    // for(var i = 0; i < 100000000; i ++) {
+
+    // }
+    // var lastTime = new Date().getTime();
+    // console.log(lastTime - firstTime);
+      
+
+    //   var date = new Date();
+    //   date.setMinutes(56);
+    //   setInterval(function () {
+    //       if(new Date().getTime() - date.getTime() > 1000) {
+    //           console.log('航哥帅');
+    //       }
+    //   }, 1000);
+
+//    function reDate() {
+//        return new Date();
+//        }
+
+    //  var i = 0
+    //  setInterval(function() {
+    //      console.log(i);
+    //      i ++;
+    //  }, 1000);
+     
+
+    //  var firstTime = new Date().getTime();
+    //  setInterval(function () {
+    //      var lastTime = new Date().getTime();
+    //      console.log(lastTime - firstTime);
+    //      firstTime = lastTime; 
+    //  }, 1000);
+
+//     var i = 0;
+//    setInterval(function() {
+//    console.log(i ++);
+//    if(i == 10) {
+//          clearInterval(1);
+//    }
+//     }, 1000);
+  
+    // var timer = setTimeout(function() {
+    //      console.log(this);
+    //  }, 1000);
+    //  var timer2 = setTimeout(function() {
+
+    //  }, 1000)
+    //  //clearTimeout(timer);
+
+   // setInterval("console.log('a')", 1000);
+   
+   var minutesNode = document.getElementsByTagName('input')[0];
+   var secondNode = document.getElementsByTagName('input')[1];
+    
+   var minutes = 0,
+       seconds = 0;
+    var timer = setInterval(function() {
+        seconds ++;
+        if(seconds == 60) {
+            seconds = 0;
+            minutes ++;
+        }
+        secondNode.value = seconds;
+        minutesNode.value = minutes;
+        if(minutes == 3) {
+            clearInterval(timer);
+        }
+    }, 1000)    
+
+
+
+
+   
+    // IE8和IEI8以下的浏览器
+    // document.body.scrollLeft/top
+    // document.documentElement.scrollLeft/top
+    
+    // function getScrolloffset() {
+    //     if(window.pageXOffset) {
+    //         return {
+    //             x : window.pageXOffset,
+    //             y : window.pageYOffset
+    //         }
+    //     }else{
+    //         return {
+    //             x : document.body.scrollLeft + document.documentElement.scrollLeft,
+    //             y : document.body.scrollTop + document.documentElement.scrollTop
+    //         }
+    //     }
+    // }
+
+
+
+
+    // function getViewportOffset () {
+    //      if(window.innerWidth) {
+    //          return {
+    //              w : window.innerWidth,
+    //              h : window.innerHeight
+    //          }
+    //      }else {
+    //          if(document.compatMode === "BackCompat") {
+    //              return {
+    //                  x : document.body.clientLeft,
+    //                  y : document.body.clientHeight
+    //              }
+    //          }else{
+    //              return {
+    //                  x : document.documentElement.clientWidth,
+    //                  y : document.documentElement.clientHeight
+    //              }
+    //          }
+    //      }
+    //  }
+   
+
+
+
+
+  //     var div = document.getElementsByTagName('div')[0];
+    //    var box = div.getBoundingClientRect();
+    //    div.style.width = '200px';
+    
+
+
+
+   var start = document.getElementsByTagName('div')[0];
+// var stop = document.getElementsByTagName('div')[1];
+// var timer = 0;
+// var key = true;
+// start.onclick = function () {
+//     if(key) {
+//         timer = setInterval(function() {
+//            window.scrollBy(0, 10);
+//        }, 10)
+//     key = false;
+//     } 
+// }
+// stop.onclick = function () {
+//     clearInterval(timer);
+//     key = true;
+// }
+
+
+
+
+
+// function getStyle (elem, prop) {
+//  if(window.getComputedStyle) {
+//      return window.getComputedStyle(elem, null)[prop];
+//  }else{
+//      return elem.currrenStyle[prop];
+//  }
+// }
+
+
+
+
+// var div = document.getElementsByTagName('div')[0];
+// div.onclick = function() {
+// //    div.style.width = '200px';
+// //    div.style.height = '200px';
+// //    div.style.backgroundColor = 'blue';
+// div.className = 'active';
+// }
+
+
+   
+    var div = document.getElementsByTagName('div')[0];
+//     function getStyle(elem, prop) {
+//         if(window.getComputedStyle) {
+//             return window.getComputedStyle(elem, null)[prop];
+//         }else{
+//             return elem.currentStyle[prop];
+//         }
+//     }  
+//     var speed = 2;    
+//   var timer = setInterval(function () {
+//       speed += speed/7
+//         div.style.left = parseInt(getStyle(div, 'left')) + speed + 'px';
+//         if(parseInt(div.style.left) > 500) {
+//             clearInterval(timer);
+//         }
+//     }, 100)
+
+
+
+
+
+
+//   function addEvent(elem, type, handle) {
+//       if(elem.addEventListener) {
+//           elem.addEventListener(type, handle, false);
+//       }else if(elem.attachEvent) {
+//           elem.attachEvent('on' + type, function() {
+//               handle.call(elem);
+//           })
+//       }else{
+//           elem['on' + type] = handle;
+//       }
+//   }
+
+
+
+
+  
+//   var div = document.getElementsByTagName('div')[0];
+//    div.onclick = function () {
+//        console.log('a');
+//        this.onclick = null;
+//    }
+  
+//    div.addEventListener('click', test, false)
+//    function test() {
+//        console.log('a');
+//        div.removeEventListener('click', test, false);
+//    }
+  
+
+
+
+    //  wrapper.addEventListener('click', function() {
+    //      console.log('wrapperBubble');
+    //  }, false);
+    // content.addEventListener('click', function() {
+    //      console.log('contentBubble');
+    //  }, false);
+    //  box.addEventListener('click', function() {
+    //      console.log('boxBubble');
+    //  }, false);
+    //  wrapper.addEventListener('click', function() {
+    //      console.log('wrapper');
+    //  }, true);
+    // content.addEventListener('click', function() {
+    //      console.log('content');
+    //  }, true);
+    //  box.addEventListener('click', function() {
+    //      console.log('box');
+    //  }, true);
+
+
+
+
+//    var wrapper = document.getElementsByClassName('wrapper')[0];
+//     document.addEventListener('click', function() {
+//         console.log('a');
+//     }, false)
+//     wrapper.addEventListener('click', function (e) {
+//         console.log(e);
+//        // e.stopPropagation();
+//         e.cancelBubble = true;
+//         this.style.backgroundColor = 'green';
+//     }, false)
+
+
+
+
+
+  
+//    document.oncontextmenu = function(e) {
+//        console.log('a');
+//        // return false;
+//       //e.preventDefault();
+//      // e.returnValue = false;
+//      cancelHandler(e);
+//    }
+
+
+//      function cancelHandler(event) {
+//          if(event.preventDefault) {
+//              event.preventDefault();
+//          }else{
+//              event.returnValue = false;
+//          }
+//      }
+
+
+
+
+
+
+//    var div = document.getElementsByTagName('div')[0];
+//    var disX,
+//        disY;
+//    div.onmousedown = function (e) {
+//        disX = e.pageX - parseInt(div.style.left);
+//        disY = e.pageY - parseInt(div.style.top);
+//        document.onmousemove = function(e) {
+//        var event = e || window.event;
+//        console.log(e.pageX + " " + e.pageY);
+//        div.style.left = e.pageX - disX +'px';
+//        div.style.top = e.pageY - disY + 'px';
+//    }
+//    document.onmouseup = function () {
+//        onmousemove = null;
+//    }
+// }
+
+
+
+
+//    div.onclick = function () {
+//        console.log('onclick');
+//    }
+//    div.onmousedown = function () {
+//        console.log('onmousedown');
+//    }
+//    div.onmouseup = function () {
+//        console.log('onmouseup');
+//    }
+
+
+
+
+//    div.onmouseenter = function () {
+//        div.style.backgroundColor = 'red';
+//    }
+//    div.onmouseleave = function () {
+//        div.style.backgroundColor = 'green';
+//    }
+  
+
+
+
+ 
+//    div.onmousedown = function (e) {
+//        if(e.button == 2) {
+//            console.log('right');
+//        }else if(e.button== 0) {
+//            console.log('left');
+//        }else{
+//            console.log('middium');
+//        }
+//    }
+
+ 
+ 
+//  // 区分 click 和 mousedown
+//   var firstTime = 0;
+//   var lastTime = 0;
+//   var key = false;
+//   document.onmousedown = function() {
+//       firstTime = new Date().getTime();
+//   }
+//   document.onmouseup = function() {
+//       lastTime = new Date().getTime();
+//       if(lastTime - firstTime < 300) {
+//           key = true;
+//       }
+//   }
+//   document.onclick = function() {
+//       if(key) {
+//            console.log('click');
+//            key = false;
+//       }
+//   }
+ 
+
+ // document.onkeypress = function(e) {
+    //     console.log(String.fromCharCode(e.charCode));
+    // }
+    // document.onkeydown = function (e) {
+    //     console.log(e);
+    // }
+    // document.onkeyup = function() {
+    //     console.log('keyup');
+    // }
+
+
+
+<input type="text" value="请输入用户名" style="color : #999" onfocus="if(this.value == '请输入用户名') {this.value = ''; this.color = '#424242'}"
+  onblur="if(this.value == '') {this.value = '请输入用户名'; this.color = '#999'}">
+
+
+
+//    input.onchange = function(e) {
+//        console.log(this.value);
+//    }
+
+
+
+//  window.onscroll = function () {
+//      console.log(window.pageXOffset + ' ' + window.pageYOffset);
+//  }
+
+
+
+//    var input = document.getElementsByTagName('input')[0];
+//    var div = document.getElementsByTagName('div')[0];
+//    var temp = parseInt(div.style.top);
+//    window.onscroll = function() {
+//       div.style.top = temp + pageYOffset + 'px';
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   

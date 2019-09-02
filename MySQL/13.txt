@@ -1,0 +1,30 @@
+// 多表查询
+// 在我们以前学过的内容当中 我们永远查询的过程当中只会从一张表中把数据给它查询出来 不会同时情况下查询多张表
+//
+// 需求: 我想查询员工的姓名和员工所在部门的名称 
+// use test;    
+// select * from emp;
+// select * from dept;
+// 现在我查询的数据结果分别存在于两张不同的表里 那么我们查询的过程当中如何查询呢
+// select ename, dname from emp, dept; // 56行 这叫笛卡儿积 百岁山 笛卡儿积其实就是14*14 它会做什么处理 1对4的chu'cheng
+// select ename, dname from emp, dept where deptno = deptno;
+// select ename, dname from emp, dept where emp.deptno = dept.deptno;   
+// select ename, dname from emp e, dept d where e.deptno = d.deptno; // 起别名 比较旧以前的查询方式
+// select ename, dname from emp join dept on emp.deptno = dept.deptno; // 这是两张表进行联合查询的方式
+// select ename, dname, grade from emp join dept join salgrade on emp.deptno = dept.deptno and emp.sal between losal and hisal; 
+// 三张表联合查询 这个人的姓名和他所在的部门和他工资的等级
+// 查询员工的姓名和员工经理人的姓名    员工的姓名和员工经理人的姓名它都在emp这张表当中 
+//     但是我去做判断的时候这个时候没有办法把一条记录里面的东西取出来再和我这个记录里面再去找一个ename 也就是我这条记录中只有一个ename 
+//     没有另一个ename和它进行一个匹配操作 那这个时候我单表 这个时候如果你把它看成一张表是不可以的 这张情况我需要做的是多表查询
+//     把这两张emp分别当成两张不同的表 一张表里头我要取出员工的姓名 一张表里头我要取出经理人的姓名 这样才能把不同的名称把它组合到同一个记录
+// select e.ename, m.ename from emp e join emp m on e.empno = m.mgr; // 你会发现这里面对应的经理人和对应的人一共就13条 为什么 因为有一个人是没有经理的
+// select m.ename, e.ename from emp m join emp e on e.empno = m.mgr; // 这个我也想把没有匹配上数据给它显示出来 怎么办 m里面有个对应的数据没有显示出来
+// select m.ename, e.ename from emo m left join emp e on e.empno m.mgr; // 这里面是不是有对应的空 左边这张表有个对应KING找不到对应的关系 
+                                                                        //     没有被显示出来 我想把它显示出来加上left
+// 表联合
+//   左外联合 可以将左边这张表没有被匹配上的数据显示出来   左边表中如果存在记录没有匹配到还想显示出来
+// select ename, dname from emp join dept on emp.deptno = dept.deptno; // 同样是14记录 右边是13个部门 有个部门是没人的 
+                                                                       //     那么说明右边这张表中有一条记录并没有匹配成功
+                                                                       //     如果我想将右边的记录也给它匹配出来 怎么办
+// 右外联合 右边的表中如果存在记录没有匹配还想显示出来
+// select ename, dname from emp right join dept on emp.deptno = dept.deptno; // 你会发现左边多了一条记录

@@ -1,0 +1,115 @@
+
+   function createStore(initState) {
+       var state = initState || {};
+       var list = [];
+       function getState() {
+           return state;           
+       }
+       function dispatch(action) {
+           state[action.type] = action.value;
+           list.forEach(function(ele, index) {
+               ele();
+           })
+       }
+       function subscribe(func) {
+           list.push(func);
+       }
+       return {
+           getState: getState,
+           dispatch: dispatch,
+           subscribe: subscribe
+       }
+   }
+   var Store = createStore({
+       text: '',
+       sex: 'a'
+   });
+   function show() {
+       console.log('sub');
+   }
+   Store.subscribe(show);
+
+    console.log(Store.getState());
+    Store.dispatch({type: 'text', value: '刘' });
+    console.log(Store.getState());
+    Store.dispatch({type: 'sex', value: 'm' });
+    console.log(Store.getState());
+    Store.dispatch({type: 'text', value: '王' });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // document.getElementsByTagName('iframe')[0].onload = function() {}
+
+        // 同源    子页面.contentWindow  父页面window.parrent
+        // 不同源   1.HashChangeEvent  2.window.name
+
+        // ajax  jsonp跨域
+
+
+        // 选框架：  1.还在维护当中  2.排名  3.API
+        // json格式  属性名和属性值(原始值除外)要写双引号 
+
+        // var oBtn= document.getElementById('btn');
+        // var oDemo = document.getElementsByClassName('demo')[0];
+        // var flag = true;
+        // oBtn.onclick = function() {
+        //     if(flag) {
+        //         flag = false;
+        //         oDemo.style.height = '50px'; 
+        //     }else {
+        //         flag = true;
+        //         oDemo.style.height = '100px';
+        //     }
+        // }
+
+            
+            //   注意规范
+            //   一般函数小驼峰式 构造函数大驼峰式
+
+            //   \\排版 -> 重绘 -> 重排
+            //   1. 文档流一般靠前写(psoition display float clear)     
+            //   2.盒子属性一般靠后写 (width margin padding border)
+            //   3.排版(line-height center)
+            //   4.装饰属性(color )
+            //   5.其他属性
+
+            //   上右下左
+
+
+
+
+        // var oDemo = document.getElementById('demo');
+        // // 求元素相对文档的距离
+        // function getElementPosition(ele) {
+        //         if (ele.offsetParent.nodeName == 'BODY') {
+        //             return {
+        //                 l: ele.offsetLeft,
+        //                 t: ele.offsetTop
+        //             }
+        //         }else {
+        //             return {
+        //                 l: ele.offsetLeft + getElementPosition(ele.offsetParent).l,
+        //                 t: ele.offsetTop + getElementPosition(ele.offsetParent).t
+        //             }
+        //         }
+        //     }
+        //     console.log(getElementPosition(oDemo).l);

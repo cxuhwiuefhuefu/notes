@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>  
+
+    <div style="width: 100px; height: 100px; background-color: red; position: absolute; left: 100px; top: 100px;"></div>
+    <hr style="width: 1000px">
+    <br>
+    <br>
+    <br>    
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <script>
+
+        // 获取窗口属性 获取dom尺寸
+
+        // 查看滚动条的滚动距离
+        //     window.pageXOffset/pageYOffset
+        //        IE8及IE8以下不兼容    
+        //     document.body/documentElement.scrollLeft/scrollTop
+        //        兼容性比较混乱 用时取两个值相加 因为不可能存在两个同时有值
+        //     封装兼容性方法 g求滚动轮滚动距离getScrollOffset()       
+
+        // function getScrollOffset() {
+        //     if(window.scroll) {
+        //         return {
+        //             x: window.pageXOffset,
+        //             y: window.pageYOffset
+        //         }
+        //     }else {
+        //         return {
+        //             x: document.body.scrollLeft + document.documentElement.scrollLeft,
+        //             y: document.body.scrollTop + document.documentElement.scrollTop
+        //         }
+        //     }
+        // }
+
+        // offset: 尺寸
+        // IE9支持W3C IE9以下部分支持
+        
+        // 查看视口的尺寸
+        //     window.innerWidth/innerHeight(加上滚动条宽度/高度)
+        //         IE8及IE8以下不兼容
+        //     document.documentElement.clientWidth/clientHeight
+        //         标准模式下 任意浏览器都兼容
+        //     document.body.clientWidth/clientHeight
+        //         适用于怪异模式下的浏览器
+        //     封装兼容性方法 返回浏览器视口尺寸getViewportOffset()
+
+        // function getViewportOffset() {
+        //     if(window.innerWidth) {
+        //         return {
+        //             x: window.innerWidth,
+        //             y: window.innerHeight
+        //         }
+        //     }else {
+        //         if(document.compatMode == 'BackCompat') {
+        //             return {
+        //                 x: document.body.clientWidth,
+        //                 h: document.body.clientHeight
+        //             }
+        //         }else {
+        //             return {
+        //                 x: document.documentElement.clientWidth,
+        //                 y: document.documentElement.clientHeight
+        //             }
+        //         }
+        //     }
+        // }
+
+        // <!DOCTYPE html>(HTML5形式的DTD最简化的, 之前的要写好几行):  1. 文档类型
+        //                                                          2. DTD
+        // emmet插件
+        //     HTML5 -->(快速生成) 
+        // client: 是计算机标准用语 客户端的意思
+        // 2.7秒内写东西 一旦2.7秒内读不完的东西人脑是形成不了记忆的 是很难形成片刻记忆的
+        //     这样我们的心算能力 口算能力非常强
+
+        // 查看元素的几何尺寸 --- 凭视觉   es5新方法 不是实时的 
+        //     domEle.getBoundingClientRect();
+        //         兼容性很好
+        //         该方法返回一个对象 对象里面 有left top right bottom等属性
+        //             left和top代表该元素左上角的x和y坐标 right和bottom
+        //            代表元素右下角的x和y坐标
+        //         height和width属性老版本IE并未实现
+        //         返回的结果并不是实时的 
+
+        // 它返回的是此时此刻这个方块的静态写照 怪异模式/混杂模式一经启动 它所识别的语法并不是最新的语法  而是之前
+        //     的语法 试图去兼容之前页面的语法 这个根据浏览器兼容的区间所不同 现在的谷歌浏览器能兼容之前的五个版本的
+        // j提供了很多方法 这方法与方法难免有冲突 难免一些方法让一些方法成为永久不开启的方法
+
+        // var div = document.getElementsByTagName('div')[0];
+        // var box = div.getBoundingClientRect();
+        // div.style.height = '200px';
+
+        // 查看元素的尺寸 -- 凭视觉   (求得是视觉上的尺寸)
+        //     dom.offsetWidth  dom.offsetHeight
+        // 查看元素的位置
+        //     dom.offsetLeft  dom.offsetTop
+        //     对于无定位父级的元素 返回相对文档的坐标 对于有定位父级的元素
+        //         返回相对最近的有定位的父级的坐标(无论是left还是margin-left等都是距离)
+        //     dom.offsetParent
+        //         返回最近的有定位的父级 如无返回body body.offsetParent返回null
+        //     eg: 求元素相对文档的坐标getElementPosition()            
+        
+        // 作业: 封装getElementPosition()  循环 递归
+        // offsetleft它真正的含义
+        //    是忽略自身是不是定位元素  它求得只是这个元素距离它有定位的父级的距离 不管这个距离是怎么生成的 不管是margin生成的还是定位生成的 
+        //        但凡有距离这个距离 我和这个有定位的父级有这个距离就把这个值返回给你 这个offsetLeft不是求定位的那个left
+        //        就是求横向上我和你距离的left 那个left表示的是一个方块表示语法 但凡能跟它隔出距离的 不管它是不是定位的 它都能求出这个距离 
+        //        这个红色方块关注它外面的父级是不是有定位的父级 如果是有定位的父级 红色方块所求的offsetLeft就是距离有定位父级的距离 
+        //        如果父级不是有定位的父级 我求的是距离外边框的
+
+    </script>
+    
+</body>
+</html>
+
+
+//********************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div style="width: 300px; height: 300px; border: 2px solid black; position: relative; top: 100px; left: 100px;">
+        <div class="demo" style="width: 100px; height: 100px; background-color: red; position: absolute; left: 100px; top: 100px;"></div>
+    </div>
+
+    <script>
+
+        var div = document.getElementsByClassName('demo')[0];
+        div.offsetleft -->
+        div.offsetTop -->
+    
+    </script>
+    
+</body>
+</html>
+
+//***************************************************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div style="width: 300px; height: 300px; border: 2px solid black; position: static; margin-left: 100px; margin-top: 100px;">
+        <div class="demo" style="width: 100px; height: 100px; background-color: red; position: absolute; margin-left: 100px; margin-top: 100px;"></div>
+    </div>
+
+    <script>
+
+        var div = document.getElementsByClassName('demo')[0];
+        // div.offsetleft --> 210px
+        // div.offsetTop -->  202px
+
+        // 为什么塌陷不了??  因为加border了
+        // CSS body中默认的 margin为8px
+        // 红色方块所求的offsetLeft就是距离有定位父级的距离 父级不是有定位的父级 我求的是距离外边框的
+
+
+
+            
+        // 让滚动条滚动 
+        //     window上有三个方法
+        //        scroll() scrollTo()     scrollBy()
+        //     三个方法功能类似 用法都是将x, y坐标注入 即实现让滚动轮滚动到当前位置
+        //     区别: scrollBy()会在之前的数据基础上做累加
+        //     eg: 利用scrollBy()快速阅读的功能
+        
+        // scroll(): 让滚动条滚动到当前的距离而不是累加
+        // scroll()和scrollTo()一样 兼任性一样
+        // scrollTo() 累加
+
+    </script>
+    
+</body>
+</html>
+
+//*********************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+        要得手了！黑暗蜂鸟几乎是瞬间心中就产生出这样的念头，在他看来，舞长空终究还是太嫩了。就算是有四字斗铠，也根本发挥不出斗铠的优势。在自己超强的攻势下，竟然也是抵挡不住。
+
+        此时再想要抵挡，舞长空就要用另一条手臂才行，闪避是肯定来不及的。而哪怕只是能够伤到他的一条手臂，对于黑暗蜂鸟莱说，目的也已经达到了，此消彼长之下，他有信心在短暂的时间内确立更大的优势。
+    
+        可是，让他万万没有想到的是，舞长空并没有用手臂去抵挡他的攻击。在那一瞬就到了面前的过程中，黑暗蜂鸟也只是隐约看到，在舞长空的双眸之中，竟是闪过一抹讥讽之色。
+    
+        双方的距离实在是太近了，以至于黑暗蜂鸟的一双尖刺几乎是瞬间就到了舞长空面前。而舞长空此时所做的，竟是只有一个闭眼的动作。
+    
+        黑暗蜂鸟的疾风炮速度再快，也不可能和舞长空做一个闭眼的动作相比啊！
+    
+        而伴随着舞长空的闭眼，从他的头盔上，一张金属面具瞬间落下，挡在了面前。
+    
+        “叮！”脆鸣声中，舞长空的头部后仰，甚至连带着整个上身都因为被刺中而后仰。但是，伴随着他后仰动作的同时，一道剑光也已经从身下弹起，几乎是在他后仰的身体带动下，在碰撞的同时，就斩在了黑暗蜂鸟身上。
+    
+        “铿！”黑暗蜂鸟身上的三字斗铠迸发出大片的紫黑色光芒，可就算如此，还是被天霜剑斩出了一道巨大的裂痕。更让黑暗蜂鸟骇然的是，一股极致冰冷的寒意顺着天霜剑疯狂的涌入他的身体，他那三字斗铠表面，瞬间就凝结上了一层霜雾。
+    
+        怎么可能？他怎么会用这样的方式来战斗？
+    
+        这是何等的危险啊？
+    
+        那只是面具而已，如果面具挡不住自己的尖刺，他岂不是就要死了？
+    
+        他又哪里知道，龙夜月能够让舞长空成为小队的领队，更凌驾于史莱克六怪、狂风刀魔司马金驰以及蓝木子、唐音梦之上，这首先就是对舞长空实力的认可啊！在这样的战场上，没有什么比拥有实力更重要的事情了，和实力相比，其他的到都在其次。
+    
+        对于自己的斗铠承受能力，他自然是早就有判断。所以，在第一下碰撞的过程中，他虽然被击退了，但也同时在判断着对方的攻击力自己的斗铠承受程度。
+    
+        而当第二次攻击到来的时候，黑暗蜂鸟并不知道的是，从后方看，舞长空的一双羽翼已经向上翻折而起，挡住他的头盔。也就是说，当他的攻击命中面积的时候，舞长空并不是凭借自己的颈椎去抵挡这份冲击力，而是包括头盔，以及与头盔迅速连接在一起的肩铠、胸铠再加上双翼，一起承担了这一下的伤害。
+    
+        之所以这样选择，最重要的原因是因为舞长空想要速战速决。
+    
+        这场战胜关系到人类的生死存亡，能够多杀伤一名敌人，对于人类的胜利就能更近一分。找上黑暗蜂鸟还有一个原因就是因为，邪魂师虽然实力强大，但他们毕竟不像深渊生物那样能够复活啊！顶级的邪魂师每次被击杀一人，那么，就相当于是真正意义的减弱对方实力几分。
+    
+        因此，舞长空要做的，就是在最短时间内将黑暗蜂鸟彻底击溃。
+    
+        看上去的以伤换伤，却实际上是他早就准备好的。他确实是没办法像黑暗蜂鸟那样，在很短的时间内爆发出超强的速度。可是，他的速度也绝不像表面那样被动。
+    
+        有一些技巧他还是通过和唐舞麟的切磋之中学到的，想要在短时间内击溃对手，尤其是击溃实力不比自己弱，甚至还要强大于自己的对手，那么，最好的办法就是让对方没办法把全部实力都发挥出来。
+    
+        用自己的面部，看上去最脆弱的地方去换取一次让对方避无可避的攻击，在早就做好准备的情况下，无疑是极好的选择。
+    
+        黑暗蜂鸟终究还是小看了舞长空。现在的天霜龙冰舞长空，又岂是当年那个能够任由他随便击溃的青年呢？
+    
+        所以，这一下他就吃了大亏。
+    
+        天霜剑带出的不只是斩击，还有舞长空的，绝对零度！
+    
+        恐怖的超低温，几乎是刹那间就让黑暗蜂鸟的血液为之凝结，三字斗铠面对有四字斗铠增幅的天霜剑，能够阻挡的只是剑锋而已，对于剑锋切入后传导的超低温，只能抵挡一部分。而这短暂的冻结，对于舞长空来说，就已经足够了。
+    
+        所以，从远处看，看到的就是舞长空的上身因为被刺中而后仰，但与此同时，黑暗蜂鸟也被他一剑挑飞到了空中。并且在挑飞的过程中，身上的三字斗铠表面，覆盖上了一层冰雾到冰甲。整个人都处于僵硬之中。
+    
+        舞长空背后双翼就在自己身体后仰到接近铁板桥状态的情况下张开，猛地一拍，带动着他的身体几乎是瞬间就追上了半空中已经宛如冰雕一般的黑暗蜂鸟。
+    
+        “霜语冰轮！”
+    
+        舞长空第五魂技，九柄巨大的天霜剑宛如一圈冰轮一般，连续九次，狠狠的斩击在黑暗蜂鸟身上。不仅如此，他身上的第六魂环也是光芒大放，第六魂技，凝霜！
+    
+        凝霜的作用，就在于让先前结冰的绝对零度持续。让那黑暗蜂鸟，完完整整的承受了这一下霜语冰轮的威力。
+    
+        每一剑斩上去，舞长空就像是充满了发泄一般。多少年了，他对黑暗蜂鸟的憎恨，对于龙冰的痛悔，都在这一剑剑之下释放出来。
+    
+        他好后悔，没有更早的和龙冰进行心灵上的沟通，没有更早的知道事实的真相。如果他能知道的更早一些，说不定龙冰就不会死。他们也不会那么轻易的离开史莱克城。
+    
+        如果是在史莱克城内，任由那黑暗蜂鸟有多大胆子也绝不会轻举妄动的啊！
+    
+        可是，在这个世界上，从来都是没有后悔药的。他没有背叛对龙冰的诺言，此时的他，并不是在为龙冰报仇，而是为了全人类在对抗圣灵教！
+    
+        当血河弑神大阵出现的时候，联邦强者们就明白，圣灵教必须要彻底剿灭，否则未来还不知道有多少生命会陨落在他们的邪恶目的之下。
+    
+        “轰——”黑暗蜂鸟从空中被直接砸落在地面上，霜语冰轮的九次重击没有一次能够避过。舞长空冒险的战斗方式，终于在最短时间内重创了这位黑暗四大天王之一。
+    
+        从天而降，天霜剑已经化为巨剑，冰冷的气息带着一往无前的气势，在舞长空的推动下直奔地面上的黑暗蜂鸟刺去。
+    
+        “当！”
+    
+        大地龟裂。舞长空的天霜剑凝滞，在那龟裂大地的中心点上，黑暗蜂鸟勉强用自己的一双蜂尾刺挡住了舞长空的天霜剑。
+    
+        他好不容易才从那极寒之中挣脱出来，甚至引爆了自己的三字斗铠，才带给自己这样能够阻挡的力量。
+
+        <div style="width: 200px; height: 200px; background-color: orange; color: #fff; font-size: 40px; font-weight: bold; text-align: center;
+                    line-height: 200px; position: fixed; bottom: 400px; right: 50px; border-radius: 50%; opacity: 0.5;">start</div>
+        <div style="width: 200px; height: 200px; background-color: #0f0; color: #fff; font-size: 40px; font-weight: bold; text-align: center;
+                    line-height: 200px; position: fixed; bottom: 100px; right: 50px; border-radius: 50%; opacity: 0.5;">stop</div>            
+
+        <script>
+
+            // 每次点击会产生多个定时器停不下 所以要加个锁
+
+            var start = document.getElementsByTagName('div')[0];
+            var stop = document.getElementsByTagName('div')[1];
+            var timer = 0;
+            var key = true;
+            start.onclick = function() {
+                if(key) {
+                    timer = setInterval(function() {
+                        window.scrollBy(0, 10);
+                    }, 100)
+                    key = false;
+                }
+            }
+            stop.onclick = function() {
+                clearInterval(timer);
+            }
+        
+        </script>
+
+</body>
+</html>
+
+
+//***********************************************************************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        div{
+            width: 10em;
+        }
+        div::after{
+            content: "";
+            width: 10px;
+            height: 10px;
+            background-color: green;
+            display: inline-block;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div style="float: left; height: 100px; background-color: red;"></div>
+
+    <script>
+
+        // 脚本化CSS
+
+        // 读写元素CSS属性
+        //     dom.style.prop
+        //        可读写行间样式 没有兼容性问题 碰到float这样的关键字属性前面应该加css
+        //        eg: float --> cssFloat
+        //     复合属性必须拆解 组合单词变成小驼峰式写法
+        //         写入的值必须是字符串格式
+
+        // dom是不能操作CSS但可以间接操作CSS
+        // 是对象就可以存储它的属性
+        // 改变行间样式间接改变CSS
+        // 遇到复合单词变小驼峰式的 碰到关键字
+        // 除了 .style再也没有任何方法能写入值了
+
+        // 查询计算样式
+        //     window.getComputedStyle(ele, null);   // 可获取不可写入  类数组
+        //     计算样式只读
+        //     返回的计算样式都是绝对值, 没有相对单位
+        //      IE8及IE8以下不兼容         
+
+        // 获取当前元素所展示一切的CSS的显示值
+        // 伪元素样式表可获取但写不进去
+
+        // 查询样式
+        //     ele.currentStyle
+        //     计算样式只读
+        //     返回的计算样式的值不是经过转换的绝对值
+        //     IE独有的属性
+        // 封装兼容性方法getStyle(obj, prop)
+        
+        // 获取的是原封不动的值 它获取的是这些元素最终展示出来的值 获取的是权重最高的属性
+
+        // function getStyle(elem, prop) {
+        //     if(window.getComputedStyle) {
+        //         return window.getComputedStyle(elem, null)[prop];
+        //     }else {
+        //         return elem.currentStyle[prop];
+        //     }
+        // }
+
+        // 把一个元素里的伪类元素宽度的值拿出来进行计算赋值到另一个元素里去
+        // 伪元素的display默认为inline
+        // 怎么改变伪元素
+        // 但凡是要改变状态 提前把状态预先编辑好 通过权重的覆盖    
+
+        // var div = document.getElementsByTagName('div')[0];
+        // console.log(window.getComputedStyle(div, 'after').width);
+    
+    </script>
+    
+</body>
+</html>
+//***************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .green::after{
+            content: "";
+            width: 50px;
+            height: 50px;
+            background-color: green;
+            display: inline-block;
+        }
+        .orange::after{
+            content: "";
+            width: 50px;
+            height: 50px;
+            background-color: orange;
+            display: inline-block;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div class="green" style="width: 100px; height: 100px; background-color: red"></div>
+
+    <script>
+
+        var div = document.getElementsByTagName('div')[0];
+        div.onclick = function() {
+            div.className = 'orange';  
+                                       // 1. 效率高(省效率)
+        }                              // 2. 好维护
+                                       // 普遍改变状态位的操作都是这么来改
+    
+    </script>
+    
+</body>
+</html>
+
+//**********************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        div{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+        .active{
+            width: 200px;
+            height: 200px;
+            background-color: orange;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div></div>
+
+    <script>
+
+        var div = document.getElementsByTagName('div')[0];
+        div.onclick = function() {
+            this.className = 'active';
+        }
+    
+    </script>
+    
+</body>
+</html>
+
+//************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        div{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div></div>
+
+    <script>
+
+        var div = document.getElementsByTagName('div')[0];
+        speed = 2;
+        function getStyle(elem, prop) {
+            if(window.getComputedStyle) {
+                return window.getComputedStyle(elem, null)[prop];
+            }else {
+                return window.currentStyle[prop];
+            }
+        }
+        var timer = setInterval(function() {
+            speed += speed/7;
+            div.style.left = parseInt(getStyle(div, 'left')) + speed + 'px';
+            if(parseInt(div.style.left) > 500) {
+                clearInterval(timer);
+            }
+        }, 100)  // 控制速度  一秒钟100帧
+
+        // 脚本化CSS
+        //     小练习
+        //        让方块运动
+
+        // 作业
+        //    轮播图
+        //     仿照优酷电影主页
+    
+    </script>
+
+</body>
+</html>

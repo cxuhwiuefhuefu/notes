@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        .wrapper{
+            width: 300px;
+            height: 300px;
+            background: red;
+        }
+        .content{
+            width: 200px;
+            height: 200px;
+            background: green;
+        }
+        .box{
+            width: 100px;
+            height: 100px;
+            background: orange;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="content">
+            <div class="box"></div>
+        </div>
+    </div>
+
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+    </ul>
+
+    <script>
+
+
+        // 事件1
+        //     1.何为事件
+        //     2.重要吗？ -- 交互体验的核心功能
+        //     3.演示demo -- 拖拽, 和点击
+
+        //     如何绑定事件
+        //     1.ele.onxxx = function() {};
+        //       兼容性很好,但是一个元素只能绑定一个处理程序
+        //       基本等同于写在HTML行间上
+        //     2.ele.addEventListener(type, fn, false);
+        //       IE9以下的不兼容,可以为一个事件绑定多个处理程序
+        //     3.ele.attachEvent('on' + type, fn);    
+        //       IE独有,一个事件同样可以绑定多个处理程序
+        //     小练习： 参见神马笔试题
+
+        // var div = document.getElementsByTagName('div')[0];
+        // div.onclick = function() {  // 兼容很好
+        //     console.log('b');       // 句柄式
+        // }
+        
+
+        // var div = document.getElementsByTagName('div')[0];
+        // div.addEventListener('click', test, false);
+        // div.addEventListener('click', test, false);
+        // function test() {
+        //     console.log('a');
+        // }
+        // 不能给同一函数绑定多次
+        // 事件有一个监听机制  监听就到执行队列 setInterval等待被执行
+        // var div = document.getElementsByTagName('div')[0];
+        // div.addEventListener('click', function() {
+        //     console.log('a');
+        // }, false);
+        // div.addEventListener('click', function() {
+        //     console.log('a');
+        // }, false);
+        
+        // div.attchEvent('onclick', function() {});
+
+
+
+
+        // 使用原生js,addEventListener,给每个li元素
+        // 绑定一个click事件,输出他们的顺序
+        // var liArr = document.getElementsByTagName('li');
+        // var len = liArr.length;
+        // for(var i = 0; i < len; i++) {   
+        //     (function (i) {
+        //         liArr[i].addEventListener('click', function () {
+        //             console.log(i);
+        //         }, false)
+        //     }(i))
+        // }
+        // 绑定事件处理函数中 注意会形成闭包  要是没用到i,可以不用考虑立即执行函数
+
+
+
+
+        // 事件1(2)
+        // 事件处理程序的运行环境
+        // 1.ele.onxxx = function() {}
+        //       程序this指向的是dom元素本身
+        // 2.obj.addEeventListener(type, fn, false);
+        //       程序this指向的是dom元素本身
+        // 3.obj.attachEvent('on' + type, fn);   // 后面传个false也可以
+        //        程序this指向的是window
+        // 封装兼容性的addEvent(ele, type, handle);方法         
+
+        // var div = document.getElementsByTagName('div')[0];
+        // div.attachEvent('onclick', function() {
+        //     handle.call(div);
+        // });
+        // function handle() {
+        //     // this = div;
+        //     // 事件处理程序
+        // } 
+        
+
+        // var div = document.getElementsByTagName('div')[0];
+        // function addEvent(elem, type, handle) {
+        //     if(elem.addEventListener) {
+        //         elem.addEventListener(type, handle, false);
+        //     }else if(elem.attachEvent) {
+        //         elem.attachEvent('on' + type, function() {
+        //             handle.call(elem);
+        //         })
+        //     }else {
+        //         elem['on' + type] = handle;
+        //     }
+        // }
+        // var test = function() {
+        //     console.log('a');
+        // }
+        // addEvent(div, 'click', test);
+
+
+
+
+        // 解除事件处理程序
+        // ele.onclick = false/''/null;
+        // ele.removeEventListener(type, fn, false);
+        // ele.detachEvent('on' + type, fn);
+        // 注：若绑定匿名函数,则无法解除
+        // 事件绑定的是一个对象的特定事件类型的特定处理函数
+        // 解除也是对应的 
+
+
+        // var div = document.getElementsByTagName('div')[0];
+        // div.onclick = function() {
+        //     console.log('a');
+        //     this.onclick = null;
+        // }
+        // div.addEventListener('click', test, false);
+        // function test() {
+        //     console.log('a');
+        // }
+        // div.removeEventListener('click', test, false);
+
+
+
+
+        // 事件处理模型(事件处理方式) -- 事件冒泡/捕获  
+        //     事件冒泡：
+        //         结构上(非视觉上)嵌套关系的元素,会存在事件冒泡的功能,
+        //         即同一事件,自子元素冒泡向父元素(自底向上)
+        //     事件捕获：
+        //         结构上(非视觉上)嵌套关系的元素,会纯在事件捕获的
+        //         功能,即同一事件,自父元素捕获至子元素(事件源对象)(自顶向下)
+        //     触发顺序,先捕获,后冒泡
+        //     focus blur change submit reset select 等事件不冒泡
+        //     // 一个对象的一个事件类型上面绑定的一个处理函数只能遵循一个事件处理模型       
+
+
+        // 给一个对象的一个事件类型绑定两个处理函数
+        // var wrapper = document.getElementsByTagName('div')[0];
+        // var content = document.getElementsByTagName('div')[1];
+        // var box = document.getElementsByTagName('div')[2];
+        // wrapper.addEventListener('click', function() {
+        //     console.log('wrapperBubble');
+        // }, false);
+        // content.addEventListener('click', function() {
+        //     console.log('contentBubble');
+        // });
+        // box.addEventListener('click', function() {
+        //     console.log('boxBubble');
+        // }, false);
+        // wrapper.addEventListener('click', function() {
+        //     console.log('wrapper'); 
+        // }, true);
+        // content.addEventListener('click', function() {
+        //     console.log('content');
+        // }, true);
+        // box.addEventListener('click', function() {
+        //     console.log('box');
+        // }, true);
+        // wrapper 捕获事件执行
+        // content 捕获事件执行
+        // box     事件执行
+
+
+
+
+        // 取消冒泡事件和阻止默认事件
+        // 取消冒泡事件
+        //     W3C标准规定event.stopPropagation();当不支持IE9以下版本
+        //     IE独有的event.cancelBubble = true;
+        //     封装取消冒泡的函数stopBubble();
+        // 阻止默认事件
+        //     默认事件 -- 表单提交 a标签跳转 右键菜单等    
+        //     1.return false; 是以对象属性的方式注册的事件才生效 句柄式
+        //     2.event.preventDefault(); W3Cb标注,IE9以下不兼容
+        //     3.event.returnValue = false; 兼容IE
+        //     封装阻止默认事件的函数cancelHandler(event);
+
+
+        // var div = document.getElementsByTagName('div')[0];
+        // document.onclick = function() {
+        //     console.log('你闲的啊');
+        // }
+        // div.onclick = function(e) {
+        //     // console.log(e);
+        //     // e.stopPropagation();
+        //     // e.cancelBubble = true;
+        //     stopBubble(e);
+        //     this.style.backgroundColor = 'green';
+        // }
+        // function stopBubble(event) {
+        //     if(event.stopPropagation) {
+        //         event.stopPropagation();
+        //     }else{
+        //         event.cancelBubble = true;
+        //     }
+        // }
+        // 三目运算关注的返回结果
+
+
+        // document.oncontextmenu = function(e) {
+        //     // return false;
+        //     // e.preventDefault();
+        //     // e.returnValue = false;
+        //     cancelHandler(e);
+        // }
+        // function cancelHandler(event) {
+        //     if(event.preventDefault) {
+        //         event.preventDefault();
+        //     }else{
+        //         event.returnValue = false;
+        //     }
+        // }
+
+
+        // var a = document.getElementsByTagName('a')[0];
+        //     a.onclick = function(e) {
+        //     // return false;
+        //     // e.preventDefault();
+        //     e.returnValue = false;
+        // }
+        // 失去点击跳转和刷新的功能
+
+
+        // <a href="javascript:alter('a')">
+        // <a href="javascript:void(false)">
+        // 取消a标签的默认事件  相对于return false
+
+
+
+
+        // 事件对象
+        // event || window.event用于IE
+        // 事件源对象
+        // event.target 火狐独有的
+        // event.srcElement IE独有的
+        // 这两chrome都有
+        // 兼任性写法
+
+        // var wrapper = document.getElementsByClassName('wrapper')[0];
+        // var box = document.getElementsByClassName('box')[0];
+        // wrapper.onclick = function(e) {
+        //     var event = e || window.event;
+        //     var target = event.target || event.srcElement;
+        //     console.log(target);
+        // }
+
+
+
+
+        // 事件委托
+        //    利用事件冒泡和事件源对象进行处理
+        //    优点： 
+        //        1.性能  不需要循环所有的元素,一个个绑定
+        //        2.灵活   当有新的子元素时不需要重新绑定事件
+
+        // 点哪个输出li的内容  给300个li绑定事件  打印出里面的内容
+        // var ul = document.getElementsByTagName('ul')[0];
+        // ul.onclick = function(e) {
+        //     var event = e || window.event;
+        //     var target = event.target || event.srcElement;
+        //     console.log(target.innerText);
+        // }
+
+    </script>
+</body>
+</html>

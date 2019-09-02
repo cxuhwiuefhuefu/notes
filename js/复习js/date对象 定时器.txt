@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div>
+        <div></div>
+        <b></b>
+        <span></span>
+    </div>
+    
+    <script>
+
+        // date对象 定时器
+
+        Element.prototype.insertAfter = function(targetNode, afterNode) {
+            var beforeNode = afterNode.nextElementSibling;
+            if(beforeNode == null) {
+                this.appendChild(targetNode);
+            }else {
+                this.insertBefore(targetNode, afterNode);
+            }
+        }
+        var div = document.getElementsByTagName('div')[0];
+        var b = document.getElementsByTagName('b')[0];
+        var span = document.getElementsByTagName('span')[0];
+
+        // 在原型链上编程的好处
+        //     1. this可以指代任何一个你想要的对象 如果你不用this用function封装的话 这个this要变成参数传进来才行 
+        //        这样的话this不用变成参数 因为它是第一人称代词 不管谁来调用还是代表你
+        //     2. 可以实现继承 下面的都可以用
+    
+    </script>
+    
+</body>
+</html>
+
+//********************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div>
+        <a></a>
+        <em></em>
+    </div>
+    
+    <script>
+
+       // 怎么实现剪切???
+       //     appendChild 顺序
+       //     写个for循环
+
+       Element.prototype.reverse = function() {
+           var child = this.children,
+               len = child.length;
+            for(var i = 0; i < len - 1; i++) {
+                this.appendChild(child[i]);
+            }
+       }
+       var div = document.getElementsByTagName('div')[0];
+    
+    </script>
+    
+</body>
+</html>
+//**************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div></div>
+    
+    <script>
+
+       // Date()                返回当日的日期和对象
+       // getDate()             从Date对象返回一个月中的某一天(1~31)
+       // getDay()              从Date对象返回一周中的某一天(0~6)
+       // getMonth()            从Date对象返回月份(0~11)
+       // getFullYear()         从Date对象以四位数字返回年份
+       // getHours()            返回Date对象的小时(0~23)
+       // getMinutes()          返回Date对象的分钟(0~59)
+       // getSeconds()          返回Date对象的毫秒(0~999)
+       // getMilliseconds()     返回Date对象的微秒(0~999)
+       // getTime()             返回1970年1月1日至今的毫秒数
+       // getTimezoneOffset()   返回本地时间与格林威治标准时间(GMT)的分钟差
+       //
+       // setDate()           设置Date对象中月的某一天(1~31)
+       // setMonth()          设置Date对象中月份(0~11)
+       // setFullYear()       设置Date对象中的年份(四位数字)
+       // setHours()          设置Date对象中的小时(0~23)
+       // setMinutes()        设置Date对象中的分钟(0~59)
+       // setSeconds()        设置Date对象中的秒钟(0~59)
+       // setMilliseconds()   设置Date对象中的毫秒(0~999)
+       // setTime()           以毫秒设置Date对象
+
+       // 日期对象Date()
+       // 封装函数 打印当前是何年何月何日何时 几分几秒
+
+       function printTime() {
+           var str = '';
+           setInterval(function() {
+               var date = new Date();
+               var year = date.getFullYear(),
+                   month = date.getMonth(),
+                   day = date.getDate(),
+                   hour = date.getHours(),
+                   minute = date.getMinutes(),
+                   second = date.getSeconds();
+               str = year + '年'+  month + '月'+ day + '日'+ hour + '时' + minute + '分'+ second + '秒';     
+               console.log(str);
+           }, 1000)
+       }
+       printTime();
+      
+
+       // 日期对象是系统提供好的 对象是构造函数去建立的
+       // var date = new Date();
+       // API: 文档
+       // 这个date对象记录了它出生那一刻的年月日时分秒 你但凡访问那一刻永远不会改变 它不是实时的
+       //     不是我们这边的时间动它那边也动 它不动的 它起到时刻记录的作用 我们都是基于这个对象来
+       //     访问它那一刻的年月日时分秒
+       // 这个getTime能帮我们求出时间差
+       // 纪元时间 1970.1.1
+       // 为什么现在的计算机 手机...的时间都是统一的???
+       //     我们本地的时间会向一个服务器基站发送一个请求 向服务器基站去获取统一电脑的那个时间
+       //         计算机自己是不会查数的 它不知道今天是多少时间 它能感受时间的变化 它始终知道我现在的时间距离纪元时间有多少毫秒
+       //         根据这个毫秒数来计算我现在距离纪元时间有多少年 多少月 多少日...然后换算成你看得懂的时间
+       //         来告诉你今年是2018年  它通过动态的计算来返回给我们时间 我们所有的分支向主机发送信号来获取
+       //         它的时间 我们保持时间的统一 这是计算机帮我们计算的 是通过这种机制计算的 这是它的运营机制
+       
+       // var firstTime = new Date();
+       // for(var i = 0; i < 100000000; i++) {}
+       // var lastTime = new Date();
+       // console.log(lastTime - firstTime);
+     
+       // 1. 通过程序执行的方式验证一段代码执行了多长时间
+       // 2. 能验证程序执行效率的问题
+       // 3. 测一下头尾的差 看看运行花了多少秒 这在实战开发中非常重要 我们优化 优化的是时间 
+       //    就是你通过优化的代码让程序执行的效率更高 路径最短来达到最省时间的作用
+       // 4. 时间戳  我们管这个getTime叫做获取时间戳 比如时间轨道 我们挑出一个点 拿个戳做个印记 这个印记就记录了这个时刻
+       //    记录这时刻的方式叫时间戳 因为时间戳作为唯一标识来使 传递数据怎么保证这次传递的数据和下次传递的数据不引发缓存机制
+       //    那我们这次和下次传的东西一样 但是时间戳点不一样 加个时间戳导致这两次东西不一样了
+       
+       // 定时抢购  倒计时秒杀 秒杀闹铃
+       // var date = new Date();
+       // date.setMinutes(26);
+       // setInterval(function() {
+       //     if(new Date().getTime() - date.getTime() > 1000) {
+       //         console.log('a');
+       //     }
+       // }, 1000)
+
+       // *********************************************************************************************
+
+       // js定时器
+       //   setInterval();
+       //   setTimeout();
+       //   clearInterval();
+       //   clearTimeout();
+       //   全局对象window上的方法 内部函数this指向window
+       //   注意: setInterval('func()', 1000)
+
+       // setInterval("console.log('a')", 1000);
+       
+       // time不能覆盖前面的
+       // time只识别一次 后面改成啥也没有用
+       // var time = 1000;
+       // setInterval(function() {
+       //     console.log('a');
+       // }, time)
+       // time = 9000;
+
+       // 查数
+       // var i = 0;
+       // setInterval(function() {
+       //     console.log(i);
+       //     i++;
+       // }, 1000)
+
+       // setInterval() 通过反复的执行 有时间间隔的执行可实现很多状态的连续改变
+
+       // 记录时间到底准不准确   不准时
+       // js引擎后面有个执行队列 它会把任务按照时间片去分解 把很多任务的片段排列好 然后去往执行队列里放
+       //    队列依次往马达里去输送 那个马达是单线程的 这个依次往里送才能执行任务 setInterval这个东西
+       //    只能是间隔1000毫秒把它放到队列后面 具体什么时候执行它也没有办法保证 从这个方面出发它是不准确的
+       // var firstTime = new Date().getTime();
+       // setInterval(function() {
+       //     var lastTime = new Date().getTime();
+       //     console.log(lastTime - firstTime);
+       //     firstTime = lastTime;
+       // }, 1000)
+
+       // 一直跑 消耗性能
+       // var i = 0; 
+       // var timer = setInterval(function() {
+       //     console.log(i++);
+       //     if(i > 10) {
+       //         clearInterval(timer);
+       //     }
+       // })
+
+       // 每个setInterval()都会返回一个数字作为它唯一的标识 有了这个唯一标识之后按照这个唯一标识就可以把它清除掉
+       // 定时器分为两种 setInterval顶多叫定时循环器 
+       //     setTimeout叫定时器 隔一段时间再执行一个事 起推迟的作用 而不是循环执行
+       
+       // var timer = setTimeout(function() {
+       //     console.log('a');
+       // }, 1000)
+
+       // setInterval setTimeout另一种形式来展示
+       // setInterval("console.log('a')", 1000)
+       //    把字符串当代码来执行
+
+    </script>
+    
+</body>
+</html>
+
+
+//*********************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        input{
+            border: 1px solid #000;
+            font-size: 20px;
+            text-align: right;
+            font-weight: bold;
+        }   
+    
+    </style>
+</head>
+<body>
+
+    minutes: <input type="text" value="0">
+    seconds: <input type="text" value="0">
+
+    <script>
+        // 把这些标签/元素叫做dom结构 因为它可以被dom所操控
+        var minutesNode = document.getElementsByTagName('input')[0];
+        var secondsNode = document.getElementsByTagName('input')[1];
+        var minutes = 0,
+            seconds = 0;
+        var timer = setInterval(function() {
+            seconds ++;
+            if(seconds == 60) {
+                seconds = 0;
+                minutes ++;
+            }
+            secondsNode.value = seconds;
+            minutesNode.value = minutes;
+            if(minutes == 3) {
+                clearInterval(timer);
+            }
+        }, 1000)    
+    
+    </script>
+    
+</body>
+</html>

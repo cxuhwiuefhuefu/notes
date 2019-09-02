@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 继承模式 命名空间 对象枚举
+        // 继承发展史
+        // 1.传统形式 -- 原型链
+        //       过多的继承了没用的属性
+        // 2.借用构造函数
+        //       不能继承借用构造函数的原型
+        //       每次构造函数都要多走一个函数
+        // 3.共享原型
+        //       不能随便改动自己的原型
+        // 4.圣杯模式
+
+        // 是函数都有prototype,只不过构造函数有特殊的表示
+        // 原型只是继承的一个方法
+
+        // Grand.prototype.lastName = 'JI';
+        // function Grand() {}
+        // var grand = new Grand();
+        // Father.prototype = grand;
+        // function Father () {
+        //     this.name = 'hehe';
+        // }
+        // var father = new Father();
+        // Son.prototype = father;
+        // function Son() {}
+        // var son = new Son();
+        // 缺点: 过多的继承没有用的属性
+
+        // function Person(name, age, sex) {
+        //     this.name = name;
+        //     this.age = age;
+        //     this.sex = sex;
+        // }
+        // function Student(name, age, sex, grade) {
+        //     Person.call(this, name, age, sex);
+        //     this.grade = grade;
+        // }
+        // var student = new Student('dg', 40, 'male', 18);
+        // 必须new才有意义
+        // 你的需求必须囊括它的需求
+        // 执行两个方法,从视觉上节省,实际浪费了
+
+        // Father.prototype.lastName = 'Deng';
+        // function Father() {}
+        // function Son() {}
+        // Son.prototype = Father.prototype;
+        // var son = new Son();
+        // var father = new Father();
+
+        // 抽象出一部分功能封装成函数
+        // 函数代表功能
+        // 函数代表功能的复用
+        // 哪块能复用,哪块能定义化的就是通过参数来决定
+        // inherit: 在css中,但凡是文字类属性包含文字类颜色 color font-size font-weight line-height, 有一个传递的特性,如果子元素没有设置文字类属性,就会默认继承父元素的文字类属性
+        // Father.prototype.lastName = 'Deng';
+        // function Father() {}
+        // function Son() {}
+        // function inherit(Target, Origin) {
+        //     Target.prototype = Origin.prototype;
+        // }
+        // inherit(Son, Father);
+        // var son = new Son();
+        // var father = new Father();
+
+        // 圣杯模式
+        // function inherit(Target, Origin) {
+        //     function F() {}
+        //     F.prototype = Origin.prototype;
+        //     Target.prototype = new F();
+        //     Target.prototype.constructor = Target;
+        //     Target.prototype.uber = Origin.prototype;
+        // }
+        // Father.prototype.lastName = 'Deng';
+        // function Father() {}
+        // function Son() {}
+        // inherit(Son, Father);
+        // var father = new Father();
+        // var son = new Son();
+        // son.construtor 的指向翁乱 ？？？？？
+        // son.constructor --> Son.prototype.constructor
+        // Son.prototype = new F();
+        // F.prototype = Father.prototype
+        // Father.prototype.constructor = Father;
+        // new 返回是一个对象
+
+        // 闭包的私有化
+        // function Deng(name, wife) {
+        //     var prepareWife = 'xiaozhang';
+        //     this.name = name;
+        //     this.wife = wife;
+        //     this.divorce = function() {
+        //         this.wife = prepareWife;
+        //     }
+        //     this.changePrepareWife = function(target) {
+        //         prepareWife = target;
+        //     }
+        //     this.sayPrepareWife = function() {
+        //         console.log(prepareWife);
+        //     }
+        // }
+        // var deng = new Deng('deng', 'xiaoliu');
+
+        // YUI3库
+        // 形成闭包
+        // 形成私有化变量
+        // F是来过渡一下的,没有什么实际的用途,无关的 隐式的 附加的东西就 放到私有化变量
+        // var inherit = (function() {
+        //     function F() {}
+        //     return function(Target, Origin) {
+        //         F.prototype = Origin.prototype;
+        //         Target.prototype = new F();
+        //         Target.prototype.construtor = Target;
+        //         Target.prototype.uber = Origin.prototype;
+        //     }
+        // }())
+        // Father.prototype.lastName = 'Deng'; 
+        // function Father() {}
+        // function Son() {};
+        // inherit(Son, Father);
+        // var father = new Father();
+        // var son = new Son();
+        
+
+        // *********************************************************************************************
+        
+        // 命名空间
+        //     管理变量,防止污染全局,适用于模块化开发
+
+        // var org = {
+        //     department1: {
+        //         jicheng: {
+        //             name: 'abc',
+        //             age: 123
+        //         },
+        //         xuming: {
+        //             //
+        //         }
+        //     },
+        //     department2: {
+        //         zhangsan: {
+        //             //
+        //         },
+        //         lisi: {
+        //             // 
+        //         }
+        //     }
+        // }
+        // 1.org.department1.jicheng.name
+        // 2.var jicheng = org.department1.jicheng;
+        //   jicheng.name      
+
+        // 现在解决用webpack glub
+        
+        // 闭包的模块化开发 防止污染全局变量  立即执行函数
+        // 变量私有化
+        // 返回一个函数作为中转启动
+        // var name = 'bcd';
+        // var init = (function() {
+        //     var name = 'abc';
+        //     function callName() {
+        //         console.log(name);
+        //     }
+        //     return function() {
+        //         callName();
+        //     }
+        // }())
+        // var initDeng = (function() {
+        //     var name = 123;
+        //     function callName() {
+        //         console.log(name)
+        //     }
+        //     return function() {
+        //         callName();
+        //     }
+        // }())
+        // init();
+        // initDeng();
+
+        // 思考问题
+        // 如何实现链式调用模式(模仿jQuery)
+        // var deng = {
+        //     smoke: function() {
+        //         console.log('Smoking, ....Xuan cool!');
+        //         return this;
+        //     },
+        //     drink: function() {
+        //         console.log('drink,....ye cool!!');
+        //         return this;
+        //     },
+        //     perm: function() {
+        //         console.log('perming, ...,cool!!');
+        //         return this;
+        //     }
+        // }
+        // deng.smoke().drink().perm().smoke().perm();
+
+        // 属性表示方法
+        // obj.prop
+        // obj['prop']
+
+        // var obj = {
+        //     name: "abc"
+        // }
+        // // obj.name 隐式转化--》 obj['name'](运行最快 更灵活)
+
+        // var deng = {
+        //     wife1: {name: 'xiaoliu'},
+        //     wife2: {name: 'xiaozhang'},
+        //     wife3: {name: 'xiaowang'},
+        //     wife4: {name: "xiaoweng"},
+        //     sayWife: function(num) {
+        //         return this['wife' + num];
+        //     }
+        // }
+        // console.log(deng.sayWife(1));
+
+        // 对象的枚举/遍历
+        // 1.for in
+        // 2.hasOwnProperty
+        // 3.in
+        // 4.instanceof
+
+        // for in循环只有一个目的的： 遍历对象用的,通过对象的属性的个数来控制循环的圈 数的
+        // 遍历属性
+        // 每次循环把属性名放在prop
+        // 后端传数据想知道的它的值
+        // 但凡自己手动设置的都可以打印,写在Object.prototype也可以打印
+        // for in循环则可以返回原型/原型链上的东西,但是原型链延展到Object.prototype的自有属性上不会打印
+        // var obj = {
+        //     name: '123',
+        //     sex: 'male',
+        //     height: 180,
+        //     weight: 75,
+        //     __proto__: {
+        //         lastName: 'deng'
+        //     }
+        // }
+        // Object.prototype.age = 18;
+        // for(var prop in obj) {
+        //     console.log(prop + ' ' + typeof prop);
+        //     console.log(obj.prop);  // 隐式类型转化
+        //     console.log(obj[prop]);  // 遍历属性值
+        // }
+        // for(var prop in obj) {
+        //     if(obj.hasOwnProperty(prop)) {  // 如果是自身的属性和方法就返回true,否则返回false
+        //         console.log(obj[prop]);
+        //     }
+        // }
+        
+        // 'height' in obj  //  属性名必须是字符串   能访问的到
+        
+        // function Person() {}
+        // var person = new Person();
+        // A对象 是不是 B构造函数出来的  --》 官方说法
+        //
+        // 看A对象的原型链 有没有 B的原型
+        // A instanceof B
+
+       // 区分方法(区别数组和对象)
+        // 1. [].constructor
+        //    var obj = {};
+        //    obj.constructor
+        // 2. [] instanceof Array
+        //    var obj = {}
+        //    obj instanceof Array;
+        // 3. Object.prototype.toString.call([]);
+        //    Object.prototype.toString.call(123);
+        //    Object.prototype.toString.call({});
+        //    Object.prototype.toString = function() {
+        //        // 1. 识别this  谁调用的this就指向谁
+        //        // 2. 返回相应的结果
+        //    }      
+        //    obj.toString();
+ 
+
+    </script>
+</body>
+</html>

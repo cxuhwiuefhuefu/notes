@@ -1,0 +1,44 @@
+ var str = 'nngbbc';
+     function one(str) {
+         var len = str.length;
+         var count = 0;
+         for(var i = 0; i < len; i ++) {
+           for(var j = 0; j < len; j ++) {
+               if(str[i] ===  str[j]) {
+                   count ++;
+               }
+           }
+           if(count == 1) {
+               return str[i];
+           }else{
+               count = 0;
+           }
+         }    
+     }
+
+
+// function Time() {
+// var date = new Date(),
+// time = '';
+// time += date.toLocaleDateString();
+// time += ' ' + date.toLocaleTimeString(); 
+// return time;
+// }
+
+
+var div = document.getElementsByTagName('div')[0];
+Element.prototype.luanxu = function() {
+var child = this.children,
+len = child.length;
+for(var i = len - 2; i >= 0 ; i --) {
+this.appendChild(child[i])
+}
+return child;
+}
+
+'abcdefacdef'.replace(
+????/(.)(?!.*\1).*/g,
+????function?(match, $1) {
+????????console.log('result:'?+ $1);
+????}
+);

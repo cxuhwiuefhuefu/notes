@@ -1,0 +1,31 @@
+// use test;
+// select * from stu;
+// 删除的sql语句格式
+//
+// 清空表
+// delete from 表名; // 这会给整个表进行清空的操作
+//
+// 一般我们去删除的时候 不会把整张表进行清空 我们可能会有一些可筛选性的删除 那就是我想删除表中的那一条记录
+// 删除哪几条记录
+// delect from 表名 where 条件表达式;  条件表达式其实就是一个比较的过程 等于大于                          
+//       where:是我们的一个关键字 代表的我们一个过滤操作 在今后的查询当中会经常用到 where代表条件的筛选 后面可以写上对应的条件
+//       delete from book where num = 1;
+//       select * from book;
+//
+//
+// 修改表中的记录
+// update 表名 set 字段名=新的字段值, .... where 条件表达式;
+// update book set price = 777;  // 当我们修改之后会有四条记录被影响 它和我们清空表是一模一样的 因为你没有做任何的筛选
+                                 //     它会对你表中的所有记录起到作用
+// select * from book;
+//
+// 如果现在我想将某一条记录进行修改 比如把num值为3的值进行修改 对单一的记录进行修改
+//     update book set price = 888 where name = 'cmh';
+//     select * from book;
+//
+// 当我们修改的过程中我们经常会说 我可能不仅仅要修改你对应的性别 我可能还要修改你对应的姓名 这个时候我们进行一个修改 两个字段值进行修改怎么修改呢
+//     update book set price = 666, num = 0 where name = 'cmh';
+//     select * from book;
+//
+// 当你想修改一条记录多个字段的时候你可以用逗号分割进行一个修改的操作
+

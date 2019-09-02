@@ -1,0 +1,455 @@
+(1)加速运动
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    div{
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100px;
+        height: 100px;
+        background-color: orange;
+    }
+    </style>
+</head>
+<body>
+    <div></div>
+    <script>
+        var oDiv = document.getElementsByTagName('div')[0];
+        oDiv.onclick = function() {
+            startMove(this);
+        }
+        function startMove(obj) {
+            clearInterval(obj.timer);
+            var iSpeed = 40;
+            var a = -3;
+            obj.timer = setInterval(function() {
+                iSpeed = iSpeed + a;
+                obj.style.left = obj.offsetLeft + iSpeed + 'px';
+            }, 30)
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+(2)弹性运动
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    div{
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100px;
+        height: 100px;
+        background-color: orange;
+        border-radius: 50%;
+    }
+    span{
+        position:absolute;
+        left: 300px;
+        top: 0px;
+        width: 1px;
+        height: 100px;
+        background-color: #ccc;
+    }
+    </style>
+</head>
+<body>
+    <div></div>
+    <span></span>
+    <script>
+    var oDiv = document.getElementsByTagName('div')[0];
+    oDiv.onclick = function() {
+        startMove(this);
+    }
+    function startMove(obj) {
+        clearInterval(obj.timer);
+        var iSpeed = 40, a, u = 0.8;
+        obj.timer = setInterval(function() {
+            a = (300 - obj.offsetLeft) / 8;
+            iSpeed = iSpeed + a;
+            iSpeed = iSpeed * u;
+            console.log(iSpeed);
+            if(Math.abs(iSpeed) < 1 && Math.abs(target - obj.offsetLeft) < 1) {
+                clearInterval(obj.timer);
+            }else{
+                obj.style.left = obj.offsetLeft + iSpeed + 'px';
+            }
+       }, 30)
+    }
+    
+    </script>
+    
+</body>
+</html>
+
+
+
+
+(3)导航栏
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+            list-style: none;
+        }
+   ul{
+       position: relative;
+       width: 600px;
+       height: 80px;
+       margin: 100px auto;
+   }
+   ul li.nav{
+       width: 148px;
+       height: 78px;
+       border: 1px solid #000;
+       color: #f00;
+       text-align: center;
+       line-height: 78px;
+       float: left;
+   }
+   ul li.bg{
+       position: absolute;
+       width: 150px;
+       height: 80px;
+       background-color: #f40;
+       opacity: 0.5;
+   }
+    </style>
+</head>
+<body>
+   <ul>
+       <li class="nav">ES6</li>
+       <li class="nav">Webpack</li>
+       <li class="nav">Vue</li>
+       <li class="nav">Node</li>
+       <li class="bg"></li>
+   </ul>
+    <script>
+   var oLiArray = Array.prototype.slice.call(document.getElementsByClassName('nav'), 0);
+   var oBg = document.getElementsByClassName('bg')[0];
+   oLiArray.forEach(function(ele, index) {
+       ele.onclick = function() {
+           var newLeft = this.offsetLeft;
+           startMove(oBg, newLeft);
+       }
+   })
+    function startMove(obj, target) {
+        clearInterval(obj.timer);
+        var iSpeed = 40, a, u = 0.8;
+        obj.timer = setInterval(function() {
+            a = (target - obj.offsetLeft) / 8;
+            iSpeed = iSpeed + a;
+            iSpeed = iSpeed * u;
+            console.log(iSpeed);
+            if(Math.abs(iSpeed) <= 1 && Math.abs(target - obj.offsetLeft) <= 1) {
+                clearInterval(obj.timer);
+                obj.style.left = target + 'px';
+            }else{
+                obj.style.left = obj.offsetLeft + iSpeed + 'px';
+            }
+       }, 30)
+    }
+    
+    </script>
+    
+</body>
+</html>
+
+
+
+
+
+(4)碰撞运动
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        div{
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+   
+   <div></div>
+    <script>
+      var oDiv = document.getElementsByTagName('div')[0];
+      oDiv.onclick = function() {
+          startMove(this);
+      }
+      function startMove(obj) {
+          clearInterval(obj.timer);
+          var iSpeedX = 6;
+          var iSpeedY = 8; 
+          obj.timer = setInterval(function() {
+              var newLeft = obj.offsetLeft + iSpeedX;
+              var newTop = obj.offsetTop + iSpeedY;
+              if(newTop >= document.documentElement.clientHeight - obj.offsetHeight) {
+                  iSpeedY *= -1;
+                  newTop = document.documentElement.clientHeight - obj.offsetHeight; 
+              }
+              if(newTop <= 0) {
+                  iSpeedY *= -1;
+              }
+              if(newLeft >= document.documentElement.clientWidth- obj.offsetWidth) {
+                  iSpeedX *= -1;
+                  newLeft = document.documentElement.clientWidth - obj.offsetWidth;
+              }
+              if(newLeft <= 0) {
+                  iSpeedX *= -1;
+              }
+              obj.style.left = newLeft + 'px';
+              obj.style.top = newTop + 'px';
+          }, 30)
+      }
+    </script>
+</body>
+</html>
+
+
+(5)模拟重力场
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        div{
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+   
+   <div></div>
+    <script>
+      var oDiv = document.getElementsByTagName('div')[0];
+      oDiv.onclick = function() {
+          startMove(this);
+      }
+      function startMove(obj) {
+          clearInterval(obj.timer);
+          var iSpeedX = 100;
+          var iSpeedY = 180 
+          var g = 6;
+          obj.timer = setInterval(function() {
+              iSpeedY += g;
+              var newLeft = obj.offsetLeft + iSpeedX;
+              var newTop = obj.offsetTop + iSpeedY;
+              if(newTop >= document.documentElement.clientHeight - obj.offsetHeight) {
+                  iSpeedY *= -1;
+                  iSpeedY *= 0.8;
+                  iSpeedX *=  0.8;
+                  console.log(iSpeedX, iSpeedY);
+                  newTop = document.documentElement.clientHeight - obj.offsetHeight; 
+              }
+              if(newTop <= 0) {
+                  iSpeedY *= -1;
+                  iSpeedY *= 0.8;
+                  iSpeedX *= 0.8;
+                  newTop = 0;
+              }
+              if(newLeft >= document.documentElement.clientWidth- obj.offsetWidth) {
+                  iSpeedX *= -1;
+                  iSpeedY *= 0.8;
+                  iSpeedX *= 0.8;
+                  newLeft = document.documentElement.clientWidth - obj.offsetWidth;
+              }
+              if(newLeft <= 0) {
+                  iSpeedX *= -1;
+                  iSpeedY *= 0.8;
+                  iSpeedX *= 0.8;
+                  newLeft = 0;
+              }
+              obj.style.left = newLeft + 'px';
+              obj.style.top = newTop + 'px';
+          }, 30)
+      }
+    </script>
+</body>
+</html>
+
+
+(6)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+       div{
+           position: absolute;
+           left: 0px;
+           top: 0px;
+           width: 100px;
+           height: 100px;
+           background-color: orange;
+       }
+       span{
+           position: absolute;
+           width: 5px;
+           height: 5px;
+           background-color: #000;
+       }
+    </style>
+</head>
+<body>
+  <div></div>
+    <script>
+
+  var oDiv = document.getElementsByTagName('div')[0];
+  var lastX = oDiv.offsetLeft;
+  var lastY = oDiv.offsetTop;
+  oDiv.onmousedown = function(e) {
+      clearInterval(this.timer);
+      var event = e || window.event;
+      var disX = e.pageX - this.offsetLeft;
+      var disY = e.pageY - this.offsetTop;
+      var that = this;
+      var iSpeedX = 0;
+      var iSpeedY = 0;
+
+      document.onmousemove = function(e) {
+          var newLeft = e.clientX - disX;
+          var newTop = e.clientY - disY;
+          var oSpan = document.createElement('span');
+        //   oSpan.style.left = newLeft + 'px';
+        //   oSpan .style.top = newTop + 'px';
+        //   document.body.appendChild(oSpan);
+        iSpeedX = newLeft - lastX;
+        iSpeedY = newTop - lastY;
+        lastX = newLeft;
+        lastY = newTop;
+
+          that.style.left = newLeft + 'px';
+          that.style.top = newTop + 'px';
+      }
+      document.onmouseup = function() {
+          document.onmousemove = null;
+          document.onmousedown = null;
+          startMove(that, iSpeedX, iSpeedY);
+
+      }
+  }
+    function startMove(obj, iSpeedX, iSpeedY) {
+        clearInterval(obj.timer);
+        // var iSpeedX = 6000;
+        // var iSpeedY = 8;
+        var g = 6;
+        obj.timer = setInterval(function() {
+            iSpeedY += g;
+           var newLeft = obj.offsetLeft + iSpeedX;
+           var newTop = obj.offsetTop + iSpeedY;
+
+          if(newTop >= document.documentElement.clientHeight - obj.offsetHeight) {
+              iSpeedY *= -1;
+              iSpeedY *= 0.8;
+              iSpeedX *= 0.8;
+              newTop = document.documentElement.clientHeight - obj.offsetHeight;
+          } 
+          if(newTop <= 0) {
+              iSpeedY *= -1;
+              iSpeedY *= 0.8;
+              iSpeedX *= 0.8;
+              newTop = 0;
+          }
+          if(newLeft > document.documentElement.clientWidth - obj.offsetWidth) {
+              iSpeedX *= -1;
+              iSpeedY *= 0.8;
+              iSpeedX *= 0.8;
+              newLeft = document.documentElement.clientWidth - obj.offsetWidth;
+          }
+          if(newLeft <= 0) {
+              iSpeedX *= -1;
+              iSpeedY *= 0.8;
+              iSpeedX *= 0.8;
+              newLeft = 0;
+          }
+          if(Math.abs(iSpeedX) < 1) {
+              iSpeedX = 0;
+          }
+          if(Math.abs(iSpeedY) < 1) {
+              iSpeedY = 0;
+          }
+          if(iSpeedX == 0 && iSpeedY == 0 && newTop == document.documentElement.clientHeight - obj.offsetHeight) {
+              clearInterval(obj.timer);
+              console.log('over');
+          }
+           
+           obj.style.left = newLeft + 'px';
+           obj.style.top = newTop + 'px';
+
+       }, 30)
+    }
+    
+    </script>
+    
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

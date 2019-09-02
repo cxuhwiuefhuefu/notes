@@ -1,0 +1,216 @@
+(1)forEach
+      // forEach  循环遍历数组 不改变原数组  改变不了数组的遍历(return/break不好使)
+
+      var personArr = [
+          {name: '王港', src: './img/3.png', des: '颈椎不好', sex: 'm'},
+          {name: '刘莹', src: './img/5.png', des: '我是谁', sex: 'f'},
+          {name: '王秀莹', src: './img/4.png', des: '我很好看', sex: 'f'},
+          {name: '刘金累', src: './img/1.png', des: '你没见过陌生的脸', sex: 'm'},
+          {name: '刘飞翔', src: './img/2.png', des: '瓜皮刘', sex: 'm'}
+      ];
+     
+    //  Array.prototype.myForEach= function(func) {
+          
+    //       for(var i = 0; i < this.length; i ++) {
+    //           func(this[i], i)
+    //       }
+    //   }
+    //   var newArr = personArr.myForEach(function(ele, index) {
+    //       console.log(ele);
+    //   })
+    //   console.log(newArr);  // undefined
+
+    personArr.forEach(function(ele, index) {
+        if(ele.name == 刘金雷) {
+            break; // return
+        }
+        console.log(index;)
+    })
+
+
+
+
+(2)filter
+      //  filter筛选数组 筛选出新的数组  筛选的值由return来决定 会放在一个新的数组中返回
+      Array.prototype.myFilter = function(func) {
+          var arr = [];
+          for(var i = 0;i < this.length; i ++) {
+              if(func(this[i], i)) {
+                  arr.push(this[i]);   // 从后往前面塞
+              }
+          }
+          return arr
+      }
+
+      var newArr = personArr.filter(function(ele, index) {   // 第一位为数组的每一个 第二位为索引值 命名语义化
+        //   if(ele.sex == 'f') {
+        //       return true;
+        //   }else{
+        //       return false;
+        //   }
+        if(index % 2 == 0) {
+            return true;
+        }else{
+            return false;
+        }
+          
+         // return null;  // 隐式类型转换
+      })
+     
+      
+
+
+(3)map
+
+       // 区别：  filter要的是ele    map要的是return出来的结果
+      var personArr = [
+          {name: '王港', src: './img/3.png', des: '颈椎不好', sex: 'm'},
+          {name: '刘莹', src: './img/5.png', des: '我是谁', sex: 'f'},
+          {name: '王秀莹', src: './img/4.png', des: '我很好看', sex: 'f'},
+          {name: '刘金累', src: './img/1.png', des: '你没见过陌生的脸', sex: 'm'},
+          {name: '刘飞翔', src: './img/2.png', des: '瓜皮刘', sex: 'm'}
+      ];
+
+      // map 处理return出来的值,把值放在一个新的数组      默认返回undefined  浅拷贝   不改变原数组
+      Array.prototype.myMap = function(func) {
+          var arr = [];
+          for(var i = 0; i < this.length; i ++) {
+              arr.push(func(this[i], i))
+          }
+          return arr;
+      }
+      var newArr = personArr.myMap(function(ele, index) {
+          // return 'anmee';
+          if(ele.sex == 'm') {
+              ele.gF = true;
+              return ele;
+          }else{
+               ele.bF = true;
+              return ele;
+          }
+      })
+
+(4)深度map
+
+
+    Array.prototype.myMap = function(func) {
+        var arr = [];
+        for(var i = 0; i < this.length; i ++) {
+            if(this[i] && typeof this[i] == 'object') {
+                var newObj = {};
+                deepClone(newObj, this[i]);
+                arr.push(func(newObj, i));
+            }else{
+                arr.push(func(this[i], i));
+            }
+        }
+        return arr;
+    }
+
+       function deepClone(target, option) {
+           if(option != null) {
+            //   var prop, src, copy;
+               for(var prop in option) {
+                   var src = target[prop];
+                   var copy = option[prop];
+                   if(copy && typeof copy == 'object') {
+                       if(Object.prototype.toString.call(copy) == '[object Array]') {
+                           src = [];
+                       }else{
+                           src = {};
+                       }
+                       target[prop] = deepClone(src, copy);
+                   }else{
+                       target[prop] = copy;
+                   }          
+               }
+           }
+           return target;
+       }
+       deepClone(obj1, obj2)
+       var obj1 = {};
+       var obj2 = {
+           name: 'aimee',
+           techang: {
+               sing: 'good',
+               dance: 'well'
+           }
+       }
+       deepClone(obj1, obj2);
+       obj2.name = 'cg';
+       console.log(obj1);
+   
+
+
+
+
+(5)
+  Array.prototype.myReduce = function(func, init) {
+            var previous = init, k = 0;       // 单独一个字母的   一般充当索引值/标记     
+            if(init === undefined) {
+                previous = this[0];
+                k = 1;
+            }
+            for(k; k < this.length; k++) {
+                previous = func(previous, this[k], k);
+            }
+            return previous;
+        } 
+  
+        // reduce 迭代数组 从左向右 累加器(效率高)
+        var arr = [1, 2, 3, 4, 5];
+        var value = arr.myReduce(function(preValue, ele, index) {
+
+            // console.log(preValue);  // preValue 表示上一次return出来的值
+            // return index;
+            return preValue + ele;
+       
+        })
+
+     
+        // 1  2  3
+        // 3  3  6
+        // 6  4  10
+        // 10 5  15
+
+         // reduceRight  从右向左
+         var arr = [1, 2, 3, 4, 5];
+         arr.reduceRight(function(preValue, ele, index) {
+             console.log(index);
+             return 'aimee';
+         })  
+         // 源码类似 reduce
+         
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

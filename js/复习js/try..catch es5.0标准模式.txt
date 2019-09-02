@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        // try..catch es5标准模式 dom
+        
+        // try{}catch(e)finally
+        // Error.name的六种值对应的信息
+        //       1. EvalError: eval()的使用与自定义不同
+        //       2. RangeError: 数值越界
+        //       3. ReferenceError: 非法或不能识别的引用数值(一个变量没有经声明就使用)
+        //       4. SyntaxError: 发生语法解析错误(低级错误)
+        //       5. TypeError: 操作数类型错误
+        //       6. URLRrror: URL处理函数使用不当
+
+        // 在try里面的发生错误 不会执行错误后的try里面的代码
+        // catch的作用是把错误信息捕捉
+        // 如果try里面的代码不发生错误 catch里面的代码不会去执行的
+        // try{ //  防止我们报错的
+        //     console.log('a');
+        //     console.log(b);    // 到b停止不看try后面的代码
+        //     console.log(c);
+        // }catch(e) {
+        //     console.log(e.name + ":" + e.message);  // 错误信息只有两种
+        // }
+        // console.log('d');
+
+        // 什么错误类型?????
+        // var str = abcd;
+
+        // es5严格模式
+        //    "use strict"
+        //           不再兼容es3的一些不规则语法 使用全新的es5规范两种用法
+        //                全局严格模式
+        //                局部函数内严格模式(推荐)
+        //           就是一行字符串 不会对不兼容严格模式的浏览器产生影响 不支持with arguments.callee
+        //               func.caller 变量赋值前必须声明 局部的this必须被赋值(Person.call(null undefined)
+        //               赋值什么就是什么 拒绝重复属性和参数
+
+        // 现在的浏览器是基于的es3.0的 + es5.0的新增方法使用的
+        // es3.0和es5.0产生冲突的部分 就用es3.0
+        // es5.0严格模式 那么es3.0和es5.0产生冲突的部分 就是用es5.0否则使用es3.0
+        // "use strict"在整个页面的最顶端  页面逻辑的最顶端
+        // 写在全局会影响其他的代码 因为要和别人的代码拼接 最好写在局部里面
+
+        // function demo() {
+        //     console.log(arguments.callee);
+        // }
+        // demo();
+        // function test() {
+        //     "use strict"
+        //     console.log(arguments.callee);
+        // }
+        // test();
+
+        // "use strict"为什么要写个字符串？？
+        //      因为不一定放在新版本的浏览器 就算识别不了也不报错 有个向后兼容的作用 老版本浏览器保证你不出错
+        //          新版本的浏览器保证你能识别
+ 
+        // 1. with改变作用域链 obj.AO --> test.AO --> GO
+        // 2. 简化代码
+        // with里面添加个对象 把这个对象当作with要执行的代码体的作用域链的最顶端 
+        //     也就是会改变作用域链  充当这个代码最直接的AO
+        // 缺点: 改变作用域链 系统内核会消耗大量的效率去更改这个作用域链 会把程序变得非常慢
+        // var obj = {
+        //     name: 'obj',
+        //     age: 234
+        // }
+        // var name = 'window';
+        // function test() {   
+        //     var age = 123;
+        //     var name = 'scope';
+        //     with(obj) {
+        //         console.log(name);
+        //         console.log(age);
+        //     }
+        // }
+        // test();
+
+        // document上有很多属性和方法
+        // with(document) {
+        //     write('a');
+        // }
+
+        // document: {
+        //     write: function() {},
+        //     ........
+        // }
+
+        // 真正命名空间的用法   with简化代码
+        // es5.0为了提高效率 所以不用with方法
+        
+        // var org = {
+        //     dp1: {
+        //         jc: {
+        //             name: 'abc',
+        //             age: 123
+        //         },
+        //         deng: {
+        //             name: 'xiaodeng',
+        //             age: 234
+        //         }
+        //     },
+        //     dp2: {
+
+        //     }
+        // }
+        // with(org.dp1.jc) {
+        //     console.log(name)
+        // }
+        // with(org.dp1.deng) {
+        //     console.log(name);
+        // }
+
+        // "use strict"
+        // function test() {
+        //     console.log(test.caller);
+        // }
+        // function demo() {
+        //     test();
+        // }
+        // demo();
+        // var a = b = 12;
+
+        // "use strict"
+        // function Test() {
+        //     console.log(this);
+        // }
+        // Test();
+        // new Test();   // Test{}:   Test(constructor的名)
+        // Test.call({});
+        // Test.call(123); // 如果是es3.0的话 会包装成对象(传原始值)
+        // console.log(this);
+
+        // 为什么要有这个es5.0严格模式???
+        // 它的确把代码使用的灵活度给你缩减了 但是它却让你代码的犯错率更少了 因为原本越松散 你报错的概率越大
+        //     严格模式的确是有利于我们编程的 但是也禁止了许多强大的功能
+
+        // 重复属性名不报错 可能以后会报错  访问obj.name会覆盖前面的
+        // "use strict"
+        // var obj = {
+        //     name: '123',
+        //     name: '234'
+        // }
+
+        // 重复的参数在es5.0严格模式里会报错
+        // "use strict"
+        // function test(name, name) {
+        //     console.log(name);
+        // }
+        // test(1, 2);
+
+        // "use strict"
+        // // es3.0 都不能使用eval(); eval是魔鬼  (能改变作用域)
+        // var a = 123;
+        // eval('console.log(a)');  // 能把字符串当代码来执行
+
+        //*****************************************************************************************************************************
+
+        // 什么是DOM
+        // 1. DOM --> Document Object Model
+        // 2. DOM定义了表示和修改文档所需要的方法。 DOM对象即为宿主对象， 由浏览器厂商定义 用来操作html和xml
+        //       功能的一类对象的集合。 也有人称DOM是对HTML以及XML的标准编程接口。
+
+        // XML是HTML的最早期版本  xml --> xhtml --> html
+        // xml和html的不同    基本一致 但xml里面的标签是可以自定义的 html用的是别人的
+        // DOM不能改变CSS 指的是不能改变CSS样式表 但是可以通过HTML的行间样式来间接的改变它
+      
+        // 最开始最开始的数据库的基本格式是基于XML
+        // 现在XML慢慢被json取代了 现在传输的格式是json 以前的是XML
+
+    </script>
+
+</body>
+</html>
+
+//********************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div></div>
+
+    <script>
+        var div = document.getElementsByTagName('div')[0];
+        div.style.width = '100px';
+        div.style.height = '100px';
+        div.style.backgroundColor = 'red';
+        // div.onclick = function() {
+        //     this.style.backgroundColor = 'green';
+        //     this.style.width = '200px';
+        //     this.style.height = '200px';
+        //     this.style.borderRadius = '50%';
+        // }
+
+        var count = 0;
+        div.onclick = function () {
+            count ++;
+            if(count % 2 == 0) {
+                this.style.backgroundColor = 'green';
+            } else {
+                this.style.backgroundColor = 'red';
+            }
+        }
+
+    </script>
+
+</body>
+</html>
+
+//***********************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .content{
+            display: none;
+            width: 200px;
+            height: 200px;
+            border: 2px solid red;
+        }
+        div button.active{
+            background: #FFFF00;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <button class="active">111</button>
+        <button>222</button>
+        <button>333</button>
+        <div class="content" style="display: block;">111</div>
+        <div class="content">222</div>
+        <div class="content">333</div>
+    </div>
+
+    <script>
+
+        var btn = document.getElementsByTagName('button');
+        var div = document.getElementsByClassName('content');
+        for (var i = 0; i < btn.length; i++) {
+                (function (n) {
+                    btn[n].onclick = function () {
+                        for (var j = 0; j < btn.length; j++) {
+                            btn[j].className = '';
+                            div[j].style.display = 'none';
+                        }
+                        this.className = 'active';
+                        div[n].style.display = 'block';
+                    }
+                }(i))
+            }
+
+    </script>
+
+</body>
+</html>
+
+//**************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        var div = document.createElement('div');
+        document.body.appendChild(div);
+        div.style.width = '100px';
+        div.style.height = '100px';
+        div.style.backgroundColor = 'red';
+        div.style.position = 'absolute';
+        div.style.left = 0;
+        div.style.top = 0;
+        var speed = 1;
+        var timer = setInterval(function() {
+            speed += speed/ 20;
+            div.style.left = parseInt(div.style.left) + speed + 'px';
+            div.style.top = parseInt(div.style.top) + speed + 'px';
+            if(parseInt(div.style.top) > 200 && parseInt(div.style.left) > 200) {
+                clearInterval(timer);
+            }
+        })
+    
+    </script>
+
+</body>
+</html>
+
+//*******************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .wrapper{
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+        }
+        li{
+            float: left;
+            width: 10px;
+            height: 10px;
+            box-sizing: border-box;
+            border: 1px solid #000;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <ul class="wrapper">
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+        <li img-data="0"></li>
+    </ul>
+
+    <script>
+
+        var oUl = document.getElementsByTagName('ul')[0];
+        oUl.onmouseover = function(e) {
+            var event = e || window.event;
+            var target = event.target || event.srcElement;
+            target.style.backgroundColor = 'rgb(255, 255, '+ parseInt(target.getAttribute('img-data')) +')';
+            target.setAttribute('img-data', parseInt(target.getAttribute('img-data')) + 3);
+        }
+        
+    </script>
+
+</body>
+</html>

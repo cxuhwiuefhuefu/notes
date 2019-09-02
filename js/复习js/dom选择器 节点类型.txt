@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div>
+        <strong></strong>
+    </div>
+    <div>
+        <span>
+            <strong class="demo"></strong>
+        </span>
+    </div>
+    
+    <script>
+
+        // DOM基本操作
+
+        // 1. 对节点的增删改查
+        //    查
+        //      查看节点
+        //          document代表整个文档
+        //          document.getElementById() // 元素id在IE8以下的浏览器 不区分id大小写 而且也返回匹配name属性的元素
+        //          document.getElementsByTagName() // 标签名
+        //          getElementsByName() // IE不支持需注意 只有部分标签name生效 (表单 表单元素 img iframe)   name: 数据名
+        //          getElementByClassName() // 类名 -> IE8和IE8以下的IE版本没有 多个class一起
+        //          querySelector() // css选择器 在IE7和IE7以下的版本中没有
+        //          querySelector() // css选择器 在IE7和IE7以下的版本中没有 
+
+        // html是文档里的根标签 html标签基本代表整个文档
+        // id一般作为顶级框架的名称而存在 不作为选择器而存在
+        // 一切系统给我们生成成组的方式 基本全是类数组
+        // id既不能写多个也别太依赖它
+        // 在CSS中能用class不用id id作为模块的总称
+        // id作为后端PHP或者后端jsp抽取的接口根据你id把section抽取掉 然后把你id名换成它想要的
+        // 一般公司上线的时间是周三或周四 上线时间一般后端数据先上线 前端展示层上线 然后拼到一起
+        // 反着布局 淘宝把主体信息放在最前面为的是如果网速不通畅的话 没有CSS的情况下先把主体的信息优先展示
+        //      中 --> 右 --> 左    商业逻辑 + 编程逻辑
+        
+        var strong = document.querySelector('div > span strong.demo');
+        var strong1 = document.querySelectorAll('div > span strong.demo');
+    
+    </script>
+
+</body>
+</html>
+
+//*************************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div></div>
+    <div class="demo"></div>
+    <div></div>
+
+    <script>
+
+        // 实时性
+        // var div = document.getElementsByTagName('div');
+        // var demo = document.getElementsByClassName('demo')[0];
+        // var newDiv = document.createElement('div');
+        // document.body.appendChild(newDiv);
+
+        // 不及时性
+        // var div = document.querySelectorAll('div');
+        // var newDiv = document.createElement('div');
+        // document.body.appendChild(newDiv);
+
+        // 因为它不是实时的 它在用法上极其的受局限 除非极特殊的情况 要选它的副本保存出来 否则我们不用
+
+    </script>
+
+</body>
+</html>
+
+//******************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="demo" id="only"></div>
+    
+    <script>
+
+        // 遍历节点树 --- 基于树形结构
+        //     parentNode --> 父节点 (最顶端的parentNode为#document)
+        //     childNodes --> 子节点们 (直系)
+        //     firstChild --> 第一个子节点
+        //     lastChild --> 最后一个子节点
+        //     nextSibling --> 后一个兄弟节点     previousSibling --> 前一个兄弟节点
+        // 基于元素节点数的遍历  (document不叫一个元素节点 自成一个节点 这就是parentElement和parentNode的区别)
+        // parentElement --> 返回当前元素的父节点(IE不兼容)
+        // children --> 只返回当前元素的元素子节点
+        // node.childElementCount === node.children.length 当前元素节点的子节点个数(IE不兼容)
+        // firstElementChild --> 返回的是第一个元素节点(IE不兼容)
+        // lastElementChild --> 返回的是最后一个元素节点(IE不兼容)
+        // nextElementSibling/previousElementSibling --> 返回后一个/前一个兄弟元素节点(IE不兼容)  (IE9以下不兼容)
+
+        // 节点的类型
+        //     元素节点 -- 1
+        //     属性节点 -- 2
+        //     文本节点 -- 3
+        //     注释节点 -- 8
+        //     document -- 9
+        //     DocumentFragment -- 11
+
+        // 节点的四个属性
+        //     nodeName (元素的标签名 以大写形式表示只读)
+        //     nodeValue (Text节点或Comment节点的文本内容 可读写)
+        //     nodeType (该节点的类型 只读)
+        //     attributes (Element节点的属性集合) (属性名不可写 属性值可以改)
+
+        // var div = document.getElementsByTagName('div')[0];
+        // div.attributes[0].value = 'demo1';
+
+        // 节点的一个方法 Node.hasChildNodes();   (判断是否有节点) (返回为Boolean值)
+
+        // 模写页面 淘宝 新浪微博
+    
+    </script>
+
+</body>
+</html>
+
+//***************************************************************************************************
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div>
+        <em></em>
+        <span></span>
+        <strong></strong>
+    </div>
+
+    <div class="demo" id="only"></div>
+
+    <script>
+
+        // var div = document.getElementsByTagName('div')[0];
+        // function reElementChild(node) {
+        //     var temp = {
+        //         length: 0,
+        //         push: Array.prototype.push,
+        //         splice: Array.prototype.splice
+        //     },
+        //     child = node.childNodes,
+        //     length = child.length;
+        //     for(var i = 0; i < length; i++) {
+        //         if(child[i].nodeType === 1) {
+        //             temp.push(child[i]);
+        //         }
+        //     }
+        //     return temp;
+        // }
+
+        // var div = document.getElementsByClassName('demo')[0];   
+        // console.log(div.attributes);
+        // console.log(div.attributes[0]);
+
+        // 初级: 实现功能
+        // 高级: 优化效率
+        // (框架师)再高级: 优化整组的效率
+
+        // 框架师: 怎么分化/分解你这个框架 让每个人协调配合的流程更快 更省时间
+        //         更好维护 更好拆解
+    
+    </script>
+
+</body>
+</html>

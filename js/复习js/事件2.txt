@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  
+</head>
+<body>
+  <script>
+    
+    var div = document.getElementsByTagName('div');
+    console.log(div);
+    </script>
+
+<div style="width: 100px; height: 100px; background: red; position: absolute;
+           right: 0; top: 100px;"></div>
+
+
+
+  <script>
+    // 事件2
+    //    鼠标事件
+    //    click mousedown mousemove mouseup contextmenu
+    //    mouseover mouseout mouseenter mouseleave
+    //    用button来区分鼠标的按键 0/1/2
+    //    DOM3标准规定： click事件只能监听左键,只能通过mousedown和
+    //                  mouseup来判断鼠标键
+    //    如何解决mouedown和click的冲突
+
+    // var div = document.getElementsByTagName('div')[0];
+    // div.onmousedown = function(e) {
+    //   var disX = e.pageX - parseInt(this.style.left);
+    //   var disY = e.pageY - parseInt(this.style.top);
+    //   document.onmousemove = function(e) {
+    //     div.style.left = e.pageX - disX + 'px';
+    //     div.style.top = e.pageY - disY + 'px';
+    //   }
+    //   div.onmouseup = function() {
+    //     document.onmousemove = null;
+    //   }
+    // }
+    // // onclick = onmousedown + onmouseup
+
+    // 事件捕获的其他形式： div.setCapture();   div.releaseCapture();  --> 用于拖拽(IE独有的)  鼠标容易出的麻烦事
+    // div会捕获页面上所有发生的事件硬捕获到自己身上来
+    // hover是拿js写的,它是直接调用引擎的 --> 快
+    // 右键是不能触发click事件的
+    
+    // document.onmousedown = function(e) {
+    //   if(e.button == 0) {
+    //     console.log('left');
+    //   }else if(e.button == 1) {
+    //     console.log('middium');
+    //   }else {
+    //     console.log('right');
+    //   }
+    // }
+    
+    // 事件练习
+    //     拖拽应用
+    //     应用mousedown mousemovw mouseup
+    //     随机运动的方块
+
+    // var firstTime = 0;
+    // var lastTime = 0;
+    // var lock = false;
+    // document.onmousedown = function() {
+    //   firstTime = new Date().getTime();
+    // }
+    // document.onmouseup = function() {
+    //     lastTime = new Date().getTime();
+    //     if(lastTime - firstTime < 300) {
+    //       lock = true;
+    //     }
+    //   }
+    // document.onclick = function() {
+    //   if(lock) {
+    //     lock = false;
+    //     console.log('click');
+    //   }
+    // }
+
+    // var div = document.getElementsByTagName('div')[0];
+    // var speedX = 100;
+    // var speedY = 100;
+    // div.onmouseover = function() {
+    //   var direction = Math.random();
+    //   if(direction > 0.5) {
+    //     speedY *= -1;
+    //     this.style.top = parseInt(this.style.top) + speedY + 'px';
+    //   }else {
+    //     speedX *= -1;
+    //     this.style.left = parseInt(this.style.left) + speedX + 'px';
+    //   }
+    // }
+    
+    // 事件分类
+    //     键盘事件
+    //     keydown keypress keyup
+    //     keydown > keypress > keyup
+    //     keydown和keypress的区别
+    //            keydown可以响应任意键盘按键,keypress只可以
+    //                   响应字符类按键
+    //            keypress返回ASCII码,可以转化为相应字符      
+    //            // 一个有charCode,一个没有  
+    //            // keydown监听字符类按键不准  大小写   
+
+    // document.onkeypress = function(e) {
+    //   console.log(String.fromCharCode(e.charCode));
+    // }
+
+    // 文本操作事件
+    // input focus blur change
+    // input: 里面的文本有变化都会触发input事件
+    // change: 对比的是鼠标聚焦和失去焦点的状态是否发生改变
+
+    // var input = document.getElementsByTagName('input')[0];
+    // input.onchange  = function() {
+    //   console.log(this.value);
+    // }
+
+    // 窗体操作类(window上的事件)
+    // scroll load
+    // 小练习： fixed定位兼容版
+    // // position是相对文档定位的  IE6没有fixed定位
+
+    // window.onscroll = function(e) {
+    //   console.log(pageXOffset + ' ' + pageYOffset);
+    // }
+
+    // var div = document.getElementsByTagName('div')[0];
+    // var offsetTop = parseInt(div.style.top);
+    // window.onscroll = function() {
+    //   div.style.top = pageYOffset + offsetTop + 'px';
+    // } 
+
+    //   var div = document.getElementsByTagName('div')[0];
+    //   console.log(div);
+    //   div.style.left = '100px';
+    //   div.style.top = '100px';
+    //   div.style.backgroundColor = 'red';
+    // }
+    // // window的onloaded可以提醒你什么时候是整个页面运行的时刻
+    // // 设计广告
+    // //                        document
+    // //                         html
+    // //                      haed     body
+    // // javascript写在下面的好处： 刚解析完就操作
+
+    // 作业
+    // 1.完善轮播图,加按钮
+    // 2.提取密码框的密码
+    // 3.输入框功能完善
+    // 4.贪吃蛇游戏
+    // 5.扫雷游戏
+
+    </script>
+   
+</body>
+</html>
+
+
+

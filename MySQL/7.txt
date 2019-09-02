@@ -1,0 +1,97 @@
+// mysql约束 
+//    不允许去做某些事情
+// 
+// 在mysql中存在哪些约束
+//     唯一约束 也就是在mysql里边你对我当前表中的某一个字段加了唯一约束之后 这个表中这个对应的字段不可以出现重复
+//          use test;
+//          create table stu(num int, name varchar(11));    
+//          insert into stu values(1, 'tom');
+//          select * from stu;
+//          insert into stu values(1, 'tom');
+//          select * from stu;
+//          delete from stu where name = 'tom';
+//          select * from stu;
+//          把num值做好对应的约束 如果出现重复的num值 你不允许我插入 你做好这样对应的约束 在我插入的过程它不让我做对应的插入操作或给对应的提示 
+//               保证我在插入的过程中num值不重复 这样我就可以使用唯一约束 我所有的约束在创建表的时候就把这个约束给它加上去 如何加这个约束呢
+//          drop table stu;
+//          create table stu(num int unique, name varchar(11)); // 给其中某个字段加上唯一约束 以保证我这个表里头有一个对应的字段 
+                                                                //     可以明确的确定到这条记录到底是谁 它可以保证我数据的完整性和正确性  
+//          desc stu; // 之前Key字段是空空如也 当加上唯一字段之后 你会发现在我num这个key里头出现UNI(unique的缩写)
+                      //     也就是说我这张表里头已经存在一个num字段唯一不可重
+//          insert into stu values(1, 'tom');
+//          insert into stu values(1, 'tom');   // 1062 - Duplicate entry '1' for key 'num'
+//          insert into stu values(2, 'tom');
+//          select * from stu;
+//          不想插入对应的num 只想插入对应的name
+//          insert into stu values(null, 'tom');
+//          select * from stu;
+//          insert into stu values(null, 'tom'); // 你发现同样也插入进去了 null:代表了空 我们这两个空就没有对唯一约束起到对应的作用 
+                                                 //     也就是唯一约束为什么对这两个空没有起到作用 在这里 任何一个null都不等于另一个null 
+                                                 //     在这个时候 我们有两个对应的空 对于我们整张表的数据操作来讲的话也是不方便的 
+                                                 //     比如我们想删除其中某一个tom/其中某一个为空的 我们发现两个tom没办法进行一个删除的操作
+                                                 //     没办法进行删除操作的时候 我们希望你可以唯一并且你的这个位置能不能不为空
+//          select * from stu;
+//      非空约束: 我的这个字段不允许你插入一个空值进来
+//          drop table stu;
+//          create table stu(num int not null, name varchar(11));
+//          insert into stu values(null, 'tom'); // 1048 - Column 'num' cannot be null
+//          可不可以在同一个字段加多个约束 这是没有任何问题的 在num即加唯一又加非空
+//          drop table stu;
+//          create table stu(num int unique not null, name varchar(11));
+//          注意 同时加多个约束的时候跟我们去创建表字段不同的一点是不需要逗号
+//          insert into stu values(1, 'tom');
+//          insert into stu values(1, 'tom');
+//          insert into stu values(null, 'tom');    
+//          desc stu;
+//      非空约束和唯一约束的一个组合称之为主键约束 也就是在我们MySQL里边任何的约束存在一个对应的约束 这个约束叫做主键约束 它是非空和唯一的组合
+//          我们可以用主键约束来代替我们前面的组合方式 如何去创建对应的主键约束     
+//          drop table stu;    
+//          create table stu(num int primary key, name varchar(11)); // 和非空唯一的表结构一样
+//          desc stu;
+//          insert into stu values(1, 'tom');
+//          insert into stu values(1, 'tom');
+//          insert into stu values(null, 'tom');
+//          如何避免表中已经存在的主键 主键有MySQL去帮你生成 生成的后面是自动增长 如何让MySQL帮我生成自动增长呢 
+//             一般数字类型主键配合MySQL的自动增长策略 MySQL这个自动增长是一个策略 并不是一个约束
+//          drop table stu;
+//          create table stu(num int primary key auto_increment, name varchar(11));
+//          insert into stu(name) values('tom'); // 插入成功意味着自动增长策略已经起到了作用
+//          insert into stu(name) values('tom');
+//          select * from stu;      
+//          delete from stu where num = 2;
+//          select * from stu;
+//      外键约束 ----  班级号必须在班级表存在 存在才代表它是一个正确的数据
+//          学生表  班级号
+//          班级表
+//          drop table stu;
+//          create table class(num int, name varchar(11));
+//          create table stu(num int, name varchar(11), classnum int);
+//          desc stu;
+//          desc class;
+//          insert into class values(1, 'one');
+//          insert into stu values(1, 'tom', 1);
+//          insert into stu values(2, 'cat', 1);
+//          insert into stu values(3, 'juerry', 2);
+//          select * from stu;
+//          如何保证数据的准确性 要用到外界约束 约束什么 约束我这个字段里面的值必须是另外一张表存在的
+//          drop table stu; // 为什么把stu删掉 因为我约束的是stu这张表 所以要把stu删掉 给classnum这个字段加对应的约束
+//          create table stu(num int primary key auto_increment, name varchar(11), classnum int, foreign key(classnum) references class(num)); // 由于你外界约束涉及到另外的一张表
+//                                             并不能直接在我这个字段后直接去加 它加外界约束要和前面有一定的分别 单独加外界约束 怎么加呢
+//                                             你需要的是逗号要它们分割开 我需要把前面的东西创建出来 后面我要单独加外界约束 如何加外界约束
+//                                             refere: 你这个字段的值要参考那一张表那一个字段 后面跟的是表名 小括号里面是字段名字
+//         出错了 在MySQL当中 外界必须是另一张表的主键
+//         drop table class;
+//         create table class(num int primary key auto_increment, name varchar(11));
+//         create table stu(num int primary key auto_increment, name varchar(11), classnum int, foreign key(classnum) references class(num));
+//         insert into class values(null, 'tom'); // null不违反了非空原则吗 在这条我们要注意的是当你给它空的时候它同时又是自增长的时候
+                                                  //       它会按照自增长的策略去生成
+//         select * from class;
+//         insert into stu values(null, 'tom', 1);
+//         select * from stu;
+//         insert into stu values(null, 'tom', 2); // 你会发现报错了 报错的原因是因为有了外界约束 因为你class这张表中num的值只有1没有2 
+                                                   //     所以你在插入的过程当中我插入2出现问题了
+//         insert into class values(null, 'two');
+//         select * from class;
+//         insert into stu values(null, 'tom', 2); // 插入成功 因为我class这张表已经存在num为2对应的记录 存在着这个记录就可以插入班级号为2的学生
+                                                   //     我可以把对应的学生安排到2班 因为我2班存在了 这就是我们的外界约束 
+                                                   //     在数据库Oracle里边有个约束 叫做check 检查约束 在MySQL里检查约束不起任何作用的
