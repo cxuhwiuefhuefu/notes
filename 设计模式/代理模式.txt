@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        
+        div{
+            display: inline-block;
+            border: 1px solid black;
+        }
+        div img{
+            width: 100px;
+        }
+    
+    </style>
+</head>
+<body>
+    
+    <div id="demo"></div>
+    <button id="oBtn">login</button>
+
+    
+
+
+    <!-- <div>duyi</div>
+    <button>add color</button>
+    <button>add bg</button>
+    <button>add width</button>
+    <button>add height</button>
+    <button>add fontSize</button>
+    <button>add fontWeight</button> -->
+    <script>
+        
+
+        // 设计模式-代理模式
+        // 定义: 为一个对象提供一种代理以控制对这个对象的访问
+
+
+        // 登录点击 控制发送请求的对象对服务器的访问权限 或者让它按照一定的要求来访问
+
+
+        // 代理对象起到类似中介的作用 会增加一些功能(如 校验 合并等等) 也会去掉一些原有对象的功能
+
+
+
+        
+        // 代理分类:
+        // 虚拟代理: 虚拟代理是把一些开销很大的对象 延迟到真正需要它的时候才去创建执行
+        // 安全代理: 控制真实对象的访问权限
+        // 远程代理(一个对象将不同空间的对象进行局部代理)
+        // 智能代理(调用对象代理处理另外一些事情如垃圾回收机制增加额外的服务)
+
+        // 快递员
+        // 黄牛
+
+        // 虚拟代理 - 图片加载 文件上传
+        // 保护代理 - 登录操作后才能看全功能 前端校验
+        // 远程代理 - 监控多个对象的状态 总机控制分店
+        // 智能代理 - 提供额外的其他服务 火车站代售站
+
+
+
+
+        // 发布页面 必须
+
+
+
+        // 设计模式 - 代理模式 - 表单验证
+        // 保护代理就是起到保护作用 用来过滤掉一下不必要的请求 将真正需要的递给本体
+        // 譬如 验证用户名是否唯一
+        // 这里我们应用 保护代理的思想 如果用户名是不合法的 则不会将该请求给本体执行
+        // 发送Ajax请求
+        // 设计模式 - 代理模式分析
+        // 这样编写代码  的确能够完成业务的需求 能够完成表单的验证 但是存在很多问题
+        // 1. 绑定的函数比较庞大 包含了很多的if-else语句 看着都恶心 这些语句需要覆盖所有的校验规则
+        // 2. 绑定的函数缺乏弹性 如果增加了一种新的校验规则 或者想要把密码的长度校验从6改成8 我们都必须深入
+        // 3. 绑定的函数的内部实现 这是违反了开放-封闭原则
+        // 4. 算法的复用性 如果程序中增加了另一种表单 这个表单也需要进行一些类似的校验 那我们很可能将这些校验逻辑复制得漫天遍野 
+        // 设计模式 - 代理模式 - 反模式
+        // 不能滥用模式 有时候仅仅是给代码增加复杂度了
+
+
+
+
+        //-------------------
+
+
+
+
+        // var mrDeng = {
+        //     sendFlower: function(target) {
+        //         var flower = 'sunflower';
+
+        //         target.receiveFlower(flower);
+        //     }
+        // }
+
+        // var goddess = {
+        //     mood: null,
+        //     receiveFlower: function(flower) {
+        //         //
+        //         this.mood ? console.log('ok') : console.log('get out');
+        //     },
+        //     changeMood: function() {
+        //         this.mood = Math.random() > 0.5;
+        //         console.log(this.mood);
+        //     },
+        //     createMood: function() {
+        //         // 不断去改变自己的心情 使用随机数
+        //         var self = this;
+        //         setInterval(function() {
+        //             self.changeMood();
+        //         }, 400)
+        //     }
+        // };
+        // goddess.createMood();
+        // mrDeng.sendFlower(goddess);
+    
+    
+
+
+        // var mrDeng = {
+        //     sendFlower: function(target) {
+        //         var flower = 'sunflower';
+
+        //         target.receiveFlower(flower);
+        //     }
+        // }
+        // var cstProxy = {
+        //     proxyFlower: function(target) {
+        //         // mrDeng.sendFlower(target); 
+
+        //         this.listenMood(target, function() {
+        //             mrDeng.sendFlower(target);
+        //         })
+        //     },
+        //     // 揣摩心情
+        //     listenMood: function(target, cb) {
+        //         var timer = setInterval(function() {
+        //             if(target.mood) {
+        //                 cb();
+        //                 clearInterval(timer);
+        //             }
+        //         }, 300);
+        //     }
+        // }
+
+        // var goddess = {
+        //     mood: null,
+        //     receiveFlower: function(flower) {
+        //         //
+        //         this.mood ? console.log('ok') : console.log('get out');
+        //     },
+        //     changeMood: function() {
+        //         this.mood = Math.random() > 0.5;
+        //         // console.log(this.mood);
+        //     },
+        //     createMood: function() {
+        //         // 不断去改变自己的心情 使用随机数
+        //         var self = this;
+        //         setInterval(function() {
+        //             self.changeMood();
+        //         }, 400)
+        //     }
+        // };
+
+        // goddess.createMood();
+        // cstProxy.proxyFlower(goddess);
+        
+
+
+
+        // 图片懒加载 --- 短暂的占位图片
+
+        // 会缓存到本地 等图片加载成功再去加载原有的图片
+        // 请求过来 本地缓存 占位
+
+
+
+        // var MyImage = function(id) {
+        //     // this
+        //     var oImg = new Image();
+        //     this.setSrc = function(src) {
+        //         oImg.src = src;
+        //     }
+        //     document.getElementById(id).appendChild(oImg);
+        // }
+        // // var oMyImg = new MyImage('demo');
+        // // oMyImg.setSrc('./logo.jpg'); // 作为占位图片缓存到本地
+        
+        // // 假如请求高清壁纸图片
+
+        // var ProxyImage = (function() {
+        //     var oMyImg = new MyImage('demo');
+        //     oMyImg.setSrc();
+        
+        //     var oNewImage = new Image();
+        //     oNewImage.onload = function() {
+        //         oMyImg.setSrc(oNewImage.src);
+        //     }
+        //     return function(src) {
+        //         oMyImg.setSrc('./logo.jpg');
+        //         oNewImage.src = src;
+        //     }
+        // })();
+        // ProxyImage('data:image/jpeg;base64,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');
+    
+    
+    
+
+        // 虚拟代理   
+        // 保护代理
+        // 策略模式
+    
+
+    
+    </script>
+
+</body>
+</html>
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="demo"></div>
+    <script>
+        
+        // 前端最常用的是虚拟代理和保护代理
+
+        // 空白占位
+
+
+        function MyImage (_id) {
+            var oImg = document.createElement('img');
+            this.setSrc = function(_src) {
+                oImg.src = _src;
+            }
+
+            // 我们希望让这个图片在这个id下渲染 所以
+            document.getElementById(_id).appendChild(oImg);
+        }
+        new MyImage('demo').setSrc('https://pics1.baidu.com/feed/d50735fae6cd7b89f1bd2e153bd862a2db330e57.jpeg?token=2827e92c10c71a3dcf893b66e83a74cd&s=098A8E5D0363FB555C27287F0300904B');
+        // 通过new的方式往里传参数指定里面的图片加载去渲染 .src可以指定具体去加载哪一种图片
+    
+    
+    
+    </script>
+    
+</body>
+</html>
+
+
+// ------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="demo">
+        <img src="" alt="">
+    </div>
+    <button id="btn">click</button>
+
+    <script>
+        
+        // 1. 预加载 --》 https://pics1.baidu.com/feed/d50735fae6cd7b89f1bd2e153bd862a2db330e57.jpeg?token=2827e92c10c71a3dcf893b66e83a74cd&s=098A8E5D0363FB555C27287F0300904B
+        // 2. 懒加载 --》 监控你真正要展示的图片内容来是否有被加载成功
+        // 如果不这样做的话 网速不好的时候 去加载图片会一点一点的展示这个图片 这种情况下用户体验不是很好了
+        // 提供用户体验的同时 减少对性能的伤害
+
+
+        function MyImage (_id) {
+            var oImg = document.createElement('img');
+            this.setSrc = function(_src) { 
+                oImg.src = _src;
+            }
+
+            // 我们希望让这个图片在这个id下渲染 所以
+            document.getElementById(_id).appendChild(oImg);
+        }
+        
+        
+        // 虚拟代理  懒加载和预加载结合体
+        var ProxyImage = function(src) {
+            var oImg = new Image();
+            var oMyImage = new MyImage('demo');
+
+            // 预加载所展示的占位图片直接在这先展示一下
+            oMyImage.setSrc('https://pics1.baidu.com/feed/d50735fae6cd7b89f1bd2e153bd862a2db330e57.jpeg?token=2827e92c10c71a3dcf893b66e83a74cd&s=098A8E5D0363FB555C27287F0300904B');
+
+            oImg.onload = function() {
+                // oMyImage.setSrc(oImg.src);
+
+                // 网速不好的时候两秒才去切换
+                setTimeout(function() {
+                    oMyImage.setSrc(oImg.src);
+                }, 2000);
+            }
+
+            // 真正要展示的内容
+            oImg.src = src;
+        }
+        ProxyImage('https://www.baidu.com/img/bd_logo1.png?where=super');
+
+
+
+
+        var ProxyImage = (function(src) {
+            var oImg = new Image();
+            var oMyImage = new MyImage('demo');
+
+            // 预加载所展示的占位图片直接在这先展示一下
+            oMyImage.setSrc('https://pics1.baidu.com/feed/d50735fae6cd7b89f1bd2e153bd862a2db330e57.jpeg?token=2827e92c10c71a3dcf893b66e83a74cd&s=098A8E5D0363FB555C27287F0300904B');
+
+            oImg.onload = function() {
+                // oMyImage.setSrc(oImg.src);
+
+                // 网速不好的时候两秒才去切换
+                setTimeout(function() {
+                    oMyImage.setSrc(oImg.src);
+                }, 2000);
+            }
+
+            return function(occupySrc, src) {
+                // 真正要展示的内容
+                oImg.src = src;
+                oMyImage.setSrc(occupySrc);
+            }
+           
+        })();
+
+
+    
+    </script>
+    
+</body>
+</html>
+
+
+// -------------
+
+
+虚拟代理
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        
+        div{
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+        }
+    
+    </style>
+</head>
+<body>
+
+    <div id="show">duyi</div>
+    <button type="bg">add greenBg</button>
+    <button type="cl">add blueColor</button>
+    <button type="fs">add fontSize</button>
+    <button type="fw">add fontWeight</button>
+    <button type="op">add opacity</button>
+    <script>
+
+
+        // 虚拟代理        
+
+        // 通过代理的思想延迟到它真正去改变的时候才去改变
+        var oDiv = document.getElementById('show');
+        var oButtonArray = document.getElementsByTagName('button');
+
+        var ProxyRequest = function() {
+            var cache = [];
+            var timer = null;
+            return function() {
+                clearTimeout(timer);
+                timer = setTimeout(function() {
+                    // cache => changeStyle
+                    func(oDiv, cache);
+                    cache = [];
+                }, 2000)
+            }
+        }
+
+        var realChangeStyle = ProxyRequest(changeStyle);
+
+        for(var i = 0; i < oButtonArray.length; i++) {
+            oButtonArray[i].onclick = function() {
+                changeStyle(oDiv, this.getAttribute('type'));
+            }
+        }
+
+        // 文件上传 后台的处理代码
+        function changeStyle(dom, typeArr) {
+            // type => dom  style => value
+            var typeObj = {
+                bg: ['backgroundColor', 'green'],
+                cl: ['color', 'blue'],
+                fs: ['fontSize', '24px'],
+                fw: ['fontWeight', 'bold'],
+                op: ['opacity', '0.3']
+            }
+
+            if(typeArr.constructor == Array) {
+                typeArr.forEach(function(ele) {
+                    dom.style[typeObj[ele][0]] = typeObj[ele][1];
+                })
+            }else {
+                dom.style[typeObj[typeArr][0]] = typeObj[typeArr][1]; 
+            }
+            // dom.style[typeObj[typeArr][0]] = typeObj[typeArr][1]; 
+        }
+        changeStyle(oDiv, ['bg', 'op', 'fw']);
+
+
+    
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        
+        // 函数式编程之柯里化
+
+        // fix parmas
+        // function add(a, b, c, d) {
+        //     return a + b + c + d;
+        // }
+        // // add(1, 2, 3, 4);
+        // function fixedParmasCurry(fn) {
+        //     // [add, 1, 2]
+        //     var _arg = [].slice.call(arguments, 1);
+
+        //     return function() {
+        //         // arguments [2, 3]
+        //         // [1, 2, 2, 3]
+        //         var newArg = _arg.concat([].slice.call(arguments, 0));
+        //         return fn.apply(this, newArg);
+        //     }
+        // }
+        // var newAdd = fixedParmasCurry(add, 1, 2);
+        // console.log(newAdd(2, 3));
+            
+
+
+
+
+        // fixed Params fn
+        // look forward to Params 期望把参数凑齐
+        function add(a, b, c, d) {
+                return a + b + c + d;
+        }
+        function fixedParmasCurry(fn) {
+            // [add, 1, 2]
+            var _arg = [].slice.call(arguments, 1);
+
+            return function() {
+                // arguments [2, 3]
+                // [1, 2, 2, 3]
+                var newArg = _arg.concat([].slice.call(arguments, 0));
+                return fn.apply(this, newArg);
+            }
+        }
+        function Curry(fn, length) {
+            var length = length || fn.length; // 当前你传入的函数需要几个参数的
+            return function() {
+                if(arguments.length < length) {
+                    // [fn].concat([1]) [fn, 1]
+                    var combined = [fn].concat([].slice.call(arguments, 0));
+                    return Curry(fixedParmasCurry.apply(this, combined), length - arguments.length);
+                }else {
+                    return fn.apply(this, arguments);
+                }
+            }
+        }     
+        // 保证执行完参数达到四个就行
+        // 柯里化是期待你下次把参数凑齐
+        var newAdd = Curry(add);
+        console.log(newAdd(1, 2, 3, 4));
+        console.log(newAdd(1)(2)(3)(4));
+        
+        var nA1 = newAdd(1);
+        nA1(2)(3)(4);
+
+
+        function ajax(method, url, data) {
+            console.log(method, url, data);
+        }
+        var ajaxCurry = Curry(ajax);;
+        var postAjax = ajaxCurry('POST');
+        // postAjax('www.test1.com', 'name=hehe&code=111');
+        // postAjax('www.test2.com', 'name=hehe&code=222');
+
+        var postTest1Ajax = postAjax('www.test1.com');
+        postTest1Ajax('name=hehe&code11');
+        postTest1Ajax('key=11');
+    
+    
+    </script>
+
+</body>
+</html>

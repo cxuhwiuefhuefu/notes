@@ -1,0 +1,115 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+html, body{
+    width: 100%;
+    height: 100%;
+}
+body{
+    background: url(../img/bg.jpg) no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}
+/*
+   background-size
+   cover: 拓展图片来填满元素
+   contain: 缩小图片来适应元素的尺寸
+   百分比 相对于包含元素的尺寸
+*/
+
+
+@font-face{
+    font-family: 'myFirstFont';
+    src: url('../Bleeding_Cowboys.ttf');
+}
+/* 字体下载地址: https://www.w3cplus.com/content/css3-font-face  */
+.title{
+    margin: 50px auto;
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 40px;
+    overflow: hidden;
+    font-size: 20px;
+    font-style: italic; 
+    font-family: 'myFirstFont';
+    color: red;
+}
+
+
+@keyframes myMove{
+    from{
+        transform: rotateY(0deg);
+    }
+    to{
+        transform: rotateY(360deg);
+    }
+}
+.showPic{
+    margin: 100px auto;
+    width: 200px;
+    height: 200px;
+    perspective: 600px; /* 景深 */
+}
+ul{
+    position: relative;
+    animation: myMove 5s linear infinite alternate both;  
+    /*
+        animation-name: 指定要绑定到选择器的关键帧的名称 为@keyframes动画指定一个名称
+        animation-duration: 动画指定需要多少秒或毫秒完成 
+        animation-timing-function: 设置动画将如何完成一个周期
+            linear: 动画从头到尾的速度是相同的 
+            ease: 默认 动画以低速开始 然后加快 在结束前变慢 
+            ease-in: 动画以低速开始
+            ease-out: 动画以低速结束
+            ease-in-out: 动画以低速开始和结束
+            cubic-bezier: 在cubic-bezier函数中自己的值 可能的值是从0到1的数值
+        animation-delay: 设置动画在启动前的延迟间隔  
+        animation-iteration-count: 定义动画的播放次数   infinite
+        animation-direction: 指定是否应该轮流反向播放动画
+            normal: 默认值 动画按正常播放
+            reverse: 动画反向播放
+            alternate: 动画在奇数次正向播放 在偶数次反向播放
+            alternate-reverse: 动画在奇数次反向播放 在偶数次正向播放
+        animation-fill-mode: 指定当动画不播放时(当动画完成时 或当动画有一个延迟未开始播放时) 要应用到元素的样式  
+            none:   默认值 动画在动画执行之前和之后不会应用任何样式到目标元素
+            forwards: 动画结束后 元素的样式将设置为动画的最后一帧的样式
+            backwards: 动画开始时 元素的样式将设置为动画的第一帧的样式
+            both: 动画执行前是动画的第一帧的效果 动画执行后是动画的最后一帧的效果
+        animation-play-state: 指定动画是否正在运行或已暂停  paused: 指定暂停动画 running: 指定正在运行的动画
+    */ 
+    transform-style: preserve-3d; /* 设置3D环境 使用此属性必须先使用transform属性  设置2D: flat */
+}
+/*
+        transition
+            transition-property: 指定CSS属性的name, transition效果  none/all/property
+            transition-duration: transition效果需要指定多少秒或毫秒才能完成
+            transition-timing-function: 指定transition效果的转速曲线 linear/ease/ease-in/ease-out/ease-in-out
+            transition-delay: 指定秒/毫秒数之前要等待切换效果开始
+*/
+li{
+    position: absolute; 
+}
+img{
+    width: 100%;
+    height: 100%;
+}
+
+
+#text{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+    width: 800px;
+    height: 100px;
+}
+span{
+    font-size: 26px;
+    font-family: '华文楷体';
+    color: #1e74ca;
+}
+
+

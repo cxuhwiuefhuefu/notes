@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta nam e="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+     
+        // 观察者模式 也叫发布订阅模式
+        // 
+        // 关注公众号 订阅杂志
+        
+
+
+
+        // Event
+        // 1. Event事件模块 on绑定自定义事件的概念 emmit自动触发事件的功能 remove清除自定义事件的功能 once这个事件只能被触发一次
+        // 2. 也助于了解观察者模式        
+        // 3. 在node模块中经常会使用到fs http
+
+       function Event() {
+            // 存储不同的事件类型对应不同的处理函数 保证后续emmit可以执行
+            this.cache = {};
+        }
+        Event.prototype.on = function(type, handle) {
+            if(!this.cache[type]) {
+                this.cache[type] = [handle];
+            }else {
+                this.cache[type].push(handle);
+            }
+        }
+        Event.prototype.emmit = function() {
+            // 没有保证参数是多少个 就用arguments
+            var type = arguments[0];
+            var arg = [].slice.call(arguments, 1);  
+            for(var i = 0; i < this.cache[type].length; i++) {
+                this.cache[type][i].apply(this, arg);
+                
+            }
+        }
+        Event.prototype.empty = function(type) {
+            this.cache[type] = [];
+        }
+        Event.prototype.remove = function(type, handle) {
+            this.cache[type] = this.cache[type].filter(function(ele) {
+                return ele != handle;
+            })
+        }
+        Event.prototype.once = function(type, handle) {
+            if(!this.cache[type]) {
+                this.cache[type] = [];  
+            }
+            // 做标记
+            handle.tag = 'true';
+            this.cache[type].push(handle);
+        }
+        var oE = new Event();
+        function deal1(time) {
+            console.log('overtime1:' + time);
+        }
+        oE.on('over', deal1);
+        function deal2(time) {
+            console.log('overtime2:' + time);
+        }
+        oE.on('over', deal2);
+
+        oE.emmit('over', '2018-9-25');
+        oE.remove('over', deal2);
+        oE.emmit('over', 'seconde-1-1');
+        
+        // 匿名函数不好删除它
+
+
+        // C -> A
+        // C -> B
+        // 符合依赖导致原则相应的
+
+        // 双向数据绑定
+        
+
+    
+    </script>
+    
+</body>
+</html>

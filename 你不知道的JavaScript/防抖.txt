@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <input type="text" id="inp">
+    <script>
+        
+    
+        // 对DOM进行操作 或发送Ajax请求进行资源的加载 这样的操作很耗性能的 要知道我们的JS是主线程的 这个主线程是单线程的
+        //    里面有这个的机制叫做事件轮询机制 DOM操作会触发页面的重排
+
+
+        // 函数防抖就是在函数需要频繁触发情况时 只有足够空闲的时间 才执行一次 
+        //      好像公交司机会等人都上车后才出站一样 等一小段时间没人再上才走
+        
+
+        // 场景
+        //    实时搜索
+        //    拖拽
+
+
+        var oInp = document.getElementById('inp');
+        var timer = null;
+        function debounce(handler, delay) {
+            var timer = null;
+            return function() {
+                var _self = this, 
+                    _arg = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(function() {
+                    handler.apply(_self, _arg);
+                }, delay)
+            }
+        }
+        function ajax(e) {
+            console.log(e, this.value);
+        }
+        // oInp.oninput = ajax;
+        // oInp.oninput = function(e) {
+        //     console.log(arguments);
+        //     var _self = this, 
+        //         _arg = arguments;
+        //     clearTimeout(timer);
+        //     timer = setTimeout(function() {
+        //         ajax.apply(_self, _arg);
+        //     }, 1000)
+        // }
+        oInp.oninput = debounce(ajax, 1000); 
+        
+        
+    </script>
+
+
+</body>
+</html>

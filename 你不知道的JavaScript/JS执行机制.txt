@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <button id="btn">run</button>
+
+    <script>
+        
+        // UI多线程 深入刨分析JS执行机制
+
+
+        // JS是单线程 浏览器中包含很多线程  比如JS引擎线程
+        //    异步线程比如http请求线程
+        
+        // 大部分浏览器都有这五个线程 这五个线程被UI主线程通过它进行这样的协调去运作的 
+
+        
+        // var oBtn = document.getElementById('btn');
+        // deiLoop();
+        // function deiLoop() {
+        //     while(true) {
+                
+        //     }
+        // }
+        // oBtn.onclick = function() {
+        //     console.log('0');
+        // }
+        // 这是JS引擎单线程所带来的状况
+        
+
+        
+        // 事件队列 先进先出
+        // 当主线程中的任务都执行完 它不断来看看任务队列里有没有任务 这个过程叫做时间轮询 event loop
+
+        // 同步任务 除了Ajax网络请求和定时器都叫同步任务
+
+        // function foo (ot) {
+        //     // debugger;
+        //     function bar(it) {
+        //         console.log(it);
+        //     }
+        //     bar(20);
+        //     console.log(ot);
+        // }  
+        // foo(10);
+        // 当inner执行完 outer再执行完
+        // 函数定义没有被当作任务 函数执行才被当作任务
+        // 栈是先进出的 
+        // 函数执行完就会弹出栈 从栈中出去 bar没有之后只剩余foo 
+        // 栈为空它最后就会看一下事件队列有没有任务 如果有任务就把它拿到栈中来执行 
+        // 执行栈只有一个 同一时间段只能干一件事情
+    
+    
+            
+
+        var startTime = +new Date();    
+        function sleep(time) {
+            for(var i = 0; i < time; i ++) {
+                console.log(i);
+            }
+        }    
+        console.log(startTime);
+        setTimeout(function() {
+            console.log(+new Date() - startTime);
+        }, 100)
+        sleep(10000);
+    
+    
+    
+    
+    
+    </script>
+
+</body>
+</html>

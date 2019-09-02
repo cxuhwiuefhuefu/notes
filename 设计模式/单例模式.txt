@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button id="oBtn">login</button>
+    <script>
+        
+        // 单例模式 
+        // 它主要研究如何创建一个对象 来节约一些资源 节约一些开销 浏览器资源是有限的 
+
+        // function Test(name) {
+        //     // var this = Object.create(Test.prototype);
+
+        //     if(typeof Test.instance === 'object') { // 怎么判断第一次new呢
+        //         return Test.instance;
+        //     }
+
+        //     this.name = name;
+        //     Test.instance = this; // 这样做的好处是第一次new所创建这个Test这个对象被永久的保存在这个Test这个属性下面
+
+        //     // return this;
+        // }
+        // // var a = new Test('one');
+        // // var b = new Test();
+        // // console.log(a === b);
+
+        // // 不好的地方是instance暴漏是instance这样的全局下 不符合开闭原则
+        // var a = new Test('one');
+        // Test.instance = {};
+        // var b = new Test();
+        // console.log(a === b);
+        
+        
+        
+
+        // function Test(name) {
+        //     var instance = this;
+        //     this.name = name;
+
+        //     Test = function() { // 闭包
+        //         return instance;
+        //     }
+
+        //     // return this;
+        // }
+        // // a = new Test();
+        // // var b = new Test();
+        // // var c = new Test();
+        // // console.log(a === b, b === c);
+
+        // var a = new Test();
+        // Test.prototype.lastName = 'D';
+        // var b = new Test();
+        // var c = new Test();
+        // console.log(a.lastName);
+        // console.log(b.lastName);
+
+
+
+        // 圣杯
+        // 全局变量 闭包
+        // JQ 封闭作用域 防止里面符合开闭原则的变量被污染
+        // 闭包能实现永生 符合开闭原则
+        // var Test = (function() {
+        //     var instance;
+        //     return function(name) {
+        //         if(typeof instance === 'object') {
+        //             return instance;
+        //         }
+        //         instance = this;
+        //         this.name = name;
+        //     }
+        // })();
+        // var a = new Test();
+        // Test.prototype.lastName = 'deng';
+        // var b = new Test();
+        // console.log(a === b, a.lastName, b.lastName);
+
+
+        
+        // 创建弹窗
+        // var CreateAlert = function(text) {
+        //     var oDiv = document.createElement('div');
+        //     oDiv.style.display = 'none';
+        //     oDiv.innerText = text;
+        //     document.body.appendChild(oDiv);
+        //     return oDiv;
+        // }
+        // oBtn.onclick = function() {
+        //     var oDiv = CreateAlert('hello duyi');
+        //     oDiv.style.display = 'block';
+        // }
+
+        
+        // var singleAlert = (function() {
+        //     var oDiv = undefined; // 不能写null
+        //     return function(text) {
+        //         if(typeof oDiv === 'object') {
+        //             return oDiv;
+        //         }
+        //         oDiv = document.createElement('div');
+        //         oDiv.style.display = 'none';
+        //         oDiv.innerText = text;
+        //         document.body.appendChild(oDiv);
+        //         return oDiv;
+        //     }
+        // })()       
+        // oBtn.onclick = function() {
+        //     var oDiv = singleAlert('hello duyi');
+        //     oDiv.style.display = 'block';
+        // }
+        
+        // 复用
+        
+
+        // 创建弹窗
+        var CreateAlert = function(text) {
+            var oDiv = document.createElement('div');
+            oDiv.style.display = 'none';
+            oDiv.innerText = text;
+            document.body.appendChild(oDiv);
+            return oDiv;
+        }
+        // 传func 返回新的函数
+        var getSingle = function(func) {
+
+            var result;
+            return function() {
+                // 不能指定返回多少个形参arguments
+                // if(result != null) {
+                //     return result;
+                // }
+                // result = func.apply(this, arguments);
+                // return result;
+
+                if(!result) {
+                    result = func.apply(this, arguments);
+                }
+                return result;
+            }
+        }
+        var singleAlter = getSingle(CreateAlert);
+        oBtn.onclick = function() {
+            var oDiv = singleAlter('hello duyi');
+            oDiv.style.display = 'block';
+        }
+        // 封装好的单例模式很有用
+
+
+
+
+        // var jsUtil = {
+        //     getSingle: function(func) {
+
+        //         var result;
+        //         return function() {
+        //             // 不能指定返回多少个形参arguments
+        //             // if(result != null) {
+        //             //     return result;
+        //             // }
+        //             // result = func.apply(this, arguments);
+        //             // return result;
+
+        //             if(!result) {
+        //                 result = func.apply(this, arguments);
+        //             }
+        //             return result;
+        //         }
+        //     }
+        // }
+    
+    </script>
+    
+</body>
+</html>

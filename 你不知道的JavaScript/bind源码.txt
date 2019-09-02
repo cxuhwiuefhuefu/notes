@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <button id="btn">btn</button>
+    <script>
+        
+        // bind基本使用
+        // 作用是修改函数在执行时的this指向 它修改不是修改函数的本身 而是在执行的时候返回一个新的函数 
+        //     新的函数在执行的时候执行的是这个函数的功能 但里面的this被里面的bind所修改了
+
+        // var x = 10
+        // function show() {
+        //     console.log(this.x);
+        // }
+        // show();
+        // var obj = {
+        //     x: 20
+        // }
+        // var newShow = show.bind(obj);
+        // newShow();
+    
+            
+        // 单对象编程 每个属性都是对应的函数
+        // var list = {
+        //     init: function() {
+        //         console.log(1);
+        //         this.ms = 'duyi';
+        //         this.dom = document.getElementById('btn');
+        //         this.bindEvent();
+        //     },
+        //     bindEvent: function() {
+        //         console.log(2);
+        //         // this.dom.onclick = this.showMessage;
+        //         this.dom.onclick = this.showMessage.bind(this);
+        //     },
+        //     showMessage: function() {
+        //         // alert(this.ms);
+        //         console.log(this.ms);
+        //     }
+        // }
+        // list.init();
+
+
+        // call/apply bind区别
+        // call/apply 是你直接去使用 在当前函数执行的时候直接调用它
+        // 返回某个函数 等待某个状态触发再执行的时候这个时候用bind
+
+
+        
+
+        // 可以传参    
+        // var x = 10
+        // function show(a, b) {
+        //     console.log(this.x, a, b);
+        // }
+        // show('a', 'b');
+        // var obj = {
+        //     x: 20
+        // }
+        // // var newShow = show.bind(obj, 'c', 'd');
+        // // newShow();
+        // var newShow = show.bind(obj, 'c');
+        // newShow('d');
+        // 你在Bind后面传的参数 会在执行的时候拼到前面去
+    
+            
+
+
+        // var list = {
+        //     init: function() {
+        //         console.log(1);
+        //         this.ms = 'duyi';
+        //         this.dom = document.getElementById('btn');
+        //         this.bindEvent();
+        //     },
+        //     bindEvent: function() {
+        //         console.log(2);
+        //         // this.dom.onclick = this.showMessage;
+        //         this.dom.onclick = this.showMessage.bind(this, 'hello', 'word');
+        //     },
+        //     showMessage: function(info1, info2, e) {
+        //         // alert(this.ms);
+        //         console.log(this.ms, info1, info2, e);
+        //     }
+        // }
+        // list.init();   
+        
+
+
+
+        // function A() {}
+        // var o = {};
+        // var x = 1;
+        // var y = 2;
+        // var z = 3;
+        // var B = A.bind(o, x, y);
+        // B('c');
+
+        // var x = 10
+        // function show(a, b) {
+        //     console.log(this.x, a, b);
+        // }
+        // show('a', 'b');
+        // var obj = {
+        //     x: 20
+        // }
+        // var newShow = show.bind(obj);
+        // console.log(new newShow().constructor);    
+        
+        // 总结: 
+        // 1. 函数A调用bind方法时 需要传递的参数o,   x, y, z....
+        // 2. 返回新的函数B
+        // 3. 函数B在执行的时候 具体的功能实际上还是使用的A 只不过this指向变成了o 不传是window
+        // 4. 函数B在执行的时候 你传递参数 会拼接到x, y, z的后面 一并在内部传递给A执行
+        // 5. 当你以new B()  构造函数依旧是A 而且obj这个参数不会起到任何操作
+
+
+
+        Function.prototype.newBind = function(target) {
+            // target 改变返回函数执行的this指向
+            var self = this;
+            var args = [].slice.call(arguments, 1);
+            var temp = function() {};
+            var f = function() {
+                var _args = [].slice.call(arguments, 0);
+                // 真正执行的其实是self
+                return self.apply(this instanceof temp ? this : (target || window), args.concat(_args));
+            }
+            temp.prototype = self.prototype;
+            f.prototype = new temp();
+            return f;
+        }
+
+    
+    </script>
+
+</body>
+</html>

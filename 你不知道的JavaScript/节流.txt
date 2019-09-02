@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="show">0</div>
+    <button id="btn">click</button>
+    <script>
+        
+        // 防抖&节流
+        // 在前端开发中有一部分的用户行为会频繁的触发事件执行 而对DOM操作丶资源加载等耗费性能的处理
+        //     很可能会导致页面卡顿 甚至浏览器崩溃 函数节流和函数防抖就是为了解决类似需求应运而生的
+        //  为什么会导致页面卡顿呢 本质是因为我们浏览器是单线程的 
+
+        // 节流
+        // 函数节流就是预定一个函数只有在大于等于执行周期时才执行 周期内调用不执行 好像水滴攒到一定重量才会落下一样
+
+
+        // 场景
+        // 窗口调整
+        // 页面滚动       瀑布流的布局或者进行动态页面的加载
+        // 抢购疯狂点击    脚本式的触发事件进行疯狂点击 向服务器发送疯狂的请求 服务器会崩溃
+        
+
+
+        // var oDiv = document.getElementById('show');
+        // var oBtn = document.getElementById('btn');
+        // // oBtn.onclick = function() {
+        // //     oDiv.innerText = parseInt(oDiv.innerText) + 1;
+        // // }    
+        
+        // function throttle(handler, wait) {
+        //     var lastTime = 0;
+        //     return function(e) {
+        //         // arguments [event]
+        //         var nowTime = new Date().getTime();
+        //         if(nowTime - lastTime > wait) {
+        //             handler.apply(this, arguments);
+        //             lastTime = nowTime;
+        //         }
+        //     }
+        // }
+        // function buy(e) {
+        //     console.log(this, e);
+        //     oDiv.innerText = parseInt(oDiv.innerText) + 1;
+        // }
+        // oBtn.onclick = throttle(buy, 1000);
+
+        //恶意脚本
+        // for(var i = 0; i < 1000; i++) {oBtn.onclick()}
+        // 服务器承载不了
+        // 这么快发送请求 你的浏览器其也会发生崩溃
+
+
+
+        function throttle(method, delay) {
+            var last = 0;
+            return function() {
+                var  now = +new Date();
+                if(now - last > delay) {
+                    method.apply(this, arguments);
+                    last = now;
+                }
+            }
+        }    
+
+    
+    </script>
+
+</body>
+</html>

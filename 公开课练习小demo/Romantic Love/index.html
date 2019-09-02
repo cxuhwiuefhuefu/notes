@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+
+    <div class="wrapper">
+
+
+        <div class="title">
+            <marquee behavior="alternate" scrolldelay="100s" scrollamount=5 bgcolor="pink">Love you forever</marquee>
+            <!-- 
+                direction: 表示滚动的方向 值可以是left/right/up/down
+                behavior: 表示滚动的方式 值可以是scroll(连续滚动) slide(滚动一次) alternate(来回滚动)
+                loop: 表示循环的次数 值是正整数 默认为无限循环
+                scrollamount: 表示运动速度 值是正整数 默认值为6
+                scrolldelay: 表示停顿时间 值是正整数 默认为0 单位是毫秒
+                align: 表示元素的垂直对齐方式 值是top middle bottom  默认是middle
+                bgcolor: 表示运动区域的背景色 值是16进制的RGB颜色 默认是白色
+                height/width 表示运动区域的高度和宽度  值是正整数(单位是像素)或百分数 默认width=100% height为标签内元素的高度
+                hspace/vspace 表示元素到区域边界的水平距离和垂直距离 值是正整数 单位是像素
+                onmouseover=this.stop() onmouseout=this.start() 表示当鼠标以上区域的时候停止滚动 当鼠标移开的时候又继续滚动
+             -->
+        </div>
+
+        <div class="showPic">
+            <ul>
+                <li><img src="./img/1.png" alt=""></li>
+                <li><img src="./img/2.png" alt=""></li>
+                <li><img src="./img/3.png" alt=""></li>
+                <li><img src="./img/4.png" alt=""></li>
+                <li><img src="./img/5.png" alt=""></li>
+                <li><img src="./img/6.png" alt=""></li>
+            </ul>
+        </div>
+
+        <div id="text">
+            <span></span>
+        </div>
+
+        <embed src="./img/李迦南、傅酥、李惠芹 - 我唱情歌给你听 (大合唱串烧版).mp3" hidden=true loop="true">
+        <!-- 
+            所有主流浏览器都支持<embed>标签 是HTML5中的新标签  
+                width: 规定嵌入内容的高度
+                height: 规定嵌入内容的宽度
+                src: 可以是相对路径和绝对路径
+                autostart=true/false: 该属性规定音频或视频文件是否在下载完之后就自动播放
+                loop: 循环次数 true: 音频或视频循环 false: 音频或视频不循环 
+                hidden=true/no 控制面板是否显示
+                starttime: 开始时间 规定音频或视频文件开始播放的时间 未定义则从头播放
+                volume="0-100之间的整数"  规定音频或视频文件音量的大小 为定义则使用系统本身的设定
+                height=# width=# 取值为正整数或百分数 单位为像素 该属性规定控制面板的高度和宽度
+                units=pixels/en  容器单位 该属性规定高和宽的单位为pixels/en
+                controls=console(一般正常面板)/smallconsole(较小的面板)/playbutton(只显示播放按钮)
+                      /pausebutton(只显示暂停按钮)/stopbutton(只显示停止按钮)/volumeever(只显示音量调节按钮) 外观设置           
+                name=# 对象按钮
+                title=# 说明文字
+                palette=color|color 该属性表示嵌入音频或视频文件的前景色和背景色 可以是rgba 颜色名 透明色
+                align=top/bottom/center/baseline/left/right/texttop/middle/absmiddle/absbottom 对齐方式 
+                
+                audio和embed的区别 audio引入必须是绝对路径 embed绝对路径和相对路径都可以
+        -->
+
+        
+    </div>
+
+    <script src="./js/jQuery.js"></script>
+    <script src="./js/index.js"></script>
+
+</body>
+</html>
