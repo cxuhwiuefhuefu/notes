@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+        }
+        span{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        用户名：<input type="text" id="userDom" name="username">
+        <span id="showUser"></span>
+        密码：<input type="password" id="psDom" name="code">
+        <span id="showPs"></span>
+        邮箱：<input type="text" id="emDom" name="email">
+        <span id="showEm"></span>
+        <button id="submit">提交</button>
+    </div>
+    <script>
+        
+        // 前端校验
+
+        // 用户名长度不能超过四个
+        // 密码不能为空 密码长度不能小于6
+        // 先假定 数据是可以发送成功的 
+        // var flag = true;
+        // submit.onclick = function() {
+        //     showUser.innerText = '';
+        //     showPs.innerText = '';
+
+        //     if(userDom.value == '') {
+        //         flag = true;
+        //         showUser.innerText = '用户名不能为空';
+        //     }else if(userDom.value.length >= 4) {
+        //         flag = false;
+        //         showUser.innerText = '用户名长度不能大于大于4';
+        //     }
+
+        //     if(psDom.value == '') {
+        //         flag = false;
+        //         showPs.innerText = '密码不能为空';
+        //     }else if(psDom.value.length < 6) {
+        //         flag = false;
+        //         showPs.innerText = "密码不能小于6";
+        //     }
+
+        //     if(flag) {
+        //         // 发送网络请求
+        //         Request();
+        //     }
+        // }
+        // function Request() {
+
+        // }
+
+        // 假如邮箱丶手机号校验... 会增加代码复杂度 没有复用性 
+        // 使用设计模式场景 项目会更新 迭代  拓展 复用 
+
+
+        
+        
+        
+
+        
+        
+        // 代理模式和策略模式结合一下 搞定它
+        // A => C => B
+        var flag = true;
+        submit.onclick = function() {
+            showUser.innerText = '';
+            showPs.innerText = '';
+
+            if(userDom.value == '') {
+                flag = true;
+                showUser.innerText = '用户名不能为空';
+            }else if(userDom.value.length >= 4) {
+                flag = false;
+                showUser.innerText = '用户名长度不能大于大于4';
+            }
+
+            if(psDom.value == '') {
+                flag = false;
+                showPs.innerText = '密码不能为空';
+            }else if(psDom.value.length < 6) {
+                flag = false;
+                showPs.innerText = "密码不能小于6";
+            }
+
+            if(flag) {
+                // 发送网络请求
+                Request();
+            }
+        }
+        function Request() {
+            console.log('send');
+        }
+        // 构造函数 =》 对象实例
+        function Validator() {
+            this.cache = [];
+            this.warnDom = [];
+        }
+        Validator.prototype.strategies = {
+            isNonEmpty: function(value, errorMsg) {
+                if(value == '') {
+                    return errorMsg;
+                }
+                return true;
+            },
+            maxLength: function(value, length, errorMsg) {
+                if(value != '' && value.length > length) {
+                    return errorMsg;
+                }
+                return true;
+            },
+            minLength: function(value, length, errorMsg) {
+                if(value != '' && value.length < length) {
+                    return errorMsg;
+                }
+                return true;
+            }            
+        }
+        Validator.prototype.add = function(dom, showDom, strategyArr) { // 不是直接去校验 而是缓存
+            var self = this;
+            this.warnDom.push(showDom);
+            strategyArr.forEach(function(ele, index) {
+                self.cache.push(function() {
+                    // arr => ['isNonEmpty'] ['maxLength', '4'];
+                    var arr = ele.strategy.split(':');
+                    // arr => [] ['4']
+                    // type => isNonEmpty maxLength
+                    var type = arr.shift();
+                    // [dom.value] [dom.value, '4']
+                    arr.unshift(dom.value);
+                    // [dom.value, errorMsg] [dom.value, '4', errorMsg]
+                    arr.push(ele.errorMsg);
+
+
+                    var msg = self.strategies[type].apply(self, arr);
+
+                    if(msg != true) {
+                        showDom.innerText = msg;
+                    }
+
+                    return msg;
+                })
+            })
+        }
+
+        Validator.prototype.start = function() {
+            // 标记最后是否能符合规则
+            var flag = true;
+            this.warnDom.forEach(function(ele) {
+                ele.innerText = '';
+            })
+            this.cache.forEach(function(ele) {
+                if(ele() != true) {
+                    flag = false;
+                }
+            })
+            return flag;
+        }
+
+        Validator.prototype.extend = function(config) {
+            for(var prop in config) {
+                Validator.prototype.strategies[prop] = config[prop];
+            }
+        }
+
+        // add 添加校验规则 (dom, showDom,[{strategy: 'isNonEmpty', errorMsg: '用户名不为空'}, 
+        //                        {'strategy': 'maxLength:4', errorMsg: '用户名长度不能超过4'}
+        //                 ])
+        // start 开始校验并返回真正的校验结果
+        // extend 可以拓展 算法
+        var validator = new Validator();
+        validator.extend({
+            isEmail: function(val, errorMsg) {
+                if(value != '' && value.indexOf('@') == -1) {
+                    return errorMsg;
+                }
+                return true;
+            },
+            isPhone: function(val, errorMsg) {
+                if(value != '' && value.length != 11) {
+                    return errorMsg;
+                }
+                return true;
+            }
+        })
+        var ProxyRequest = (function() {
+            // 1.校验内容dom 2.错误信息心事dom 3. 校验规则
+            validator.add(userDom, showUser, [{strategy: 'isNonEmpty', errorMsg: '用户名不为空'}, {strategy: 'maxLength:4', errorMsg: '用户名长度不能超过4'}]);
+            validator.add(psDom, showPs, [{strategy: 'isNonEmpty', errorMsg: '密码不能为空'}, {strategy: 'minLength:6', errorMsg: '密码长度不能小于6'}]);
+            validator.add(emDom, showEm, [{strategy: 'isNonEmpty', errorMsg: '邮箱不能为空'}, {strategy: 'isEmail', errorMsg: '邮箱格式不正确'}]);
+            return function() {
+                if(validator.start() == true) {
+                    Request();
+                }
+            }
+        })();
+        
+        // 策略模式 用一个对象来管理一堆算法 这个算法就是对不同情况做出相应的反应 这些算法对这些对象进行集中的管理 
+        //     这些算法还可以相互进行替换  这个对象我写完之后我在不同对象下使用它 复用 继承
+        // 邮箱校验需求。。。 复杂度低 可拓展性强 策略模式 前端校验器
+
+
+
+        // 工厂抽象工厂 观察者 迭代
+    
+    
+    
+    
+    
+    
+    </script>
+    
+</body>
+</html>
